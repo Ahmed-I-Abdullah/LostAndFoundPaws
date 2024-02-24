@@ -1,0 +1,3 @@
+#Speed up by preventing local modules and debug logs from being copied onto docker image
+node_modules
+npm-debug.log
