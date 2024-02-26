@@ -28,6 +28,6 @@ module.exports = {
     'react',
   ],
   'rules': {
-    'require-jsdoc' : 'off'
+    'require-jsdoc': 'off',
   },
 };
