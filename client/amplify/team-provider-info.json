@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lostandfoundpets-staging-234006-authRole",
+      "UnauthRoleArn": "arn:aws:iam::949631297289:role/amplify-lostandfoundpets-staging-234006-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::949631297289:role/amplify-lostandfoundpets-staging-234006-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-lostandfoundpets-staging-234006-deployment",
+      "UnauthRoleName": "amplify-lostandfoundpets-staging-234006-unauthRole",
+      "StackName": "amplify-lostandfoundpets-staging-234006",
+      "StackId": "arn:aws:cloudformation:ca-central-1:949631297289:stack/amplify-lostandfoundpets-staging-234006/de436aa0-d75b-11ee-85d9-06649295a0c1",
+      "AmplifyAppId": "dqxjrlvdovoe2"
+    }
+  }
+}
