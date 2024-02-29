@@ -10,6 +10,11 @@
       "StackName": "amplify-lostandfoundpets-staging-234006",
       "StackId": "arn:aws:cloudformation:ca-central-1:949631297289:stack/amplify-lostandfoundpets-staging-234006/de436aa0-d75b-11ee-85d9-06649295a0c1",
       "AmplifyAppId": "dqxjrlvdovoe2"
+    },
+    "categories": {
+      "auth": {
+        "lostandfoundpetsfd158904": {}
+      }
     }
   }
 }
