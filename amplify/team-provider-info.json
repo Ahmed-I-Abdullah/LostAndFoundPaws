@@ -17,9 +17,6 @@
       },
       "api": {
         "lostandfoundpets": {}
-      },
-      "hosting": {
-        "amplifyhosting": {}
       }
     }
   }
