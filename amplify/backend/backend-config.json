@@ -1,22 +1,23 @@
 {
   "api": {
     "lostandfoundpets": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "lostandfoundpetsfd158904"
+        }
+      ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authlostandfoundpetsfd158904"
-              }
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
-            },
-            "authenticationType": "API_KEY"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authlostandfoundpetsfd158904"
+            }
           }
         }
       },
@@ -27,7 +28,17 @@
   "auth": {
     "lostandfoundpetsfd158904": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "lostandfoundpetsfd158904PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -50,6 +61,54 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "lostandfoundpetsfd158904"
+        }
+      ],
+      "service": "Cognito-UserPool-Groups"
+    }
+  },
+  "function": {
+    "lostandfoundpetsfd158904PostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_lostandfoundpetsfd158904PostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "lostandfoundpetsfd158904PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_lostandfoundpetsfd158904PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "lostandfoundpetsfd158904PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_lostandfoundpetsfd158904PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "lostandfoundpetsfd158904PostConfirmation"
+        }
+      ]
     }
   }
 }

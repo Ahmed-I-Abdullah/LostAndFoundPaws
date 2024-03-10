@@ -34,11 +34,14 @@
   "sharedId": "fd158904",
   "resourceName": "lostandfoundpetsfd158904",
   "authSelections": "identityPoolAndUserPool",
-  "useDefault": "default",
+  "useDefault": "manual",
   "usernameAttributes": [
     "email"
   ],
-  "userPoolGroupList": [],
+  "userPoolGroupList": [
+    "Admin",
+    "Poster"
+  ],
   "serviceName": "Cognito",
   "usernameCaseSensitive": false,
   "useEnabledMfas": true,
@@ -55,5 +58,30 @@
     ]
   },
   "breakCircularDependency": true,
-  "dependsOn": []
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "lostandfoundpetsfd158904PostConfirmation",
+      "triggerProvider": "Cognito",
+      "attributes": [
+        "Arn",
+        "Name"
+      ]
+    }
+  ],
+  "thirdPartyAuth": false,
+  "userPoolGroups": true,
+  "adminQueries": false,
+  "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
+  "hostedUI": false,
+  "authProviders": [],
+  "parentStack": {
+    "Ref": "AWS::StackId"
+  },
+  "permissions": [
+    "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}"
+  ],
+  "authTriggerConnections": [
+    "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"lostandfoundpetsfd158904PostConfirmation\"}"
+  ]
 }
