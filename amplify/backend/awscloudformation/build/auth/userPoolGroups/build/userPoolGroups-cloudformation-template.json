@@ -1,0 +1,173 @@
+{
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.10.1\",\"stackType\":\"auth-Cognito-UserPool-Groups\",\"metadata\":{}}",
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "env": {
+      "Type": "String"
+    },
+    "AuthRoleArn": {
+      "Type": "String"
+    },
+    "UnauthRoleArn": {
+      "Type": "String"
+    },
+    "authlostandfoundpetsfd158904UserPoolId": {
+      "Type": "String",
+      "Default": "authlostandfoundpetsfd158904UserPoolId"
+    },
+    "authlostandfoundpetsfd158904IdentityPoolId": {
+      "Type": "String",
+      "Default": "authlostandfoundpetsfd158904IdentityPoolId"
+    },
+    "authlostandfoundpetsfd158904AppClientID": {
+      "Type": "String",
+      "Default": "authlostandfoundpetsfd158904AppClientID"
+    },
+    "authlostandfoundpetsfd158904AppClientIDWeb": {
+      "Type": "String",
+      "Default": "authlostandfoundpetsfd158904AppClientIDWeb"
+    }
+  },
+  "Conditions": {
+    "ShouldNotCreateEnvResources": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "NONE"
+      ]
+    }
+  },
+  "Resources": {
+    "AdminGroup": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "authlostandfoundpetsfd158904UserPoolId"
+        },
+        "Description": "override success",
+        "GroupName": "Admin",
+        "Precedence": 1,
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "AdminGroupRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "AdminGroupRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "authlostandfoundpetsfd158904IdentityPoolId"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              }
+            }
+          ]
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "authlostandfoundpetsfd158904UserPoolId"
+              },
+              "-AdminGroupRole"
+            ]
+          ]
+        }
+      }
+    },
+    "PosterGroup": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "authlostandfoundpetsfd158904UserPoolId"
+        },
+        "Description": "override success",
+        "GroupName": "Poster",
+        "Precedence": 2,
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "PosterGroupRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "PosterGroupRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "authlostandfoundpetsfd158904IdentityPoolId"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              }
+            }
+          ]
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "authlostandfoundpetsfd158904UserPoolId"
+              },
+              "-PosterGroupRole"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "AdminGroupRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "AdminGroupRole",
+          "Arn"
+        ]
+      }
+    },
+    "PosterGroupRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "PosterGroupRole",
+          "Arn"
+        ]
+      }
+    }
+  }
+}

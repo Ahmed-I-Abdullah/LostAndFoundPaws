@@ -1,9 +1,190 @@
-# This "input" configures a global authorization rule to enable public access to
-# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+type User
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  username: String!
+  role: Role!
+  profilePicture: String
+  email: String
+  phone: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  posts: [Post] @hasMany(indexName: "byUser", fields: ["id"])
+  postReports: [PostReport] @hasMany(indexName: "byUser", fields: ["id"])
+  sightings: [Sighting] @hasMany(indexName: "byUser", fields: ["id"])
+  sightingReports: [SightingReport] @hasMany(indexName: "byUser", fields: ["id"])
+  comments: [Comment] @hasMany(indexName: "byUser", fields: ["id"])
+  commentReports: [CommentReport] @hasMany(indexName: "byUser", fields: ["id"])
+}
 
-type Todo @model {
-  id: ID!
+type Post
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
   name: String!
+  status: PetStatus!
+  gender: PetGender!
+  summary: String!
+  description: String!
+  resolved: String @default(value: "false")
+  lastKnownLocation: Location
+  species: PetSpecies!
+  images: [String]
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser", queryField: "postsByUser")
+  comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
+  postReports: [PostReport] @hasMany(indexName: "byPost", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Comment
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  content: String!
+  postID: ID! @index(name: "byPost", queryField: "commentsByPost")
+  parentCommentID: ID @index(name: "byParentComment", queryField: "repliesByParentComment")
+  parentComment: Comment @belongsTo(fields: ["parentCommentID"])
+  replies: [Comment] @hasMany(indexName: "byParentComment", fields: ["parentCommentID"])
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser", queryField: "commentsByUser")
+  commentReports: [CommentReport]
+    @hasMany(indexName: "byComment", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Sighting
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  image: String
+  location: Location
+  reporterType: ReporterType! # distinguish between sightings by posters and guests
+  user: User @belongsTo(fields: ["userID"]) # Optional if reported by a registered user
+  userID: ID! @index(name: "byUser", queryField: "sightingsByUser")
+  email: String # Optional email for guest
+  phone: String # Optional phone number for guest
+  sightingReports: [SightingReport]
+    @hasMany(indexName: "bySighting", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type PostReport
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  reason: ReportReason!
   description: String
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser", queryField: "postReportsByUser")
+  post: Post @belongsTo(fields: ["postID"])
+  postID: ID! @index(name: "byPost", queryField: "reportsByPost")
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type CommentReport
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  reason: ReportReason!
+  description: String
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser", queryField: "commentReportsByUser")
+  comment: Comment @belongsTo(fields: ["commentID"])
+  commentID: ID! @index(name: "byComment", queryField: "reportsByComment")
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type SightingReport
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  reason: ReportReason!
+  description: String
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser", queryField: "sightingReportsByUser")
+  sighting: Sighting @belongsTo(fields: ["sightingID"])
+  sightingID: ID! @index(name: "bySighting", queryField: "reportsBySighting")
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+
+type Location {
+  latitude: Float!
+  longitude: Float!
+  address: String
+}
+
+enum ReportReason {
+  INAPPROPRIATE
+  SPAM
+  OTHER
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ReporterType {
+  USER
+  GUEST
+}
+
+enum PetStatus {
+  LOST
+  FOUND
+}
+
+enum PetSpecies {
+  DOG
+  CAT
+  OTHER
+}
+
+enum PetGender {
+  MALE
+  FEMALE
+  OTHER
 }
