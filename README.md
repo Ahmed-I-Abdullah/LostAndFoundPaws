@@ -44,6 +44,35 @@ Use the built-in continuous integration in GitLab.
 
 ***
 
+# Running the Schema and Seeding Scripts
+
+## Running the Schema 
+
+The schema is designed to run with AWS AppSync, AWS Lambda, and DynamoDB. To run/deploy the schema please follow the following steps:
+
+- Clone the repository.
+- Set up the AWS environment as outlined in the seng513-deployment document.
+- The schema is located at amplify/backend/api/lostandfoundpets/schema.graphql.
+- To update the schema, edit it then run Amplify Push to update the DynamoDB tables with the changes.
+
+## Running the Seeding
+
+To run the seeding script, please follow the following steps:
+
+- Ensure node 20.11.1 is installed (https://nodejs.org/en/blog/release/v20.11.1)
+- Navigate to the seeding directory within the CLI using the following command (if you are in the root directory of the project):
+    - cd amplify/backend/api/lostandfoundpets/seeding
+- Install all the package dependencies required for the seeding using the following command:
+    - npm install 
+- Run the seeding script using the following command:
+    - node index.mjs 
+- Follow the instructions on the command line by inputting your email and password.
+    - Note: The email must be valid since a verification code will be sent to that email.
+- Check your email inbox for the verification code sent, and copy and paste that code on the command line.
+    - Note: Sometimes the verification code gets sent to the junk/spam box.
+- Once the user is verified, the script will add that user as an ADMIN to the application.
+
+
 # Editing this README
 
 When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
