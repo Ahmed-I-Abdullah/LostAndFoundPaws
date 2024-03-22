@@ -1,0 +1,16 @@
+.formControl {
+  width: 100%;
+}
+
+.textField {
+  width: 100%;
+}
+
+.header {
+    margin-bottom: 50px;
+}
+
+.formButton {
+    /* margin-top: 16px; */
+    width: 100%;
+}
