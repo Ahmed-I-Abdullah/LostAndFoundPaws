@@ -87,8 +87,6 @@ const CreatePostForm = () => {
         onSubmit={(values) => {
           console.log(values);
         }}
-        validateOnChange
-        validateOnBlur
       >
         {({ errors, touched, handleSubmit, setFieldValue, values }) => (
           <Form onSubmit={handleSubmit}>
@@ -110,7 +108,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.name && touched.name}
-                    helperText={errors.name}
+                    helperText={touched.name ? errors.name : ''}
                     value={values.name}
                     onChange={(event) => {
                       setFieldValue("name", event.target.value);
@@ -123,7 +121,7 @@ const CreatePostForm = () => {
                     options={genderOptions}
                     className="formControl"
                     error={errors.gender && touched.gender}
-                    helperText={errors.gender}
+                    helperText={touched.gender ?  errors.gender : ''}
                     value={values.gender}
                     onChange={(event) => {
                       setFieldValue("gender", event.target.value);
@@ -137,7 +135,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.summary && touched.summary}
-                    helperText={errors.summary}
+                    helperText={touched.summary ? errors.summary : ''}
                     value={values.summary}
                     onChange={(event) => {
                       setFieldValue("summary", event.target.value);
@@ -153,7 +151,7 @@ const CreatePostForm = () => {
                     rows={4}
                     className="textField"
                     error={errors.description && touched.description}
-                    helperText={errors.description}
+                    helperText={touched.description ? errors.description : ''}
                     value={values.description}
                     onChange={(event) => {
                       setFieldValue("description", event.target.value);
@@ -169,7 +167,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.location && touched.location}
-                    helperText={errors.location}
+                    helperText={touched.location ? errors.location : ''}
                     value={values.location}
                     onChange={(event) => {
                       setFieldValue("location", event.target.value);
@@ -182,7 +180,7 @@ const CreatePostForm = () => {
                     options={speciesOptions}
                     className="formControl"
                     error={errors.species && touched.species}
-                    helperText={errors.species}
+                    helperText={touched.species ? errors.species : ''}
                     value={values.species}
                     onChange={(event) => {
                       setFieldValue("species", event.target.value);
@@ -204,7 +202,7 @@ const CreatePostForm = () => {
                       setFieldValue("images", updatedImages);
                     }}
                     error={errors.images && touched.images}
-                    helperText={errors.images}
+                    helperText={touched.images ? errors.images : ''}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -214,7 +212,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.phoneNumber && touched.phoneNumber}
-                    helperText={errors.phoneNumber}
+                    helperText={touched.phoneNumber ? errors.phoneNumber : ''}
                     value={values.phoneNumber}
                     onChange={(event) => {
                       setFieldValue("phoneNumber", event.target.value);
@@ -228,7 +226,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.email && touched.email}
-                    helperText={errors.email}
+                    helperText={touched.email ? errors.email : ''}
                     value={values.email}
                     onChange={(event) => {
                       setFieldValue("email", event.target.value);
