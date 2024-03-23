@@ -2,6 +2,7 @@ import React from 'react';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const CustomDropdown = ({ label, options, ...otherProps }) => {
   return (
@@ -20,6 +21,7 @@ const CustomDropdown = ({ label, options, ...otherProps }) => {
           </MenuItem>
         ))}
       </Select>
+      {(otherProps.error) && <FormHelperText htmlFor='render-select' error>{otherProps.helperText}</FormHelperText>}
     </FormControl>
   );
 }

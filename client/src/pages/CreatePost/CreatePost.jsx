@@ -8,6 +8,7 @@ import {
   Select,
   MenuItem,
   Button,
+  useTheme,
 } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -43,18 +44,8 @@ const FieldTitle = ({ title }) => {
 };
 
 const CreatePostForm = () => {
-  const [images, setImages] = useState([]);
+  const theme = useTheme();
 
-  const handleImageChange = (e) => {
-    setImages([...images, ...e.target.files]);
-    e.target.value = null;
-  };
-
-  const handleRemoveImage = (index) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
-  };
   return (
     <Container>
       <div className="header">
@@ -96,11 +87,13 @@ const CreatePostForm = () => {
         onSubmit={(values) => {
           console.log(values);
         }}
+        validateOnChange
+        validateOnBlur
       >
-        {({ errors, touched, handleSubmit, setFieldValue }) => (
+        {({ errors, touched, handleSubmit, setFieldValue, values }) => (
           <Form onSubmit={handleSubmit}>
-            <Grid container spacing={10}>
-              <Grid item container xs={12} md={6} spacing={6}>
+            <Grid container spacing={theme.breakpoints.down("md") ? 4 : 6}>
+              <Grid item container xs={12} md={6} spacing={4}>
                 <Grid item xs={12}>
                   <FieldTitle title="Status" />
                   <Toggle
@@ -116,14 +109,25 @@ const CreatePostForm = () => {
                     name="name"
                     variant="outlined"
                     className="textField"
+                    error={errors.name && touched.name}
+                    helperText={errors.name}
+                    value={values.name}
+                    onChange={(event) => {
+                      setFieldValue("name", event.target.value);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FieldTitle title="Gender" />
                   <CustomDropdown
-                    value={genderOptions[0]}
                     options={genderOptions}
                     className="formControl"
+                    error={errors.gender && touched.gender}
+                    helperText={errors.gender}
+                    value={values.gender}
+                    onChange={(event) => {
+                      setFieldValue("gender", event.target.value);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -132,6 +136,12 @@ const CreatePostForm = () => {
                     name="summary"
                     variant="outlined"
                     className="textField"
+                    error={errors.summary && touched.summary}
+                    helperText={errors.summary}
+                    value={values.summary}
+                    onChange={(event) => {
+                      setFieldValue("summary", event.target.value);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -142,34 +152,60 @@ const CreatePostForm = () => {
                     multiline
                     rows={4}
                     className="textField"
+                    error={errors.description && touched.description}
+                    helperText={errors.description}
+                    value={values.description}
+                    onChange={(event) => {
+                      setFieldValue("description", event.target.value);
+                    }}
                   />
                 </Grid>
               </Grid>
-              <Grid item container xs={12} md={6} spacing={6}>
+              <Grid item container xs={12} md={6} spacing={4}>
                 <Grid item xs={12}>
                   <FieldTitle title="Last Known Location" />
                   <CustomTextField
                     name="location"
                     variant="outlined"
                     className="textField"
+                    error={errors.location && touched.location}
+                    helperText={errors.location}
+                    value={values.location}
+                    onChange={(event) => {
+                      setFieldValue("location", event.target.value);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FieldTitle title="Species" />
                   <CustomDropdown
-                    value={speciesOptions[0]}
                     options={speciesOptions}
                     className="formControl"
+                    error={errors.species && touched.species}
+                    helperText={errors.species}
+                    value={values.species}
+                    onChange={(event) => {
+                      setFieldValue("species", event.target.value);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FieldTitle title="Insert Picture(s)" />
                   <ImageUpload
-                    images={images}
-                    handleImageChange={handleImageChange}
-                    handleRemoveImage={handleRemoveImage}
+                    images={values.images}
+                    handleImageChange={(e) => {
+                      const newImages = [...values.images, ...e.target.files];
+                      setFieldValue("images", newImages);
+                      e.target.value = null;
+                    }}
+                    handleRemoveImage={(index) => {
+                      const updatedImages = [...values.images];
+                      updatedImages.splice(index, 1);
+                      setFieldValue("images", updatedImages);
+                    }}
+                    error={errors.images && touched.images}
+                    helperText={errors.images}
                   />
-                  {/* <ErrorMessage name="images" component="div" /> */}
                 </Grid>
                 <Grid item xs={12}>
                   <FieldTitle title="Phone Number (Optional)" />
@@ -177,6 +213,12 @@ const CreatePostForm = () => {
                     name="phoneNumber"
                     variant="outlined"
                     className="textField"
+                    error={errors.phoneNumber && touched.phoneNumber}
+                    helperText={errors.phoneNumber}
+                    value={values.phoneNumber}
+                    onChange={(event) => {
+                      setFieldValue("phoneNumber", event.target.value);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -185,13 +227,23 @@ const CreatePostForm = () => {
                     name="email"
                     variant="outlined"
                     className="textField"
+                    error={errors.email && touched.email}
+                    helperText={errors.email}
+                    value={values.email}
+                    onChange={(event) => {
+                      setFieldValue("email", event.target.value);
+                    }}
                   />
                 </Grid>
               </Grid>
-              <Grid item container xs={12} spacing={6}>
-                <Grid item xs={12} md={6}>
+              <Grid
+                item
+                container
+                xs={12}
+                spacing={theme.breakpoints.down("md") ? 2 : 10}
+              >
+                <Grid item xs={6} md={6}>
                   <Button
-                    type="submit"
                     variant="outlined"
                     color="primary"
                     className="formButton"
@@ -199,7 +251,7 @@ const CreatePostForm = () => {
                     Cancel
                   </Button>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={6} md={6}>
                   <Button
                     type="submit"
                     variant="contained"

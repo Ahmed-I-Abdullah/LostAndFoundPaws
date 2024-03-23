@@ -1,9 +1,11 @@
 import React from "react";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import FormHelperText from '@mui/material/FormHelperText';
 import "./ImageUpload.css";
 
-const ImageUpload = ({ images, handleImageChange, handleRemoveImage }) => {
+const ImageUpload = ({ images, handleImageChange, handleRemoveImage, ...otherProps }) => {
   return (
+    <>
     <div className="images-container">
       <div className="images-wrapper">
         {images.map((image, index) => (
@@ -38,6 +40,8 @@ const ImageUpload = ({ images, handleImageChange, handleRemoveImage }) => {
         />
       </label>
     </div>
+    {(otherProps.error) && <FormHelperText htmlFor='render-select' error>{otherProps.helperText}</FormHelperText>}
+    </>
   );
 };
 
