@@ -83,7 +83,7 @@ const Comments = () => {
     <Grid>
       {commentData.length > 0 ? (
         commentData.map((comment, index) => (
-          <div className="posted-comment" key={comment.id} sx={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
+          <div className="posted-comment" key={comment.id} style={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
             <IconButton>
               <Avatar className="avatar">
                 <PersonOutline className="avatar" />
@@ -98,7 +98,7 @@ const Comments = () => {
                   {formatDate(comment.createdAt)}
                 </Typography>
               </div>
-              <div className="comment-content" sx={{color: `${theme.palette.custom.greyBkg.comment.content}`}}>
+              <div className="comment-content" style={{color: `${theme.palette.custom.greyBkg.comment.content}`}}>
                 {comment.parentCommentID && (() => {
                   const parentComment = commentData.find(parentComment => parentComment.id === comment.parentCommentID);
                   if (parentComment) {
@@ -141,7 +141,7 @@ const Comments = () => {
       ) : (
         <p>No comments to show</p>
       )}
-      <div className="post-comment" sx={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
+      <div className="post-comment" style={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
         <div>
           {
             commentreply&&
