@@ -10,7 +10,7 @@ const postTypeOptions = [
   { label: "All", color: theme.palette.custom.selectedCategory.view },
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting.light }
+  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting }
 ];
 
 const viewOptions = [
