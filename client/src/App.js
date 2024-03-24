@@ -1,15 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import './App.css';
-import CreatePostForm from './pages/CreatePost/CreatePost';
+import HomePageTemp from './pages/homePage/HomePage';
+import CreatePostForm from './pages/createPost/CreatePost';
 
 function App() {
   return (
-    <>
-    {/* <div style={{height: '90vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}> */}
-    <CreatePostForm />
-    {/* </div> */}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePageTemp />}></Route>
+        <Route path="/createPost" element={<CreatePostForm />}></Route>
+      </Routes>
+    </Router>
   );
 }
 
