@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Toggle.css";
 
-const Toggle = ({ options, onToggleCallback }) => {
+const Toggle = ({ options, onToggleCallback, containerWidth }) => {
   const [selectedSwitch, setSelectedSwitch] = useState(0);
   const [labelWidth, setLabelWidth] = useState("auto");
   const [selectedColor, setSelectedColor] = useState(options[0].color);
@@ -19,7 +19,7 @@ const Toggle = ({ options, onToggleCallback }) => {
   };
 
   return (
-    <div className="toggle-container">
+    <div className="toggle-container" style={{width: containerWidth}}>
       {options.map((item, index) => (
         <label
           key={index}
