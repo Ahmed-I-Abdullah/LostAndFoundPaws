@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useMobile } from '../../MobileContext';
 import UserMenu from '../UserMenu/UserMenu';
 import "./Navbar.css";
 import "../../sharedStyles/SharedStyles.css";
 import { Link } from "react-router-dom";
-import { IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PawLogo from '../../sharedStyles/PawLogo.png';
@@ -21,6 +21,8 @@ const Navbar = () => {
   };
 
   const fakeLogin = true;
+
+  const { isMobile } = useMobile();
 
   return (
     <div className="navbar">
@@ -40,13 +42,13 @@ const Navbar = () => {
           {fakeLogin ? (
             <>
               <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <span className="username">{"fakeUsername"}</span>
+                  {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
                   <AccountCircleIcon sx={{ fontSize: '40px' }} />
               </div>
               <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
             </>
           ) : (
-            <Button variant="outlined" href="#login" sx={{whiteSpace: 'nowrap'}}>Login</Button>
+            <Button variant="outlined" href="#login" sx={{whiteSpace: 'nowrap'}}>Sign Up</Button>
           )}
         </div>
       </div>

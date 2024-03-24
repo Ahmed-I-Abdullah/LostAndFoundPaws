@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme/theme'
+import { MobileProvider } from './MobileContext';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
 
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <App />
+        <MobileProvider>
+          <App />
+        </MobileProvider>
       </ThemeProvider>
     </React.StrictMode>,
 );

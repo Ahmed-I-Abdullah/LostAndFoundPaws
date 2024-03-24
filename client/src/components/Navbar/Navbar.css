@@ -1,11 +1,11 @@
 .navbar {
   display: flex;
-  justify-content: space-between; /* Adjusts items to the start and end with space in between */
+  justify-content: space-between;
   align-items: center;
   background-color: #FFFFFF;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 60px;
-  padding: 0 20px; /* Add padding to ensure content is not flush with the edges */
+  padding: 0 20px;
 }
 
 .navbarLeft {
