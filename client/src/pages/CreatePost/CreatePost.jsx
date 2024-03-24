@@ -99,6 +99,7 @@ const CreatePostForm = () => {
                     onToggleCallback={(index) =>
                       setFieldValue("type", postTypeOptions[index].label)
                     }
+                    containerWidth={'100%'}
                   />
                 </Grid>
                 <Grid item xs={12}>
