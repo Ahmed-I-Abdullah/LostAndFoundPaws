@@ -12,6 +12,7 @@ declare module '@mui/material/styles' {
         comment: {
           button: string;
           bkg: string;
+          content: string;
         };
       };
       selectedCategory: {
@@ -39,6 +40,7 @@ declare module '@mui/material/styles' {
         comment: {
           button: string;
           bkg: string;
+          content: string;
         };
       };
       selectedCategory: {
@@ -96,7 +98,8 @@ const theme = createTheme({
         category: '#E6E7EC',
         comment: {
           button: '#979797',
-          bkg: '#F5F5F5'
+          bkg: '#F5F5F5',
+          content: '#585858'
         }
       },
       selectedCategory: {
