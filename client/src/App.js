@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import './App.css';
-import HomePageTemp from './pages/homePage/HomePage';
-import CreatePostForm from './pages/createPost/CreatePost';
+import Navbar from './components/Navbar/Navbar';
+import HomePageTemp from './pages/HomePage/HomePage';
+import CreatePostForm from './pages/CreatePost/CreatePost';
 
 function App() {
   return (
     <Router>
+      <Navbar/>
       <Routes>
         <Route path="/" element={<HomePageTemp />}></Route>
         <Route path="/createPost" element={<CreatePostForm />}></Route>

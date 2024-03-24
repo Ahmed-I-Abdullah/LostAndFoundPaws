@@ -1,0 +1,57 @@
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Adjusts items to the start and end with space in between */
+  align-items: center;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 60px;
+  padding: 0 20px; /* Add padding to ensure content is not flush with the edges */
+}
+
+.navbarLeft {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-left: 40px;
+}
+
+.navbarRight {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 40px;
+}
+
+.logo img {
+  margin-right: 10px;
+  height: 40px;
+}
+
+.userActionSection {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.userActionSection .MuiButton-root {
+  margin-right: 10px;
+  min-width: 170px;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+}
+
+.userMenuSection {
+  display: flex;
+  align-items: center;
+  cursor: 'pointer';
+}
+
+.username {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #000000;
+}
