@@ -35,8 +35,8 @@ function ReportPost({ onClose, onReport }) {
             placeholder="Description (optional)"
           ></textarea>
           <div className="report-post-actions">
-            <Button variant="contained" onClick={onClose} sx={{whiteSpace: 'nowrap'}}>Cancel</Button>
-            <Button variant="outlined" type="submit" sx={{whiteSpace: 'nowrap'}}>Report</Button>
+            <Button variant="outlined" onClick={onClose} sx={{whiteSpace: 'nowrap'}}>Cancel</Button>
+            <Button variant="contained" type="submit" sx={{whiteSpace: 'nowrap'}}>Report</Button>
           </div>
         </form>
       </div>
