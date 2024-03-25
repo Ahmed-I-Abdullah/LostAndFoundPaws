@@ -38,7 +38,6 @@ const ListView = ({ selectedType }) => {
   return (
     <Box>
       {filteredPosts.map((post, index) => (
-        <Typography key={index}>
           <PetCard 
             owner={false} //TODO: Check if the user logged in is the owner
             img={post.images[0]}
@@ -50,7 +49,6 @@ const ListView = ({ selectedType }) => {
             createdAt={post.createdAt}
             updatedAt={post.updatedAt}
           />
-        </Typography>
       ))}
     </Box>
   );
