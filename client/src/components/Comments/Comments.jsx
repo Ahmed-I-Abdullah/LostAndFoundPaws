@@ -4,17 +4,12 @@ import {
   Typography,
   TextField,
   Button,
-  Avatar,
-  IconButton,
   Box,
 } from "@mui/material";
-import { PersonOutline } from '@mui/icons-material';
-import ReplyIcon from '@mui/icons-material/Reply';
-import FlagIcon from '@mui/icons-material/Flag';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
 import "./Comments.css"
 import theme from "../../theme/theme";
+import CommentCard from "../CommentCard/CommentCard";
 
 const commentData = [
   {
@@ -56,18 +51,21 @@ const formatDate = (dateString) => {
 };
 
 const Comments = () => {
-  const [commentStates, setCommentStates] = useState(
-    commentData.map(comment => ({ id: comment.id, showFullContent: false }))
-  );
   const [commentreply, setCommentReply] = useState('');
   const [postCommentText, setPostCommentText] = useState('');
-  const toggleContent = (id) => {
-    setCommentStates(commentStates.map(state =>
-      state.id === id ? { ...state, showFullContent: !state.showFullContent } : state
-    ));
+
+  const findUsernameWithCommentId = (commentId) => {
+    const comment = commentData.find(comment => comment.id === commentId);
+    return comment ? comment : null;
   };
 
-  const setReply = (comment) => {
+  const setReply = (commentId) => {
+    if (commentId === null){
+      setCommentReply("");
+      return;
+    }
+    const comment = findUsernameWithCommentId(commentId);
+    console.log(comment)
     if (comment === null){
       setCommentReply("");
       return;
@@ -83,64 +81,24 @@ const Comments = () => {
     <Grid>
       {commentData.length > 0 ? (
         commentData.map((comment, index) => (
-          <div className="posted-comment" key={comment.id} style={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
-            <IconButton>
-              <Avatar className="avatar">
-                <PersonOutline className="avatar" />
-              </Avatar>
-            </IconButton>
-            <div className="comment-info">
-              <div className="comment-topbar">
-                <Typography variant="h5">
-                  {comment.userName}
-                </Typography>
-                <Typography>
-                  {formatDate(comment.createdAt)}
-                </Typography>
-              </div>
-              <div className="comment-content" style={{color: `${theme.palette.custom.greyBkg.comment.content}`}}>
-                {comment.parentCommentID && (() => {
-                  const parentComment = commentData.find(parentComment => parentComment.id === comment.parentCommentID);
-                  if (parentComment) {
-                    const slicedContent = parentComment.content.slice(0, 100);
-                    const displayContent = parentComment.content.length > 100 ? `${slicedContent}...` : slicedContent;
-                    return (
-                      <Typography color= {`${theme.palette.primary.main}`}>
-                        {`@${parentComment.userName} ${displayContent}`}
-                      </Typography>
-                    );
-                  }
-                  return null;
-                })()}
-                <Typography>
-                  {commentStates[index].showFullContent ? comment.content : comment.content.length > 150 ? comment.content.slice(0, 150) + '...' : comment.content}
-                  {comment.content.length > 150 && (
-                    <Button variant="text" sx={{color: `${theme.palette.text.primary}`}} onClick={() => toggleContent(comment.id)}>
-                      {commentStates[index].showFullContent ? 'Show less' : 'Show more'}
-                    </Button>
-                  )}
-                </Typography>
-              </div>
-              <div className="comment-actions">
-                  {/** If the user that is logged in matches the comment.userId 
-                   * or admin
-                   * put edit/delete buttons instead
-                   */}
-                 <Button variant="text" sx={{color: `${theme.palette.text.primary}`}} onClick={() => setReply(comment)}>
-                  <ReplyIcon />
-                  Reply
-                </Button>
-                <Button variant="text" sx={{color: `${theme.palette.text.primary}`}}>
-                  <FlagIcon />
-                  Report
-                </Button>
-              </div>
-            </div>
-          </div>
+          <CommentCard
+            key={index}
+            owner={false} //TODO: check if comment.userID matches the logged in user
+            id={comment.id}
+            content={comment.content}
+            parentCommentId={comment.parentCommentID}
+            parentCommentUsername={'hii'} //TODO: add parent username and content in shema
+            parentCommentContent={'jii'}
+            username={comment.userName}
+            createdAt={comment.createdAt}
+            updatedAt={comment.updatedAt}
+            setReply={setReply}
+          />
         ))
-      ) : (
-        <p>No comments to show</p>
-      )}
+      ): 
+        (
+          <p>No comments to show</p>
+        )}
       <div className="post-comment" style={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
         <div>
           {
@@ -152,7 +110,7 @@ const Comments = () => {
               <Typography variant="subtitle">
                 Replying to {commentreply}
               </Typography>
-            </Box>
+            </Box> 
 
           }
           <TextField
