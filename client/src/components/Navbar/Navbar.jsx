@@ -34,8 +34,8 @@ const Navbar = () => {
       </div>
       <div className="navbarRight">
         {!isMobile && <div className="userActionSection">
-          <Button variant="outlined" href="createSighting" sx={{whiteSpace: 'nowrap'}}>Report Sighting</Button>
-          <Button variant="contained" href="createPost" sx={{whiteSpace: 'nowrap'}}>Report Pet</Button>
+          <Button variant="outlined" href="createSighting">Report Sighting</Button>
+          <Button variant="contained" href="createPost">Report Pet</Button>
         </div>}
         <div className="userSection">
           {/* TODO ADD VALID CHECKS FOR WHETHER USER IS LOGGED IN/ADMIN */}
@@ -48,7 +48,7 @@ const Navbar = () => {
               <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
             </>
           ) : (
-            <Button variant="outlined" href="#login" sx={{whiteSpace: 'nowrap'}}>Sign Up</Button>
+            <Button variant="outlined" href="#login">Sign Up</Button>
           )}
         </div>
       </div>

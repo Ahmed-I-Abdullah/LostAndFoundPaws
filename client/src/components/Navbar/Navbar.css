@@ -2,6 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
@@ -10,6 +11,10 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: 60px;
+}
+
+.navbar .MuiButton-root {
+  white-space: nowrap;
 }
 
 .navbarLeft {
@@ -35,12 +40,11 @@
 .userActionSection {
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .userActionSection .MuiButton-root {
   margin-right: 10px;
-  min-width: 170px;
 }
 
 .userSection {
