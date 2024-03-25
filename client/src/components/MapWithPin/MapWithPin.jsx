@@ -10,12 +10,12 @@ const MapWithPin = ({ longitude, latitude }) => {
   const mapContainer = useRef(null);
   const [lng, setLng] = useState(longitude);
   const [lat, setLat] = useState(latitude);
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(12);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v12",
+      style: "mapbox://styles/mapbox/light-v11",
       center: [lng, lat],
       zoom: zoom,
     });

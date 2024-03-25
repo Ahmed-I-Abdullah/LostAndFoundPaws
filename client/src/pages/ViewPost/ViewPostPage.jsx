@@ -17,11 +17,12 @@ import pet2Image from "../../assets/images/pet2.png";
 import pet3Image from "../../assets/images/pet3.png";
 import StatusLabel from "../../components/StatusLabel/StatusLabel";
 import FlagIcon from "@mui/icons-material/Flag";
-import theme from "../../theme/theme";
-import Comments from "../../components/Comments/Comments";
+import ReportPost from "../../components/ReportPopup/ReportPopup";
 import MapWithPin from "../../components/MapWithPin/MapWithPin";
 import { v4 as uuidv4 } from "uuid";
+import Comments from '../../components/Comments/Comments'
 
+/* MOCK DATA START */
 const petName = "Nala";
 const label = "LOST";
 const datePosted = "March 20, 2024";
@@ -30,12 +31,13 @@ const summary = "Brief summary explaining the case";
 const gender = "M";
 const species = "Cat";
 const description = "Detailed description about the pet";
-const lastKnownLocation = { latitude: 51, longitude: 114 };
+const lastKnownLocation = { latitude: 51.0745, longitude: -114.1458 };
 const contactInfo = {
   email: "joe.smith@email.com",
   phone: "+1 (431) 972 9107",
   username: "Joe Smith",
 };
+/* MOCK DATA END */
 
 const SectionTitle = ({ title }) => {
   return (
@@ -50,8 +52,10 @@ const ViewPostPage = () => {
   const extraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const medium = useMediaQuery(theme.breakpoints.down("md"));
+
   const [goToSlide, setGoToSlide] = useState(0);
   const [offsetRadius] = useState(4);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const handleSlideChange = (forward) => {
     if (forward) {
       if (goToSlide === slides.length - 1) {
@@ -101,21 +105,30 @@ const ViewPostPage = () => {
     }
   };
 
+  const handleReport = (reason, description) => {
+    console.log(
+      "Report submitted with reason: ",
+      reason,
+      " and description: ",
+      description
+    );
+    // Here you would typically handle the report,
+    // e.g., sending it to a server or an API endpoint.
+  };
+
   const comments = () => {
     return (
       <>
-      <Grid item container xs={12}>
-        <SectionTitle title="Comments" />
-        {/* <Comments /> */}
-        </Grid>
+         <SectionTitle title="Comments" />
+        <Comments />
       </>
     );
   };
 
   return (
-    <Container style={{ marginTop: "50px" }}>
+    <Container maxWidth="xl" style={{ marginTop: "50px" }}>
       <Grid container spacing={10}>
-        <Grid container item xs={12} spacing={2}>
+        <Grid container item xs={12} md={8} spacing={2} style={!medium ? {paddingRight: '2%'} : {}}>
           <Grid item xs={6}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
               {petName}
@@ -131,6 +144,7 @@ const ViewPostPage = () => {
                 color: "#000",
               }}
               startIcon={<FlagIcon />}
+              onClick={() => setIsReportModalOpen(true)}
             >
               Report
             </Button>
@@ -146,7 +160,7 @@ const ViewPostPage = () => {
           </Grid>
         </Grid>
         <Grid item container spacing={15}>
-          <Grid container item xs={12} md={8}>
+          <Grid container item xs={12} md={8} style={!medium ? {borderRight: '2px solid black', paddingRight: '6%'} : {}}>
             <Grid item xs={12}>
               <div
                 className="carousel-container"
@@ -192,11 +206,9 @@ const ViewPostPage = () => {
             </Grid>
 
             {!medium && (
-              // <Grid item xs={12}>
-              <>
-                {comments()}
-                </>
-              // </Grid>
+              <Grid item xs={12}>
+              <>{comments()}</>
+              </Grid>
             )}
           </Grid>
 
@@ -220,7 +232,10 @@ const ViewPostPage = () => {
             </Grid>
             <Grid item xs={12}>
               <SectionTitle title="Last Known Location" />
-              <MapWithPin longitude={lastKnownLocation.longitude} latitude={lastKnownLocation.latitude} />
+              <MapWithPin
+                longitude={lastKnownLocation.longitude}
+                latitude={lastKnownLocation.latitude}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -245,6 +260,12 @@ const ViewPostPage = () => {
           </Grid>
         </Grid>
       </Grid>
+      {isReportModalOpen && (
+        <ReportPost
+          onClose={() => setIsReportModalOpen(false)}
+          onReport={handleReport}
+        />
+      )}
     </Container>
   );
 };
