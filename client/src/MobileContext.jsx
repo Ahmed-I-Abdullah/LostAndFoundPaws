@@ -5,18 +5,28 @@ const MobileContext = createContext();
 
 export const MobileProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(window.matchMedia("(max-width: 768px)").matches);
+  const [isMobileSmall, setIsMobileSmall] = useState(window.matchMedia("(max-width: 390px)").matches);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    const handleChange = (event) => setIsMobile(event.matches);
+    const mediaQueryMobile = window.matchMedia("(max-width: 768px)");
+    const handleChangeMobile = (event) => setIsMobile(event.matches);
   
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQueryMobile.addEventListener('change', handleChangeMobile);
   
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    return () => mediaQueryMobile.removeEventListener('change', handleChangeMobile);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuerySmall = window.matchMedia("(max-width: 390px)");
+    const handleChangeSmall = (event) => setIsMobileSmall(event.matches);
+  
+    mediaQuerySmall.addEventListener('change', handleChangeSmall);
+  
+    return () => mediaQuerySmall.removeEventListener('change', handleChangeSmall);
   }, []);
 
   return (
-    <MobileContext.Provider value={{ isMobile }}>
+    <MobileContext.Provider value={{ isMobile, isMobileSmall }}>
       {children}
     </MobileContext.Provider>
   );

@@ -22,21 +22,21 @@ const Navbar = () => {
 
   const fakeLogin = true;
 
-  const { isMobile } = useMobile();
+  const { isMobile, isMobileSmall } = useMobile();
 
   return (
     <div className="navbar">
       <div className="navbarLeft">
       <Link to="/" className="logo">
         <img src= {PawLogo} alt="Logo" />
-        <span>LostAndFoundPaws</span>
+        {!isMobileSmall && <span>LostAndFoundPaws</span>}
       </Link>
       </div>
       <div className="navbarRight">
-        <div className="userActionSection">
+        {!isMobile && <div className="userActionSection">
           <Button variant="outlined" href="createSighting" sx={{whiteSpace: 'nowrap'}}>Report Sighting</Button>
           <Button variant="contained" href="createPost" sx={{whiteSpace: 'nowrap'}}>Report Pet</Button>
-        </div>
+        </div>}
         <div className="userSection">
           {/* TODO ADD VALID CHECKS FOR WHETHER USER IS LOGGED IN/ADMIN */}
           {fakeLogin ? (
