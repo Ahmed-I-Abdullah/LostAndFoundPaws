@@ -4,7 +4,7 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import HomePageTemp from './pages/HomePage/HomePage';
 import CreatePostForm from './pages/CreatePost/CreatePost';
-import MapView from './pages/MapView/MapView;
+import MapView from './pages/MapView/MapView';
 
 function App() {
   return (
