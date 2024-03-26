@@ -58,7 +58,7 @@ const PetCard = ({
               marginBottom: "1rem",
             }}
           >
-            <Typography variant="h2" fontWeight={"bold"} noWrap>
+            <Typography variant="h7" fontWeight={"bold"} noWrap>
               {name}
             </Typography>
             {owner && (
@@ -101,10 +101,10 @@ const PetCard = ({
               }}
             />
           </Stack>
-          <Typography noWrap>{summary}</Typography>
+          <Typography noWrap variant="subtitle1">{summary}</Typography>
         </Grid>
         <Grid item xs zeroMinWidth>
-          <Typography fontWeight={"bold"} noWrap>
+          <Typography fontWeight={"bold"} noWrap variant="subtitle2">
             {location}
           </Typography>
         </Grid>
@@ -118,7 +118,7 @@ const PetCard = ({
             marginRight: "1rem",
           }}
         >
-          <Typography>
+          <Typography variant="subtitle2">
             {`Posted: ${createdAt.split("T")[0]} - Updated: ${
               updatedAt.split("T")[0]
             }`}

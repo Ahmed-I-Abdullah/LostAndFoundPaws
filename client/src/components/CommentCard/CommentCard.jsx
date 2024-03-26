@@ -105,7 +105,7 @@ const CommentCard = ({
               onChange={handleEdit}
             />
           ) : (
-            <Typography>
+            <Typography variant="subtitle2">
               {expandedComment
                 ? content
                 : content.length > 150
