@@ -66,7 +66,10 @@ const CommentCard = ({
   return (
     <Box
       className="posted-comment"
-      style={{ backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`, padding: 7 }}
+      style={{
+        backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`,
+        padding: 7,
+      }}
     >
       <IconButton>
         <Avatar

@@ -101,7 +101,9 @@ const PetCard = ({
               }}
             />
           </Stack>
-          <Typography noWrap variant="subtitle1">{summary}</Typography>
+          <Typography noWrap variant="subtitle1">
+            {summary}
+          </Typography>
         </Grid>
         <Grid item xs zeroMinWidth>
           <Typography fontWeight={"bold"} noWrap variant="subtitle2">
