@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Toggle.css";
 
-const Toggle = ({ options, onToggleCallback, initialIndex = 0 }) => {
+const Toggle = ({
+  options,
+  onToggleCallback,
+  containerWidth,
+  initialIndex = 0,
+}) => {
   const [selectedSwitch, setSelectedSwitch] = useState(initialIndex);
   const [labelWidth, setLabelWidth] = useState("auto");
   const [selectedColor, setSelectedColor] = useState(options[0].color);
@@ -19,7 +24,7 @@ const Toggle = ({ options, onToggleCallback, initialIndex = 0 }) => {
   };
 
   return (
-    <div className="toggle-container">
+    <div className="toggle-container" style={{ width: containerWidth }}>
       {options.map((item, index) => (
         <label
           key={index}
@@ -29,7 +34,7 @@ const Toggle = ({ options, onToggleCallback, initialIndex = 0 }) => {
           style={{ width: labelWidth }}
           onClick={() => handleToggle(index)}
         >
-          <span style={{ marginRight: "10px" }}>{item.icon}</span>
+          <span style={{ marginRight: "10px" }}>{item.icon && item.icon}</span>
           {item.label}
         </label>
       ))}
