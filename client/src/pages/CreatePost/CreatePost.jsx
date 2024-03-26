@@ -49,10 +49,10 @@ const CreatePostForm = () => {
   return (
     <Container>
       <div className="header">
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
+        <Typography variant="h2" fontWeight="bold" gutterBottom> 
           Create Post
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography variant="subtitle1">
           Please enter the pet information below.
         </Typography>
       </div>
