@@ -80,7 +80,11 @@ const theme = createTheme({
     h9: {
       fontSize: '14px',
       letterSpacing: '0.75px'
-    }
+    },
+    body2: {
+      color: '#585858',
+      fontSize: '0.95rem'
+    },
   }
 });
 

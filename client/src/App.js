@@ -6,6 +6,7 @@ import Navbar from './components/Navbar/Navbar';
 import NavbarBottom from './components/NavbarBottom/NavbarBottom';
 import HomePageTemp from './pages/HomePage/HomePage';
 import CreatePostForm from './pages/CreatePost/CreatePost';
+import ViewPostPage from './pages/ViewPost/ViewPostPage'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePageTemp />}></Route>
               <Route path="/createPost" element={<CreatePostForm />}></Route>
+              <Route path="/viewPost" element={<ViewPostPage />}></Route>
             </Routes>
           </div>
         <NavbarBottom/>
