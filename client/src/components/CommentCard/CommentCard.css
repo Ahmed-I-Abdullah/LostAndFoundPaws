@@ -1,5 +1,7 @@
 .posted-comment {
   border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
   min-height: 100px;
   display: grid;
   grid-template-columns: 10% 90%;

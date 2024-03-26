@@ -48,39 +48,43 @@ const theme = createTheme({
       'sans-serif',
     ].join(','),
     h1: {
-      fontSize: '28px',
+      fontSize: '24px',
       fontWeight: 600,
       letterSpacing: '0.75px'
     },
     h2: {
-      fontSize: '22px',
+      fontSize: '18px',
       fontWeight: 600,
       letterSpacing: '0.75px'
     },
     h3: {
-      fontSize: '20px',
+      fontSize: '16px',
       fontWeight: 600,
       letterSpacing: '0.75px'
     },
     h4: {
-      fontSize: '19px',
+      fontSize: '15px',
       fontWeight: 'bold',
       letterSpacing: '0.75px'
     },
     h7: {
-      fontSize: '18px',
+      fontSize: '14px',
       letterSpacing: '0.75px',
       fontWeight: 'bold'
     },
     h8: {
-      fontSize: '15px',
+      fontSize: '11px',
       letterSpacing: '0.75px',
       fontWeight: 'bold'
     },
     h9: {
-      fontSize: '14px',
+      fontSize: '10px',
       letterSpacing: '0.75px'
-    }
+    },
+    body2: {
+      color: '#585858',
+      fontSize: '0.95rem'
+    },
   }
 });
 
