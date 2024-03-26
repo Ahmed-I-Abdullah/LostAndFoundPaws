@@ -186,6 +186,7 @@ const ViewPostPage = () => {
                 className="carousel-container"
                 style={{
                   height: extraSmall ? "100px" : small ? "250px" : "400px",
+                  marginBottom: medium ? 40 : 0
                 }}
               >
                 <Carousel
