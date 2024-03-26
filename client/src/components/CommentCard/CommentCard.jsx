@@ -94,10 +94,9 @@ const CommentCard = ({
           )}
           {editing ? (
             <TextField
-              id="outlined-multiline-static"
               multiline
               placeholder="Write your comment here"
-              maxRows={3}
+              rows={3}
               sx={{
                 width: "100%",
                 margin: "1rem",
