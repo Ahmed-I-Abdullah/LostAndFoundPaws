@@ -7,6 +7,7 @@ import {
   useTheme,
   useMediaQuery,
   IconButton,
+  Divider
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Carousel from "react-spring-3d-carousel";
@@ -20,7 +21,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
 import MapWithPin from "../../components/MapWithPin/MapWithPin";
 import { v4 as uuidv4 } from "uuid";
-import Comments from '../../components/Comments/Comments'
+import Comments from "../../components/Comments/Comments";
 
 /* MOCK DATA START */
 const petName = "Nala";
@@ -41,7 +42,7 @@ const contactInfo = {
 
 const SectionTitle = ({ title }) => {
   return (
-    <Typography variant="h4" fontWeight="bold">
+    <Typography variant="h2" fontWeight="bold" style={{marginBottom: 4}}>
       {title}
     </Typography>
   );
@@ -119,16 +120,24 @@ const ViewPostPage = () => {
   const comments = () => {
     return (
       <>
-         <SectionTitle title="Comments" />
-        <Comments />
+        <SectionTitle title="Comments" />
+          <Comments />
       </>
     );
   };
 
   return (
-    <Container maxWidth="xl" style={{ marginTop: "50px" }}>
-      <Grid container spacing={10}>
-        <Grid container item xs={12} md={8} spacing={2} style={!medium ? {paddingRight: '2%'} : {}}>
+    <Container maxWidth="xl" style={{ marginTop: "20px" }}>
+      <Grid container 
+      >
+        <Grid
+          container
+          item
+          xs={12}
+          md={8}
+          spacing={1}
+          style={!medium ? { paddingRight: "5%", marginBottom: 20 } : {marginBottom: 20}}
+        >
           <Grid item xs={6}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
               {petName}
@@ -159,8 +168,19 @@ const ViewPostPage = () => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid item container spacing={15}>
-          <Grid container item xs={12} md={8} style={!medium ? {borderRight: '2px solid black', paddingRight: '6%'} : {}}>
+        <Grid item container columnSpacing={15}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={8}
+            style={
+              !medium
+                ? { borderRight: "2px solid black", paddingRight: "6%" }
+                : {}
+            }
+            rowSpacing={3}
+          >
             <Grid item xs={12}>
               <div
                 className="carousel-container"
@@ -204,15 +224,16 @@ const ViewPostPage = () => {
                 </div>
               </div>
             </Grid>
+            <Divider orientation="vertical" flexItem />
 
             {!medium && (
               <Grid item xs={12}>
-              <>{comments()}</>
+                <>{comments()}</>
               </Grid>
             )}
           </Grid>
 
-          <Grid container item xs={12} md={4} spacing={2}>
+          <Grid container item xs={12} md={4} spacing={medium ? 4 : 0}>
             <Grid item xs={12}>
               <SectionTitle title="Summary" />
               <Typography variant="body2">{summary}</Typography>

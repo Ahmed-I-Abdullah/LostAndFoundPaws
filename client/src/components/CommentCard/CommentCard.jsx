@@ -71,7 +71,7 @@ const CommentCard = ({
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
-          <Typography variant="h8">{username}</Typography>
+          <Typography variant="h7">{username}</Typography>
           <Typography variant="caption">{formatDate(createdAt)}</Typography>
         </Box>
         <Box
@@ -85,7 +85,6 @@ const CommentCard = ({
           )}
           {editing ? (
             <TextField
-              id="outlined-multiline-static"
               multiline
               placeholder="Write your comment here"
               maxRows={3}

@@ -5,8 +5,9 @@
 .carousel-container {
   position: relative;
   width: 95%;
+  max-height: 300px;
   margin: auto;
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
 }
 
 .left-arrow-container {

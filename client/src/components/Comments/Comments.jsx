@@ -79,6 +79,7 @@ const Comments = () => {
 
   return (
     <Grid>
+      <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
       {commentData.length > 0 ? (
         commentData.map((comment, index) => (
           <CommentCard
@@ -99,6 +100,7 @@ const Comments = () => {
         (
           <p>No comments to show</p>
         )}
+        </div>
       <div className="post-comment" style={{backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`}}>
         <div>
           {
@@ -114,10 +116,10 @@ const Comments = () => {
 
           }
           <TextField
-            id="outlined-multiline-static"
-            multiline
             placeholder="Write your comment here"
-            maxRows={3}
+            multiline
+            rows={1}
+            maxRows={4}
             sx={{
               width: "100%",
               margin: "1rem"
