@@ -1,46 +1,15 @@
-.posted-comment {
-  border-radius: 1rem;
-  min-height: 100px;
-  display: grid;
-  grid-template-columns: 10% 90%;
-  gap: 1rem;
-  margin: 1rem;
-  padding: 1rem;
-}
-
-.comment-topbar {
-  display: flex;
-  justify-content: space-between;
-  width: calc(100% - 24px);
-}
-
-.comment-content {
-  display: flex;
-  align-self: flex-start;
-  width: calc(100% - 24px);
-  text-align: left;
-  flex-direction: column;
-}
-
-.comment-actions {
-  display: flex;
-  align-self: flex-start;
-}
-
 .post-comment {
   border-radius: 1rem;
-  min-height: 100px;
-  align-items: center;
   padding: 1rem;
-  display: grid;
-  grid-template-columns: 50% 10%;
-  gap: 3rem;
-  justify-content: center;
   margin: 1rem;
 }
 
-.avatar {
-  width: 50px !important;
-  height: 50px !important;
+.post-comment-content {
+  display: flex;
+  flex-direction: row;
   margin: auto;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
