@@ -19,7 +19,7 @@ const Toggle = ({ options, onToggleCallback, containerWidth }) => {
   };
 
   return (
-    <div className="toggle-container" style={{width: containerWidth}}>
+    <div className="toggle-container" style={{ width: containerWidth }}>
       {options.map((item, index) => (
         <label
           key={index}
@@ -29,6 +29,7 @@ const Toggle = ({ options, onToggleCallback, containerWidth }) => {
           style={{ width: labelWidth }}
           onClick={() => handleToggle(index)}
         >
+          {item.icon && item.icon}
           {item.label}
         </label>
       ))}
