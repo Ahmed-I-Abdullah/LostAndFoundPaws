@@ -34,7 +34,7 @@ const Toggle = ({
           style={{ width: labelWidth }}
           onClick={() => handleToggle(index)}
         >
-          <span style={{ marginRight: "10px" }}>{item.icon && item.icon}</span>
+          <span style={{ paddingTop: "5px" }}>{item.icon && item.icon}</span>
           {item.label}
         </label>
       ))}
