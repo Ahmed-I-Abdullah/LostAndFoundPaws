@@ -16,19 +16,9 @@ import FlagIcon from "@mui/icons-material/Flag";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
 import Modal from "@mui/material/Modal";
+import { useMobile } from "../../MobileContext";
 import "./CommentCard.css";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import ReportPost from "../ReportPopup/ReportPopup";
 
 const CommentCard = ({
   owner,
@@ -40,7 +30,7 @@ const CommentCard = ({
   parentCommentId,
   parentCommentUsername,
   parentCommentContent,
-  setReply
+  setReply,
 }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -55,18 +45,40 @@ const CommentCard = ({
   const [openDelete, setOpenDelete] = React.useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+  const isMobile = useMobile();
 
   const handleEdit = (e) => {
     setEditedContent(e.target.value);
   };
+
+  const handleReport = (reason, description) => {
+    console.log(
+      "Report submitted with reason: ",
+      reason,
+      " and description: ",
+      description
+    );
+    //TODO: Implement Report Functionality
+  };
+
   return (
     <Box
       className="posted-comment"
-      style={{ backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`, padding: 7 }}
+      style={{
+        backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`,
+        padding: 7,
+      }}
     >
       <IconButton>
-        <Avatar className="avatar">
-          <PersonOutline className="avatar" />
+        <Avatar
+          style={{
+            width: isMobile ? "50px" : "100px",
+            height: isMobile ? "50px" : "100px",
+          }}
+        >
+          <PersonOutline />
         </Avatar>
       </IconButton>
       <Box className="comment-info">
@@ -87,7 +99,7 @@ const CommentCard = ({
             <TextField
               multiline
               placeholder="Write your comment here"
-              maxRows={3}
+              rows={3}
               sx={{
                 width: "100%",
                 margin: "1rem",
@@ -100,7 +112,7 @@ const CommentCard = ({
               {expandedComment
                 ? content
                 : content.length > 150
-                ? content.slice(0, 150) + "..."
+                ? content.slice(0, 75) + "..."
                 : content}
               {content.length > 150 && (
                 <Button
@@ -127,12 +139,12 @@ const CommentCard = ({
                 {editing ? (
                   <>
                     <HighlightOffIcon />
-                    Cancel
+                    <Typography variant="h9">Cancel</Typography>
                   </>
                 ) : (
                   <>
                     <EditIcon />
-                    Edit
+                    <Typography variant="h9">Edit</Typography>
                   </>
                 )}
               </Button>
@@ -142,7 +154,7 @@ const CommentCard = ({
                   sx={{ color: `${theme.palette.text.primary}` }}
                 >
                   <CheckIcon />
-                  Save
+                  <Typography variant="h9">Save</Typography>
                 </Button>
               )}
               <Button
@@ -151,7 +163,7 @@ const CommentCard = ({
                 onClick={handleOpenDelete}
               >
                 <DeleteIcon />
-                Delete
+                <Typography variant="h9">Delete</Typography>
               </Button>
             </>
           ) : (
@@ -163,15 +175,16 @@ const CommentCard = ({
                 size="small"
               >
                 <ReplyIcon />
-                Reply
+                <Typography variant="h9">Reply</Typography>
               </Button>
               <Button
                 variant="text"
                 sx={{ color: `${theme.palette.text.primary}` }}
+                onClick={() => setIsReportModalOpen(true)}
                 size="small"
               >
                 <FlagIcon />
-                Report
+                <Typography variant="h9">Report</Typography>
               </Button>
             </>
           )}
@@ -217,6 +230,12 @@ const CommentCard = ({
           </Box>
         </Box>
       </Modal>
+      {isReportModalOpen && (
+        <ReportPost
+          onClose={() => setIsReportModalOpen(false)}
+          onReport={handleReport}
+        />
+      )}
     </Box>
   );
 };
