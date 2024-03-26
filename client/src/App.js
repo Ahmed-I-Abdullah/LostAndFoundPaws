@@ -7,6 +7,7 @@ import NavbarBottom from './components/NavbarBottom/NavbarBottom';
 import HomePageTemp from './pages/HomePage/HomePage';
 import CreatePostForm from './pages/CreatePost/CreatePost';
 import MyPostsAndComments from './pages/MyPostsAndComments/MyPostsAndComments';
+import ViewPostPage from './pages/ViewPost/ViewPostPage'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Route path="/" element={<HomePageTemp />}></Route>
               <Route path="/createPost" element={<CreatePostForm />}></Route>
               <Route path="/myPostsAndComments" element={<MyPostsAndComments />}></Route>
+              <Route path="/viewPost" element={<ViewPostPage />}></Route>
             </Routes>
           </div>
         <NavbarBottom/>

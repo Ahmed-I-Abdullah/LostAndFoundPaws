@@ -75,6 +75,7 @@ const Comments = () => {
 
   return (
     <Grid>
+      <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
       {commentData.length > 0 ? (
         commentData.map((comment, index) => (
           <CommentCard

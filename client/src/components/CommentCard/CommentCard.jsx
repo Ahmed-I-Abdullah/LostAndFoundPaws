@@ -66,7 +66,7 @@ const CommentCard = ({
   return (
     <Box
       className="posted-comment"
-      style={{ backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}` }}
+      style={{ backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`, padding: 7 }}
     >
       <IconButton>
         <Avatar
@@ -80,8 +80,8 @@ const CommentCard = ({
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
-          <Typography variant="h5">{username}</Typography>
-          <Typography>{formatDate(createdAt)}</Typography>
+          <Typography variant="h7">{username}</Typography>
+          <Typography variant="caption">{formatDate(createdAt)}</Typography>
         </Box>
         <Box
           className="comment-content"
@@ -116,6 +116,7 @@ const CommentCard = ({
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
                   onClick={() => setExpandedComment(!expandedComment)}
+                  size="small"
                 >
                   {expandedComment ? "Show less" : "Show more"}
                 </Button>
@@ -130,6 +131,7 @@ const CommentCard = ({
                 variant="text"
                 sx={{ color: `${theme.palette.text.primary}` }}
                 onClick={() => setEditing(!editing)}
+                size="small"
               >
                 {editing ? (
                   <>
@@ -167,6 +169,7 @@ const CommentCard = ({
                 variant="text"
                 sx={{ color: `${theme.palette.text.primary}` }}
                 onClick={() => setReply(id)}
+                size="small"
               >
                 <ReplyIcon />
                 <Typography variant="h9">Reply</Typography>
@@ -175,6 +178,7 @@ const CommentCard = ({
                 variant="text"
                 sx={{ color: `${theme.palette.text.primary}` }}
                 onClick={() => setIsReportModalOpen(true)}
+                size="small"
               >
                 <FlagIcon />
                 <Typography variant="h9">Report</Typography>

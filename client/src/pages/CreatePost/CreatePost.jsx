@@ -49,10 +49,10 @@ const CreatePostForm = () => {
   return (
     <Container>
       <div className="header">
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
+        <Typography variant="h2" fontWeight="bold" gutterBottom> 
           Create Post
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography variant="subtitle1">
           Please enter the pet information below.
         </Typography>
       </div>
@@ -76,7 +76,7 @@ const CreatePostForm = () => {
           description: Yup.string().required("Description is required"),
           location: Yup.string().required("Last known location is required"),
           species: Yup.string().required("Species is required"),
-          phoneNumber: Yup.string().required("Phone number is required"),
+          phoneNumber: Yup.string().optional(),
           email: Yup.string()
             .email("Invalid email")
             .required("Email is required"),
