@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./Toggle.css";
 
-const Toggle = ({ options, onToggleCallback, containerWidth }) => {
-  const [selectedSwitch, setSelectedSwitch] = useState(0);
+const Toggle = ({
+  options,
+  onToggleCallback,
+  containerWidth,
+  initialIndex = 0,
+}) => {
+  const [selectedSwitch, setSelectedSwitch] = useState(initialIndex);
   const [labelWidth, setLabelWidth] = useState("auto");
   const [selectedColor, setSelectedColor] = useState(options[0].color);
 
@@ -29,7 +34,7 @@ const Toggle = ({ options, onToggleCallback, containerWidth }) => {
           style={{ width: labelWidth }}
           onClick={() => handleToggle(index)}
         >
-          {item.icon && item.icon}
+          <span style={{ paddingTop: "5px" }}>{item.icon && item.icon}</span>
           {item.label}
         </label>
       ))}

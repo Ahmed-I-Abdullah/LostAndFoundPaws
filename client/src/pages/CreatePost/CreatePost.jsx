@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { rgba } from "polished";
 import Toggle from "../../components/Toggle/Toggle";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
@@ -19,8 +20,8 @@ import CustomDropdown from "../../components/DropDown/DropDown";
 import "./CreatePost.css";
 
 const postTypeOptions = [
-  { label: "Lost", color: "#FDC0C0" },
-  { label: "Found", color: "#8DFD8D" },
+  { label: "Lost", color: rgba("#FDC0C0", 0.5) },
+  { label: "Found", color: rgba("#8DFD8D", 0.5) },
 ];
 
 const genderOptions = [
@@ -122,7 +123,7 @@ const CreatePostForm = () => {
                     options={genderOptions}
                     className="formControl"
                     error={errors.gender && touched.gender}
-                    helperText={touched.gender ?  errors.gender : ''}
+                    helperText={touched.gender ? errors.gender : ''}
                     value={values.gender}
                     onChange={(event) => {
                       setFieldValue("gender", event.target.value);
