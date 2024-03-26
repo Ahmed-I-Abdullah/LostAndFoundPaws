@@ -76,25 +76,26 @@ const Comments = () => {
   return (
     <Grid>
       <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
-      {commentData.length > 0 ? (
-        commentData.map((comment, index) => (
-          <CommentCard
-            key={index}
-            owner={false} //TODO: check if comment.userID matches the logged in user
-            id={comment.id}
-            content={comment.content}
-            parentCommentId={comment.parentCommentID}
-            parentCommentUsername={"hii"} //TODO: add parent username and content in shema
-            parentCommentContent={"jii"}
-            username={comment.userName}
-            createdAt={comment.createdAt}
-            updatedAt={comment.updatedAt}
-            setReply={setReply}
-          />
-        ))
-      ) : (
-        <p>No comments to show</p>
-      )}
+        {commentData.length > 0 ? (
+          commentData.map((comment, index) => (
+            <CommentCard
+              key={index}
+              owner={false} //TODO: check if comment.userID matches the logged in user
+              id={comment.id}
+              content={comment.content}
+              parentCommentId={comment.parentCommentID}
+              parentCommentUsername={"hii"} //TODO: add parent username and content in shema
+              parentCommentContent={"jii"}
+              username={comment.userName}
+              createdAt={comment.createdAt}
+              updatedAt={comment.updatedAt}
+              setReply={setReply}
+            />
+          ))
+        ) : (
+          <p>No comments to show</p>
+        )}
+      </div>
       <div
         className="post-comment"
         style={{
