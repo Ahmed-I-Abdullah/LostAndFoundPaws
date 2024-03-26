@@ -2,11 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser(
-    $filter: ModelSubscriptionUserFilterInput
-    $owner: String
-  ) {
-    onCreateUser(filter: $filter, owner: $owner) {
+  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+    onCreateUser(filter: $filter) {
       id
       username
       role
@@ -39,17 +36,13 @@ export const onCreateUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      owner
       __typename
     }
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser(
-    $filter: ModelSubscriptionUserFilterInput
-    $owner: String
-  ) {
-    onUpdateUser(filter: $filter, owner: $owner) {
+  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+    onUpdateUser(filter: $filter) {
       id
       username
       role
@@ -82,17 +75,13 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      owner
       __typename
     }
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser(
-    $filter: ModelSubscriptionUserFilterInput
-    $owner: String
-  ) {
-    onDeleteUser(filter: $filter, owner: $owner) {
+  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+    onDeleteUser(filter: $filter) {
       id
       username
       role
@@ -125,17 +114,13 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      owner
       __typename
     }
   }
 `;
 export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost(
-    $filter: ModelSubscriptionPostFilterInput
-    $owner: String
-  ) {
-    onCreatePost(filter: $filter, owner: $owner) {
+  subscription OnCreatePost($filter: ModelSubscriptionPostFilterInput) {
+    onCreatePost(filter: $filter) {
       id
       name
       status
@@ -160,7 +145,6 @@ export const onCreatePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -174,17 +158,13 @@ export const onCreatePost = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost(
-    $filter: ModelSubscriptionPostFilterInput
-    $owner: String
-  ) {
-    onUpdatePost(filter: $filter, owner: $owner) {
+  subscription OnUpdatePost($filter: ModelSubscriptionPostFilterInput) {
+    onUpdatePost(filter: $filter) {
       id
       name
       status
@@ -209,7 +189,6 @@ export const onUpdatePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -223,17 +202,13 @@ export const onUpdatePost = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost(
-    $filter: ModelSubscriptionPostFilterInput
-    $owner: String
-  ) {
-    onDeletePost(filter: $filter, owner: $owner) {
+  subscription OnDeletePost($filter: ModelSubscriptionPostFilterInput) {
+    onDeletePost(filter: $filter) {
       id
       name
       status
@@ -258,7 +233,6 @@ export const onDeletePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -272,17 +246,13 @@ export const onDeletePost = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment(
-    $filter: ModelSubscriptionCommentFilterInput
-    $owner: String
-  ) {
-    onCreateComment(filter: $filter, owner: $owner) {
+  subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
+    onCreateComment(filter: $filter) {
       id
       content
       postID
@@ -295,7 +265,6 @@ export const onCreateComment = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       replies {
@@ -311,7 +280,6 @@ export const onCreateComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -321,17 +289,13 @@ export const onCreateComment = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment(
-    $filter: ModelSubscriptionCommentFilterInput
-    $owner: String
-  ) {
-    onUpdateComment(filter: $filter, owner: $owner) {
+  subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
+    onUpdateComment(filter: $filter) {
       id
       content
       postID
@@ -344,7 +308,6 @@ export const onUpdateComment = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       replies {
@@ -360,7 +323,6 @@ export const onUpdateComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -370,17 +332,13 @@ export const onUpdateComment = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment(
-    $filter: ModelSubscriptionCommentFilterInput
-    $owner: String
-  ) {
-    onDeleteComment(filter: $filter, owner: $owner) {
+  subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
+    onDeleteComment(filter: $filter) {
       id
       content
       postID
@@ -393,7 +351,6 @@ export const onDeleteComment = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       replies {
@@ -409,7 +366,6 @@ export const onDeleteComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -419,17 +375,13 @@ export const onDeleteComment = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onCreateSighting = /* GraphQL */ `
-  subscription OnCreateSighting(
-    $filter: ModelSubscriptionSightingFilterInput
-    $owner: String
-  ) {
-    onCreateSighting(filter: $filter, owner: $owner) {
+  subscription OnCreateSighting($filter: ModelSubscriptionSightingFilterInput) {
+    onCreateSighting(filter: $filter) {
       id
       image
       location {
@@ -448,7 +400,6 @@ export const onCreateSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -460,17 +411,13 @@ export const onCreateSighting = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onUpdateSighting = /* GraphQL */ `
-  subscription OnUpdateSighting(
-    $filter: ModelSubscriptionSightingFilterInput
-    $owner: String
-  ) {
-    onUpdateSighting(filter: $filter, owner: $owner) {
+  subscription OnUpdateSighting($filter: ModelSubscriptionSightingFilterInput) {
+    onUpdateSighting(filter: $filter) {
       id
       image
       location {
@@ -489,7 +436,6 @@ export const onUpdateSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -501,17 +447,13 @@ export const onUpdateSighting = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
 `;
 export const onDeleteSighting = /* GraphQL */ `
-  subscription OnDeleteSighting(
-    $filter: ModelSubscriptionSightingFilterInput
-    $owner: String
-  ) {
-    onDeleteSighting(filter: $filter, owner: $owner) {
+  subscription OnDeleteSighting($filter: ModelSubscriptionSightingFilterInput) {
+    onDeleteSighting(filter: $filter) {
       id
       image
       location {
@@ -530,7 +472,6 @@ export const onDeleteSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -542,7 +483,6 @@ export const onDeleteSighting = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -550,9 +490,8 @@ export const onDeleteSighting = /* GraphQL */ `
 export const onCreatePostReport = /* GraphQL */ `
   subscription OnCreatePostReport(
     $filter: ModelSubscriptionPostReportFilterInput
-    $owner: String
   ) {
-    onCreatePostReport(filter: $filter, owner: $owner) {
+    onCreatePostReport(filter: $filter) {
       id
       reason
       description
@@ -565,7 +504,6 @@ export const onCreatePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -582,13 +520,11 @@ export const onCreatePostReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       postID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -596,9 +532,8 @@ export const onCreatePostReport = /* GraphQL */ `
 export const onUpdatePostReport = /* GraphQL */ `
   subscription OnUpdatePostReport(
     $filter: ModelSubscriptionPostReportFilterInput
-    $owner: String
   ) {
-    onUpdatePostReport(filter: $filter, owner: $owner) {
+    onUpdatePostReport(filter: $filter) {
       id
       reason
       description
@@ -611,7 +546,6 @@ export const onUpdatePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -628,13 +562,11 @@ export const onUpdatePostReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       postID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -642,9 +574,8 @@ export const onUpdatePostReport = /* GraphQL */ `
 export const onDeletePostReport = /* GraphQL */ `
   subscription OnDeletePostReport(
     $filter: ModelSubscriptionPostReportFilterInput
-    $owner: String
   ) {
-    onDeletePostReport(filter: $filter, owner: $owner) {
+    onDeletePostReport(filter: $filter) {
       id
       reason
       description
@@ -657,7 +588,6 @@ export const onDeletePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -674,13 +604,11 @@ export const onDeletePostReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       postID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -688,9 +616,8 @@ export const onDeletePostReport = /* GraphQL */ `
 export const onCreateCommentReport = /* GraphQL */ `
   subscription OnCreateCommentReport(
     $filter: ModelSubscriptionCommentReportFilterInput
-    $owner: String
   ) {
-    onCreateCommentReport(filter: $filter, owner: $owner) {
+    onCreateCommentReport(filter: $filter) {
       id
       reason
       description
@@ -703,7 +630,6 @@ export const onCreateCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -715,13 +641,11 @@ export const onCreateCommentReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       commentID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -729,9 +653,8 @@ export const onCreateCommentReport = /* GraphQL */ `
 export const onUpdateCommentReport = /* GraphQL */ `
   subscription OnUpdateCommentReport(
     $filter: ModelSubscriptionCommentReportFilterInput
-    $owner: String
   ) {
-    onUpdateCommentReport(filter: $filter, owner: $owner) {
+    onUpdateCommentReport(filter: $filter) {
       id
       reason
       description
@@ -744,7 +667,6 @@ export const onUpdateCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -756,13 +678,11 @@ export const onUpdateCommentReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       commentID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -770,9 +690,8 @@ export const onUpdateCommentReport = /* GraphQL */ `
 export const onDeleteCommentReport = /* GraphQL */ `
   subscription OnDeleteCommentReport(
     $filter: ModelSubscriptionCommentReportFilterInput
-    $owner: String
   ) {
-    onDeleteCommentReport(filter: $filter, owner: $owner) {
+    onDeleteCommentReport(filter: $filter) {
       id
       reason
       description
@@ -785,7 +704,6 @@ export const onDeleteCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -797,13 +715,11 @@ export const onDeleteCommentReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       commentID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -811,9 +727,8 @@ export const onDeleteCommentReport = /* GraphQL */ `
 export const onCreateSightingReport = /* GraphQL */ `
   subscription OnCreateSightingReport(
     $filter: ModelSubscriptionSightingReportFilterInput
-    $owner: String
   ) {
-    onCreateSightingReport(filter: $filter, owner: $owner) {
+    onCreateSightingReport(filter: $filter) {
       id
       reason
       description
@@ -826,7 +741,6 @@ export const onCreateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -839,13 +753,11 @@ export const onCreateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       sightingID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -853,9 +765,8 @@ export const onCreateSightingReport = /* GraphQL */ `
 export const onUpdateSightingReport = /* GraphQL */ `
   subscription OnUpdateSightingReport(
     $filter: ModelSubscriptionSightingReportFilterInput
-    $owner: String
   ) {
-    onUpdateSightingReport(filter: $filter, owner: $owner) {
+    onUpdateSightingReport(filter: $filter) {
       id
       reason
       description
@@ -868,7 +779,6 @@ export const onUpdateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -881,13 +791,11 @@ export const onUpdateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       sightingID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -895,9 +803,8 @@ export const onUpdateSightingReport = /* GraphQL */ `
 export const onDeleteSightingReport = /* GraphQL */ `
   subscription OnDeleteSightingReport(
     $filter: ModelSubscriptionSightingReportFilterInput
-    $owner: String
   ) {
-    onDeleteSightingReport(filter: $filter, owner: $owner) {
+    onDeleteSightingReport(filter: $filter) {
       id
       reason
       description
@@ -910,7 +817,6 @@ export const onDeleteSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -923,13 +829,11 @@ export const onDeleteSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       sightingID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }

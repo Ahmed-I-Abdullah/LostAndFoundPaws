@@ -1,6 +1,6 @@
 {
   "identityPoolName": "lostandfoundpetsfd158904_identitypool_fd158904",
-  "allowUnauthenticatedIdentities": false,
+  "allowUnauthenticatedIdentities": true,
   "resourceNameTruncated": "lostanfd158904",
   "userPoolName": "lostandfoundpetsfd158904_userpool_fd158904",
   "autoVerifiedAttributes": [
@@ -69,12 +69,10 @@
       ]
     }
   ],
-  "thirdPartyAuth": false,
   "userPoolGroups": true,
   "adminQueries": false,
   "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
   "hostedUI": false,
-  "authProviders": [],
   "parentStack": {
     "Ref": "AWS::StackId"
   },
@@ -83,5 +81,7 @@
   ],
   "authTriggerConnections": [
     "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"lostandfoundpetsfd158904PostConfirmation\"}"
-  ]
+  ],
+  "authProviders": [],
+  "thirdPartyAuth": false
 }

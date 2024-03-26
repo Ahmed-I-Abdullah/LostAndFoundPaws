@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "lostandfoundpetsfd158904_identitypool_fd158904",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "lostanfd158904",
     "userPoolName": "lostandfoundpetsfd158904_userpool_fd158904",
     "autoVerifiedAttributes": [
@@ -71,7 +71,6 @@
         ]
       }
     ],
-    "thirdPartyAuth": false,
     "userPoolGroups": true,
     "adminQueries": false,
     "triggers": {
@@ -80,13 +79,14 @@
       ]
     },
     "hostedUI": false,
-    "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
     "permissions": [
       "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}"
     ],
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"lostandfoundpetsfd158904PostConfirmation\"\n  }\n]"
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"lostandfoundpetsfd158904PostConfirmation\"\n  }\n]",
+    "authProviders": [],
+    "thirdPartyAuth": false
   }
 }

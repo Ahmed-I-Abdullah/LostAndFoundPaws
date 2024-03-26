@@ -1,11 +1,12 @@
 type User
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, update, read] }
+  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   username: String!
   role: Role!
@@ -24,12 +25,13 @@ type User
 
 type Post
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, update, read] }
+  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   name: String!
   status: PetStatus!
@@ -50,12 +52,13 @@ type Post
 
 type Comment
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, update, read] }
+  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   content: String!
   postID: ID! @index(name: "byPost", queryField: "commentsByPost")
@@ -72,12 +75,13 @@ type Comment
 
 type Sighting
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, update, read] }
+  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   image: String
   location: Location
@@ -94,12 +98,13 @@ type Sighting
 
 type PostReport
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, read] }
+  #     { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   reason: ReportReason!
   description: String
@@ -113,12 +118,13 @@ type PostReport
 
 type CommentReport
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, read] }
+  #     { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   reason: ReportReason!
   description: String
@@ -132,12 +138,13 @@ type CommentReport
 
 type SightingReport
   @model
-  @auth(
-    rules: [
-      { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
-    ]
-  ) {
+  # @auth(
+  #   rules: [
+  #     { allow: owner, operations: [create, read] }
+  #     { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+  #   ]
+  # ) 
+  {
   id: ID! @primaryKey
   reason: ReportReason!
   description: String

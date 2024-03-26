@@ -13,7 +13,6 @@ type User {
   sightingReports(filter: ModelSightingReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSightingReportConnection
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
   commentReports(filter: ModelCommentReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentReportConnection
-  owner: String
 }
 
 type Post {
@@ -33,7 +32,6 @@ type Post {
   postReports(filter: ModelPostReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 type Comment {
@@ -48,7 +46,6 @@ type Comment {
   commentReports(filter: ModelCommentReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 type Sighting {
@@ -63,7 +60,6 @@ type Sighting {
   sightingReports(filter: ModelSightingReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSightingReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 type PostReport {
@@ -76,7 +72,6 @@ type PostReport {
   postID: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 type CommentReport {
@@ -89,7 +84,6 @@ type CommentReport {
   commentID: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 type SightingReport {
@@ -102,7 +96,6 @@ type SightingReport {
   sightingID: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  owner: String
 }
 
 type Location {
@@ -423,27 +416,27 @@ input ModelSubscriptionUserFilterInput {
 }
 
 type Subscription {
-  onCreateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["createUser"])
-  onUpdateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["updateUser"])
-  onDeleteUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["deleteUser"])
-  onCreatePost(filter: ModelSubscriptionPostFilterInput, owner: String): Post @aws_subscribe(mutations: ["createPost"])
-  onUpdatePost(filter: ModelSubscriptionPostFilterInput, owner: String): Post @aws_subscribe(mutations: ["updatePost"])
-  onDeletePost(filter: ModelSubscriptionPostFilterInput, owner: String): Post @aws_subscribe(mutations: ["deletePost"])
-  onCreateComment(filter: ModelSubscriptionCommentFilterInput, owner: String): Comment @aws_subscribe(mutations: ["createComment"])
-  onUpdateComment(filter: ModelSubscriptionCommentFilterInput, owner: String): Comment @aws_subscribe(mutations: ["updateComment"])
-  onDeleteComment(filter: ModelSubscriptionCommentFilterInput, owner: String): Comment @aws_subscribe(mutations: ["deleteComment"])
-  onCreateSighting(filter: ModelSubscriptionSightingFilterInput, owner: String): Sighting @aws_subscribe(mutations: ["createSighting"])
-  onUpdateSighting(filter: ModelSubscriptionSightingFilterInput, owner: String): Sighting @aws_subscribe(mutations: ["updateSighting"])
-  onDeleteSighting(filter: ModelSubscriptionSightingFilterInput, owner: String): Sighting @aws_subscribe(mutations: ["deleteSighting"])
-  onCreatePostReport(filter: ModelSubscriptionPostReportFilterInput, owner: String): PostReport @aws_subscribe(mutations: ["createPostReport"])
-  onUpdatePostReport(filter: ModelSubscriptionPostReportFilterInput, owner: String): PostReport @aws_subscribe(mutations: ["updatePostReport"])
-  onDeletePostReport(filter: ModelSubscriptionPostReportFilterInput, owner: String): PostReport @aws_subscribe(mutations: ["deletePostReport"])
-  onCreateCommentReport(filter: ModelSubscriptionCommentReportFilterInput, owner: String): CommentReport @aws_subscribe(mutations: ["createCommentReport"])
-  onUpdateCommentReport(filter: ModelSubscriptionCommentReportFilterInput, owner: String): CommentReport @aws_subscribe(mutations: ["updateCommentReport"])
-  onDeleteCommentReport(filter: ModelSubscriptionCommentReportFilterInput, owner: String): CommentReport @aws_subscribe(mutations: ["deleteCommentReport"])
-  onCreateSightingReport(filter: ModelSubscriptionSightingReportFilterInput, owner: String): SightingReport @aws_subscribe(mutations: ["createSightingReport"])
-  onUpdateSightingReport(filter: ModelSubscriptionSightingReportFilterInput, owner: String): SightingReport @aws_subscribe(mutations: ["updateSightingReport"])
-  onDeleteSightingReport(filter: ModelSubscriptionSightingReportFilterInput, owner: String): SightingReport @aws_subscribe(mutations: ["deleteSightingReport"])
+  onCreateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
+  onCreatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["createPost"])
+  onUpdatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["updatePost"])
+  onDeletePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["deletePost"])
+  onCreateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["createComment"])
+  onUpdateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["updateComment"])
+  onDeleteComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["deleteComment"])
+  onCreateSighting(filter: ModelSubscriptionSightingFilterInput): Sighting @aws_subscribe(mutations: ["createSighting"])
+  onUpdateSighting(filter: ModelSubscriptionSightingFilterInput): Sighting @aws_subscribe(mutations: ["updateSighting"])
+  onDeleteSighting(filter: ModelSubscriptionSightingFilterInput): Sighting @aws_subscribe(mutations: ["deleteSighting"])
+  onCreatePostReport(filter: ModelSubscriptionPostReportFilterInput): PostReport @aws_subscribe(mutations: ["createPostReport"])
+  onUpdatePostReport(filter: ModelSubscriptionPostReportFilterInput): PostReport @aws_subscribe(mutations: ["updatePostReport"])
+  onDeletePostReport(filter: ModelSubscriptionPostReportFilterInput): PostReport @aws_subscribe(mutations: ["deletePostReport"])
+  onCreateCommentReport(filter: ModelSubscriptionCommentReportFilterInput): CommentReport @aws_subscribe(mutations: ["createCommentReport"])
+  onUpdateCommentReport(filter: ModelSubscriptionCommentReportFilterInput): CommentReport @aws_subscribe(mutations: ["updateCommentReport"])
+  onDeleteCommentReport(filter: ModelSubscriptionCommentReportFilterInput): CommentReport @aws_subscribe(mutations: ["deleteCommentReport"])
+  onCreateSightingReport(filter: ModelSubscriptionSightingReportFilterInput): SightingReport @aws_subscribe(mutations: ["createSightingReport"])
+  onUpdateSightingReport(filter: ModelSubscriptionSightingReportFilterInput): SightingReport @aws_subscribe(mutations: ["updateSightingReport"])
+  onDeleteSightingReport(filter: ModelSubscriptionSightingReportFilterInput): SightingReport @aws_subscribe(mutations: ["deleteSightingReport"])
 }
 
 input LocationInput {

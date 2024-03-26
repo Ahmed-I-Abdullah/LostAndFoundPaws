@@ -39,7 +39,6 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      owner
       __typename
     }
   }
@@ -82,7 +81,6 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      owner
       __typename
     }
   }
@@ -125,7 +123,6 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
-      owner
       __typename
     }
   }
@@ -160,7 +157,6 @@ export const createPost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -174,7 +170,6 @@ export const createPost = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -209,7 +204,6 @@ export const updatePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -223,7 +217,6 @@ export const updatePost = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -258,7 +251,6 @@ export const deletePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -272,7 +264,6 @@ export const deletePost = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -295,7 +286,6 @@ export const createComment = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       replies {
@@ -311,7 +301,6 @@ export const createComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -321,7 +310,6 @@ export const createComment = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -344,7 +332,6 @@ export const updateComment = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       replies {
@@ -360,7 +347,6 @@ export const updateComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -370,7 +356,6 @@ export const updateComment = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -393,7 +378,6 @@ export const deleteComment = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       replies {
@@ -409,7 +393,6 @@ export const deleteComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -419,7 +402,6 @@ export const deleteComment = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -448,7 +430,6 @@ export const createSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -460,7 +441,6 @@ export const createSighting = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -489,7 +469,6 @@ export const updateSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -501,7 +480,6 @@ export const updateSighting = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -530,7 +508,6 @@ export const deleteSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -542,7 +519,6 @@ export const deleteSighting = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -565,7 +541,6 @@ export const createPostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -582,13 +557,11 @@ export const createPostReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       postID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -611,7 +584,6 @@ export const updatePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -628,13 +600,11 @@ export const updatePostReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       postID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -657,7 +627,6 @@ export const deletePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -674,13 +643,11 @@ export const deletePostReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       postID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -703,7 +670,6 @@ export const createCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -715,13 +681,11 @@ export const createCommentReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       commentID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -744,7 +708,6 @@ export const updateCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -756,13 +719,11 @@ export const updateCommentReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       commentID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -785,7 +746,6 @@ export const deleteCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -797,13 +757,11 @@ export const deleteCommentReport = /* GraphQL */ `
         userID
         createdAt
         updatedAt
-        owner
         __typename
       }
       commentID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -826,7 +784,6 @@ export const createSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -839,13 +796,11 @@ export const createSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       sightingID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -868,7 +823,6 @@ export const updateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -881,13 +835,11 @@ export const updateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       sightingID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
@@ -910,7 +862,6 @@ export const deleteSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       userID
@@ -923,13 +874,11 @@ export const deleteSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
-        owner
         __typename
       }
       sightingID
       createdAt
       updatedAt
-      owner
       __typename
     }
   }
