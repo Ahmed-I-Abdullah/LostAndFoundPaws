@@ -46,7 +46,7 @@ const contactInfo = {
 };
 /* MOCK DATA END */
 
-const isAdmin = false;
+const isAdmin = true;
 
 const SectionTitle = ({ title }) => {
   return (
@@ -156,12 +156,12 @@ const ViewPostPage = () => {
           spacing={1}
           style={!medium ? { paddingRight: "5%", marginBottom: 20 } : {marginBottom: 20}}
         >
-          <Grid item xs={6}>
+          <Grid item xs={2}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
               {petName}
             </Typography>
           </Grid>
-          <Grid item xs={6} container justifyContent="flex-end">
+          <Grid item xs={10} container justifyContent="flex-end">
             {!isAdmin ? (<div> 
               <Button
                   size={small ? "small" : "medium"}
