@@ -8,6 +8,7 @@ const ArrowBackButton = ({ onClick }) => {
       onClick={onClick}
       aria-label="back"
       style={{ backgroundColor: '#D9D9D9', padding: 5 }}
+      size="large"
     >
       <ArrowBackIcon style={{ color: 'black' }} />
     </IconButton>
