@@ -38,7 +38,7 @@ const Login = () => {
           </div>
           <div className="login-form-component">
             <Button type="submit" variant="contained" color="primary">
-              Login
+              Log In
             </Button>
           </div>
         </form>

@@ -53,7 +53,7 @@ const Navbar = () => {
               <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
             </>
           ) : (
-            <Button variant="outlined" href="login">Login</Button>
+            <Button variant="outlined" href="login">Log In</Button>
           )}
         </div>
       </div>
