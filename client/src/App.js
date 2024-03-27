@@ -1,4 +1,5 @@
 import React from "react";
+import { useMobile } from "./MobileContext";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 
 import "./App.css";
