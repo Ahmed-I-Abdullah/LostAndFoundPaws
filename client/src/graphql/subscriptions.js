@@ -1,6 +1,393 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreatePostReport = /* GraphQL */ `
+  subscription OnCreatePostReport(
+    $filter: ModelSubscriptionPostReportFilterInput
+    $owner: String
+  ) {
+    onCreatePostReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      post {
+        id
+        name
+        status
+        gender
+        summary
+        description
+        resolved
+        species
+        images
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      postID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdatePostReport = /* GraphQL */ `
+  subscription OnUpdatePostReport(
+    $filter: ModelSubscriptionPostReportFilterInput
+    $owner: String
+  ) {
+    onUpdatePostReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      post {
+        id
+        name
+        status
+        gender
+        summary
+        description
+        resolved
+        species
+        images
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      postID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeletePostReport = /* GraphQL */ `
+  subscription OnDeletePostReport(
+    $filter: ModelSubscriptionPostReportFilterInput
+    $owner: String
+  ) {
+    onDeletePostReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      post {
+        id
+        name
+        status
+        gender
+        summary
+        description
+        resolved
+        species
+        images
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      postID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateCommentReport = /* GraphQL */ `
+  subscription OnCreateCommentReport(
+    $filter: ModelSubscriptionCommentReportFilterInput
+    $owner: String
+  ) {
+    onCreateCommentReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      comment {
+        id
+        content
+        postID
+        parentCommentID
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      commentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateCommentReport = /* GraphQL */ `
+  subscription OnUpdateCommentReport(
+    $filter: ModelSubscriptionCommentReportFilterInput
+    $owner: String
+  ) {
+    onUpdateCommentReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      comment {
+        id
+        content
+        postID
+        parentCommentID
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      commentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteCommentReport = /* GraphQL */ `
+  subscription OnDeleteCommentReport(
+    $filter: ModelSubscriptionCommentReportFilterInput
+    $owner: String
+  ) {
+    onDeleteCommentReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      comment {
+        id
+        content
+        postID
+        parentCommentID
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      commentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onCreateSightingReport = /* GraphQL */ `
+  subscription OnCreateSightingReport(
+    $filter: ModelSubscriptionSightingReportFilterInput
+    $owner: String
+  ) {
+    onCreateSightingReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      sighting {
+        id
+        image
+        reporterType
+        userID
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      sightingID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onUpdateSightingReport = /* GraphQL */ `
+  subscription OnUpdateSightingReport(
+    $filter: ModelSubscriptionSightingReportFilterInput
+    $owner: String
+  ) {
+    onUpdateSightingReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      sighting {
+        id
+        image
+        reporterType
+        userID
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      sightingID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const onDeleteSightingReport = /* GraphQL */ `
+  subscription OnDeleteSightingReport(
+    $filter: ModelSubscriptionSightingReportFilterInput
+    $owner: String
+  ) {
+    onDeleteSightingReport(filter: $filter, owner: $owner) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      sighting {
+        id
+        image
+        reporterType
+        userID
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      sightingID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser(
     $filter: ModelSubscriptionUserFilterInput
@@ -540,393 +927,6 @@ export const onDeleteSighting = /* GraphQL */ `
         nextToken
         __typename
       }
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onCreatePostReport = /* GraphQL */ `
-  subscription OnCreatePostReport(
-    $filter: ModelSubscriptionPostReportFilterInput
-    $owner: String
-  ) {
-    onCreatePostReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      post {
-        id
-        name
-        status
-        gender
-        summary
-        description
-        resolved
-        species
-        images
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      postID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdatePostReport = /* GraphQL */ `
-  subscription OnUpdatePostReport(
-    $filter: ModelSubscriptionPostReportFilterInput
-    $owner: String
-  ) {
-    onUpdatePostReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      post {
-        id
-        name
-        status
-        gender
-        summary
-        description
-        resolved
-        species
-        images
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      postID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeletePostReport = /* GraphQL */ `
-  subscription OnDeletePostReport(
-    $filter: ModelSubscriptionPostReportFilterInput
-    $owner: String
-  ) {
-    onDeletePostReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      post {
-        id
-        name
-        status
-        gender
-        summary
-        description
-        resolved
-        species
-        images
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      postID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onCreateCommentReport = /* GraphQL */ `
-  subscription OnCreateCommentReport(
-    $filter: ModelSubscriptionCommentReportFilterInput
-    $owner: String
-  ) {
-    onCreateCommentReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      comment {
-        id
-        content
-        postID
-        parentCommentID
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      commentID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateCommentReport = /* GraphQL */ `
-  subscription OnUpdateCommentReport(
-    $filter: ModelSubscriptionCommentReportFilterInput
-    $owner: String
-  ) {
-    onUpdateCommentReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      comment {
-        id
-        content
-        postID
-        parentCommentID
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      commentID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteCommentReport = /* GraphQL */ `
-  subscription OnDeleteCommentReport(
-    $filter: ModelSubscriptionCommentReportFilterInput
-    $owner: String
-  ) {
-    onDeleteCommentReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      comment {
-        id
-        content
-        postID
-        parentCommentID
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      commentID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onCreateSightingReport = /* GraphQL */ `
-  subscription OnCreateSightingReport(
-    $filter: ModelSubscriptionSightingReportFilterInput
-    $owner: String
-  ) {
-    onCreateSightingReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      sighting {
-        id
-        image
-        reporterType
-        userID
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      sightingID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onUpdateSightingReport = /* GraphQL */ `
-  subscription OnUpdateSightingReport(
-    $filter: ModelSubscriptionSightingReportFilterInput
-    $owner: String
-  ) {
-    onUpdateSightingReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      sighting {
-        id
-        image
-        reporterType
-        userID
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      sightingID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const onDeleteSightingReport = /* GraphQL */ `
-  subscription OnDeleteSightingReport(
-    $filter: ModelSubscriptionSightingReportFilterInput
-    $owner: String
-  ) {
-    onDeleteSightingReport(filter: $filter, owner: $owner) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      sighting {
-        id
-        image
-        reporterType
-        userID
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      sightingID
       createdAt
       updatedAt
       owner

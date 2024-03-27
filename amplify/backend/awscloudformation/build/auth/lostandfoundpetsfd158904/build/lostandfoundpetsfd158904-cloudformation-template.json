@@ -118,9 +118,6 @@
     "dependsOn": {
       "Type": "CommaDelimitedList"
     },
-    "thirdPartyAuth": {
-      "Type": "String"
-    },
     "userPoolGroups": {
       "Type": "String"
     },
@@ -133,9 +130,6 @@
     "hostedUI": {
       "Type": "String"
     },
-    "authProviders": {
-      "Type": "CommaDelimitedList"
-    },
     "parentStack": {
       "Type": "String"
     },
@@ -144,6 +138,12 @@
     },
     "authTriggerConnections": {
       "Type": "CommaDelimitedList"
+    },
+    "authProviders": {
+      "Type": "CommaDelimitedList"
+    },
+    "thirdPartyAuth": {
+      "Type": "String"
     }
   },
   "Conditions": {

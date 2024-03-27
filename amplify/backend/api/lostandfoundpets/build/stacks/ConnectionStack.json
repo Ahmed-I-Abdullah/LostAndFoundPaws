@@ -119,6 +119,36 @@
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
       }
     },
+    "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "UserpostReportsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/User.postReports.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
     "UserPostReportsDataResolverFnUserPostReportsDataResolverFnAppSyncFunction9DDD07D3": {
       "Type": "AWS::AppSync::FunctionConfiguration",
       "Properties": {
@@ -177,7 +207,7 @@
           "Functions": [
             {
               "Fn::GetAtt": [
-                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
                 "FunctionId"
               ]
             },
@@ -355,7 +385,7 @@
           "Functions": [
             {
               "Fn::GetAtt": [
-                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
                 "FunctionId"
               ]
             },
@@ -533,7 +563,7 @@
           "Functions": [
             {
               "Fn::GetAtt": [
-                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
                 "FunctionId"
               ]
             },
@@ -711,7 +741,7 @@
           "Functions": [
             {
               "Fn::GetAtt": [
-                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
                 "FunctionId"
               ]
             },
@@ -889,7 +919,7 @@
           "Functions": [
             {
               "Fn::GetAtt": [
-                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
                 "FunctionId"
               ]
             },
@@ -918,6 +948,51 @@
           ]
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SightingsightingReportsauth0FunctionSightingsightingReportsauth0FunctionAppSyncFunction575CD57C": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "SightingsightingReportsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Sighting.sightingReports.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Sighting.sightingReports.auth.1.res.vtl"
+            ]
+          ]
+        }
       }
     },
     "SightingSightingReportsDataResolverFnSightingSightingReportsDataResolverFnAppSyncFunctionB88CB455": {
@@ -978,7 +1053,7 @@
           "Functions": [
             {
               "Fn::GetAtt": [
-                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "SightingsightingReportsauth0FunctionSightingsightingReportsauth0FunctionAppSyncFunction575CD57C",
                 "FunctionId"
               ]
             },

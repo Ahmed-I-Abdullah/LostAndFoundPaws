@@ -210,7 +210,7 @@
             ]
           },
           "S3DeploymentBucket": "amplify-lostandfoundpets-staging-234006-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/1b99dcca8c13072da867393a029289621faeacbc",
+          "S3DeploymentRootKey": "amplify-appsync-files/97ec4cf253f5a2d6deab54c9fcf87e9de0631cdb",
           "env": "staging"
         }
       }
@@ -221,7 +221,7 @@
         "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/auth/lostandfoundpetsfd158904-cloudformation-template.json",
         "Parameters": {
           "identityPoolName": "lostandfoundpetsfd158904_identitypool_fd158904",
-          "allowUnauthenticatedIdentities": false,
+          "allowUnauthenticatedIdentities": true,
           "resourceNameTruncated": "lostanfd158904",
           "userPoolName": "lostandfoundpetsfd158904_userpool_fd158904",
           "autoVerifiedAttributes": "email",
@@ -265,17 +265,17 @@
           },
           "breakCircularDependency": true,
           "dependsOn": "[object Object]",
-          "thirdPartyAuth": false,
           "userPoolGroups": true,
           "adminQueries": false,
           "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
           "hostedUI": false,
-          "authProviders": "",
           "parentStack": {
             "Ref": "AWS::StackId"
           },
           "permissions": "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}",
           "authTriggerConnections": "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"lostandfoundpetsfd158904PostConfirmation\"}",
+          "authProviders": "",
+          "thirdPartyAuth": false,
           "env": "staging"
         }
       }
