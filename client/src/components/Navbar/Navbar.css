@@ -54,12 +54,6 @@
   align-items: center;
 }
 
-.userMenuSection {
-  display: flex;
-  align-items: center;
-  cursor: 'pointer';
-}
-
 .username {
   margin-right: 10px;
   font-weight: bold;
