@@ -69,13 +69,7 @@ const CreatePostForm = () => {
           gender: Yup.string().required("Gender is required"),
           summary: Yup.string().required("Summary is required"),
           description: Yup.string().required("Description is required"),
-          location: Yup.object().shape({
-            address: Yup.string().required("Last known location is required"),
-            coordinates: Yup.object().shape({
-              latitude: Yup.number().required("Latitude is required"),
-              longitude: Yup.number().required("Longitude is required"),
-            }),
-          }),
+          location: Yup.object().required("Last known location is required"),
           species: Yup.string().required("Species is required"),
           phoneNumber: Yup.string().optional(),
           email: Yup.string()
