@@ -2,15 +2,23 @@ import React, { useState } from 'react';
 import './ReportPopup.css';
 import Button from '@mui/material/Button';
 
-function ReportPost({ onClose, onReport }) {
+function ReportPost({ onClose, onReport, contentType, itemId }) {
   const [reason, setReason] = useState('');
   const [description, setDescription] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Send request to amplify here
-    onReport(reason, description);
-    onClose(); // close the modal after reporting.
+    // Construct a report object with all necessary information
+    const reportDetails = {
+      reason,
+      description,
+      contentType,
+      itemId,     
+    };
+
+    // Send request to Amplify here
+    onReport(reportDetails);
+    onClose(); // Close the modal after reporting.
   };
 
   return (
@@ -18,7 +26,7 @@ function ReportPost({ onClose, onReport }) {
       <div className="report-post-modal">
         <form onSubmit={handleSubmit} className="report-post-form">
           <div className="report-post-header">
-            <h2>Please select a reason for reporting this post</h2>
+            <h3>Please select a reason for reporting this {contentType}</h3>
           </div>
           <select
             value={reason}
@@ -35,8 +43,8 @@ function ReportPost({ onClose, onReport }) {
             placeholder="Description (optional)"
           ></textarea>
           <div className="report-post-actions">
-            <Button variant="outlined" onClick={onClose} sx={{whiteSpace: 'nowrap'}}>Cancel</Button>
-            <Button variant="contained" type="submit" sx={{whiteSpace: 'nowrap'}}>Report</Button>
+            <Button variant="outlined" onClick={onClose}>Cancel</Button>
+            <Button variant="contained" type="submit">Report</Button>
           </div>
         </form>
       </div>
