@@ -38,16 +38,6 @@ const viewOptions = [
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
 
-  const handleReport = (reason, description) => {
-    console.log(
-      "Report submitted with reason: ",
-      reason,
-      " and description: ",
-      description
-    );
-    // Here you would typically handle the report,
-    // e.g., sending it to a server or an API endpoint.
-  };
   const [selectedType, setSelectedType] = useState("All");
   const [selectedView, setSelectedView] = useState("List View");
 

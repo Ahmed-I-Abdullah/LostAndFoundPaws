@@ -5,6 +5,7 @@ import './NavbarBottom.css';
 
 const NavbarBottom = () => {
   const { isMobile } = useMobile();
+  const isAdmin = false;
 
   if (!isMobile) {
     return null;
@@ -12,8 +13,13 @@ const NavbarBottom = () => {
 
   return (
     <div className="navbarBottom">
-      <Button variant="outlined" href="createSighting">Report Sighting</Button>
-      <Button variant="contained" href="createPost">Report Pet</Button>
+      {isAdmin ? 
+      (<Button variant="contained" href="createSighting">View Reportings</Button> ) :
+      (<div> 
+        <Button variant="outlined" href="createSighting">Report Sighting</Button>
+        <Button variant="contained" href="createPost">Report Pet</Button>
+        </div>)
+      }
     </div>
   );
 };

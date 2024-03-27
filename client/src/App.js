@@ -8,6 +8,7 @@ import HomePageTemp from "./pages/HomePage/HomePage";
 import CreatePostForm from "./pages/CreatePost/CreatePost";
 import MyPostsAndComments from "./pages/MyPostsAndComments/MyPostsAndComments";
 import ViewPostPage from "./pages/ViewPost/ViewPostPage";
+import ViewReportings from "./pages/ViewReportings/ViewReportings";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               element={<MyPostsAndComments />}
             />
             <Route path="/viewPost" element={<ViewPostPage />} />
+            <Route path="/viewReportings" element={<ViewReportings />} />
           </Routes>
         </div>
         <NavbarBottom />
