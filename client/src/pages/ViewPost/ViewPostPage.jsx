@@ -7,7 +7,7 @@ import {
   useTheme,
   useMediaQuery,
   IconButton,
-  Divider
+  Divider,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Carousel from "react-spring-3d-carousel";
@@ -22,12 +22,12 @@ import ReportPost from "../../components/ReportPopup/ReportPopup";
 import MapWithPin from "../../components/MapWithPin/MapWithPin";
 import { v4 as uuidv4 } from "uuid";
 import Comments from "../../components/Comments/Comments";
-import DeleteIcon from '@mui/icons-material/Delete';
-import CheckIcon from '@mui/icons-material/Check';
-import EditIcon from '@mui/icons-material/Edit';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
-import { useMobile } from '../../MobileContext';
+import { useMobile } from "../../MobileContext";
 
 /* MOCK DATA START */
 const petName = "Nala";
@@ -50,7 +50,7 @@ const isAdmin = true;
 
 const SectionTitle = ({ title }) => {
   return (
-    <Typography variant="h2" fontWeight="bold" style={{marginBottom: 4}}>
+    <Typography variant="h2" fontWeight="bold" style={{ marginBottom: 4 }}>
       {title}
     </Typography>
   );
@@ -139,22 +139,25 @@ const ViewPostPage = () => {
     return (
       <>
         <SectionTitle title="Comments" />
-          <Comments />
+        <Comments />
       </>
     );
   };
 
   return (
     <Container maxWidth="xl" style={{ marginTop: "20px" }}>
-      <Grid container 
-      >
+      <Grid container>
         <Grid
           container
           item
           xs={12}
           md={8}
           spacing={1}
-          style={!medium ? { paddingRight: "5%", marginBottom: 20 } : {marginBottom: 20}}
+          style={
+            !medium
+              ? { paddingRight: "5%", marginBottom: 20 }
+              : { marginBottom: 20 }
+          }
         >
           <Grid item xs={2}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
@@ -162,72 +165,92 @@ const ViewPostPage = () => {
             </Typography>
           </Grid>
           <Grid item xs={10} container justifyContent="flex-end">
-            {!isAdmin ? (<div> 
-              <Button
+            {!isAdmin ? (
+              <div>
+                <Button
                   size={small ? "small" : "medium"}
                   variant="contained"
                   sx={{
                     backgroundColor: theme.palette.custom.greyBkg.tag,
                     borderRadius: 2,
                     color: "#000",
-                    marginRight: '8px'
+                    marginRight: "8px",
                   }}
                   startIcon={<FlagIcon />}
                   onClick={() => setIsReportModalOpen(true)}
                 >
                   Report
                 </Button>
-            </div>) : (
-              <div> 
-                {isMobile ? (<div>
-                  <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                    {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
-                    <MoreHorizIcon sx={{ fontSize: '40px' }} />
+              </div>
+            ) : (
+              <div>
+                {isMobile ? (
+                  <div>
+                    <div
+                      className="userMenuSection"
+                      onClick={handleMenu}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {!isMobile && (
+                        <span className="username">{"fakeUsername"}</span>
+                      )}
+                      <MoreHorizIcon sx={{ fontSize: "40px" }} />
+                    </div>
+                    <ActionsMenu
+                      anchorEl={anchorEl}
+                      open={open}
+                      handleClose={handleClose}
+                    />
                   </div>
-                  <ActionsMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
-
-                </div>) : ( <div>
-                  <Button
-                    size={small ? "small" : "medium"}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: '8px'
-                    }}
-                    startIcon={<CheckIcon />}
-                  >
-                    Mark as resolved
-                  </Button>
-                  <Button
-                    size={small ? "small" : "medium"}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: '8px'
-                    }}
-                    startIcon={<EditIcon />}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size={small ? "small" : "medium"}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: '8px'
-                    }}
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete
-                  </Button>
-                </div>)}
-            </div>)}
+                ) : (
+                  <div>
+                    <Button
+                      size={small ? "small" : "medium"}
+                      variant="contained"
+                      sx={{
+                        backgroundColor: theme.palette.custom.greyBkg.tag,
+                        borderRadius: 2,
+                        color: "#000",
+                        marginRight: "8px",
+                      }}
+                      startIcon={<CheckIcon />}
+                    >
+                      Mark as resolved
+                    </Button>
+                    <Button
+                      size={small ? "small" : "medium"}
+                      variant="contained"
+                      sx={{
+                        backgroundColor: theme.palette.custom.greyBkg.tag,
+                        borderRadius: 2,
+                        color: "#000",
+                        marginRight: "8px",
+                      }}
+                      startIcon={<EditIcon />}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size={small ? "small" : "medium"}
+                      variant="contained"
+                      sx={{
+                        backgroundColor: theme.palette.custom.greyBkg.tag,
+                        borderRadius: 2,
+                        color: "#000",
+                        marginRight: "8px",
+                      }}
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </Grid>
 
           <Grid item xs={12}>
@@ -257,7 +280,7 @@ const ViewPostPage = () => {
                 className="carousel-container"
                 style={{
                   height: extraSmall ? "100px" : small ? "250px" : "400px",
-                  marginBottom: medium ? 40 : 0
+                  marginBottom: medium ? 40 : 0,
                 }}
               >
                 <Carousel
@@ -356,7 +379,7 @@ const ViewPostPage = () => {
       {isReportModalOpen && (
         <ReportPost
           contentType="post"
-          itemId={"post.id"} 
+          itemId={"post.id"}
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />
