@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Grid,
-  Typography,
-  Button,
-  useTheme,
-} from "@mui/material";
+import { Container, Grid, Typography, Button, useTheme } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { rgba } from "polished";
@@ -45,8 +39,8 @@ const CreatePostForm = () => {
 
   return (
     <Container>
-      <div className="header">
-        <Typography variant="h2" fontWeight="bold" gutterBottom> 
+      <div className="header-title">
+        <Typography variant="h1" fontWeight="bold" gutterBottom>
           Create Post
         </Typography>
         <Typography variant="subtitle1">
@@ -96,7 +90,7 @@ const CreatePostForm = () => {
                     onToggleCallback={(index) =>
                       setFieldValue("type", postTypeOptions[index].label)
                     }
-                    containerWidth={'100%'}
+                    containerWidth={"100%"}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -106,7 +100,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.name && touched.name}
-                    helperText={touched.name ? errors.name : ''}
+                    helperText={touched.name ? errors.name : ""}
                     value={values.name}
                     onChange={(event) => {
                       setFieldValue("name", event.target.value);
@@ -119,7 +113,7 @@ const CreatePostForm = () => {
                     options={genderOptions}
                     className="formControl"
                     error={errors.gender && touched.gender}
-                    helperText={touched.gender ? errors.gender : ''}
+                    helperText={touched.gender ? errors.gender : ""}
                     value={values.gender}
                     onChange={(event) => {
                       setFieldValue("gender", event.target.value);
@@ -133,7 +127,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.summary && touched.summary}
-                    helperText={touched.summary ? errors.summary : ''}
+                    helperText={touched.summary ? errors.summary : ""}
                     value={values.summary}
                     onChange={(event) => {
                       setFieldValue("summary", event.target.value);
@@ -149,7 +143,7 @@ const CreatePostForm = () => {
                     rows={4}
                     className="textField"
                     error={errors.description && touched.description}
-                    helperText={touched.description ? errors.description : ''}
+                    helperText={touched.description ? errors.description : ""}
                     value={values.description}
                     onChange={(event) => {
                       setFieldValue("description", event.target.value);
@@ -165,7 +159,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.location && touched.location}
-                    helperText={touched.location ? errors.location : ''}
+                    helperText={touched.location ? errors.location : ""}
                     value={values.location}
                     onChange={(event) => {
                       setFieldValue("location", event.target.value);
@@ -178,7 +172,7 @@ const CreatePostForm = () => {
                     options={speciesOptions}
                     className="formControl"
                     error={errors.species && touched.species}
-                    helperText={touched.species ? errors.species : ''}
+                    helperText={touched.species ? errors.species : ""}
                     value={values.species}
                     onChange={(event) => {
                       setFieldValue("species", event.target.value);
@@ -200,7 +194,7 @@ const CreatePostForm = () => {
                       setFieldValue("images", updatedImages);
                     }}
                     error={errors.images && touched.images}
-                    helperText={touched.images ? errors.images : ''}
+                    helperText={touched.images ? errors.images : ""}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -210,7 +204,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.phoneNumber && touched.phoneNumber}
-                    helperText={touched.phoneNumber ? errors.phoneNumber : ''}
+                    helperText={touched.phoneNumber ? errors.phoneNumber : ""}
                     value={values.phoneNumber}
                     onChange={(event) => {
                       setFieldValue("phoneNumber", event.target.value);
@@ -224,7 +218,7 @@ const CreatePostForm = () => {
                     variant="outlined"
                     className="textField"
                     error={errors.email && touched.email}
-                    helperText={touched.email ? errors.email : ''}
+                    helperText={touched.email ? errors.email : ""}
                     value={values.email}
                     onChange={(event) => {
                       setFieldValue("email", event.target.value);

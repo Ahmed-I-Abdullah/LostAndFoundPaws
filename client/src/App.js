@@ -1,6 +1,11 @@
 import React from "react";
 import { useMobile } from "./MobileContext";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
@@ -12,7 +17,8 @@ import ViewPostPage from "./pages/ViewPost/ViewPostPage";
 import ViewReportings from "./pages/ViewReportings/ViewReportings";
 import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPassword";
 import ResetPasswordPage from "./pages/ResetPassword/ResetPassword";
-import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccount"
+import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccount";
+import CreateSightingForm from "./pages/CreateSighting/CreateSighting";
 
 function App() {
   return (
@@ -24,7 +30,11 @@ function App() {
 
 function AppContent() {
   const location = useLocation();
-  const noNavbarRoutes = ["/resetPassword", "/forgotPassword", "/verifyAccount"];
+  const noNavbarRoutes = [
+    "/resetPassword",
+    "/forgotPassword",
+    "/verifyAccount",
+  ];
 
   const hideNavbar = noNavbarRoutes.some((route) =>
     location.pathname.includes(route)
@@ -43,6 +53,7 @@ function AppContent() {
           <Route path="/resetPassword" element={<ResetPasswordPage />} />
           <Route path="/verifyAccount" element={<VerifyAccountPage />} />
           <Route path="/viewReportings" element={<ViewReportings />} />
+          <Route path="/createSighting" element={<CreateSightingForm />} />
         </Routes>
       </div>
       {!hideNavbar && <NavbarBottom />}
