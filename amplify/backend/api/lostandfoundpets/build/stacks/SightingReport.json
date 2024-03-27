@@ -52,10 +52,16 @@
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId": {
       "Type": "String"
     },
+    "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId": {
+      "Type": "String"
+    },
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId": {
       "Type": "String"
     },
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerylistUserspreAuth0FunctionQuerylistUserspreAuth0FunctionAppSyncFunction46E5D13AFunctionId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
       "Type": "String"
     },
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId": {
@@ -70,7 +76,13 @@
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId": {
       "Type": "String"
     },
+    "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId": {
+      "Type": "String"
+    },
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
       "Type": "String"
     }
   },
@@ -516,6 +528,9 @@
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId"
             },
             {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId"
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -611,6 +626,9 @@
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerylistUserspreAuth0FunctionQuerylistUserspreAuth0FunctionAppSyncFunction46E5D13AFunctionId"
             },
             {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId"
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -638,6 +656,36 @@
           ]
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MutationcreateSightingReportauth0FunctionMutationcreateSightingReportauth0FunctionAppSyncFunction743EF3EB": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "MutationcreateSightingReportauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.createSightingReport.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
       }
     },
     "MutationCreateSightingReportDataResolverFnMutationCreateSightingReportDataResolverFnAppSyncFunction3C420664": {
@@ -709,6 +757,12 @@
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserpreAuth0FunctionMutationcreateUserpreAuth0FunctionAppSyncFunction28412FD4FunctionId"
             },
             {
+              "Fn::GetAtt": [
+                "MutationcreateSightingReportauth0FunctionMutationcreateSightingReportauth0FunctionAppSyncFunction743EF3EB",
+                "FunctionId"
+              ]
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -737,6 +791,57 @@
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
       }
+    },
+    "MutationupdateSightingReportauth0FunctionMutationupdateSightingReportauth0FunctionAppSyncFunction1F296663": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "SightingReportDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationupdateSightingReportauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.updateSightingReport.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.updateSightingReport.auth.1.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "SightingReportDataSource"
+      ]
     },
     "MutationUpdateSightingReportDataResolverFnMutationUpdateSightingReportDataResolverFnAppSyncFunction3CD07C8A": {
       "Type": "AWS::AppSync::FunctionConfiguration",
@@ -807,6 +912,12 @@
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserpreAuth0FunctionMutationcreateUserpreAuth0FunctionAppSyncFunction28412FD4FunctionId"
             },
             {
+              "Fn::GetAtt": [
+                "MutationupdateSightingReportauth0FunctionMutationupdateSightingReportauth0FunctionAppSyncFunction1F296663",
+                "FunctionId"
+              ]
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -835,6 +946,57 @@
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
       }
+    },
+    "MutationdeleteSightingReportauth0FunctionMutationdeleteSightingReportauth0FunctionAppSyncFunction8604CF78": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "SightingReportDataSource",
+            "Name"
+          ]
+        },
+        "Name": "MutationdeleteSightingReportauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.deleteSightingReport.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.deleteSightingReport.auth.1.res.vtl"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "SightingReportDataSource"
+      ]
     },
     "MutationDeleteSightingReportDataResolverFnMutationDeleteSightingReportDataResolverFnAppSyncFunctionA8E252C2": {
       "Type": "AWS::AppSync::FunctionConfiguration",
@@ -902,6 +1064,12 @@
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId"
             },
             {
+              "Fn::GetAtt": [
+                "MutationdeleteSightingReportauth0FunctionMutationdeleteSightingReportauth0FunctionAppSyncFunction8604CF78",
+                "FunctionId"
+              ]
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -943,6 +1111,9 @@
         "PipelineConfig": {
           "Functions": [
             {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId"
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -977,6 +1148,9 @@
         "PipelineConfig": {
           "Functions": [
             {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId"
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -1010,6 +1184,9 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId"
+            },
             {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
@@ -1095,6 +1272,9 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId"
+            },
             {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
@@ -1188,6 +1368,9 @@
         "PipelineConfig": {
           "Functions": [
             {
+              "Ref": "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId"
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId"
             },
             {
@@ -1211,6 +1394,37 @@
                 "Ref": "SightingReportTable"
               },
               "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SightingReportownerResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "owner",
+        "TypeName": "SightingReport",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"SightingReport\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"owner\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },

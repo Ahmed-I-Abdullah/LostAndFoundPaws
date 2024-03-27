@@ -6,7 +6,7 @@ import * as mutations from '../../../../../client/src/graphql/mutations.js';
 import readlineSync from 'readline-sync';
 
 Amplify.configure(awsmobile);
-const client = generateClient({authMode: 'userPool'});
+const client = generateClient({authMode: 'apiKey'});
 
 
 async function signupAndVerifyUsers() {
@@ -20,76 +20,76 @@ async function signupAndVerifyUsers() {
   while (password.length<8) {
     password = readlineSync.question("Enter a valid password (at least 8 characters): ", { hideEchoBack: true });
   }
-  // try {
-  //   // Attempt to sign up the user
-  //   const signUpResponse = await signUp({
-  //     username: username,
-  //     password: password,
-  //     options: {
-  //       userAttributes: {
-  //         email: email,
-  //         'custom:role': role // This is used for the post confirmation trigger to add the user to a cognito group
-  //       }
-  //     }
-  //   });
+  try {
+    // Attempt to sign up the user
+    const signUpResponse = await signUp({
+      username: username,
+      password: password,
+      options: {
+        userAttributes: {
+          email: email,
+          'custom:role': role // This is used for the post confirmation trigger to add the user to a cognito group
+        }
+      }
+    });
     
-  //   //Provide User with response
-  //   console.log("Signup response is: ", signUpResponse);
-  //   console.log(`User signed up: ${username}`);
-  //   console.log(`Please check your email (${email}) to verify your account.`);
+    //Provide User with response
+    console.log("Signup response is: ", signUpResponse);
+    console.log(`User signed up: ${username}`);
+    console.log(`Please check your email (${email}) to verify your account.`);
 
-  //   // Prompt user to input verification code
-  //   const verificationCode = readlineSync.question("Please enter the verification code sent to your email:");
+    // Prompt user to input verification code
+    const verificationCode = readlineSync.question("Please enter the verification code sent to your email:");
 
-  //   console.log("confirmation code is", verificationCode);
+    console.log("confirmation code is", verificationCode);
 
-  //   // Confirm the signup with the verification code
-  //   const confirmSignUpResponse = await confirmSignUp({ username: username, confirmationCode: verificationCode });
+    // Confirm the signup with the verification code
+    const confirmSignUpResponse = await confirmSignUp({ username: username, confirmationCode: verificationCode });
 
-  //   console.log("Confirm signup response is: ", confirmSignUpResponse);
-  //   console.log(`User ${username} verified.`);
-  // } catch (error) {
-  //   // If user already exists, resend confirmation code
-  //   console.log("Error: ", error.name)
-  //   if (error.name === 'UsernameExistsException') {
-  //     console.log(`User ${username} is already signed up. Resending confirmation code.`);
-  //     try {
-  //       const resendResponse = await resendSignUpCode({ email: email });
-  //       console.log("Resend response is: ", resendResponse)
-  //       console.log(`Confirmation code resent to ${email}.`);
+    console.log("Confirm signup response is: ", confirmSignUpResponse);
+    console.log(`User ${username} verified.`);
+  } catch (error) {
+    // If user already exists, resend confirmation code
+    console.log("Error: ", error.name)
+    if (error.name === 'UsernameExistsException') {
+      console.log(`User ${username} is already signed up. Resending confirmation code.`);
+      try {
+        const resendResponse = await resendSignUpCode({ email: email });
+        console.log("Resend response is: ", resendResponse)
+        console.log(`Confirmation code resent to ${email}.`);
 
-  //       // Prompt user for confirmation
-  //       const confirmResend = readlineSync.question("Do you want to enter the confirmation code now? (yes/no): ");
-  //       if (confirmResend.toLowerCase() === 'yes') {
-  //         // Prompt user to input verification code
-  //         const verificationCode = readlineSync.question("Please enter the verification code sent to your email:");
+        // Prompt user for confirmation
+        const confirmResend = readlineSync.question("Do you want to enter the confirmation code now? (yes/no): ");
+        if (confirmResend.toLowerCase() === 'yes') {
+          // Prompt user to input verification code
+          const verificationCode = readlineSync.question("Please enter the verification code sent to your email:");
 
-  //         // Confirm the signup with the verification code
-  //         const confirmSignUpResponse = await confirmSignUp({ username: username, confirmationCode: verificationCode });
+          // Confirm the signup with the verification code
+          const confirmSignUpResponse = await confirmSignUp({ username: username, confirmationCode: verificationCode });
 
-  //         console.log("Confirm signup response is: ", confirmSignUpResponse);
-  //         console.log(`User ${username} verified.`);
-  //       }
-  //     } catch (resendError) {
-  //       console.error(`Error resending confirmation code to ${email}:`, resendError);
-  //     }
-  //   } else {
-  //     console.error(`Error signing up and verifying user: ${username}`, error);
-  //   }
-  // }
+          console.log("Confirm signup response is: ", confirmSignUpResponse);
+          console.log(`User ${username} verified.`);
+        }
+      } catch (resendError) {
+        console.error(`Error resending confirmation code to ${email}:`, resendError);
+      }
+    } else {
+      console.error(`Error signing up and verifying user: ${username}`, error);
+    }
+  }
   
   //API
   try {
-    // console.log("Signing in cognito....");
-    // const signInResponse = await signIn({
-    //   username: username,
-    //   password: password
-    // });
+    console.log("Signing in cognito....");
+    const signInResponse = await signIn({
+      username: username,
+      password: password
+    });
 
-    // console.log("Signin response is: ", signInResponse);
-    // console.log(`Signed in Cognito user: ${username}`);
+    console.log("Signin response is: ", signInResponse);
+    console.log(`Signed in Cognito user: ${username}`);
 
-    // console.log("Creating Application Admin User....");
+    console.log("Creating Application Admin User....");
     
     const result = await client.graphql({
       query: mutations.createUser.replaceAll("__typename", ""),

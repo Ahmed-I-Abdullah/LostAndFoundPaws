@@ -1,4 +1,4 @@
-type User {
+type User @aws_api_key @aws_cognito_user_pools {
   id: ID!
   username: String!
   role: Role!
@@ -13,9 +13,10 @@ type User {
   sightingReports(filter: ModelSightingReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSightingReportConnection
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
   commentReports(filter: ModelCommentReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentReportConnection
+  owner: String
 }
 
-type Post {
+type Post @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   status: PetStatus!
@@ -32,9 +33,10 @@ type Post {
   postReports(filter: ModelPostReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  owner: String
 }
 
-type Comment {
+type Comment @aws_api_key @aws_cognito_user_pools {
   id: ID!
   content: String!
   postID: ID!
@@ -46,20 +48,22 @@ type Comment {
   commentReports(filter: ModelCommentReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  owner: String
 }
 
-type Sighting {
+type Sighting @aws_api_key @aws_cognito_user_pools {
   id: ID!
-  image: String
-  location: Location
+  image: String!
+  location: Location!
   reporterType: ReporterType!
   user: User
-  userID: ID!
+  userID: ID
   email: String
   phone: String
   sightingReports(filter: ModelSightingReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSightingReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  owner: String
 }
 
 type PostReport {
@@ -72,6 +76,7 @@ type PostReport {
   postID: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  owner: String
 }
 
 type CommentReport {
@@ -84,6 +89,7 @@ type CommentReport {
   commentID: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  owner: String
 }
 
 type SightingReport {
@@ -96,9 +102,10 @@ type SightingReport {
   sightingID: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  owner: String
 }
 
-type Location {
+type Location @aws_api_key @aws_cognito_user_pools {
   latitude: Float!
   longitude: Float!
   address: String
@@ -287,7 +294,7 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelUserConnection {
+type ModelUserConnection @aws_api_key @aws_cognito_user_pools {
   items: [User]!
   nextToken: String
 }
@@ -312,31 +319,31 @@ input ModelUserFilterInput {
 }
 
 type Query {
-  getUser(id: ID!): User
-  listUsers(id: ID, filter: ModelUserFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserConnection
-  getPost(id: ID!): Post
-  listPosts(id: ID, filter: ModelPostFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostConnection
-  getComment(id: ID!): Comment
-  listComments(id: ID, filter: ModelCommentFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCommentConnection
-  getSighting(id: ID!): Sighting
-  listSightings(id: ID, filter: ModelSightingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelSightingConnection
   getPostReport(id: ID!): PostReport
   listPostReports(id: ID, filter: ModelPostReportFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostReportConnection
   getCommentReport(id: ID!): CommentReport
   listCommentReports(id: ID, filter: ModelCommentReportFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCommentReportConnection
   getSightingReport(id: ID!): SightingReport
   listSightingReports(id: ID, filter: ModelSightingReportFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelSightingReportConnection
-  postsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection
-  commentsByPost(postID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection
-  repliesByParentComment(parentCommentID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection
-  commentsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection
-  sightingsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelSightingFilterInput, limit: Int, nextToken: String): ModelSightingConnection
   postReportsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelPostReportFilterInput, limit: Int, nextToken: String): ModelPostReportConnection
   reportsByPost(postID: ID!, sortDirection: ModelSortDirection, filter: ModelPostReportFilterInput, limit: Int, nextToken: String): ModelPostReportConnection
   commentReportsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentReportFilterInput, limit: Int, nextToken: String): ModelCommentReportConnection
   reportsByComment(commentID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentReportFilterInput, limit: Int, nextToken: String): ModelCommentReportConnection
   sightingReportsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelSightingReportFilterInput, limit: Int, nextToken: String): ModelSightingReportConnection
   reportsBySighting(sightingID: ID!, sortDirection: ModelSortDirection, filter: ModelSightingReportFilterInput, limit: Int, nextToken: String): ModelSightingReportConnection
+  getUser(id: ID!): User @aws_api_key @aws_cognito_user_pools
+  listUsers(id: ID, filter: ModelUserFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserConnection @aws_api_key @aws_cognito_user_pools
+  getPost(id: ID!): Post @aws_api_key @aws_cognito_user_pools
+  listPosts(id: ID, filter: ModelPostFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostConnection @aws_api_key @aws_cognito_user_pools
+  postsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_api_key @aws_cognito_user_pools
+  getComment(id: ID!): Comment @aws_api_key @aws_cognito_user_pools
+  listComments(id: ID, filter: ModelCommentFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCommentConnection @aws_api_key @aws_cognito_user_pools
+  commentsByPost(postID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_api_key @aws_cognito_user_pools
+  repliesByParentComment(parentCommentID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_api_key @aws_cognito_user_pools
+  commentsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_api_key @aws_cognito_user_pools
+  getSighting(id: ID!): Sighting @aws_api_key @aws_cognito_user_pools
+  listSightings(id: ID, filter: ModelSightingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelSightingConnection @aws_api_key @aws_cognito_user_pools
+  sightingsByUser(userID: ID!, sortDirection: ModelSortDirection, filter: ModelSightingFilterInput, limit: Int, nextToken: String): ModelSightingConnection @aws_api_key @aws_cognito_user_pools
 }
 
 input ModelUserConditionInput {
@@ -388,7 +395,6 @@ type Mutation {
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
-  createSighting(input: CreateSightingInput!, condition: ModelSightingConditionInput): Sighting
   updateSighting(input: UpdateSightingInput!, condition: ModelSightingConditionInput): Sighting
   deleteSighting(input: DeleteSightingInput!, condition: ModelSightingConditionInput): Sighting
   createPostReport(input: CreatePostReportInput!, condition: ModelPostReportConditionInput): PostReport
@@ -400,6 +406,7 @@ type Mutation {
   createSightingReport(input: CreateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   updateSightingReport(input: UpdateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   deleteSightingReport(input: DeleteSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
+  createSighting(input: CreateSightingInput!, condition: ModelSightingConditionInput): Sighting @aws_api_key @aws_cognito_user_pools
 }
 
 input ModelSubscriptionUserFilterInput {
@@ -416,27 +423,27 @@ input ModelSubscriptionUserFilterInput {
 }
 
 type Subscription {
-  onCreateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["createUser"])
-  onUpdateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["updateUser"])
-  onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
-  onCreatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["createPost"])
-  onUpdatePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["updatePost"])
-  onDeletePost(filter: ModelSubscriptionPostFilterInput): Post @aws_subscribe(mutations: ["deletePost"])
-  onCreateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["createComment"])
-  onUpdateComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["updateComment"])
-  onDeleteComment(filter: ModelSubscriptionCommentFilterInput): Comment @aws_subscribe(mutations: ["deleteComment"])
-  onCreateSighting(filter: ModelSubscriptionSightingFilterInput): Sighting @aws_subscribe(mutations: ["createSighting"])
-  onUpdateSighting(filter: ModelSubscriptionSightingFilterInput): Sighting @aws_subscribe(mutations: ["updateSighting"])
-  onDeleteSighting(filter: ModelSubscriptionSightingFilterInput): Sighting @aws_subscribe(mutations: ["deleteSighting"])
-  onCreatePostReport(filter: ModelSubscriptionPostReportFilterInput): PostReport @aws_subscribe(mutations: ["createPostReport"])
-  onUpdatePostReport(filter: ModelSubscriptionPostReportFilterInput): PostReport @aws_subscribe(mutations: ["updatePostReport"])
-  onDeletePostReport(filter: ModelSubscriptionPostReportFilterInput): PostReport @aws_subscribe(mutations: ["deletePostReport"])
-  onCreateCommentReport(filter: ModelSubscriptionCommentReportFilterInput): CommentReport @aws_subscribe(mutations: ["createCommentReport"])
-  onUpdateCommentReport(filter: ModelSubscriptionCommentReportFilterInput): CommentReport @aws_subscribe(mutations: ["updateCommentReport"])
-  onDeleteCommentReport(filter: ModelSubscriptionCommentReportFilterInput): CommentReport @aws_subscribe(mutations: ["deleteCommentReport"])
-  onCreateSightingReport(filter: ModelSubscriptionSightingReportFilterInput): SightingReport @aws_subscribe(mutations: ["createSightingReport"])
-  onUpdateSightingReport(filter: ModelSubscriptionSightingReportFilterInput): SightingReport @aws_subscribe(mutations: ["updateSightingReport"])
-  onDeleteSightingReport(filter: ModelSubscriptionSightingReportFilterInput): SightingReport @aws_subscribe(mutations: ["deleteSightingReport"])
+  onCreatePostReport(filter: ModelSubscriptionPostReportFilterInput, owner: String): PostReport @aws_subscribe(mutations: ["createPostReport"])
+  onUpdatePostReport(filter: ModelSubscriptionPostReportFilterInput, owner: String): PostReport @aws_subscribe(mutations: ["updatePostReport"])
+  onDeletePostReport(filter: ModelSubscriptionPostReportFilterInput, owner: String): PostReport @aws_subscribe(mutations: ["deletePostReport"])
+  onCreateCommentReport(filter: ModelSubscriptionCommentReportFilterInput, owner: String): CommentReport @aws_subscribe(mutations: ["createCommentReport"])
+  onUpdateCommentReport(filter: ModelSubscriptionCommentReportFilterInput, owner: String): CommentReport @aws_subscribe(mutations: ["updateCommentReport"])
+  onDeleteCommentReport(filter: ModelSubscriptionCommentReportFilterInput, owner: String): CommentReport @aws_subscribe(mutations: ["deleteCommentReport"])
+  onCreateSightingReport(filter: ModelSubscriptionSightingReportFilterInput, owner: String): SightingReport @aws_subscribe(mutations: ["createSightingReport"])
+  onUpdateSightingReport(filter: ModelSubscriptionSightingReportFilterInput, owner: String): SightingReport @aws_subscribe(mutations: ["updateSightingReport"])
+  onDeleteSightingReport(filter: ModelSubscriptionSightingReportFilterInput, owner: String): SightingReport @aws_subscribe(mutations: ["deleteSightingReport"])
+  onCreateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["createUser"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["updateUser"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["deleteUser"]) @aws_api_key @aws_cognito_user_pools
+  onCreatePost(filter: ModelSubscriptionPostFilterInput, owner: String): Post @aws_subscribe(mutations: ["createPost"]) @aws_api_key @aws_cognito_user_pools
+  onUpdatePost(filter: ModelSubscriptionPostFilterInput, owner: String): Post @aws_subscribe(mutations: ["updatePost"]) @aws_api_key @aws_cognito_user_pools
+  onDeletePost(filter: ModelSubscriptionPostFilterInput, owner: String): Post @aws_subscribe(mutations: ["deletePost"]) @aws_api_key @aws_cognito_user_pools
+  onCreateComment(filter: ModelSubscriptionCommentFilterInput, owner: String): Comment @aws_subscribe(mutations: ["createComment"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateComment(filter: ModelSubscriptionCommentFilterInput, owner: String): Comment @aws_subscribe(mutations: ["updateComment"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteComment(filter: ModelSubscriptionCommentFilterInput, owner: String): Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_api_key @aws_cognito_user_pools
+  onCreateSighting(filter: ModelSubscriptionSightingFilterInput, owner: String): Sighting @aws_subscribe(mutations: ["createSighting"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateSighting(filter: ModelSubscriptionSightingFilterInput, owner: String): Sighting @aws_subscribe(mutations: ["updateSighting"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteSighting(filter: ModelSubscriptionSightingFilterInput, owner: String): Sighting @aws_subscribe(mutations: ["deleteSighting"]) @aws_api_key @aws_cognito_user_pools
 }
 
 input LocationInput {
@@ -445,7 +452,7 @@ input LocationInput {
   address: String
 }
 
-type ModelPostConnection {
+type ModelPostConnection @aws_api_key @aws_cognito_user_pools {
   items: [Post]!
   nextToken: String
 }
@@ -553,7 +560,7 @@ input ModelSubscriptionPostFilterInput {
   or: [ModelSubscriptionPostFilterInput]
 }
 
-type ModelCommentConnection {
+type ModelCommentConnection @aws_api_key @aws_cognito_user_pools {
   items: [Comment]!
   nextToken: String
 }
@@ -619,7 +626,7 @@ input ModelSubscriptionCommentFilterInput {
   or: [ModelSubscriptionCommentFilterInput]
 }
 
-type ModelSightingConnection {
+type ModelSightingConnection @aws_api_key @aws_cognito_user_pools {
   items: [Sighting]!
   nextToken: String
 }
@@ -658,10 +665,10 @@ input ModelSightingConditionInput {
 
 input CreateSightingInput {
   id: ID
-  image: String
-  location: LocationInput
+  image: String!
+  location: LocationInput!
   reporterType: ReporterType!
-  userID: ID!
+  userID: ID
   email: String
   phone: String
   createdAt: AWSDateTime
@@ -697,7 +704,7 @@ input ModelSubscriptionSightingFilterInput {
   or: [ModelSubscriptionSightingFilterInput]
 }
 
-type ModelPostReportConnection {
+type ModelPostReportConnection @aws_api_key @aws_cognito_user_pools {
   items: [PostReport]!
   nextToken: String
 }
@@ -768,7 +775,7 @@ input ModelSubscriptionPostReportFilterInput {
   or: [ModelSubscriptionPostReportFilterInput]
 }
 
-type ModelCommentReportConnection {
+type ModelCommentReportConnection @aws_api_key @aws_cognito_user_pools {
   items: [CommentReport]!
   nextToken: String
 }
@@ -834,7 +841,7 @@ input ModelSubscriptionCommentReportFilterInput {
   or: [ModelSubscriptionCommentReportFilterInput]
 }
 
-type ModelSightingReportConnection {
+type ModelSightingReportConnection @aws_api_key @aws_cognito_user_pools {
   items: [SightingReport]!
   nextToken: String
 }

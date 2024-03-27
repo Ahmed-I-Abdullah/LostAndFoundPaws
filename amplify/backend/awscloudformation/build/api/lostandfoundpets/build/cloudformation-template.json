@@ -76,6 +76,11 @@
             ]
           ]
         },
+        "AdditionalAuthenticationProviders": [
+          {
+            "AuthenticationType": "API_KEY"
+          }
+        ],
         "UserPoolConfig": {
           "AwsRegion": {
             "Ref": "AWS::Region"
@@ -112,6 +117,18 @@
             ]
           ]
         }
+      }
+    },
+    "GraphQLAPIDefaultApiKey215A6DD7": {
+      "Type": "AWS::AppSync::ApiKey",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "GraphQLAPI",
+            "ApiId"
+          ]
+        },
+        "Expires": 1712108604
       }
     },
     "GraphQLAPINONEDS95A13CF0": {
@@ -262,6 +279,12 @@
               "Outputs.transformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId"
             ]
           },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunctionAE1DE713FunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserQuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunctionAE1DE713FunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId": {
             "Fn::GetAtt": [
               "User",
@@ -304,10 +327,22 @@
               "Outputs.transformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId"
             ]
           },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunction0FC1B29BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserSubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunction0FC1B29BFunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId": {
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
             ]
           }
         }
@@ -380,6 +415,12 @@
               "Outputs.transformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId"
             ]
           },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunctionAE1DE713FunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserQuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunctionAE1DE713FunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId": {
             "Fn::GetAtt": [
               "User",
@@ -390,6 +431,12 @@
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserQuerylistUserspreAuth0FunctionQuerylistUserspreAuth0FunctionAppSyncFunction46E5D13AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
             ]
           },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId": {
@@ -416,10 +463,22 @@
               "Outputs.transformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId"
             ]
           },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunction0FC1B29BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserSubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunction0FC1B29BFunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId": {
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
             ]
           }
         }
@@ -492,6 +551,12 @@
               "Outputs.transformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId"
             ]
           },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunctionAE1DE713FunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserQuerygetUserauth0FunctionQuerygetUserauth0FunctionAppSyncFunctionAE1DE713FunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId": {
             "Fn::GetAtt": [
               "User",
@@ -502,6 +567,12 @@
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserQuerylistUserspreAuth0FunctionQuerylistUserspreAuth0FunctionAppSyncFunction46E5D13AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
             ]
           },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId": {
@@ -528,10 +599,22 @@
               "Outputs.transformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId"
             ]
           },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunction0FC1B29BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserSubscriptiononCreateUserauth0FunctionSubscriptiononCreateUserauth0FunctionAppSyncFunction0FC1B29BFunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId": {
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
             ]
           }
         }
@@ -592,6 +675,12 @@
               "ApiId"
             ]
           },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
+            ]
+          },
           "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
             "Ref": "S3DeploymentBucket"
           },
@@ -644,6 +733,12 @@
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
             ]
           }
         }
@@ -716,6 +811,12 @@
               "Outputs.transformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId"
             ]
           },
+          "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId": {
+            "Fn::GetAtt": [
+              "PostReport",
+              "Outputs.transformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId": {
             "Fn::GetAtt": [
               "User",
@@ -726,6 +827,12 @@
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserQuerylistUserspreAuth0FunctionQuerylistUserspreAuth0FunctionAppSyncFunction46E5D13AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
             ]
           },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId": {
@@ -752,10 +859,22 @@
               "Outputs.transformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId"
             ]
           },
+          "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId": {
+            "Fn::GetAtt": [
+              "PostReport",
+              "Outputs.transformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId": {
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
             ]
           }
         }
@@ -828,6 +947,12 @@
               "Outputs.transformerrootstackUserQuerygetUserpreAuth0FunctionQuerygetUserpreAuth0FunctionAppSyncFunctionF80934B9FunctionId"
             ]
           },
+          "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId": {
+            "Fn::GetAtt": [
+              "PostReport",
+              "Outputs.transformerrootstackPostReportQuerygetPostReportauth0FunctionQuerygetPostReportauth0FunctionAppSyncFunction9D57A40BFunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserQuerygetUserpostAuth0FunctionQuerygetUserpostAuth0FunctionAppSyncFunction083DF5E5FunctionId": {
             "Fn::GetAtt": [
               "User",
@@ -838,6 +963,12 @@
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserQuerylistUserspreAuth0FunctionQuerylistUserspreAuth0FunctionAppSyncFunction46E5D13AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
             ]
           },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId": {
@@ -864,10 +995,22 @@
               "Outputs.transformerrootstackUserMutationdeleteUserpreAuth0FunctionMutationdeleteUserpreAuth0FunctionAppSyncFunction93B257DEFunctionId"
             ]
           },
+          "referencetotransformerrootstackPostReportNestedStackPostReportNestedStackResourceD3707BABOutputstransformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId": {
+            "Fn::GetAtt": [
+              "PostReport",
+              "Outputs.transformerrootstackPostReportSubscriptiononCreatePostReportauth0FunctionSubscriptiononCreatePostReportauth0FunctionAppSyncFunctionD096BD75FunctionId"
+            ]
+          },
           "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId": {
             "Fn::GetAtt": [
               "User",
               "Outputs.transformerrootstackUserSubscriptionOnCreateUserDataResolverFnSubscriptionOnCreateUserDataResolverFnAppSyncFunctionCAFEE24EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.transformerrootstackUserUserOwnerDataResolverFnUserOwnerDataResolverFnAppSyncFunctionF4E3715BFunctionId"
             ]
           }
         }
@@ -910,10 +1053,10 @@
               "ApiId"
             ]
           },
-          "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostPostDataSource6998E105Name": {
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
             "Fn::GetAtt": [
-              "Post",
-              "Outputs.transformerrootstackPostPostDataSource6998E105Name"
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
             ]
           },
           "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
@@ -921,6 +1064,12 @@
           },
           "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
             "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostPostDataSource6998E105Name": {
+            "Fn::GetAtt": [
+              "Post",
+              "Outputs.transformerrootstackPostPostDataSource6998E105Name"
+            ]
           },
           "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostPostTable34CAE87BRef": {
             "Fn::GetAtt": [
@@ -1068,6 +1217,28 @@
     }
   },
   "Outputs": {
+    "GraphQLAPIKeyOutput": {
+      "Description": "Your GraphQL API ID.",
+      "Value": {
+        "Fn::GetAtt": [
+          "GraphQLAPIDefaultApiKey215A6DD7",
+          "ApiKey"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "GraphQLApiKey"
+            ]
+          ]
+        }
+      }
+    },
     "GraphQLAPIIdOutput": {
       "Description": "Your GraphQL API ID.",
       "Value": {

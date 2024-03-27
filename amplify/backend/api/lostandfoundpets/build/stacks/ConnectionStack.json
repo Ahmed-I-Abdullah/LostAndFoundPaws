@@ -1,5 +1,35 @@
 {
   "Resources": {
+    "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "Userpostsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/User.posts.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
     "UserPostsDataResolverFnUserPostsDataResolverFnAppSyncFunction22E3870F": {
       "Type": "AWS::AppSync::FunctionConfiguration",
       "Properties": {
@@ -58,6 +88,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "UserPostsDataResolverFnUserPostsDataResolverFnAppSyncFunction22E3870F",
                 "FunctionId"
               ]
@@ -81,6 +117,36 @@
           ]
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "UserpostReportsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/User.postReports.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
       }
     },
     "UserPostReportsDataResolverFnUserPostReportsDataResolverFnAppSyncFunction9DDD07D3": {
@@ -139,6 +205,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "UserPostReportsDataResolverFnUserPostReportsDataResolverFnAppSyncFunction9DDD07D3",
@@ -224,6 +296,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "UserSightingsDataResolverFnUserSightingsDataResolverFnAppSyncFunction39CE4F1F",
                 "FunctionId"
               ]
@@ -305,6 +383,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "UserSightingReportsDataResolverFnUserSightingReportsDataResolverFnAppSyncFunction8FEB9865",
@@ -390,6 +474,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "UserCommentsDataResolverFnUserCommentsDataResolverFnAppSyncFunctionB5368879",
                 "FunctionId"
               ]
@@ -471,6 +561,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "UserCommentReportsDataResolverFnUserCommentReportsDataResolverFnAppSyncFunction06210259",
@@ -556,6 +652,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "PostCommentsDataResolverFnPostCommentsDataResolverFnAppSyncFunction87EBA9A8",
                 "FunctionId"
               ]
@@ -637,6 +739,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "PostPostReportsDataResolverFnPostPostReportsDataResolverFnAppSyncFunction50AA65EE",
@@ -722,6 +830,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "CommentRepliesDataResolverFnCommentRepliesDataResolverFnAppSyncFunctionB5800491",
                 "FunctionId"
               ]
@@ -805,6 +919,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "UserpostReportsauth0FunctionUserpostReportsauth0FunctionAppSyncFunctionC974FC6D",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "CommentCommentReportsDataResolverFnCommentCommentReportsDataResolverFnAppSyncFunctionE446701F",
                 "FunctionId"
               ]
@@ -828,6 +948,51 @@
           ]
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SightingsightingReportsauth0FunctionSightingsightingReportsauth0FunctionAppSyncFunction575CD57C": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "SightingsightingReportsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Sighting.sightingReports.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Sighting.sightingReports.auth.1.res.vtl"
+            ]
+          ]
+        }
       }
     },
     "SightingSightingReportsDataResolverFnSightingSightingReportsDataResolverFnAppSyncFunctionB88CB455": {
@@ -886,6 +1051,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "SightingsightingReportsauth0FunctionSightingsightingReportsauth0FunctionAppSyncFunction575CD57C",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "SightingSightingReportsDataResolverFnSightingSightingReportsDataResolverFnAppSyncFunctionB88CB455",
@@ -971,6 +1142,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "PostUserDataResolverFnPostUserDataResolverFnAppSyncFunction3FFB71E7",
                 "FunctionId"
               ]
@@ -1054,6 +1231,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "CommentParentCommentDataResolverFnCommentParentCommentDataResolverFnAppSyncFunctionCCF38461",
                 "FunctionId"
               ]
@@ -1090,6 +1273,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "PostUserDataResolverFnPostUserDataResolverFnAppSyncFunction3FFB71E7",
@@ -1130,6 +1319,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "PostUserDataResolverFnPostUserDataResolverFnAppSyncFunction3FFB71E7",
                 "FunctionId"
               ]
@@ -1166,6 +1361,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "PostUserDataResolverFnPostUserDataResolverFnAppSyncFunction3FFB71E7",
@@ -1251,6 +1452,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "PostReportPostDataResolverFnPostReportPostDataResolverFnAppSyncFunctionB4391E4E",
                 "FunctionId"
               ]
@@ -1287,6 +1494,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "PostUserDataResolverFnPostUserDataResolverFnAppSyncFunction3FFB71E7",
@@ -1372,6 +1585,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "CommentReportCommentDataResolverFnCommentReportCommentDataResolverFnAppSyncFunction330C2AD1",
                 "FunctionId"
               ]
@@ -1408,6 +1627,12 @@
         "Kind": "PIPELINE",
         "PipelineConfig": {
           "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
             {
               "Fn::GetAtt": [
                 "PostUserDataResolverFnPostUserDataResolverFnAppSyncFunction3FFB71E7",
@@ -1493,6 +1718,12 @@
           "Functions": [
             {
               "Fn::GetAtt": [
+                "Userpostsauth0FunctionUserpostsauth0FunctionAppSyncFunctionCDA67E78",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
                 "SightingReportSightingDataResolverFnSightingReportSightingDataResolverFnAppSyncFunctionBF97B903",
                 "FunctionId"
               ]
@@ -1523,13 +1754,16 @@
     "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
       "Type": "String"
     },
-    "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostPostDataSource6998E105Name": {
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
       "Type": "String"
     },
     "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
       "Type": "String"
     },
     "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostPostDataSource6998E105Name": {
       "Type": "String"
     },
     "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostPostTable34CAE87BRef": {

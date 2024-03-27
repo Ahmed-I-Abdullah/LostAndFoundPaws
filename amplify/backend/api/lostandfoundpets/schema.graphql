@@ -1,11 +1,12 @@
 type User
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, update, read] }
-  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
   username: String!
@@ -25,12 +26,13 @@ type User
 
 type Post
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, update, read] }
-  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
   name: String!
@@ -52,12 +54,13 @@ type Post
 
 type Comment
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, update, read] }
-  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
   content: String!
@@ -75,35 +78,42 @@ type Comment
 
 type Sighting
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, update, read] }
-  #     { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: public, operations: [read, create] }
+      { allow: owner, operations: [create, update, read] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
-  image: String
-  location: Location
+  image: String!
+  location: Location!
   reporterType: ReporterType! # distinguish between sightings by posters and guests
   user: User @belongsTo(fields: ["userID"]) # Optional if reported by a registered user
-  userID: ID! @index(name: "byUser", queryField: "sightingsByUser")
+  userID: ID @index(name: "byUser", queryField: "sightingsByUser") #This needs to be provided is user is authenitcated
   email: String # Optional email for guest
   phone: String # Optional phone number for guest
   sightingReports: [SightingReport]
     @hasMany(indexName: "bySighting", fields: ["id"])
+    @auth(
+      rules: [
+        { allow: owner, operations: [read, create] }
+        { allow: groups, operations: [read, delete, update, create], groups: ["ADMIN"] }
+      ]
+    )
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
 
 type PostReport
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, read] }
-  #     { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
   reason: ReportReason!
@@ -118,12 +128,12 @@ type PostReport
 
 type CommentReport
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, read] }
-  #     { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
   reason: ReportReason!
@@ -138,12 +148,12 @@ type CommentReport
 
 type SightingReport
   @model
-  # @auth(
-  #   rules: [
-  #     { allow: owner, operations: [create, read] }
-  #     { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
-  #   ]
-  # ) 
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+    ]
+  ) 
   {
   id: ID! @primaryKey
   reason: ReportReason!
