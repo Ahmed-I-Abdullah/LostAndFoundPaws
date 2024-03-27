@@ -14,8 +14,8 @@ const VerifyAccountPage = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("email is required"),
-    verificationCode: Yup.string().required("Confirm email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    verificationCode: Yup.string().required("Verification code is required"),
   });
 
   const handleSubmit = (values) => {
