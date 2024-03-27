@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Box, Typography, Button} from "@mui/material";
 import PetCard from "../PetCard/PetCard";
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -36,7 +37,15 @@ const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
         <Typography variant="h6" sx={{ marginBottom: '8px' }}>Report Description</Typography>
         <Typography sx={{ marginBottom: '16px' }}>Report Reason: Inappropriate</Typography>
         <Typography sx={{ marginBottom: '16px' }}>Report Descriptions: Too cute</Typography>
-        <Button variant="contained" color="error" onClick={() => setOpenConfirmDelete(true)} sx={{ marginRight: '8px' }}>Delete</Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => setOpenConfirmDelete(true)}
+          startIcon={<DeleteIcon />} 
+          sx={{ marginRight: '8px' }}
+        >
+            Delete
+        </Button>
         <Button variant="contained" onClick={() => setOpenConfirmIgnore(true)}>Ignore</Button>
       </Box>
 
