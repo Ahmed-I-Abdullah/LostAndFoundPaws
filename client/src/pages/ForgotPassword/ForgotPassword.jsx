@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import CustomTextField from "../../components/TextField/TextField";
 import * as Yup from "yup";
 import CardLayout from "../../components/CardLayout/CardLayout";
@@ -9,7 +9,7 @@ import "./ForgotPassword.css";
 
 const ForgotPasswordPage = () => {
   const initialValues = {
-    email: "",
+    email: ""
   };
 
   const validationSchema = Yup.object().shape({
@@ -28,43 +28,32 @@ const ForgotPasswordPage = () => {
         onSubmit={handleSubmit}
       >
         {({ errors, touched, handleSubmit, setFieldValue, values }) => (
-          <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                justifyContent: "space-between",
-                minHeight: "250px",
-              }}
-            >
-              <div>
-                <Typography variant="subtitle2">
-                  Enter the email associated with your account.
-                </Typography>
-                <CustomTextField
-                  name="email"
-                  variant="outlined"
-                  className="textField"
-                  error={errors.email && touched.email}
-                  helperText={touched.email ? errors.email : ""}
-                  value={values.email}
-                  onChange={(event) => {
-                    setFieldValue("email", event.target.value);
-                  }}
-                  placeholder="Email"
-                />
-              </div>
-              <div>
-                <Button type="submit" variant="contained" fullWidth>
-                  Send Email
-                </Button>
-                <div className="navigation-text">
-                  <Typography align="center" variant="body2" gutterBottom>
-                    Remembered your password? <Link to="/login">Login</Link>
-                  </Typography>
-                </div>
-              </div>
+          <Form onSubmit={handleSubmit} style={{height: '100%'}}>
+            <div className="fogort-form-container">
+                <div>
+              <Typography variant="subtitle2">
+                Enter the email associated with you account
+              </Typography>
+              <CustomTextField
+                name="email"
+                variant="outlined"
+                error={errors.email && touched.email}
+                helperText={touched.email ? errors.email : ""}
+                value={values.email}
+                onChange={(event) => {
+                  setFieldValue("email", event.target.value);
+                }}
+                placeholder="Email"
+              />
+            </div>
+            </div>
+            <div className="navigation-text">
+              <Button type="submit" variant="contained" fullWidth>
+                Send Email
+              </Button>
+              <Typography align="center" variant="body2" style={{marginTop: 10}}>
+                Remembered your password? <Link to="/login">Login</Link>
+              </Typography>
             </div>
           </Form>
         )}
