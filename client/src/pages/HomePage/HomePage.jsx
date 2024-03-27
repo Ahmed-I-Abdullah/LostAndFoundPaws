@@ -1,4 +1,3 @@
-import CoolImage from "../../sharedStyles/CoolImage.png";
 import React, { useState } from "react";
 import ReportPopup from "../../components/ReportPopup/ReportPopup";
 {
@@ -14,6 +13,7 @@ import ListIcon from "@mui/icons-material/List";
 import { useMobile } from "../../MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import SideBar from "../../components/SideBar/SideBar";
 
 const postTypeOptions = [
   { label: "All", color: theme.palette.custom.selectedCategory.view },
@@ -37,6 +37,7 @@ const viewOptions = [
 
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const handleReport = (reason, description) => {
     console.log(
@@ -108,13 +109,32 @@ const HomePageTemp = () => {
               initialIndex={0}
             />
           </Grid>
-          <Grid item xs={5} md={4} marginRight={3}>
+          <Grid item xs={5} md={4}>
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
             />
           </Grid>
+          {!isSideBarOpen && (
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                color: `${theme.palette.text.primary}`,
+                "&:hover": {
+                  backgroundColor: `${theme.palette.primary.main}`,
+                },
+                height: "30px",
+                marginRight: "2rem",
+              }}
+              onClick={() => setIsSideBarOpen(true)}
+            >
+              <TuneIcon />
+              <Typography>All Filters</Typography>
+            </Button>
+          )}
+          {isSideBarOpen && <SideBar onClose={() => setIsSideBarOpen(false)} />}
         </Grid>
       ) : isMobile && selectedView === "Map View" ? (
         <Grid
