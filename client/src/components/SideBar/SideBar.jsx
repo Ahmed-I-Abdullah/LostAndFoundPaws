@@ -11,9 +11,12 @@ import {
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchBar from "../SearchBar/SearchBar";
+import { useMobile } from "../../MobileContext";
+import CustomDropdown from "../DropDown/DropDown";
 import "./SideBar.css";
+import theme from "../../theme/theme";
 
-const SideBar = ({ onClose }) => {
+const SideBar = ({ selectedView, onClose }) => {
   const [sortBy, setSortBy] = useState("Newest");
   const [species, setSpecies] = useState({
     dog: false,
@@ -26,6 +29,9 @@ const SideBar = ({ onClose }) => {
     unknown: false,
   });
   const [locationAway, setLocationAway] = useState(0);
+  const { isMobile } = useMobile();
+
+  //TODO: Add functionality to all filters
 
   return (
     <aside className="sidebar">
@@ -33,7 +39,6 @@ const SideBar = ({ onClose }) => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          marginBottom: "1rem",
         }}
       >
         <IconButton color="black" onClick={onClose}>
@@ -41,30 +46,34 @@ const SideBar = ({ onClose }) => {
         </IconButton>
       </Box>
 
-      <Box width={"100%"} sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
-        <SearchBar placeholder={"Enter city, neighborhood, address"} />
-      </Box>
+      {!isMobile && (
+        <Box width={"100%"} sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
+          <SearchBar placeholder={"Enter city, neighborhood, address"} />
+        </Box>
+      )}
 
       <Typography variant="h1" sx={{ textAlign: "center" }}>
         Filters
       </Typography>
 
-      <div className="divider" />
-      <div className="filter">
-        <Typography variant="h6">Sort By</Typography>
-        <select
-          className="dropdown"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          <option value="Newest">Most Recently Posted</option>
-          <option value="Oldest">Oldest Posted</option>
-          <option value="Name">Name</option>
-        </select>
-      </div>
+      {selectedView === "List View" && <div className="divider" />}
+      {selectedView === "List View" && (
+        <div>
+          <Typography variant="h6">Sort By</Typography>
+          <CustomDropdown
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            options={[
+              { label: "Most Recently Posted", value: "Newest" },
+              { label: "Oldest Posted", value: "Oldest" },
+              { label: "Name", value: "Name" },
+            ]}
+          />
+        </div>
+      )}
 
       <div className="divider" />
-      <div className="filter">
+      <div>
         <Typography variant="h6">Species</Typography>
         <FormControlLabel
           control={
@@ -102,7 +111,7 @@ const SideBar = ({ onClose }) => {
       </div>
 
       <div className="divider" />
-      <div className="filter">
+      <div>
         <Typography variant="h6">Gender</Typography>
         <FormControlLabel
           control={
@@ -138,7 +147,7 @@ const SideBar = ({ onClose }) => {
       </div>
 
       <div className="divider" />
-      <div className="filter">
+      <div>
         <Typography variant="h6">Location Away</Typography>
         <Slider
           value={locationAway}
@@ -159,9 +168,19 @@ const SideBar = ({ onClose }) => {
         />
       </div>
 
-      <div className="divider" />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button variant="contained" color="primary">
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
+        <Button
+          variant="contained"
+          style={{
+            backgroundColor: "white",
+            color: theme.palette.primary.main,
+            border: `1px solid ${theme.palette.primary.main}`,
+            borderRadius: "12px",
+            width: "60%",
+          }}
+        >
           Apply
         </Button>
       </div>
