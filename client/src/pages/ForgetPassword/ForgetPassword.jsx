@@ -8,7 +8,7 @@ import PawLogo from '../../sharedStyles/PawLogo.png';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-const Signup = () => {
+const ForgetPassword = () => {
   const { isMobile } = useMobile();
 
   return (
@@ -24,30 +24,20 @@ const Signup = () => {
             <img src={PawLogo} alt="Logo" />
             <span>LostAndFoundPaws</span>
           </div>
-          <h1>Sign Up</h1>
+          <h1>Forget Password</h1>
           <div className="divider"></div>
         </div>
         <form>
           <div className="account-form-component">
-            <TextField label="Username" variant="outlined" fullWidth />
+            Enter the email associated with your account
           </div>
           <div className="account-form-component">
             <TextField label="Email" variant="outlined" fullWidth />
           </div>
           <div className="account-form-component">
-            <TextField label="Password" variant="outlined" type="password" fullWidth />
-          </div>
-          <div className="account-form-component">
-            <TextField label="Confirm Password" variant="outlined" type="password" fullWidth />
-          </div>
-          <div className="account-form-component-with-optional-text">
-            <div className="account-optional-text">Optional</div>
-            <TextField label="Phone Number" variant="outlined" type="password" fullWidth />
-          </div>
-          <div className="account-form-component">
-            <Button type="submit" variant="contained" color="primary">
-              Sign Up
-            </Button>
+          <Button component={Link} to="/resetPassword" variant="contained" color="primary">
+            Continue
+          </Button>
           </div>
         </form>
         <div className="account-link-container">
@@ -58,4 +48,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ForgetPassword;
