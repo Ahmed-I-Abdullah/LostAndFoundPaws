@@ -18,7 +18,7 @@ const markersData = [
     lastKnownLocation: {
       latitude: -114.1025,
       longitude: 51.0342,
-      address: "Banckview",
+      address: "Bankview",
     },
     species: "DOG",
     images: [

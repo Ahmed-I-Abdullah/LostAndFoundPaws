@@ -1,4 +1,3 @@
-import CoolImage from "../../sharedStyles/CoolImage.png";
 import React, { useState } from "react";
 import ReportPopup from "../../components/ReportPopup/ReportPopup";
 {
@@ -14,6 +13,8 @@ import ListIcon from "@mui/icons-material/List";
 import { useMobile } from "../../MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import SideBar from "../../components/SideBar/SideBar";
+import "./HomePage.css";
 
 const postTypeOptions = [
   { label: "All", color: theme.palette.custom.selectedCategory.view },
@@ -37,6 +38,7 @@ const viewOptions = [
 
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const [selectedType, setSelectedType] = useState("All");
   const [selectedView, setSelectedView] = useState("List View");
@@ -62,21 +64,30 @@ const HomePageTemp = () => {
               containerWidth={"100%"}
             />
           </Grid>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-              color: `${theme.palette.text.primary}`,
-              "&:hover": {
-                backgroundColor: `${theme.palette.primary.main}`,
-              },
-              height: "30px",
-              marginRight: "1rem",
-            }}
-          >
-            <TuneIcon />
-            <Typography>All Filters</Typography>
-          </Button>
+          {!isSideBarOpen && (
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                color: `${theme.palette.text.primary}`,
+                "&:hover": {
+                  backgroundColor: `${theme.palette.primary.main}`,
+                },
+                height: "30px",
+                marginRight: "1rem",
+              }}
+              onClick={() => setIsSideBarOpen(true)}
+            >
+              <TuneIcon />
+              <Typography>All Filters</Typography>
+            </Button>
+          )}
+          {isSideBarOpen && (
+            <SideBar
+              selectedView={selectedView}
+              onClose={() => setIsSideBarOpen(false)}
+            />
+          )}
           <Box width={"100%"} sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
             <SearchBar placeholder={"Enter city, neighborhood, address"} />
           </Box>
@@ -89,7 +100,14 @@ const HomePageTemp = () => {
           </Grid>
         </Grid>
       ) : !isMobile && selectedView === "List View" ? (
-        <Grid container item xs={12} justifyContent="space-between" margin={1}>
+        <Grid
+          container
+          item
+          xs={12}
+          justifyContent="space-between"
+          style={{ position: "absolute", zIndex: 2 }}
+          margin={1}
+        >
           <Grid item xs={4} md={3} marginLeft={1}>
             <Toggle
               options={viewOptions}
@@ -98,13 +116,37 @@ const HomePageTemp = () => {
               initialIndex={0}
             />
           </Grid>
-          <Grid item xs={5} md={4} marginRight={3}>
+          <Grid item xs={5} md={4}>
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
             />
           </Grid>
+          {!isSideBarOpen && (
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                color: `${theme.palette.text.primary}`,
+                "&:hover": {
+                  backgroundColor: `${theme.palette.primary.main}`,
+                },
+                height: "30px",
+                marginRight: "2rem",
+              }}
+              onClick={() => setIsSideBarOpen(true)}
+            >
+              <TuneIcon />
+              <Typography>All Filters</Typography>
+            </Button>
+          )}
+          {isSideBarOpen && (
+            <SideBar
+              selectedView={selectedView}
+              onClose={() => setIsSideBarOpen(false)}
+            />
+          )}
         </Grid>
       ) : isMobile && selectedView === "Map View" ? (
         <Grid
@@ -125,21 +167,30 @@ const HomePageTemp = () => {
               containerWidth={"100%"}
             />
           </Grid>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-              color: `${theme.palette.text.primary}`,
-              "&:hover": {
-                backgroundColor: `${theme.palette.primary.main}`,
-              },
-              height: "30px",
-              marginRight: "1rem",
-            }}
-          >
-            <TuneIcon />
-            <Typography>All Filters</Typography>
-          </Button>
+          {!isSideBarOpen && (
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                color: `${theme.palette.text.primary}`,
+                "&:hover": {
+                  backgroundColor: `${theme.palette.primary.main}`,
+                },
+                height: "30px",
+                marginRight: "1rem",
+              }}
+              onClick={() => setIsSideBarOpen(true)}
+            >
+              <TuneIcon />
+              <Typography>All Filters</Typography>
+            </Button>
+          )}
+          {isSideBarOpen && (
+            <SideBar
+              selectedView={selectedView}
+              onClose={() => setIsSideBarOpen(false)}
+            />
+          )}
           <Grid item xs={10} md={6} margin={"auto"} marginTop={11}>
             <Toggle
               options={postTypeOptions}
@@ -175,10 +226,47 @@ const HomePageTemp = () => {
           </Grid>
           <div />
           <div />
+          {!isSideBarOpen && (
+            <Grid
+              item
+              container
+              xs={12}
+              marginTop={3}
+              justifyContent="flex-end"
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                  color: `${theme.palette.text.primary}`,
+                  "&:hover": {
+                    backgroundColor: `${theme.palette.primary.main}`,
+                  },
+                  height: "30px",
+                  marginRight: "1rem",
+                }}
+                onClick={() => setIsSideBarOpen(true)}
+              >
+                <TuneIcon />
+                <Typography>All Filters</Typography>
+              </Button>
+            </Grid>
+          )}
+          {isSideBarOpen && (
+            <SideBar
+              selectedView={selectedView}
+              onClose={() => setIsSideBarOpen(false)}
+            />
+          )}
         </Grid>
       ) : null}
       {selectedView === "List View" ? (
-        <Box sx={{ margin: "1rem" }}>
+        <Box
+          className="list-view"
+          style={{
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 425px)" : "auto",
+          }}
+        >
           <ListView selectedType={selectedType} />
         </Box>
       ) : (
