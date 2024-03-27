@@ -12,7 +12,7 @@ const postsData = [
     lastKnownLocation: {
       latitude: -114.1025,
       longitude: 51.0342,
-      address: "Banckview",
+      address: "Bankview",
     },
     species: "DOG",
     images: [
@@ -44,35 +44,35 @@ const postsData = [
 ];
 
 const ReportView = ({ selectedType }) => {
-    const filteredPosts =
-      selectedType !== "All"
-        ? postsData.filter(
-            (post) => post.status.toLowerCase() === selectedType.toLowerCase()
-          )
-        : postsData;
-  
-    const handleDelete = (postId) => {
-      console.log('Deleting report for post with id:', postId);
-      // TODO: Delete logic
-    };
-  
-    const handleIgnore = (postId) => {
-      console.log('Ignoring report for post with id:', postId);
-      // TODO: Ignore logic
-    };
-  
-    return (
-      <Box>
-        {filteredPosts.map((post) => (
-          <ReportedPetCard
-            key={post.id}
-            petData={post}
-            onDelete={handleDelete}
-            onIgnore={handleIgnore}
-          />
-        ))}
-      </Box>
-    );
+  const filteredPosts =
+    selectedType !== "All"
+      ? postsData.filter(
+          (post) => post.status.toLowerCase() === selectedType.toLowerCase()
+        )
+      : postsData;
+
+  const handleDelete = (postId) => {
+    console.log("Deleting report for post with id:", postId);
+    // TODO: Delete logic
   };
-  
-  export default ReportView;
+
+  const handleIgnore = (postId) => {
+    console.log("Ignoring report for post with id:", postId);
+    // TODO: Ignore logic
+  };
+
+  return (
+    <Box>
+      {filteredPosts.map((post) => (
+        <ReportedPetCard
+          key={post.id}
+          petData={post}
+          onDelete={handleDelete}
+          onIgnore={handleIgnore}
+        />
+      ))}
+    </Box>
+  );
+};
+
+export default ReportView;
