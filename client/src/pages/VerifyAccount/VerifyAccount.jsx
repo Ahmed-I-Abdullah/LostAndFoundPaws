@@ -39,7 +39,6 @@ const VerifyAccountPage = () => {
               <CustomTextField
                 name="email"
                 variant="outlined"
-                type="email"
                 error={errors.email && touched.email}
                 helperText={touched.email ? errors.email : ""}
                 value={values.email}
@@ -52,7 +51,6 @@ const VerifyAccountPage = () => {
               style={{marginTop: 20}}
                 name="verificationCode"
                 variant="outlined"
-                type="email"
                 error={errors.verificationCode && touched.verificationCode}
                 helperText={touched.verificationCode ? errors.verificationCode : ""}
                 value={values.verificationCode}
