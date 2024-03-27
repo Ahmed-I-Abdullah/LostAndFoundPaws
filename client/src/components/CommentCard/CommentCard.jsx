@@ -232,6 +232,8 @@ const CommentCard = ({
       </Modal>
       {isReportModalOpen && (
         <ReportPost
+          contentType="comment"
+          itemId={"comment.id"} 
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />

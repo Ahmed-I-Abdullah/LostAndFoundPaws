@@ -1,6 +1,405 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getPostReport = /* GraphQL */ `
+  query GetPostReport($id: ID!) {
+    getPostReport(id: $id) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      post {
+        id
+        name
+        status
+        gender
+        summary
+        description
+        resolved
+        species
+        images
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      postID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listPostReports = /* GraphQL */ `
+  query ListPostReports(
+    $id: ID
+    $filter: ModelPostReportFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listPostReports(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        postID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getCommentReport = /* GraphQL */ `
+  query GetCommentReport($id: ID!) {
+    getCommentReport(id: $id) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      comment {
+        id
+        content
+        postID
+        parentCommentID
+        userID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      commentID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listCommentReports = /* GraphQL */ `
+  query ListCommentReports(
+    $id: ID
+    $filter: ModelCommentReportFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listCommentReports(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        commentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getSightingReport = /* GraphQL */ `
+  query GetSightingReport($id: ID!) {
+    getSightingReport(id: $id) {
+      id
+      reason
+      description
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      sighting {
+        id
+        image
+        reporterType
+        userID
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      sightingID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const listSightingReports = /* GraphQL */ `
+  query ListSightingReports(
+    $id: ID
+    $filter: ModelSightingReportFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listSightingReports(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        sightingID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const postReportsByUser = /* GraphQL */ `
+  query PostReportsByUser(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostReportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postReportsByUser(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        postID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const reportsByPost = /* GraphQL */ `
+  query ReportsByPost(
+    $postID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostReportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    reportsByPost(
+      postID: $postID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        postID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const commentReportsByUser = /* GraphQL */ `
+  query CommentReportsByUser(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCommentReportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    commentReportsByUser(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        commentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const reportsByComment = /* GraphQL */ `
+  query ReportsByComment(
+    $commentID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCommentReportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    reportsByComment(
+      commentID: $commentID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        commentID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const sightingReportsByUser = /* GraphQL */ `
+  query SightingReportsByUser(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSightingReportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    sightingReportsByUser(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        sightingID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const reportsBySighting = /* GraphQL */ `
+  query ReportsBySighting(
+    $sightingID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSightingReportFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    reportsBySighting(
+      sightingID: $sightingID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        reason
+        description
+        userID
+        sightingID
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -453,405 +852,6 @@ export const sightingsByUser = /* GraphQL */ `
         userID
         email
         phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getPostReport = /* GraphQL */ `
-  query GetPostReport($id: ID!) {
-    getPostReport(id: $id) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      post {
-        id
-        name
-        status
-        gender
-        summary
-        description
-        resolved
-        species
-        images
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      postID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listPostReports = /* GraphQL */ `
-  query ListPostReports(
-    $id: ID
-    $filter: ModelPostReportFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listPostReports(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        postID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const postReportsByUser = /* GraphQL */ `
-  query PostReportsByUser(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelPostReportFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    postReportsByUser(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        postID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const reportsByPost = /* GraphQL */ `
-  query ReportsByPost(
-    $postID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelPostReportFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    reportsByPost(
-      postID: $postID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        postID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getCommentReport = /* GraphQL */ `
-  query GetCommentReport($id: ID!) {
-    getCommentReport(id: $id) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      comment {
-        id
-        content
-        postID
-        parentCommentID
-        userID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      commentID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listCommentReports = /* GraphQL */ `
-  query ListCommentReports(
-    $id: ID
-    $filter: ModelCommentReportFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listCommentReports(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        commentID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const commentReportsByUser = /* GraphQL */ `
-  query CommentReportsByUser(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentReportFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    commentReportsByUser(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        commentID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const reportsByComment = /* GraphQL */ `
-  query ReportsByComment(
-    $commentID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentReportFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    reportsByComment(
-      commentID: $commentID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        commentID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getSightingReport = /* GraphQL */ `
-  query GetSightingReport($id: ID!) {
-    getSightingReport(id: $id) {
-      id
-      reason
-      description
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      sighting {
-        id
-        image
-        reporterType
-        userID
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      sightingID
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-export const listSightingReports = /* GraphQL */ `
-  query ListSightingReports(
-    $id: ID
-    $filter: ModelSightingReportFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listSightingReports(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        sightingID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const sightingReportsByUser = /* GraphQL */ `
-  query SightingReportsByUser(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelSightingReportFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    sightingReportsByUser(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        sightingID
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const reportsBySighting = /* GraphQL */ `
-  query ReportsBySighting(
-    $sightingID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelSightingReportFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    reportsBySighting(
-      sightingID: $sightingID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        reason
-        description
-        userID
-        sightingID
         createdAt
         updatedAt
         owner

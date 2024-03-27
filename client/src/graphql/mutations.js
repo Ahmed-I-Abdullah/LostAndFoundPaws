@@ -424,47 +424,6 @@ export const deleteComment = /* GraphQL */ `
     }
   }
 `;
-export const createSighting = /* GraphQL */ `
-  mutation CreateSighting(
-    $input: CreateSightingInput!
-    $condition: ModelSightingConditionInput
-  ) {
-    createSighting(input: $input, condition: $condition) {
-      id
-      image
-      location {
-        latitude
-        longitude
-        address
-        __typename
-      }
-      reporterType
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      email
-      phone
-      sightingReports {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
 export const updateSighting = /* GraphQL */ `
   mutation UpdateSighting(
     $input: UpdateSightingInput!
@@ -927,6 +886,85 @@ export const deleteSightingReport = /* GraphQL */ `
         __typename
       }
       sightingID
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const createSighting = /* GraphQL */ `
+  mutation CreateSighting(
+    $input: CreateSightingInput!
+    $condition: ModelSightingConditionInput
+  ) {
+    createSighting(input: $input, condition: $condition) {
+      id
+      image
+      location {
+        latitude
+        longitude
+        address
+        __typename
+      }
+      reporterType
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      email
+      phone
+      sightingReports {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+
+export const createSightingGuest = /* GraphQL */ `
+  mutation CreateSighting(
+    $input: CreateSightingInput!
+    $condition: ModelSightingConditionInput
+  ) {
+    createSighting(input: $input, condition: $condition) {
+      id
+      image
+      location {
+        latitude
+        longitude
+        address
+        __typename
+      }
+      reporterType
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
+      userID
+      email
+      phone
       createdAt
       updatedAt
       owner

@@ -22,6 +22,12 @@ import ReportPost from "../../components/ReportPopup/ReportPopup";
 import MapWithPin from "../../components/MapWithPin/MapWithPin";
 import { v4 as uuidv4 } from "uuid";
 import Comments from "../../components/Comments/Comments";
+import DeleteIcon from '@mui/icons-material/Delete';
+import CheckIcon from '@mui/icons-material/Check';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
+import { useMobile } from '../../MobileContext';
 
 /* MOCK DATA START */
 const petName = "Nala";
@@ -40,6 +46,8 @@ const contactInfo = {
 };
 /* MOCK DATA END */
 
+const isAdmin = true;
+
 const SectionTitle = ({ title }) => {
   return (
     <Typography variant="h2" fontWeight="bold" style={{marginBottom: 4}}>
@@ -53,6 +61,7 @@ const ViewPostPage = () => {
   const extraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const medium = useMediaQuery(theme.breakpoints.down("md"));
+  const { isMobile, isMobileSmall } = useMobile();
 
   const [goToSlide, setGoToSlide] = useState(0);
   const [offsetRadius] = useState(4);
@@ -113,8 +122,17 @@ const ViewPostPage = () => {
       " and description: ",
       description
     );
-    // Here you would typically handle the report,
-    // e.g., sending it to a server or an API endpoint.
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const comments = () => {
@@ -138,25 +156,78 @@ const ViewPostPage = () => {
           spacing={1}
           style={!medium ? { paddingRight: "5%", marginBottom: 20 } : {marginBottom: 20}}
         >
-          <Grid item xs={6}>
+          <Grid item xs={2}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
               {petName}
             </Typography>
           </Grid>
-          <Grid item xs={6} container justifyContent="flex-end">
-            <Button
-              size={small ? "small" : "medium"}
-              variant="contained"
-              sx={{
-                backgroundColor: theme.palette.custom.greyBkg.tag,
-                borderRadius: 2,
-                color: "#000",
-              }}
-              startIcon={<FlagIcon />}
-              onClick={() => setIsReportModalOpen(true)}
-            >
-              Report
-            </Button>
+          <Grid item xs={10} container justifyContent="flex-end">
+            {!isAdmin ? (<div> 
+              <Button
+                  size={small ? "small" : "medium"}
+                  variant="contained"
+                  sx={{
+                    backgroundColor: theme.palette.custom.greyBkg.tag,
+                    borderRadius: 2,
+                    color: "#000",
+                    marginRight: '8px'
+                  }}
+                  startIcon={<FlagIcon />}
+                  onClick={() => setIsReportModalOpen(true)}
+                >
+                  Report
+                </Button>
+            </div>) : (
+              <div> 
+                {isMobile ? (<div>
+                  <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
+                    <MoreHorizIcon sx={{ fontSize: '40px' }} />
+                  </div>
+                  <ActionsMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+
+                </div>) : ( <div>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: '8px'
+                    }}
+                    startIcon={<CheckIcon />}
+                  >
+                    Mark as resolved
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: '8px'
+                    }}
+                    startIcon={<EditIcon />}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: '8px'
+                    }}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete
+                  </Button>
+                </div>)}
+            </div>)}
           </Grid>
 
           <Grid item xs={12}>
@@ -284,6 +355,8 @@ const ViewPostPage = () => {
       </Grid>
       {isReportModalOpen && (
         <ReportPost
+          contentType="post"
+          itemId={"post.id"} 
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />
