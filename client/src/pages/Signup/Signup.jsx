@@ -16,7 +16,7 @@ import Toggle from "../../components/Toggle/Toggle";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
 import CustomDropdown from "../../components/DropDown/DropDown";
-import "./ResetPassword.css";
+import "./Signup.css";
 
 const postTypeOptions = [
   { label: "Lost", color: "#FDC0C0" },
@@ -43,7 +43,7 @@ const FieldTitle = ({ title }) => {
   );
 };
 
-const ResetPassword = () => {
+const CreatePostForm = () => {
   const theme = useTheme();
 
   return (
@@ -269,4 +269,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default CreatePostForm;
