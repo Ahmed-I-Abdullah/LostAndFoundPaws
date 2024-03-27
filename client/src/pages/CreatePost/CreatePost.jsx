@@ -44,7 +44,7 @@ const CreatePostForm = () => {
   const theme = useTheme();
 
   return (
-    <Container className="create-post-container" style={{overflowY: 'scroll', height: '100vh'}}>
+    <Container className="create-post-container" style={{overflowY: 'scroll'}}>
       <div className="create-post-header">
         <Typography variant="h2" fontWeight="bold" gutterBottom> 
           Create Post
