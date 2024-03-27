@@ -284,6 +284,8 @@ const ViewPostPage = () => {
       </Grid>
       {isReportModalOpen && (
         <ReportPost
+          contentType="post"
+          itemId={"post.id"} 
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />
