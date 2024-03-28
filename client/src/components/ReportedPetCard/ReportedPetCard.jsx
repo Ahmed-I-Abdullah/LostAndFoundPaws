@@ -62,7 +62,7 @@ const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
       open={openConfirmIgnore}
       onClose={() => setOpenConfirmIgnore(false)}
       onConfirm={handleIgnoreConfirmed}
-      title="Are you sure you want to mark this post as ignored?"
+      title="Are you sure you want to mark this report as ignored?"
     />
     </Box>
   );
