@@ -22,9 +22,9 @@ const postsData = [
     gender: "MALE",
     summary: "A brown dog with a collar went missing near the park.",
     lastKnownLocation: {
-      latitude: 123.456,
-      longitude: 789.012,
-      address: "15th Avenue",
+      latitude: -114.1025,
+      longitude: 51.0342,
+      address: "Bankview",
     },
     species: "DOG",
     images: [
@@ -41,9 +41,9 @@ const postsData = [
     gender: "FEMALE",
     summary: "A black and white cat was found hiding in the bushes.",
     lastKnownLocation: {
-      latitude: 987.654,
-      longitude: 321.098,
-      address: "Park Street 123",
+      latitude: -114.078,
+      longitude: 51.0562,
+      address: "Sunnyside",
     },
     species: "CAT",
     images: [
@@ -104,25 +104,6 @@ const MyPostsAndComments = () => {
 
   return (
     <Box className="my-content">
-      {isMobile && (
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-            color: `${theme.palette.text.primary}`,
-            "&:hover": {
-              backgroundColor: `${theme.palette.primary.main}`,
-            },
-            height: "30px",
-            margin: "1rem",
-            alignSelf: "flex-end",
-            width: "fit-content",
-          }}
-        >
-          <TuneIcon />
-          <Typography>All Filters</Typography>
-        </Button>
-      )}
       <Toggle
         options={contentTypeOptions}
         onToggleCallback={handleContentTypeToggle}
