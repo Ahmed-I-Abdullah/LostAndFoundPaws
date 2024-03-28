@@ -6,7 +6,7 @@ import NavbarBottom from './components/NavbarBottom/NavbarBottom';
 import HomePage from './pages/HomePage/HomePage';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
-import ForgetPassword from './pages/ForgetPassword/ForgetPassword';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import MyAccount from './pages/MyAccount/MyAccount';
 import CreatePostForm from './pages/CreatePost/CreatePost';
@@ -24,7 +24,7 @@ function App() {
 //Need AppContent instead of putting everything in App because useLocation needs to be context from <Router>
 function AppContent() {
   const location = useLocation();
-  const noNavPages = ['/login', '/signup', '/forgetPassword', '/resetPassword'];
+  const noNavPages = ['/login', '/signup', '/forgotPassword', '/resetPassword'];
   const showNav = !noNavPages.includes(location.pathname);
 
   return (
@@ -35,7 +35,7 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/forgetPassword" element={<ForgetPassword />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/myAccount" element={<MyAccount />} />
           <Route path="/createPost" element={<CreatePostForm />} />
