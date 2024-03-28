@@ -34,12 +34,18 @@ const Navbar = () => {
       </Link>
       </div>
       <div className="navbarRight">
-        {!isMobile && <div className="userActionSection">
-          {/* ADMIN VARIABLE VIEW REPORTINGS BUTTON */}
-          {isAdmin ? (  <Button variant="contained" href="createSighting">View Reportings</Button> ) :
-          ( <div><Button variant="outlined" href="createSighting">Report Sighting</Button>
-            <Button variant="contained" href="createPost">Report Pet</Button> </div>)
-          }
+        {!isMobile && <div>
+          {isAdmin ? (
+            <div className="userActionSection"> 
+              <Button variant="contained" href="createSighting">View Reportings</Button>
+            </div> 
+          ) :
+          ( 
+            <div className="userActionSection">
+              <Button variant="outlined" href="createSighting">Report Sighting</Button>
+              <Button variant="contained" href="createPost">Report Pet</Button>
+            </div>
+          )}
         </div>}
         <div className="userSection">
           {/* TODO ADD VALID CHECKS FOR WHETHER USER IS LOGGED IN/ADMIN */}
