@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import * as Yup from "yup";
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const { isMobile } = useMobile();
 
   const initialValues = {
@@ -91,4 +91,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;
