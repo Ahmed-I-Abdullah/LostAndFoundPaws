@@ -39,31 +39,14 @@ const viewOptions = [
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+
+  const [selectedType, setSelectedType] = useState("All");
   const [selectedView, setSelectedView] = useState("List View");
-
-  const postTypeOptions = selectedView === "List View" ?
-    [
-      { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
-      { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-      { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
-    ] :
-    [
-      { label: "All", color: theme.palette.custom.selectedCategory.view },
-      { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
-      { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-      { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
-    ];
-
-  const [selectedType, setSelectedType] = useState(selectedView === "List View" ? "Lost": "All");
-  const initialSelectedIndex = postTypeOptions.findIndex(option => option.label === selectedType);
-  const [selectedTypeIndex, setSelectedTypeIndex] = useState(initialSelectedIndex);
 
   const handlePostTypeToggle = (index) => {
     setSelectedType(postTypeOptions[index].label);
-    setSelectedTypeIndex(index);
   };
   const handleViewToggle = (index) => {
-    setSelectedTypeIndex(0);
     setSelectedView(viewOptions[index].label);
   };
 
@@ -113,7 +96,6 @@ const HomePageTemp = () => {
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
-              initialIndex={selectedTypeIndex}
             />
           </Grid>
         </Grid>
@@ -139,7 +121,6 @@ const HomePageTemp = () => {
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
-              initialIndex={selectedTypeIndex}
             />
           </Grid>
           {!isSideBarOpen && (
@@ -215,7 +196,6 @@ const HomePageTemp = () => {
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
-              initialIndex={selectedTypeIndex}
             />
           </Grid>
         </Grid>
@@ -241,7 +221,7 @@ const HomePageTemp = () => {
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
-              initialIndex={selectedTypeIndex}
+              initialIndex={0}
             />
           </Grid>
           <div />

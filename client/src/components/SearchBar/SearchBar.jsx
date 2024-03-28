@@ -10,7 +10,7 @@ const SearchBar = ({ placeholder }) => {
       id="search-text"
       InputProps={{
         endAdornment: (
-          <InputAdornment position="end">
+          <InputAdornment>
             <SearchIcon sx={{ color: `` }} />
           </InputAdornment>
         ),
