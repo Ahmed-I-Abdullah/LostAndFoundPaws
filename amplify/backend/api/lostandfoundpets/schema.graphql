@@ -4,7 +4,7 @@ type User
     rules: [
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -30,7 +30,7 @@ type Post
     rules: [
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -58,7 +58,7 @@ type Comment
     rules: [
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -82,7 +82,7 @@ type Sighting
     rules: [
       { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -99,7 +99,7 @@ type Sighting
     @auth(
       rules: [
         { allow: owner, operations: [read, create] }
-        { allow: groups, operations: [read, delete, update, create], groups: ["ADMIN"] }
+        { allow: groups, operations: [read, delete, update, create], groups: ["Admin"] }
       ]
     )
   createdAt: AWSDateTime!
@@ -111,7 +111,7 @@ type PostReport
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -131,7 +131,7 @@ type CommentReport
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -151,7 +151,7 @@ type SightingReport
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
     ]
   ) 
   {
