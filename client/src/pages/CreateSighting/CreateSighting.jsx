@@ -4,6 +4,8 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
+import { useMobile } from "../../MobileContext";
+import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 import "./CreateSighting.css";
 
 const FieldTitle = ({ title }) => {
@@ -16,6 +18,7 @@ const FieldTitle = ({ title }) => {
 
 const CreateSightingForm = () => {
   const theme = useTheme();
+  const { isMobile } = useMobile();
 
   const handleCancel = () => {
     // TODO: Handle cancel logic
@@ -26,9 +29,9 @@ const CreateSightingForm = () => {
   };
 
   return (
-    <Container>
-      <div className="header-title">
-        <Typography variant="h1" fontWeight="bold" gutterBottom>
+    <Container style={{ overflowY: isMobile ? "scroll" : "hidden" }}>
+      <div className="create-sighting-title">
+        <Typography variant="h2" fontWeight="bold" gutterBottom>
           Create Sighting
         </Typography>
         <Typography variant="subtitle1">
@@ -60,7 +63,7 @@ const CreateSightingForm = () => {
               <Grid item container xs={12} md={6} spacing={4}>
                 <Grid item xs={12}>
                   <FieldTitle title="Sighting Location" />
-                  <CustomTextField
+                  <AddressAutocompleteField
                     name="location"
                     variant="outlined"
                     className="textField"
@@ -126,13 +129,14 @@ const CreateSightingForm = () => {
                 container
                 xs={12}
                 spacing={theme.breakpoints.down("md") ? 2 : 10}
-                marginTop={47}
+                marginTop={isMobile ? 0 : 47}
               >
                 <Grid item xs={6} md={6}>
                   <Button
                     variant="outlined"
                     color="primary"
                     className="formButton"
+                    onClick={handleCancel}
                   >
                     Cancel
                   </Button>
@@ -143,6 +147,7 @@ const CreateSightingForm = () => {
                     variant="contained"
                     color="primary"
                     className="formButton"
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>
