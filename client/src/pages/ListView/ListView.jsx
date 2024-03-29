@@ -1,6 +1,8 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, ButtonBase, Typography } from "@mui/material";
 import PetCard from "../../components/PetCard/PetCard";
+import SigthingCard from "../../components/SightingCard/SightingCard";
+import { useMobile } from "../../MobileContext";
 
 const postsData = [
   {
@@ -43,29 +45,86 @@ const postsData = [
   },
 ];
 
+const sightingsData = [
+  {
+    id: "1",
+    images: [
+      "https://storage.googleapis.com/proudcity/santaanaca/uploads/2022/07/Stray-Kittens-scaled.jpg",
+    ],
+    location: {
+      latitude: -114.0201,
+      longitude: 51.0342,
+      address: "Inglewood",
+    },
+    reporterType: "GUEST",
+    userID: "user1",
+    email: "guest@email.com",
+    phoneNumber: "123-456-7890",
+    createdAt: "2024-03-25T10:00:00Z",
+    updatedAt: "2024-03-25T10:00:00Z",
+  },
+  {
+    id: "2",
+    images: ["https://toegrips.com/wp-content/uploads/stray-puppy-jake-.jpg"],
+    location: {
+      latitude: -114.14,
+      longitude: 51.0703,
+      address: "University Heights",
+    },
+    reporterType: "POSTER",
+    userID: "user2",
+    email: "poster@email.com",
+    phoneNumber: "098-765-4321",
+    createdAt: "2024-03-22T10:00:00Z",
+    updatedAt: "2024-03-22T10:00:00Z",
+  },
+];
+
 const ListView = ({ selectedType }) => {
+  const { isMobile } = useMobile();
   const filteredPosts =
     selectedType !== "All"
       ? postsData.filter(
           (post) => post.status.toLowerCase() === selectedType.toLowerCase()
         )
       : postsData;
+
   return (
-    <Box>
-      {filteredPosts.map((post, index) => (
-        <PetCard
-          key={index}
-          owner={false} //TODO: Check if the user logged in is the owner
-          img={post.images[0]}
-          name={post.name}
-          status={post.status}
-          petType={post.species}
-          summary={post.summary}
-          location={post.lastKnownLocation.address}
-          createdAt={post.createdAt}
-          updatedAt={post.updatedAt}
-        />
-      ))}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: isMobile ? "space-between" : "flex-start",
+      }}
+    >
+      {selectedType !== "Sighting"
+        ? filteredPosts.map((post, index) => (
+            <PetCard
+              key={index}
+              owner={false} //TODO: Check if the user logged in is the owner
+              img={post.images[0]}
+              name={post.name}
+              status={post.status}
+              petType={post.species}
+              summary={post.summary}
+              location={post.lastKnownLocation.address}
+              createdAt={post.createdAt}
+              updatedAt={post.updatedAt}
+            />
+          ))
+        : sightingsData.map((sighting, index) => (
+            <SigthingCard
+              key={index}
+              img={sighting.images[0]}
+              location={sighting.location.address}
+              reporterType={sighting.reporterType}
+              email={sighting.email}
+              phoneNumber={sighting.phoneNumber}
+              createdAt={sighting.createdAt}
+              updatedAt={sighting.updatedAt}
+            />
+          ))}
     </Box>
   );
 };
