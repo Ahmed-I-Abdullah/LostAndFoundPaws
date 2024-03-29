@@ -56,12 +56,10 @@ const sightingsData = [
       longitude: 51.0342,
       address: "Inglewood",
     },
-    reporterType: "GUEST",
     userID: "user1",
     email: "guest@email.com",
     phoneNumber: "123-456-7890",
     createdAt: "2024-03-25T10:00:00Z",
-    updatedAt: "2024-03-25T10:00:00Z",
   },
   {
     id: "2",
@@ -71,12 +69,10 @@ const sightingsData = [
       longitude: 51.0703,
       address: "University Heights",
     },
-    reporterType: "POSTER",
     userID: "user2",
     email: "poster@email.com",
     phoneNumber: "098-765-4321",
     createdAt: "2024-03-22T10:00:00Z",
-    updatedAt: "2024-03-22T10:00:00Z",
   },
 ];
 
@@ -100,22 +96,25 @@ const ListView = ({ selectedType }) => {
     >
       {selectedType !== "Sighting"
         ? filteredPosts.map((post, index) => (
-            <PetCard
-              key={index}
-              owner={false} //TODO: Check if the user logged in is the owner
-              img={post.images[0]}
-              name={post.name}
-              status={post.status}
-              petType={post.species}
-              summary={post.summary}
-              location={post.lastKnownLocation.address}
-              createdAt={post.createdAt}
-              updatedAt={post.updatedAt}
-            />
+            <Box sx={{ width: "100%" }}>
+              <PetCard
+                key={index}
+                owner={false} //TODO: Check if the user logged in is the owner
+                img={post.images[0]}
+                name={post.name}
+                status={post.status}
+                petType={post.species}
+                summary={post.summary}
+                location={post.lastKnownLocation.address}
+                createdAt={post.createdAt}
+                updatedAt={post.updatedAt}
+              />
+            </Box>
           ))
         : sightingsData.map((sighting, index) => (
             <SigthingCard
               key={index}
+              owner={false} //TODO: Check if the user logged in is the owner
               img={sighting.images[0]}
               location={sighting.location.address}
               reporterType={sighting.reporterType}

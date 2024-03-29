@@ -5,23 +5,25 @@ import {
   Card,
   CardMedia,
   Box,
+  Button,
   ButtonBase,
   Dialog,
   DialogContent,
   IconButton,
 } from "@mui/material";
-import ClosIcon from "@mui/icons-material/Close";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import theme from "../../theme/theme";
 import { useMobile } from "../../MobileContext";
 import { formatDistanceToNow } from "date-fns";
 
 const SightingCard = ({
+  owner,
   img,
   location,
-  reporterType,
   email,
   phoneNumber,
   createdAt,
-  updatedAt,
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
@@ -70,7 +72,7 @@ const SightingCard = ({
           onClick={handleClose}
           sx={{ position: "absolute", right: 3, top: 3, color: "black" }}
         >
-          <ClosIcon />
+          <CloseIcon />
         </IconButton>
         <DialogContent>
           <Card sx={{ marginTop: "1rem" }}>
@@ -81,8 +83,8 @@ const SightingCard = ({
               alt="sighting-picture"
             />
             <Box sx={{ padding: "1rem" }}>
-              <div
-                style={{
+              <Grid
+                sx={{
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -94,9 +96,9 @@ const SightingCard = ({
                 <Typography variant="body3" color="text.secondary">
                   Posted {formatDistanceToNow(new Date(createdAt))} ago
                 </Typography>
-              </div>
-              <div style={{ marginTop: "30px" }} />
-              <div>
+              </Grid>
+              <Grid sx={{ marginTop: "30px" }} />
+              <Grid>
                 <Typography variant="h3" color="text.secondary">
                   <strong>Contact Information</strong>
                 </Typography>
@@ -122,7 +124,24 @@ const SightingCard = ({
                     }}
                   />
                 </Typography>
-              </div>
+              </Grid>
+              {owner && (
+                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                      color: `${theme.palette.text.primary}`,
+                      "&:hover": {
+                        backgroundColor: `${theme.palette.primary.main}`,
+                      },
+                    }}
+                  >
+                    <DeleteIcon />
+                    <Typography variant="h9">Delete</Typography>
+                  </Button>
+                </Grid>
+              )}
             </Box>
           </Card>
         </DialogContent>
