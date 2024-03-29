@@ -136,7 +136,6 @@ const CreateSightingForm = () => {
                     variant="outlined"
                     color="primary"
                     className="formButton"
-                    onClick={handleCancel}
                   >
                     Cancel
                   </Button>
@@ -147,7 +146,6 @@ const CreateSightingForm = () => {
                     variant="contained"
                     color="primary"
                     className="formButton"
-                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>
