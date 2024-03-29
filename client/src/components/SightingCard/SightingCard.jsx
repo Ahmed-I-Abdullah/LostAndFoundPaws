@@ -21,9 +21,11 @@ const SightingCard = ({
   owner,
   img,
   location,
+  reportType,
   email,
   phoneNumber,
   createdAt,
+  updatedAt,
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
