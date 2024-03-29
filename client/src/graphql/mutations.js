@@ -151,6 +151,11 @@ export const createPost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -200,6 +205,11 @@ export const updatePost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -249,6 +259,11 @@ export const deletePost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -452,8 +467,11 @@ export const updateSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
@@ -493,8 +511,11 @@ export const deleteSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
@@ -794,8 +815,6 @@ export const createSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -836,8 +855,6 @@ export const updateSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -878,8 +895,6 @@ export const deleteSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -921,50 +936,15 @@ export const createSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
       }
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
-  }
-`;
-
-export const createSightingGuest = /* GraphQL */ `
-  mutation CreateSighting(
-    $input: CreateSightingInput!
-    $condition: ModelSightingConditionInput
-  ) {
-    createSighting(input: $input, condition: $condition) {
-      id
-      image
-      location {
-        latitude
-        longitude
-        address
-        __typename
-      }
-      reporterType
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
-      userID
-      email
-      phone
       createdAt
       updatedAt
       owner
