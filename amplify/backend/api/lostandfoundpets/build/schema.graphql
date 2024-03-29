@@ -27,6 +27,7 @@ type Post @aws_api_key @aws_cognito_user_pools {
   lastKnownLocation: Location
   species: PetSpecies!
   images: [String]
+  contactInfo: ContactInfo
   user: User
   userID: ID!
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection
@@ -58,8 +59,7 @@ type Sighting @aws_api_key @aws_cognito_user_pools {
   reporterType: ReporterType!
   user: User
   userID: ID
-  email: String
-  phone: String
+  contactInfo: ContactInfo
   sightingReports(filter: ModelSightingReportFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSightingReportConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -109,6 +109,11 @@ type Location @aws_api_key @aws_cognito_user_pools {
   latitude: Float!
   longitude: Float!
   address: String
+}
+
+type ContactInfo @aws_api_key @aws_cognito_user_pools {
+  email: String!
+  phone: String
 }
 
 enum ReportReason {
@@ -452,6 +457,11 @@ input LocationInput {
   address: String
 }
 
+input ContactInfoInput {
+  email: String!
+  phone: String
+}
+
 type ModelPostConnection @aws_api_key @aws_cognito_user_pools {
   items: [Post]!
   nextToken: String
@@ -518,6 +528,7 @@ input CreatePostInput {
   lastKnownLocation: LocationInput
   species: PetSpecies!
   images: [String]
+  contactInfo: ContactInfoInput
   userID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -534,6 +545,7 @@ input UpdatePostInput {
   lastKnownLocation: LocationInput
   species: PetSpecies
   images: [String]
+  contactInfo: ContactInfoInput
   userID: ID
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -641,8 +653,6 @@ input ModelSightingFilterInput {
   image: ModelStringInput
   reporterType: ModelReporterTypeInput
   userID: ModelIDInput
-  email: ModelStringInput
-  phone: ModelStringInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
   and: [ModelSightingFilterInput]
@@ -654,8 +664,6 @@ input ModelSightingConditionInput {
   image: ModelStringInput
   reporterType: ModelReporterTypeInput
   userID: ModelIDInput
-  email: ModelStringInput
-  phone: ModelStringInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
   and: [ModelSightingConditionInput]
@@ -669,8 +677,7 @@ input CreateSightingInput {
   location: LocationInput!
   reporterType: ReporterType!
   userID: ID
-  email: String
-  phone: String
+  contactInfo: ContactInfoInput
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
@@ -681,8 +688,7 @@ input UpdateSightingInput {
   location: LocationInput
   reporterType: ReporterType
   userID: ID
-  email: String
-  phone: String
+  contactInfo: ContactInfoInput
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
@@ -696,8 +702,6 @@ input ModelSubscriptionSightingFilterInput {
   image: ModelSubscriptionStringInput
   reporterType: ModelSubscriptionStringInput
   userID: ModelSubscriptionIDInput
-  email: ModelSubscriptionStringInput
-  phone: ModelSubscriptionStringInput
   createdAt: ModelSubscriptionStringInput
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionSightingFilterInput]

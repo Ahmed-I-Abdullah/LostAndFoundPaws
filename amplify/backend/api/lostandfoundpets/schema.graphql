@@ -44,6 +44,7 @@ type Post
   lastKnownLocation: Location
   species: PetSpecies!
   images: [String]
+  contactInfo: ContactInfo
   user: User @belongsTo(fields: ["userID"])
   userID: ID! @index(name: "byUser", queryField: "postsByUser")
   comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
@@ -91,17 +92,9 @@ type Sighting
   location: Location!
   reporterType: ReporterType! # distinguish between sightings by posters and guests
   user: User @belongsTo(fields: ["userID"]) # Optional if reported by a registered user
-  userID: ID @index(name: "byUser", queryField: "sightingsByUser") #This needs to be provided is user is authenitcated
-  email: String # Optional email for guest
-  phone: String # Optional phone number for guest
-  sightingReports: [SightingReport]
-    @hasMany(indexName: "bySighting", fields: ["id"])
-    @auth(
-      rules: [
-        { allow: owner, operations: [read, create] }
-        { allow: groups, operations: [read, delete, update, create], groups: ["Admin"] }
-      ]
-    )
+  userID: ID @index(name: "byUser", queryField: "sightingsByUser") # This needs to be provided is user is authenitcated
+  contactInfo: ContactInfo
+  sightingReports: [SightingReport] @hasMany(indexName: "bySighting", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -171,6 +164,11 @@ type Location {
   latitude: Float!
   longitude: Float!
   address: String
+}
+
+type ContactInfo {
+  email: String!
+  phone: String
 }
 
 enum ReportReason {

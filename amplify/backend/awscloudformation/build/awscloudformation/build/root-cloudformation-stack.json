@@ -210,7 +210,7 @@
             ]
           },
           "S3DeploymentBucket": "amplify-lostandfoundpets-staging-234006-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/0e6b001f3ff57e1c9269d6d7842ffa70cd021156",
+          "S3DeploymentRootKey": "amplify-appsync-files/3736762cd3421916f5fe405d41e19df60d885050",
           "env": "staging"
         }
       }
@@ -368,6 +368,24 @@
           "s3PermissionsAuthenticatedUploads": "s3:PutObject",
           "s3PermissionsGuestPublic": "s3:PutObject,s3:GetObject",
           "s3PermissionsGuestUploads": "s3:PutObject",
+          "authlostandfoundpetsfd158904UserPoolId": {
+            "Fn::GetAtt": [
+              "authlostandfoundpetsfd158904",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "authuserPoolGroupsAdminGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.AdminGroupRole"
+            ]
+          },
+          "authuserPoolGroupsPosterGroupRole": {
+            "Fn::GetAtt": [
+              "authuserPoolGroups",
+              "Outputs.PosterGroupRole"
+            ]
+          },
           "env": "staging"
         }
       }
