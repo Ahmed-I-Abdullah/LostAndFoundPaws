@@ -29,6 +29,9 @@
           "deploymentBucketName": "amplify-lostandfoundpets-staging-234006-deployment",
           "s3Key": "amplify-builds/lostandfoundpetsfd158904PostConfirmation-45526e6d763871555130-build.zip"
         }
+      },
+      "storage": {
+        "s34719207c": {}
       }
     }
   }

@@ -6,7 +6,7 @@ import * as mutations from '../../../../../client/src/graphql/mutations.js';
 import readlineSync from 'readline-sync';
 
 Amplify.configure(awsmobile);
-const client = generateClient({authMode: 'apiKey'});
+const client = generateClient({authMode: 'userPool'});
 
 
 async function signupAndVerifyUsers() {

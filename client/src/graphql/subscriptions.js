@@ -289,8 +289,6 @@ export const onCreateSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -331,8 +329,6 @@ export const onUpdateSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -373,8 +369,6 @@ export const onDeleteSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -538,6 +532,11 @@ export const onCreatePost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -587,6 +586,11 @@ export const onUpdatePost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -636,6 +640,11 @@ export const onDeletePost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -839,8 +848,11 @@ export const onCreateSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
@@ -880,8 +892,11 @@ export const onUpdateSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
@@ -921,8 +936,11 @@ export const onDeleteSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
