@@ -13,39 +13,53 @@ const markersData = [
     id: "1",
     name: "Cooper",
     status: "LOST",
-    gender: "MALE",
-    summary: "A brown dog with a collar went missing near the park.",
     lastKnownLocation: {
       latitude: -114.1025,
       longitude: 51.0342,
       address: "Bankview",
     },
-    species: "DOG",
     images: [
       "https://www.princeton.edu/sites/default/files/styles/1x_full_2x_half_crop/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=Bg2K7j7J",
     ],
-    userID: "user1",
     createdAt: "2024-03-24T10:00:00Z",
-    updatedAt: "2024-03-24T10:00:00Z",
   },
   {
     id: "2",
     name: "Nala",
     status: "FOUND",
-    gender: "FEMALE",
-    summary: "A black and white cat was found hiding in the bushes.",
     lastKnownLocation: {
       latitude: -114.078,
       longitude: 51.0562,
       address: "Sunnyside",
     },
-    species: "CAT",
     images: [
       "https://hips.hearstapps.com/hmg-prod/images/cute-photos-of-cats-looking-at-camera-1593184780.jpg?crop=0.6672958942897593xw:1xh;center,top&resize=980:*",
     ],
-    userID: "user2",
     createdAt: "2024-03-23T15:30:00Z",
-    updatedAt: "2024-03-23T15:30:00Z",
+  },
+  {
+    id: "3",
+    status: "SIGHTING",
+    lastKnownLocation: {
+      latitude: -114.0201,
+      longitude: 51.0342,
+      address: "Inglewood",
+    },
+    images: [
+      "https://storage.googleapis.com/proudcity/santaanaca/uploads/2022/07/Stray-Kittens-scaled.jpg",
+    ],
+    createdAt: "2024-03-25T10:00:00Z",
+  },
+  {
+    id: "4",
+    status: "SIGHTING",
+    lastKnownLocation: {
+      latitude: -114.14,
+      longitude: 51.0703,
+      address: "University Heights",
+    },
+    images: ["https://toegrips.com/wp-content/uploads/stray-puppy-jake-.jpg"],
+    createdAt: "2024-03-22T10:00:00Z",
   },
 ];
 
@@ -60,7 +74,7 @@ const MapView = ({ selectedType }) => {
       case "FOUND":
         return theme.palette.custom.selectedCategory.found.dark;
       case "SIGHTING":
-        return theme.palette.custom.selectedCategory.sighting;
+        return theme.palette.custom.selectedCategory.sighting.dark;
       default:
         return "";
     }
@@ -110,21 +124,21 @@ const MapView = ({ selectedType }) => {
             markerData.lastKnownLocation.latitude,
             markerData.lastKnownLocation.longitude,
           ])
-          .setPopup(
-            new mapboxgl.Popup().setHTML(
-              //TODO: Add onClick event
-              `<button id="popup" class="popup-button">
-              <img src="${markerData.images[0]}" alt="${
-                markerData.name
-              }" style="width: 50px; height: 50px;"/>
-              <h3>${markerData.name}</h3>
-              <p>Status: ${markerData.status}</p>
-              <p>Date: ${formatDistanceToNow(
-                new Date(markerData.createdAt)
-              )} ago</p>
-              </button>`
-            )
-          )
+          // .setPopup(
+          // new mapboxgl.Popup().setHTML(
+          //   //TODO: Add onClick event
+          //   `<button id="popup" class="popup-button">
+          //   <img src="${markerData.images[0]}" alt="${
+          //     markerData.name
+          //   }" style="width: 50px; height: 50px;"/>
+          //   <h3>${markerData.name}</h3>
+          //   <p>Status: ${markerData.status}</p>
+          //   <p>Date: ${formatDistanceToNow(
+          //     new Date(markerData.createdAt)
+          //   )} ago</p>
+          //   </button>`
+          // )
+          // )
           .addTo(map);
         newMarkers.push(marker);
       }

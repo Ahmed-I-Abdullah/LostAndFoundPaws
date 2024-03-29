@@ -8,6 +8,7 @@ import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
 import CustomDropdown from "../../components/DropDown/DropDown";
 import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
+import { useMobile } from "../../MobileContext";
 import "./CreatePost.css";
 
 const postTypeOptions = [
@@ -37,11 +38,12 @@ const FieldTitle = ({ title }) => {
 
 const CreatePostForm = () => {
   const theme = useTheme();
+  const { isMobile } = useMobile();
 
   return (
     <Container
       className="create-post-container"
-      style={{ overflowY: "scroll" }}
+      style={{ overflowY: isMobile ? "scroll" : "hidden" }}
     >
       <div className="create-post-header">
         <Typography variant="h2" fontWeight="bold" gutterBottom>
