@@ -45,14 +45,14 @@ const Navbar = () => {
           {/* TODO ADD VALID CHECKS FOR WHETHER USER IS LOGGED IN/ADMIN */}
           {fakeLogin ? (
             <>
-              <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+              <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                   {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
                   <AccountCircleIcon sx={{ fontSize: '40px' }} />
               </div>
               <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
             </>
           ) : (
-            <Button variant="outlined" href="#login">Sign Up</Button>
+            <Button variant="outlined" href="login">Log In</Button>
           )}
         </div>
       </div>

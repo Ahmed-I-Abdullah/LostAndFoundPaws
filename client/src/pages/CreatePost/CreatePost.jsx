@@ -7,6 +7,7 @@ import Toggle from "../../components/Toggle/Toggle";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
 import CustomDropdown from "../../components/DropDown/DropDown";
+import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 import "./CreatePost.css";
 
 const postTypeOptions = [
@@ -38,9 +39,12 @@ const CreatePostForm = () => {
   const theme = useTheme();
 
   return (
-    <Container>
-      <div className="header-title">
-        <Typography variant="h1" fontWeight="bold" gutterBottom>
+    <Container
+      className="create-post-container"
+      style={{ overflowY: "scroll" }}
+    >
+      <div className="create-post-header">
+        <Typography variant="h2" fontWeight="bold" gutterBottom>
           Create Post
         </Typography>
         <Typography variant="subtitle1">
@@ -65,7 +69,7 @@ const CreatePostForm = () => {
           gender: Yup.string().required("Gender is required"),
           summary: Yup.string().required("Summary is required"),
           description: Yup.string().required("Description is required"),
-          location: Yup.string().required("Last known location is required"),
+          location: Yup.object().required("Last known location is required"),
           species: Yup.string().required("Species is required"),
           phoneNumber: Yup.string().optional(),
           email: Yup.string()
@@ -76,7 +80,7 @@ const CreatePostForm = () => {
             .required("Images are required"),
         })}
         onSubmit={(values) => {
-          console.log(values);
+          console.log("lollll: ", values);
         }}
       >
         {({ errors, touched, handleSubmit, setFieldValue, values }) => (
@@ -154,15 +158,15 @@ const CreatePostForm = () => {
               <Grid item container xs={12} md={6} spacing={4}>
                 <Grid item xs={12}>
                   <FieldTitle title="Last Known Location" />
-                  <CustomTextField
+                  <AddressAutocompleteField
                     name="location"
                     variant="outlined"
                     className="textField"
                     error={errors.location && touched.location}
                     helperText={touched.location ? errors.location : ""}
                     value={values.location}
-                    onChange={(event) => {
-                      setFieldValue("location", event.target.value);
+                    onChange={(value) => {
+                      setFieldValue("location", value);
                     }}
                   />
                 </Grid>

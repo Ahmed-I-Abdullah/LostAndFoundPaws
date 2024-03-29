@@ -2,27 +2,25 @@ import React from "react";
 import { useMobile } from "../../MobileContext";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
-import { Formik, Form } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
-import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
+import * as Yup from "yup";
+import { Formik, Form } from "formik";
 
-const ResetPassword = () => {
+const Login = () => {
   const { isMobile } = useMobile();
 
   const initialValues = {
+    email: "",
     password: "",
-    confirmPassword: "",
   };
 
   const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Email or username is required"),
     password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
   });
 
   const handleSubmit = (values) => {
@@ -48,7 +46,7 @@ const ResetPassword = () => {
             <img src={PawLogo} alt="Logo" />
             <span>LostAndFoundPaws</span>
           </div>
-          <h1>Reset Password</h1>
+          <h1>Log In</h1>
           <div className="divider"></div>
         </div>
         <Formik
@@ -59,11 +57,21 @@ const ResetPassword = () => {
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
             <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
               <div className="account-form-component">
-                Set your new password
+                <TextField
+                  label="Email or Username"
+                  variant="outlined"
+                  error={errors.email && touched.email}
+                  helperText={touched.email ? errors.email : ""}
+                  value={values.email}
+                  onChange={(event) => {
+                    setFieldValue("email", event.target.value);
+                  }}
+                  fullWidth
+                />
               </div>
               <div className="account-form-component">
                 <TextField
-                  label="New Password"
+                  label="Password"
                   variant="outlined"
                   type="password"
                   error={errors.password && touched.password}
@@ -74,37 +82,23 @@ const ResetPassword = () => {
                   }}
                   fullWidth
                 />
-              </div>
-              <div className="account-form-component">
-                <TextField
-                  label="Confirm Password"
-                  variant="outlined"
-                  type="password"
-                  error={errors.confirmPassword && touched.confirmPassword}
-                  helperText={
-                    touched.confirmPassword ? errors.confirmPassword : ""
-                  }
-                  value={values.confirmPassword}
-                  onChange={(event) => {
-                    setFieldValue("confirmPassword", event.target.value);
-                  }}
-                  fullWidth
-                />
+                <Link to="/forgetPassword" className="forgot-password-link">
+                  Forgot Password?
+                </Link>
               </div>
               <div className="account-form-component">
                 <Button type="submit" variant="contained" color="primary">
-                  Continue
+                  Log In
                 </Button>
               </div>
             </Form>
           )}
         </Formik>
-
         <div className="account-link-container">
           <span>
-            Already have an account?{" "}
-            <Link to="/login" className="account-link">
-              Log In
+            Don't have an account?{" "}
+            <Link to="/signup" className="account-link">
+              Sign up
             </Link>
           </span>
         </div>
@@ -113,4 +107,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default Login;

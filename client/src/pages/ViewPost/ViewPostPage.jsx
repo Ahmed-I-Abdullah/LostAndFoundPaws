@@ -7,7 +7,7 @@ import {
   useTheme,
   useMediaQuery,
   IconButton,
-  Divider
+  Divider,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Carousel from "react-spring-3d-carousel";
@@ -22,12 +22,14 @@ import ReportPost from "../../components/ReportPopup/ReportPopup";
 import MapWithPin from "../../components/MapWithPin/MapWithPin";
 import { v4 as uuidv4 } from "uuid";
 import Comments from "../../components/Comments/Comments";
-import DeleteIcon from '@mui/icons-material/Delete';
-import CheckIcon from '@mui/icons-material/Check';
-import EditIcon from '@mui/icons-material/Edit';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
+import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import { useMobile } from '../../MobileContext';
+
 
 /* MOCK DATA START */
 const petName = "Nala";
@@ -50,7 +52,7 @@ const isAdmin = true;
 
 const SectionTitle = ({ title }) => {
   return (
-    <Typography variant="h2" fontWeight="bold" style={{marginBottom: 4}}>
+    <Typography variant="h2" fontWeight="bold" style={{ marginBottom: 4 }}>
       {title}
     </Typography>
   );
@@ -62,6 +64,18 @@ const ViewPostPage = () => {
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const medium = useMediaQuery(theme.breakpoints.down("md"));
   const { isMobile, isMobileSmall } = useMobile();
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
+
+  const handleDeleteConfirmed = () => {
+    onDelete(petData.id);
+    setOpenConfirmDelete(false); // Close the dialog
+  };
+
+  const handleResolveConfirmed = () => {
+    onResolve(petData.id);
+    setOpenConfirmResolve(false); // Close the dialog
+  };
 
   const [goToSlide, setGoToSlide] = useState(0);
   const [offsetRadius] = useState(4);
@@ -139,22 +153,25 @@ const ViewPostPage = () => {
     return (
       <>
         <SectionTitle title="Comments" />
-          <Comments />
+        <Comments />
       </>
     );
   };
 
   return (
     <Container maxWidth="xl" style={{ marginTop: "20px" }}>
-      <Grid container 
-      >
+      <Grid container>
         <Grid
           container
           item
           xs={12}
           md={8}
           spacing={1}
-          style={!medium ? { paddingRight: "5%", marginBottom: 20 } : {marginBottom: 20}}
+          style={
+            !medium
+              ? { paddingRight: "5%", marginBottom: 20 }
+              : { marginBottom: 20 }
+          }
         >
           <Grid item xs={2}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
@@ -162,15 +179,16 @@ const ViewPostPage = () => {
             </Typography>
           </Grid>
           <Grid item xs={10} container justifyContent="flex-end">
-            {!isAdmin ? (<div> 
-              <Button
+            {!isAdmin ? (
+              <div>
+                <Button
                   size={small ? "small" : "medium"}
                   variant="contained"
                   sx={{
                     backgroundColor: theme.palette.custom.greyBkg.tag,
                     borderRadius: 2,
                     color: "#000",
-                    marginRight: '8px'
+                    marginRight: "8px",
                   }}
                   startIcon={<FlagIcon />}
                   onClick={() => setIsReportModalOpen(true)}
@@ -181,7 +199,6 @@ const ViewPostPage = () => {
               <div> 
                 {isMobile ? (<div>
                   <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                    {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
                     <MoreHorizIcon sx={{ fontSize: '40px' }} />
                   </div>
                   <ActionsMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
@@ -190,6 +207,7 @@ const ViewPostPage = () => {
                   <Button
                     size={small ? "small" : "medium"}
                     variant="contained"
+                    onClick={() => setOpenConfirmResolve(true)}
                     sx={{
                       backgroundColor: theme.palette.custom.greyBkg.tag,
                       borderRadius: 2,
@@ -216,10 +234,10 @@ const ViewPostPage = () => {
                   <Button
                     size={small ? "small" : "medium"}
                     variant="contained"
+                    color="error"
+                    onClick={() => setOpenConfirmDelete(true)}
                     sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
                       borderRadius: 2,
-                      color: "#000",
                       marginRight: '8px'
                     }}
                     startIcon={<DeleteIcon />}
@@ -257,7 +275,7 @@ const ViewPostPage = () => {
                 className="carousel-container"
                 style={{
                   height: extraSmall ? "100px" : small ? "250px" : "400px",
-                  marginBottom: medium ? 40 : 0
+                  marginBottom: medium ? 40 : 0,
                 }}
               >
                 <Carousel
@@ -356,11 +374,26 @@ const ViewPostPage = () => {
       {isReportModalOpen && (
         <ReportPost
           contentType="post"
-          itemId={"post.id"} 
+          itemId={"post.id"}
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />
       )}
+    {/* Use the ConfirmDialog for delete confirmation */}
+    <ConfirmDialog
+      open={openConfirmDelete}
+      onClose={() => setOpenConfirmDelete(false)}
+      onConfirm={handleDeleteConfirmed}
+      title="Are you sure you want to delete this post?"
+    />
+
+    {/* Use the ConfirmDialog for ignore confirmation */}
+    <ConfirmDialog
+      open={openConfirmResolve}
+      onClose={() => setOpenConfirmResolve(false)}
+      onConfirm={handleResolveConfirmed}
+      title="Are you sure you want to mark this post as resolved?"
+    />
     </Container>
   );
 };

@@ -1,24 +1,23 @@
 import React from "react";
-import { useMobile } from "./MobileContext";
 import {
   BrowserRouter as Router,
-  Route,
   Routes,
+  Route,
   useLocation,
 } from "react-router-dom";
-
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
-import HomePageTemp from "./pages/HomePage/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import MyAccount from "./pages/MyAccount/MyAccount";
 import CreatePostForm from "./pages/CreatePost/CreatePost";
+import CreateSightingForm from "./pages/CreateSighting/CreateSighting";
 import MyPostsAndComments from "./pages/MyPostsAndComments/MyPostsAndComments";
 import ViewPostPage from "./pages/ViewPost/ViewPostPage";
-import ViewReportings from "./pages/ViewReportings/ViewReportings";
-import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPassword";
-import ResetPasswordPage from "./pages/ResetPassword/ResetPassword";
-import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccount";
-import CreateSightingForm from "./pages/CreateSighting/CreateSighting";
 
 function App() {
   return (
@@ -28,35 +27,30 @@ function App() {
   );
 }
 
+//Need AppContent instead of putting everything in App because useLocation needs to be context from <Router>
 function AppContent() {
   const location = useLocation();
-  const noNavbarRoutes = [
-    "/resetPassword",
-    "/forgotPassword",
-    "/verifyAccount",
-  ];
-
-  const hideNavbar = noNavbarRoutes.some((route) =>
-    location.pathname.includes(route)
-  );
+  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword"];
+  const showNav = !noNavPages.includes(location.pathname);
 
   return (
     <div className="app">
-      {!hideNavbar && <Navbar />}
+      {showNav && <Navbar />}
       <div className="mainContent">
         <Routes>
-          <Route path="/" element={<HomePageTemp />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/myAccount" element={<MyAccount />} />
           <Route path="/createPost" element={<CreatePostForm />} />
+          <Route path="/createSighting" element={<CreateSightingForm />} />
           <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
           <Route path="/viewPost" element={<ViewPostPage />} />
-          <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-          <Route path="/resetPassword" element={<ResetPasswordPage />} />
-          <Route path="/verifyAccount" element={<VerifyAccountPage />} />
-          <Route path="/viewReportings" element={<ViewReportings />} />
-          <Route path="/createSighting" element={<CreateSightingForm />} />
         </Routes>
       </div>
-      {!hideNavbar && <NavbarBottom />}
+      {showNav && <NavbarBottom />}
     </div>
   );
 }

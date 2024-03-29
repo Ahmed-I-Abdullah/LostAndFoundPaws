@@ -19,6 +19,11 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
     handleClose();
   };
 
+  const handleMyAccount = () => {
+    navigate("/myAccount");
+    handleClose();
+  };
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -33,7 +38,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
       open={open}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleMyAccount}>
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
@@ -49,10 +54,9 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
-        <Button variant="text" fullWidth>
-          Sign Out
-        </Button>
+        <Button variant="text" fullWidth> Signout </Button>
         {/*TODO Add sign out functionality*/}
+        <Button variant="outlined" href="login">Temp Login</Button>
       </MenuItem>
     </Menu>
   );
