@@ -510,10 +510,6 @@ export const getPost = /* GraphQL */ `
         nextToken
         __typename
       }
-      postReports {
-        nextToken
-        __typename
-      }
       createdAt
       updatedAt
       owner
@@ -521,6 +517,8 @@ export const getPost = /* GraphQL */ `
     }
   }
 `;
+
+
 export const listPosts = /* GraphQL */ `
   query ListPosts(
     $id: ID
