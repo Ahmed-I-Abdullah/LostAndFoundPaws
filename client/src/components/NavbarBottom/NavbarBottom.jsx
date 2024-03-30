@@ -12,13 +12,15 @@ const NavbarBottom = () => {
   }
 
   return (
-    <div className="navbarBottom">
+    <div>
       {isAdmin ? 
-      (<Button variant="contained" href="createSighting">View Reportings</Button> ) :
-      (<div> 
+      (<div className="navbarBottom">
+        <Button variant="contained" href="createSighting">View Reportings</Button> 
+      </div>) :
+      (<div className="navbarBottom">
         <Button variant="outlined" href="createSighting">Report Sighting</Button>
         <Button variant="contained" href="createPost">Report Pet</Button>
-        </div>)
+      </div>)
       }
     </div>
   );

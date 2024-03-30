@@ -8,7 +8,7 @@ import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
 import * as Yup from "yup";
-import TextField from "@mui/material/TextField";
+import CustomTextField from "../../components/TextField/TextField";
 import { useLocation, useNavigate } from "react-router-dom";
 import { confirmResetPassword } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
@@ -101,7 +101,8 @@ const ResetPassword = () => {
               </div>
               {!location.state?.email && (
                 <div className="account-form-component">
-                  <TextField
+                  <CustomTextField
+                    name="email"
                     label="Email"
                     variant="outlined"
                     error={errors.email && touched.email}
@@ -115,7 +116,8 @@ const ResetPassword = () => {
                 </div>
               )}
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="confirmationCode"
                   label="Confirmation Code"
                   variant="outlined"
                   error={errors.confirmationCode && touched.confirmationCode}
@@ -130,7 +132,8 @@ const ResetPassword = () => {
                 />
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="newPassword"
                   label="New Password"
                   variant="outlined"
                   type="password"
@@ -144,7 +147,8 @@ const ResetPassword = () => {
                 />
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="confirmPassword"
                   label="Confirm Password"
                   variant="outlined"
                   type="password"

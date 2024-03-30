@@ -76,7 +76,7 @@
 .account-form-component {
   display: flex;
   flex-direction: column;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 /*new class to make the optional text not affect the spacing (this is so bad)*/
@@ -92,6 +92,7 @@
   text-decoration: none;
   color: grey;
   font-size: 14px;
+  margin-bottom: 4px;
 }
 
 .forgot-password-link {

@@ -87,7 +87,12 @@ const HomePageTemp = () => {
   return (
     <div>
       {isMobile && selectedView === "List View" ? (
-        <Grid container item xs={12} justifyContent="space-between" margin={1}>
+        <Grid 
+          container 
+          item xs={12} 
+          justifyContent="space-between" 
+          padding={1}
+        >
           <Grid item xs={4} md={3} marginLeft={1}>
             <Toggle
               options={viewOptions.map((option) => ({
@@ -141,7 +146,7 @@ const HomePageTemp = () => {
           xs={12}
           justifyContent="space-between"
           style={{ position: "absolute", zIndex: 2 }}
-          margin={1}
+          padding={1}
         >
           <Grid item xs={4} md={3} marginLeft={1}>
             <Toggle
@@ -191,7 +196,7 @@ const HomePageTemp = () => {
           xs={12}
           justifyContent="space-between"
           style={{ position: "absolute", zIndex: 2 }}
-          margin={1}
+          padding={1}
         >
           <Grid item xs={4} md={3} marginLeft={1}>
             <Toggle
@@ -243,7 +248,7 @@ const HomePageTemp = () => {
           xs={12}
           justifyContent="space-between"
           style={{ position: "absolute", zIndex: 2 }}
-          margin={1}
+          padding={1}
         >
           <Grid item xs={4} md={3} marginLeft={1}>
             <Toggle
