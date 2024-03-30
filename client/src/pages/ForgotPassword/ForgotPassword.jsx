@@ -6,15 +6,15 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
+import CustomTextField from "../../components/TextField/TextField";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import { resetPassword } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   const [toastOpen, setToastOpen] = React.useState(false);
@@ -109,7 +109,8 @@ const ForgetPassword = () => {
                 Enter the email associated with your account
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="email"
                   label="Email"
                   variant="outlined"
                   error={errors.email && touched.email}
@@ -118,7 +119,6 @@ const ForgetPassword = () => {
                   onChange={(event) => {
                     setFieldValue("email", event.target.value);
                   }}
-                  fullWidth
                 />
               </div>
               <div className="account-form-component">

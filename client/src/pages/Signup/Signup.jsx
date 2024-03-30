@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import CustomTextField from "../../components/TextField/TextField";
 import { useMobile } from "../../MobileContext";
 
 const Signup = () => {
@@ -67,7 +67,8 @@ const Signup = () => {
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
             <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="username"
                   label="Username"
                   variant="outlined"
                   error={errors.username && touched.username}
@@ -80,7 +81,8 @@ const Signup = () => {
                 />
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="email"
                   label="Email"
                   variant="outlined"
                   error={errors.email && touched.email}
@@ -93,7 +95,8 @@ const Signup = () => {
                 />
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="password"
                   label="Password"
                   variant="outlined"
                   type="password"
@@ -107,7 +110,8 @@ const Signup = () => {
                 />
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="confirmPassword"
                   label="Confirm Password"
                   variant="outlined"
                   type="password"
@@ -124,7 +128,8 @@ const Signup = () => {
               </div>
               <div className="account-form-component-with-optional-text">
                 <div className="account-optional-text">Optional</div>
-                <TextField
+                <CustomTextField
+                  name="phoneNumber"
                   label="Phone Number"
                   variant="outlined"
                   value={values.phoneNumber}
