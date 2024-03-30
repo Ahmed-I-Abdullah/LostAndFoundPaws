@@ -168,8 +168,6 @@ export const getSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -490,6 +488,11 @@ export const getPost = /* GraphQL */ `
       }
       species
       images
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       user {
         id
         username
@@ -785,8 +788,11 @@ export const getSighting = /* GraphQL */ `
         __typename
       }
       userID
-      email
-      phone
+      contactInfo {
+        email
+        phone
+        __typename
+      }
       sightingReports {
         nextToken
         __typename
@@ -818,8 +824,6 @@ export const listSightings = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner
@@ -850,8 +854,6 @@ export const sightingsByUser = /* GraphQL */ `
         image
         reporterType
         userID
-        email
-        phone
         createdAt
         updatedAt
         owner

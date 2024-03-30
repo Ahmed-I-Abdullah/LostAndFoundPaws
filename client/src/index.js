@@ -1,21 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme/theme.js'
-import { MobileProvider } from './MobileContext.jsx';
-import App from './App.js';
-import reportWebVitals from './reportWebVitals.js';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme/theme.js";
+import { MobileProvider } from "./MobileContext.jsx";
+import App from "./App.js";
+import reportWebVitals from "./reportWebVitals.js";
+import awsmobile from "./aws-exports.js";
+import { Amplify } from "aws-amplify";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+Amplify.configure(awsmobile);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <MobileProvider>
-          <App />
-        </MobileProvider>
-      </ThemeProvider>
-    </React.StrictMode>,
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <MobileProvider>
+        <App />
+      </MobileProvider>
+    </ThemeProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

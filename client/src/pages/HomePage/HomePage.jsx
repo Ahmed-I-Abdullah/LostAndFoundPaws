@@ -16,47 +16,64 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBar from "../../components/SideBar/SideBar";
 import "./HomePage.css";
 
-const postTypeOptions = [
-  { label: "All", color: theme.palette.custom.selectedCategory.view },
-  { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
-  { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
-];
-
-const viewOptions = [
-  {
-    label: "List View",
-    icon: <ListIcon />,
-    color: theme.palette.custom.selectedCategory.view,
-  },
-  {
-    label: "Map View",
-    icon: <MapIcon />,
-    color: theme.palette.custom.selectedCategory.view,
-  },
-];
-
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [selectedView, setSelectedView] = useState("List View");
 
-  const postTypeOptions = selectedView === "List View" ?
-    [
-      { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
-      { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-      { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
-    ] :
-    [
-      { label: "All", color: theme.palette.custom.selectedCategory.view },
-      { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
-      { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-      { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
-    ];
+  const postTypeOptions =
+    selectedView === "List View"
+      ? [
+          {
+            label: "Lost",
+            color: theme.palette.custom.selectedCategory.lost.light,
+          },
+          {
+            label: "Found",
+            color: theme.palette.custom.selectedCategory.found.light,
+          },
+          {
+            label: "Sighting",
+            color: theme.palette.custom.selectedCategory.sighting.light,
+          },
+        ]
+      : [
+          { label: "All", color: theme.palette.custom.selectedCategory.view },
+          {
+            label: "Lost",
+            color: theme.palette.custom.selectedCategory.lost.light,
+          },
+          {
+            label: "Found",
+            color: theme.palette.custom.selectedCategory.found.light,
+          },
+          {
+            label: "Sighting",
+            color: theme.palette.custom.selectedCategory.sighting.light,
+          },
+        ];
 
-  const [selectedType, setSelectedType] = useState(selectedView === "List View" ? "Lost": "All");
-  const initialSelectedIndex = postTypeOptions.findIndex(option => option.label === selectedType);
-  const [selectedTypeIndex, setSelectedTypeIndex] = useState(initialSelectedIndex);
+  const viewOptions = [
+    {
+      label: "List View",
+      icon: <ListIcon />,
+      color: theme.palette.custom.selectedCategory.view,
+    },
+    {
+      label: "Map View",
+      icon: <MapIcon />,
+      color: theme.palette.custom.selectedCategory.view,
+    },
+  ];
+
+  const [selectedType, setSelectedType] = useState(
+    selectedView === "List View" ? "Lost" : "All"
+  );
+  const initialSelectedIndex = postTypeOptions.findIndex(
+    (option) => option.label === selectedType
+  );
+  const [selectedTypeIndex, setSelectedTypeIndex] =
+    useState(initialSelectedIndex);
 
   const handlePostTypeToggle = (index) => {
     setSelectedType(postTypeOptions[index].label);

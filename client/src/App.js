@@ -1,17 +1,23 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import './App.css';
-import Navbar from './components/Navbar/Navbar';
-import NavbarBottom from './components/NavbarBottom/NavbarBottom';
-import HomePage from './pages/HomePage/HomePage';
-import Login from './pages/Login/Login';
-import Signup from './pages/Signup/Signup';
-import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
-import ResetPassword from './pages/ResetPassword/ResetPassword';
-import MyAccount from './pages/MyAccount/MyAccount';
-import CreatePostForm from './pages/CreatePost/CreatePost';
-import MyPostsAndComments from './pages/MyPostsAndComments/MyPostsAndComments';
-import ViewPostPage from './pages/ViewPost/ViewPostPage';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar/Navbar";
+import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
+import HomePage from "./pages/HomePage/HomePage";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import MyAccount from "./pages/MyAccount/MyAccount";
+import CreatePostForm from "./pages/CreatePost/CreatePost";
+import CreateSightingForm from "./pages/CreateSighting/CreateSighting";
+import MyPostsAndComments from "./pages/MyPostsAndComments/MyPostsAndComments";
+import ViewPostPage from "./pages/ViewPost/ViewPostPage";
 
 function App() {
   return (
@@ -24,7 +30,7 @@ function App() {
 //Need AppContent instead of putting everything in App because useLocation needs to be context from <Router>
 function AppContent() {
   const location = useLocation();
-  const noNavPages = ['/login', '/signup', '/forgotPassword', '/resetPassword'];
+  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword"];
   const showNav = !noNavPages.includes(location.pathname);
 
   return (
@@ -39,6 +45,7 @@ function AppContent() {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/myAccount" element={<MyAccount />} />
           <Route path="/createPost" element={<CreatePostForm />} />
+          <Route path="/createSighting" element={<CreateSightingForm />} />
           <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
           <Route path="/viewPost" element={<ViewPostPage />} />
         </Routes>
