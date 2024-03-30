@@ -82,7 +82,7 @@ const Login = () => {
                   }}
                   fullWidth
                 />
-                <Link to="/forgetPassword" className="forgot-password-link">
+                <Link to="/forgotPassword" className="forgot-password-link">
                   Forgot Password?
                 </Link>
               </div>
