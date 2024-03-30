@@ -55,7 +55,7 @@ const Login = () => {
           onSubmit={handleSubmit}
         >
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
-            <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
+            <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
                 <CustomTextField
                   name="emailOrUsername"

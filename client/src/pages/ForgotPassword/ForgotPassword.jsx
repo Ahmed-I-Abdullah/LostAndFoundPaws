@@ -104,7 +104,7 @@ const ForgotPassword = () => {
           onSubmit={handleSubmit}
         >
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
-            <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
+            <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
                 Enter the email associated with your account
               </div>
