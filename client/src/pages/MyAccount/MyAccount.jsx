@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditIcon from '@mui/icons-material/Edit';
+import Box from "@mui/material/Box"; // Import Box component
 import "../../sharedStyles/SharedStyles.css";
 import "./MyAccount.css";
 import Button from '@mui/material/Button';
@@ -26,12 +27,22 @@ const MyAccount = () => {
           <h1>My Account</h1>
           <div className="divider"></div>
         </div>
-        <div className="profile-picture-container">         
-          <AccountCircleIcon onClick={uploadPhotoPlaceholder} sx={{ fontSize: '200px'}} />
-          <IconButton onClick={uploadPhotoPlaceholder} className="profile-picture-edit-button-button-container" size="small">
-            <EditIcon sx={{ fontSize: '24px'}}/>
-          </IconButton>
-        </div>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
+          <AccountCircleIcon 
+            onClick={uploadPhotoPlaceholder} 
+            sx={{ fontSize: 200,
+              '&:hover': {cursor: 'pointer'
+            }}} 
+          />
+          <Box sx={{ position: 'absolute', transform: 'translate(175%, 175%)', borderRadius: '50%', backgroundColor: '#f5f5f5' }}>
+            <IconButton onClick={uploadPhotoPlaceholder} size="small">
+              <EditIcon sx={{ fontSize: 24 }}/>
+            </IconButton>
+          </Box>
+        </Box>
+
+
+
         <form>
           <div className="account-form-component">
             <TextField label="New Username" variant="outlined" fullWidth />
