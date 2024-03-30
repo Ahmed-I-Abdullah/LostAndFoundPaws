@@ -229,8 +229,8 @@ export default function UserCreateForm(props) {
         {...getOverrideProps(overrides, "role")}
       >
         <option
-          children="User"
-          value="USER"
+          children="Poster"
+          value="POSTER"
           {...getOverrideProps(overrides, "roleoption0")}
         ></option>
         <option

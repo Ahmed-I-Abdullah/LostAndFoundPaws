@@ -123,12 +123,12 @@ enum ReportReason {
 }
 
 enum Role {
-  USER
+  POSTER
   ADMIN
 }
 
 enum ReporterType {
-  USER
+  POSTER
   GUEST
 }
 
@@ -391,7 +391,6 @@ input DeleteUserInput {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
   updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
   deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
   createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post
@@ -411,6 +410,7 @@ type Mutation {
   createSightingReport(input: CreateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   updateSightingReport(input: UpdateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   deleteSightingReport(input: DeleteSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_cognito_user_pools
   createSighting(input: CreateSightingInput!, condition: ModelSightingConditionInput): Sighting @aws_api_key @aws_cognito_user_pools
 }
 

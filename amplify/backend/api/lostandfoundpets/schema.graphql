@@ -2,7 +2,7 @@ type User
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
@@ -178,12 +178,12 @@ enum ReportReason {
 }
 
 enum Role {
-  USER
+  POSTER
   ADMIN
 }
 
 enum ReporterType {
-  USER
+  POSTER
   GUEST
 }
 
