@@ -14,7 +14,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import theme from "../../theme/theme";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import { formatDistanceToNow } from "date-fns";
 
 const SightingCard = ({

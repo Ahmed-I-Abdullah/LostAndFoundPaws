@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMobile } from '../../MobileContext';
+import { useMobile } from '../../context/MobileContext';
 import UserMenu from '../UserMenu/UserMenu';
 import "./Navbar.css";
 import "../../sharedStyles/SharedStyles.css";

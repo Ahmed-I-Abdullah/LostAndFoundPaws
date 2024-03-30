@@ -11,7 +11,7 @@ import {
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchBar from "../SearchBar/SearchBar";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import CustomDropdown from "../DropDown/DropDown";
 import "./SideBar.css";
 import theme from "../../theme/theme";

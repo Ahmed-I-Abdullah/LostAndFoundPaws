@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { useMobile } from '../../MobileContext';
+import { useMobile } from '../../context/MobileContext';
 import './NavbarBottom.css';
 
 const NavbarBottom = () => {

@@ -8,7 +8,7 @@ import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 
 const Signup = () => {
   const { isMobile } = useMobile();

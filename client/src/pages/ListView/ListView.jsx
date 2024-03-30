@@ -2,7 +2,7 @@ import React from "react";
 import { Box, ButtonBase, Typography } from "@mui/material";
 import PetCard from "../../components/PetCard/PetCard";
 import SigthingCard from "../../components/SightingCard/SightingCard";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 
 const postsData = [
   {

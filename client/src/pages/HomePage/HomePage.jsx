@@ -10,7 +10,7 @@ import MapView from "../MapView/MapView";
 import ListView from "../ListView/ListView";
 import MapIcon from "@mui/icons-material/Map";
 import ListIcon from "@mui/icons-material/List";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBar from "../../components/SideBar/SideBar";

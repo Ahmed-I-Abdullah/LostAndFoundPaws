@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme/theme.js";
-import { MobileProvider } from "./MobileContext.jsx";
+import { MobileProvider } from "./context/MobileContext.jsx";
 import App from "./App.js";
 import reportWebVitals from "./reportWebVitals.js";
 import awsmobile from "./aws-exports.js";
