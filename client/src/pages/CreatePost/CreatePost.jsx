@@ -127,7 +127,7 @@ const CreatePostForm = () => {
   return (
     <Container
       className="create-post-container"
-      style={{ overflowY: isMobile ? "scroll" : "hidden" }}
+      style={{ overflowY: isMobile ? "scroll" : "hidden", marginBottom: 50 }}
     >
       <div className="create-post-header">
         <Typography variant="h2" fontWeight="bold" gutterBottom>
