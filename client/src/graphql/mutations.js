@@ -1,49 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      id
-      username
-      role
-      profilePicture
-      email
-      phone
-      createdAt
-      updatedAt
-      posts {
-        nextToken
-        __typename
-      }
-      postReports {
-        nextToken
-        __typename
-      }
-      sightings {
-        nextToken
-        __typename
-      }
-      sightingReports {
-        nextToken
-        __typename
-      }
-      comments {
-        nextToken
-        __typename
-      }
-      commentReports {
-        nextToken
-        __typename
-      }
-      owner
-      __typename
-    }
-  }
-`;
 export const updateUser = /* GraphQL */ `
   mutation UpdateUser(
     $input: UpdateUserInput!
@@ -903,6 +860,49 @@ export const deleteSightingReport = /* GraphQL */ `
       sightingID
       createdAt
       updatedAt
+      owner
+      __typename
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      username
+      role
+      profilePicture
+      email
+      phone
+      createdAt
+      updatedAt
+      posts {
+        nextToken
+        __typename
+      }
+      postReports {
+        nextToken
+        __typename
+      }
+      sightings {
+        nextToken
+        __typename
+      }
+      sightingReports {
+        nextToken
+        __typename
+      }
+      comments {
+        nextToken
+        __typename
+      }
+      commentReports {
+        nextToken
+        __typename
+      }
       owner
       __typename
     }
