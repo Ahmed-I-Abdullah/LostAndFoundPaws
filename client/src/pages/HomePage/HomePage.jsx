@@ -25,18 +25,18 @@ const listPostTypeOptions = [
   { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting }
 ];
 
-const viewOptions = [
-  {
-    label: "List View",
-    icon: <ListIcon />,
-    color: theme.palette.custom.selectedCategory.view,
-  },
-  {
-    label: "Map View",
-    icon: <MapIcon />,
-    color: theme.palette.custom.selectedCategory.view,
-  },
-];
+  const viewOptions = [
+    {
+      label: "List View",
+      icon: <ListIcon />,
+      color: theme.palette.custom.selectedCategory.view,
+    },
+    {
+      label: "Map View",
+      icon: <MapIcon />,
+      color: theme.palette.custom.selectedCategory.view,
+    },
+  ];
 
 const HomePageTemp = () => {
   const { isMobile } = useMobile();

@@ -8,10 +8,12 @@ import {
   CardMedia,
   Box,
   Button,
+  ButtonBase,
 } from "@mui/material";
 import theme from "../../theme/theme";
 import { useMobile } from "../../MobileContext";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useNavigate } from "react-router-dom";
 
 const PetCard = ({
   owner,
@@ -35,8 +37,14 @@ const PetCard = ({
     }
   };
   const { isMobile } = useMobile();
+  const navigate = useNavigate();
+
+  const handleClickOpen = () => {
+    navigate("/viewPost");
+  };
+
   return (
-    <Card sx={{ display: "flex", width: "95%", margin: "1rem auto" }}>
+    <Card sx={{ display: "flex", width: "95%", margin: "1rem auto" }} onClick={handleClickOpen}>
       <CardMedia
         component="img"
         sx={{ width: isMobile ? 100 : 150 }}

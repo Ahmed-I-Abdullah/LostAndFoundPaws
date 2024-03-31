@@ -27,7 +27,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
-import { useMobile } from "../../MobileContext";
+import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { useMobile } from '../../MobileContext';
+
 
 /* MOCK DATA START */
 const petName = "Nala";
@@ -62,6 +64,18 @@ const ViewPostPage = () => {
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const medium = useMediaQuery(theme.breakpoints.down("md"));
   const { isMobile, isMobileSmall } = useMobile();
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
+
+  const handleDeleteConfirmed = () => {
+    onDelete(petData.id);
+    setOpenConfirmDelete(false); // Close the dialog
+  };
+
+  const handleResolveConfirmed = () => {
+    onResolve(petData.id);
+    setOpenConfirmResolve(false); // Close the dialog
+  };
 
   const [goToSlide, setGoToSlide] = useState(0);
   const [offsetRadius] = useState(4);
@@ -181,76 +195,57 @@ const ViewPostPage = () => {
                 >
                   Report
                 </Button>
-              </div>
-            ) : (
-              <div>
-                {isMobile ? (
-                  <div>
-                    <div
-                      className="userMenuSection"
-                      onClick={handleMenu}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {!isMobile && (
-                        <span className="username">{"fakeUsername"}</span>
-                      )}
-                      <MoreHorizIcon sx={{ fontSize: "40px" }} />
-                    </div>
-                    <ActionsMenu
-                      anchorEl={anchorEl}
-                      open={open}
-                      handleClose={handleClose}
-                    />
+            </div>) : (
+              <div> 
+                {isMobile ? (<div>
+                  <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <MoreHorizIcon sx={{ fontSize: '40px' }} />
                   </div>
-                ) : (
-                  <div>
-                    <Button
-                      size={small ? "small" : "medium"}
-                      variant="contained"
-                      sx={{
-                        backgroundColor: theme.palette.custom.greyBkg.tag,
-                        borderRadius: 2,
-                        color: "#000",
-                        marginRight: "8px",
-                      }}
-                      startIcon={<CheckIcon />}
-                    >
-                      Mark as resolved
-                    </Button>
-                    <Button
-                      size={small ? "small" : "medium"}
-                      variant="contained"
-                      sx={{
-                        backgroundColor: theme.palette.custom.greyBkg.tag,
-                        borderRadius: 2,
-                        color: "#000",
-                        marginRight: "8px",
-                      }}
-                      startIcon={<EditIcon />}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size={small ? "small" : "medium"}
-                      variant="contained"
-                      sx={{
-                        backgroundColor: theme.palette.custom.greyBkg.tag,
-                        borderRadius: 2,
-                        color: "#000",
-                        marginRight: "8px",
-                      }}
-                      startIcon={<DeleteIcon />}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                )}
-              </div>
-            )}
+                  <ActionsMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+
+                </div>) : ( <div>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    onClick={() => setOpenConfirmResolve(true)}
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: '8px'
+                    }}
+                    startIcon={<CheckIcon />}
+                  >
+                    Mark as resolved
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: '8px'
+                    }}
+                    startIcon={<EditIcon />}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    color="error"
+                    onClick={() => setOpenConfirmDelete(true)}
+                    sx={{
+                      borderRadius: 2,
+                      marginRight: '8px'
+                    }}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete
+                  </Button>
+                </div>)}
+            </div>)}
           </Grid>
 
           <Grid item xs={12}>
@@ -384,6 +379,21 @@ const ViewPostPage = () => {
           onReport={handleReport}
         />
       )}
+    {/* Use the ConfirmDialog for delete confirmation */}
+    <ConfirmDialog
+      open={openConfirmDelete}
+      onClose={() => setOpenConfirmDelete(false)}
+      onConfirm={handleDeleteConfirmed}
+      title="Are you sure you want to delete this post?"
+    />
+
+    {/* Use the ConfirmDialog for ignore confirmation */}
+    <ConfirmDialog
+      open={openConfirmResolve}
+      onClose={() => setOpenConfirmResolve(false)}
+      onConfirm={handleResolveConfirmed}
+      title="Are you sure you want to mark this post as resolved?"
+    />
     </Container>
   );
 };
