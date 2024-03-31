@@ -1,6 +1,8 @@
 import React from "react";
 import { useMobile } from "../../context/MobileContext";
+import { useUser } from '../../context/UserContext';
 import { Link } from "react-router-dom";
+import { signIn  } from "aws-amplify/auth";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
@@ -9,9 +11,12 @@ import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const { assessUserState } = useUser();
 
   const initialValues = {
     email: "",
@@ -19,12 +24,22 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Email or username is required"),
+    email: Yup.string().required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    try {
+      console.log(values)
+      const username = values.email
+      const password = values.password
+      await signIn({ username, password }); // AWS calls email username because its dumb
+      await assessUserState();
+      navigate("/");
+    } catch (error) {
+      console.log('error signing in', error);
+      //TODO ADD TOAST ERROR
+    }
   };
 
   return (
@@ -58,8 +73,8 @@ const Login = () => {
             <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
                 <CustomTextField
-                  name="emailOrUsername"
-                  label="Email or Username"
+                  name="email"
+                  label="Email"
                   variant="outlined"
                   error={errors.email && touched.email}
                   helperText={touched.email ? errors.email : ""}

@@ -16,7 +16,7 @@ async function signupAndVerifyUsers() {
   var password = readlineSync.question("Enter password (at least 8 characters): ", { hideEchoBack: true });
   const username = email;
 
-  // //Ensure the password has at least 8 characters before signing up the user
+  //Ensure the password has at least 8 characters before signing up the user
   while (password.length<8) {
     password = readlineSync.question("Enter a valid password (at least 8 characters): ", { hideEchoBack: true });
   }
@@ -91,6 +91,7 @@ async function signupAndVerifyUsers() {
 
     console.log("Creating Application Admin User....");
     
+    //TODO ADD EXTRA FACTORS LIKE EMAIL AND STUFF LIKE THAT, THOUGH MAYBE EMAIL IS THIS. POINT IS MAKE MORE LIKE SIGN IN INCASE BAD STUFF HAPPENS
     const result = await client.graphql({
       query: mutations.createUser.replaceAll("__typename", ""),
       variables: {

@@ -1,6 +1,10 @@
 import React from "react";
+import { useMobile } from "../../context/MobileContext";
+import { useUser } from '../../context/UserContext';
+import { signUp  } from "aws-amplify/auth";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,10 +12,16 @@ import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
-import { useMobile } from "../../context/MobileContext";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const { assessUserState } = useUser();
+
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const initialValues = {
     username: "",
@@ -25,7 +35,7 @@ const Signup = () => {
     username: Yup.string().required("Username is required"),
     email: Yup.string()
       .email("Invalid email")
-      .required("Email or Username is required"),
+      .required("Email is required"),
     password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters long"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -33,8 +43,62 @@ const Signup = () => {
     phoneNumber: Yup.string().optional(),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+
+    const username = values.username
+    const password = values.password
+    const email = values.email
+    const phoneNumber = values.phoneNumber
+    const role = 'POSTER'
+
+    try {
+      const output = await signUp({
+        username: email, // AWS calls email username because its dumb
+        password: password,
+        options: {
+          userAttributes: {
+            email: email,
+            'custom:role': role // This is used for the post confirmation trigger to add the user to a cognito group
+          }
+        }
+      });
+
+      await assessUserState();
+
+      const { nextStep } = output;
+      switch (nextStep.signUpStep) {
+        case "CONFIRM_SIGN_UP":
+          const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+          console.log(
+            `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
+          );
+  
+          handleToastOpen(
+            "success",
+            `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
+          );
+  
+          setTimeout(() => {
+            navigate("/verifyAccount", { state: { username: username, password: password, email: email, phoneNumber: phoneNumber, role: role } });
+          }, 2000);
+          break;
+        case "DONE":
+          handleToastOpen("success", "Successfully verified password");
+          break;
+      }
+    } catch (error) {
+      console.log('error signing up:', error);
+    }
+  };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
   };
 
   return (
@@ -156,6 +220,12 @@ const Signup = () => {
           </span>
         </div>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 import HomePage from "./pages/HomePage/HomePage";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
+import VerifyAccount from "./pages/VerifyAccount/VerifyAccount"
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import MyAccount from "./pages/MyAccount/MyAccount";
@@ -41,6 +42,7 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/VerifyAccount" element={<VerifyAccount />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/myAccount" element={<MyAccount />} />

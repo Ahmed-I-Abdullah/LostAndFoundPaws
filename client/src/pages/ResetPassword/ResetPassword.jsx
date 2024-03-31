@@ -44,7 +44,7 @@ const ResetPassword = () => {
         confirmationCode: values.confirmationCode,
         newPassword: values.password,
       });
-      handleToastOpen("success", "Password updated successfully");
+      handleToastOpen("success", "Password updated");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -52,7 +52,7 @@ const ResetPassword = () => {
       console.error("Error changing password: ", error);
       handleToastOpen(
         "error",
-        "Error changing password. Please verify the code and try again"
+        "Error changing password."
       );
     }
   };

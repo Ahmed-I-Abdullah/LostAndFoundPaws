@@ -19,7 +19,6 @@ import AddressAutocompleteField from "../../components/AddressAutocompleteField/
 import { useMobile } from "../../context/MobileContext";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";
-//THIS THING IMPORTANT LOOK AT THIS
 import { getCurrentUser } from "aws-amplify/auth";
 import { uploadData } from "@aws-amplify/storage";
 import * as mutations from "../../graphql/mutations";
@@ -63,6 +62,7 @@ const CreatePostForm = () => {
     try {
         // Do not do this everywhere. We need to store the logged in user data globally
         // TODO maybe add this in like userContext
+        // still do this
         const user = await getCurrentUser();
 
         // Upload images to storage
