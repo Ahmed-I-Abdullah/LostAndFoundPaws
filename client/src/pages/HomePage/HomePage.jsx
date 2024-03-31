@@ -69,7 +69,6 @@ const HomePageTemp = () => {
           margin={"1rem auto"}
         >
           <Grid item xs={4} md={3} marginLeft={1}>
-            {console.log("list mobile")}
             <Toggle
               options={
                 isMobile

@@ -13,7 +13,7 @@ const StatusLabel = ({ status }) => {
       backgroundColor = theme.palette.custom.selectedCategory.found.dark;
       break;
     default:
-      backgroundColor = "grey";
+      backgroundColor = theme.palette.custom.greyBkg.tag;
   }
 
   return (
