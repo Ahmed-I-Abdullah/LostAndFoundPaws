@@ -3,8 +3,6 @@ import { useMobile } from "../../context/MobileContext";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { Formik, Form } from "formik";
-import { generateClient } from 'aws-amplify/api';
-import * as mutations from '../../graphql/mutations.js';
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
@@ -12,7 +10,7 @@ import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import CustomTextField from "../../components/TextField/TextField";
 import { useLocation, useNavigate } from "react-router-dom";
-import { confirmSignUp, signIn } from "aws-amplify/auth";
+import { confirmSignUp } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
 const VerifyAccount = () => {
@@ -23,10 +21,8 @@ const VerifyAccount = () => {
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
 
-  const client = generateClient({authMode: 'userPool'});
-
   // These are passed in from signup when navigating to VerifyAccount
-  const { username, password, email, phoneNumber, role } = location.state || {};
+  const { email } = location.state || {};
 
   const initialValues = {
     email: email,
@@ -44,37 +40,13 @@ const VerifyAccount = () => {
         username: values.email, confirmationCode: values.confirmationCode 
       });
     } catch (error) {
-      console.error("Error verifying account: ", error);
-      handleToastOpen(
-        "error",
-        "Error verifying account."
-      );
-    }
-    try {
-      const signInResponse = await signIn({
-        username: email,
-        password: password
-      });
-      
-      const result = await client.graphql({
-        query: mutations.createUser.replaceAll("__typename", ""),
-        variables: {
-          input: {
-            username: username,
-            email: email,
-            phone: phoneNumber,
-            role: role
-          }
-        },
-      });
 
       handleToastOpen("success", "account verified");
       setTimeout(() => {
         navigate("/");
       }, 2000);
 
-    } catch (error) {
-      console.error(`Error signing in and querying user: ${username}`, error);
+      console.error("Error verifying account: ", error);
       handleToastOpen(
         "error",
         "Error verifying account."

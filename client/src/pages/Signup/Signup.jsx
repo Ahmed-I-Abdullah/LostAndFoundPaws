@@ -5,6 +5,8 @@ import { signUp  } from "aws-amplify/auth";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
+import { generateClient } from 'aws-amplify/api';
+import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,6 +20,8 @@ const Signup = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   const { assessUserState } = useUser();
+
+  const client = generateClient({authMode: 'userPool'});
 
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
@@ -64,6 +68,19 @@ const Signup = () => {
       });
 
       await assessUserState();
+
+            
+      const result = await client.graphql({
+        query: mutations.createUser.replaceAll("__typename", ""),
+        variables: {
+          input: {
+            username: username,
+            email: email,
+            phone: phoneNumber,
+            role: role
+          }
+        },
+      });
 
       const { nextStep } = output;
       switch (nextStep.signUpStep) {
@@ -216,6 +233,12 @@ const Signup = () => {
             Already have an account?{" "}
             <Link to="/login" className="account-link">
               Log In
+            </Link>
+          </span>
+          <span>
+            Have an unverified account?{" "}
+            <Link to="/verifyAccount" className="account-link">
+              Verify Now
             </Link>
           </span>
         </div>

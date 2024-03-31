@@ -31,7 +31,7 @@ function App() {
 //Need AppContent instead of putting everything in App because useLocation needs to be context from <Router>
 function AppContent() {
   const location = useLocation();
-  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword"];
+  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword", "/verifyAccount"];
   const showNav = !noNavPages.includes(location.pathname);
 
   return (
@@ -42,7 +42,7 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/VerifyAccount" element={<VerifyAccount />} />
+          <Route path="/verifyAccount" element={<VerifyAccount />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/myAccount" element={<MyAccount />} />
