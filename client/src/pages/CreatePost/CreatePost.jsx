@@ -60,9 +60,6 @@ const CreatePostForm = () => {
 
   const handleSubmit = async (values) => {
     try {
-        // Do not do this everywhere. We need to store the logged in user data globally
-        // TODO maybe add this in like userContext
-        // still do this
         const user = await getCurrentUser();
 
         // Upload images to storage

@@ -15,7 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { confirmSignUp, signIn } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
-const ResetPassword = () => {
+const VerifyAccount = () => {
   const { isMobile } = useMobile();
   const location = useLocation();
   const navigate = useNavigate();
@@ -182,4 +182,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default VerifyAccount;

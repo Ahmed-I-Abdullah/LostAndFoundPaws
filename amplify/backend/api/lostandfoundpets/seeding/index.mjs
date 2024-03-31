@@ -92,6 +92,7 @@ async function signupAndVerifyUsers() {
     console.log("Creating Application Admin User....");
     
     //TODO ADD EXTRA FACTORS LIKE EMAIL AND STUFF LIKE THAT, THOUGH MAYBE EMAIL IS THIS. POINT IS MAKE MORE LIKE SIGN IN INCASE BAD STUFF HAPPENS
+    //STILL DO OR DELETE
     const result = await client.graphql({
       query: mutations.createUser.replaceAll("__typename", ""),
       variables: {
