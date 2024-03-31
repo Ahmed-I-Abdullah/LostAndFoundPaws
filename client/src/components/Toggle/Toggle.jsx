@@ -9,7 +9,7 @@ const Toggle = ({
 }) => {
   const [selectedSwitch, setSelectedSwitch] = useState(initialIndex);
   const [labelWidth, setLabelWidth] = useState("auto");
-  const [selectedColor, setSelectedColor] = useState(options[0].color);
+  const [selectedColor, setSelectedColor] = useState(options[initialIndex].color);
 
   useEffect(() => {
     const width = `${100 / options.length}%`;

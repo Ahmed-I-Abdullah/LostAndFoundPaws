@@ -36,7 +36,7 @@ const PetCard = ({
   };
   const { isMobile } = useMobile();
   return (
-    <Card sx={{ display: "flex", marginTop: "1rem", width: "100%" }}>
+    <Card sx={{ display: "flex", width: "95%", margin: "1rem auto" }}>
       <CardMedia
         component="img"
         sx={{ width: isMobile ? 100 : 150 }}
