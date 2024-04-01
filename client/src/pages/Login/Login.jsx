@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import CustomTextField from "../../components/TextField/TextField";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 
@@ -57,7 +57,8 @@ const Login = () => {
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
             <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="emailOrUsername"
                   label="Email or Username"
                   variant="outlined"
                   error={errors.email && touched.email}
@@ -70,7 +71,8 @@ const Login = () => {
                 />
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="password"
                   label="Password"
                   variant="outlined"
                   type="password"
@@ -82,7 +84,7 @@ const Login = () => {
                   }}
                   fullWidth
                 />
-                <Link to="/forgetPassword" className="forgot-password-link">
+                <Link to="/forgotPassword" className="forgot-password-link">
                   Forgot Password?
                 </Link>
               </div>

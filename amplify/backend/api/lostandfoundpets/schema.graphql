@@ -2,9 +2,9 @@ type User
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -30,7 +30,7 @@ type Post
     rules: [
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -44,6 +44,7 @@ type Post
   lastKnownLocation: Location
   species: PetSpecies!
   images: [String]
+  contactInfo: ContactInfo
   user: User @belongsTo(fields: ["userID"])
   userID: ID! @index(name: "byUser", queryField: "postsByUser")
   comments: [Comment] @hasMany(indexName: "byPost", fields: ["id"])
@@ -58,7 +59,7 @@ type Comment
     rules: [
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -82,7 +83,7 @@ type Sighting
     rules: [
       { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read] }
-      { allow: groups, operations: [create, update, read, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -91,17 +92,9 @@ type Sighting
   location: Location!
   reporterType: ReporterType! # distinguish between sightings by posters and guests
   user: User @belongsTo(fields: ["userID"]) # Optional if reported by a registered user
-  userID: ID @index(name: "byUser", queryField: "sightingsByUser") #This needs to be provided is user is authenitcated
-  email: String # Optional email for guest
-  phone: String # Optional phone number for guest
-  sightingReports: [SightingReport]
-    @hasMany(indexName: "bySighting", fields: ["id"])
-    @auth(
-      rules: [
-        { allow: owner, operations: [read, create] }
-        { allow: groups, operations: [read, delete, update, create], groups: ["ADMIN"] }
-      ]
-    )
+  userID: ID @index(name: "byUser", queryField: "sightingsByUser") # This needs to be provided is user is authenitcated
+  contactInfo: ContactInfo
+  sightingReports: [SightingReport] @hasMany(indexName: "bySighting", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -111,7 +104,7 @@ type PostReport
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -131,7 +124,7 @@ type CommentReport
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -151,7 +144,7 @@ type SightingReport
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: groups, operations: [create, read, update, delete], groups: ["ADMIN"] }
+      { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
     ]
   ) 
   {
@@ -173,6 +166,11 @@ type Location {
   address: String
 }
 
+type ContactInfo {
+  email: String!
+  phone: String
+}
+
 enum ReportReason {
   INAPPROPRIATE
   SPAM
@@ -180,12 +178,12 @@ enum ReportReason {
 }
 
 enum Role {
-  USER
+  POSTER
   ADMIN
 }
 
 enum ReporterType {
-  USER
+  POSTER
   GUEST
 }
 

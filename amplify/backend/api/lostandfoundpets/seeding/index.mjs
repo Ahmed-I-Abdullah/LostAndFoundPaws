@@ -6,7 +6,7 @@ import * as mutations from '../../../../../client/src/graphql/mutations.js';
 import readlineSync from 'readline-sync';
 
 Amplify.configure(awsmobile);
-const client = generateClient({authMode: 'apiKey'});
+const client = generateClient({authMode: 'userPool'});
 
 
 async function signupAndVerifyUsers() {
@@ -20,9 +20,11 @@ async function signupAndVerifyUsers() {
   while (password.length<8) {
     password = readlineSync.question("Enter a valid password (at least 8 characters): ", { hideEchoBack: true });
   }
+
+  let signUpResponse = null;
   try {
     // Attempt to sign up the user
-    const signUpResponse = await signUp({
+    signUpResponse = await signUp({
       username: username,
       password: password,
       options: {
@@ -95,7 +97,9 @@ async function signupAndVerifyUsers() {
       query: mutations.createUser.replaceAll("__typename", ""),
       variables: {
         input: {
+          id: signUpResponse.userId,
           username: username,
+          email: username,
           role: role
         }
       },

@@ -6,12 +6,20 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
+import CustomTextField from "../../components/TextField/TextField";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { resetPassword } from "aws-amplify/auth";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
-const ForgetPassword = () => {
+
+const ForgotPassword = () => {
+  const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const initialValues = {
     email: "",
@@ -21,8 +29,51 @@ const ForgetPassword = () => {
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    try {
+      const output = await resetPassword({ username: values.email });
+      handleResetPasswordNextSteps(output, values.email);
+    } catch (error) {
+      console.error("Error requesting password reset: ", error);
+      handleToastOpen(
+        "error",
+        "Error requesting password reset. Please try again later"
+      );
+    }
+  };
+
+  const handleResetPasswordNextSteps = async (output, email) => {
+    const { nextStep } = output;
+    switch (nextStep.resetPasswordStep) {
+      case "CONFIRM_RESET_PASSWORD_WITH_CODE":
+        const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+        console.log(
+          `Confirmation code was sent to ${codeDeliveryDetails.deliveryMedium}`
+        );
+
+        handleToastOpen(
+          "success",
+          `Confirmation code was sent to ${codeDeliveryDetails.deliveryMedium}`
+        );
+
+        setTimeout(() => {
+          navigate("/resetPassword", { state: { email: email } });
+        }, 2000);
+        break;
+      case "DONE":
+        handleToastOpen("success", "Successfully reset password");
+        break;
+    }
+  };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
   };
 
   return (
@@ -44,7 +95,7 @@ const ForgetPassword = () => {
             <img src={PawLogo} alt="Logo" />
             <span>LostAndFoundPaws</span>
           </div>
-          <h1>Forget Password</h1>
+          <h1>Forgot Password</h1>
           <div className="divider"></div>
         </div>
         <Formik
@@ -58,7 +109,8 @@ const ForgetPassword = () => {
                 Enter the email associated with your account
               </div>
               <div className="account-form-component">
-                <TextField
+                <CustomTextField
+                  name="email"
                   label="Email"
                   variant="outlined"
                   error={errors.email && touched.email}
@@ -67,7 +119,6 @@ const ForgetPassword = () => {
                   onChange={(event) => {
                     setFieldValue("email", event.target.value);
                   }}
-                  fullWidth
                 />
               </div>
               <div className="account-form-component">
@@ -87,8 +138,14 @@ const ForgetPassword = () => {
           </span>
         </div>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </div>
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;

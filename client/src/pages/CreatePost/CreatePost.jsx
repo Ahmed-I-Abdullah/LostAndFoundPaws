@@ -1,5 +1,13 @@
 import React from "react";
-import { Container, Grid, Typography, Button, useTheme } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  useTheme,
+  Snackbar,
+  MuiAlert,
+} from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { rgba } from "polished";
@@ -9,6 +17,12 @@ import CustomTextField from "../../components/TextField/TextField";
 import CustomDropdown from "../../components/DropDown/DropDown";
 import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 import { useMobile } from "../../MobileContext";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import { generateClient } from "aws-amplify/api";
+import { getCurrentUser } from "aws-amplify/auth";
+import { uploadData } from "@aws-amplify/storage";
+import * as mutations from "../../graphql/mutations";
+
 import "./CreatePost.css";
 
 const postTypeOptions = [
@@ -39,11 +53,81 @@ const FieldTitle = ({ title }) => {
 const CreatePostForm = () => {
   const theme = useTheme();
   const { isMobile } = useMobile();
+  const client = generateClient({ authMode: "userPool" });
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
+
+
+  const handleSubmit = async (values) => {
+    try {
+        // Do not do this everywhere. We need to store the logged in user data globally
+        const user = await getCurrentUser();
+
+        // Upload images to storage
+        const imageKeys = [];
+        for (const image of values.images) {
+            const imageKey = `images/${Date.now()}_${image.name}`;
+            await uploadData({
+                key: imageKey,
+                data: image,
+                options: {
+                    accessLevel: "guest", // Guests should be able to view the images
+                },
+            }).result;
+
+            imageKeys.push(imageKey);
+        }
+
+        // Store the data in the database
+        const postInput = {
+            name: values.name,
+            status: values.type.toUpperCase(),
+            gender: values.gender,
+            summary: values.summary,
+            description: values.description,
+            resolved: false,
+            lastKnownLocation: {
+                latitude: values.location.coordinates.latitude,
+                longitude: values.location.coordinates.longitude,
+                address: values.location.address,
+            },
+            species: values.species,
+            userID: user.userId,
+            images: imageKeys,
+            contactInfo: {
+                email: values.email || '',
+                phone: values.phoneNumber || '' 
+            }
+        };
+
+        await client.graphql({
+            query: mutations.createPost,
+            variables: { input: postInput },
+        });
+
+        handleToastOpen('success', 'Post created successfully');
+    } catch (error) {
+        console.error("Error creating post: ", error);
+        handleToastOpen('error', 'Error creating post. Please try again later');
+    }
+};
+
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+  
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
+  };
 
   return (
     <Container
       className="create-post-container"
-      style={{ overflowY: isMobile ? "scroll" : "hidden" }}
+      style={{ overflowY: isMobile ? "scroll" : "hidden", marginBottom: 50 }}
     >
       <div className="create-post-header">
         <Typography variant="h2" fontWeight="bold" gutterBottom>
@@ -76,14 +160,12 @@ const CreatePostForm = () => {
           phoneNumber: Yup.string().optional(),
           email: Yup.string()
             .email("Invalid email")
-            .required("Email is required"),
+            .optional(),
           images: Yup.array()
             .min(1, "At least one image is required")
             .required("Images are required"),
         })}
-        onSubmit={(values) => {
-          console.log("lollll: ", values);
-        }}
+        onSubmit={handleSubmit}
       >
         {({ errors, touched, handleSubmit, setFieldValue, values }) => (
           <Form onSubmit={handleSubmit}>
@@ -218,7 +300,7 @@ const CreatePostForm = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FieldTitle title="Email" />
+                  <FieldTitle title="Email (Optional)" />
                   <CustomTextField
                     name="email"
                     variant="outlined"
@@ -262,6 +344,12 @@ const CreatePostForm = () => {
           </Form>
         )}
       </Formik>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </Container>
   );
 };

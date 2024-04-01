@@ -46,7 +46,7 @@ const CreateSightingForm = () => {
           email: "",
         }}
         validationSchema={Yup.object().shape({
-          location: Yup.string().required("Sighting location is required"),
+          location: Yup.object().required("Sighting location is required"),
           phoneNumber: Yup.string().optional(),
           images: Yup.array()
             .min(1, "At least one image is required")
@@ -57,7 +57,7 @@ const CreateSightingForm = () => {
           console.log(values);
         }}
       >
-        {({ values, errors, touched, handleChange, handleSubmit }) => (
+        {({ values, errors, touched, setFieldValue, handleChange, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
             <Grid container spacing={theme.breakpoints.down("md") ? 4 : 6}>
               <Grid item container xs={12} md={6} spacing={4}>
@@ -70,8 +70,8 @@ const CreateSightingForm = () => {
                     error={errors.location && touched.location}
                     helperText={touched.location ? errors.location : ""}
                     value={values.location}
-                    onChange={(event) => {
-                      setFieldValue("location", event.target.value);
+                    onChange={(value) => {
+                      setFieldValue("location", value);
                     }}
                   />
                 </Grid>
