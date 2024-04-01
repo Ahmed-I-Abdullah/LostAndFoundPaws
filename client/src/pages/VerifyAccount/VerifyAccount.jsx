@@ -90,7 +90,7 @@ const VerifyAccount = () => {
             <img src={PawLogo} alt="Logo" />
             <span>LostAndFoundPaws</span>
           </div>
-          <h1>Reset Password</h1>
+          <h1>Verify Account</h1>
           <div className="divider"></div>
         </div>
         <Formik
@@ -101,7 +101,7 @@ const VerifyAccount = () => {
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
             <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
-                Set your new password
+                Enter your confirmation code
               </div>
               <div className="account-form-component">
                 <CustomTextField
