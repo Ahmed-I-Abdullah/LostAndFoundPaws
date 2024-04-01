@@ -75,7 +75,7 @@ const Signup = () => {
       await assessUserState();
  
       const result = await client.graphql({
-        query: mutations.createUserSimplified.replaceAll("__typename", ""),
+        query: mutations.createUserPoster.replaceAll("__typename", ""),
         variables: {
           input: {
             id: signUpResponse.userId,

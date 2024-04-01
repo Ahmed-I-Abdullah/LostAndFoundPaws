@@ -12,9 +12,9 @@ import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PawLogo from '../../sharedStyles/PawLogo.png';
 
-const client = generateClient({authMode: 'userPool'});
+const client = generateClient({authMode: 'apiKey'});
 
-const Navbar = () => {
+const Navbar = () => {  
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -35,7 +35,7 @@ const Navbar = () => {
     try {
       const user = await getCurrentUser();
       const result = await client.graphql({
-        query: queries.getUser,
+        query: queries.getUserPoster,
         variables: { id: user.userId }
       });
       setUsername(result.data.getUser.username)

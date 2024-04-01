@@ -52,7 +52,7 @@ const FieldTitle = ({ title }) => {
 const CreatePostForm = () => {
   const theme = useTheme();
   const { isMobile } = useMobile();
-  const client = generateClient({ authMode: "userPool" });
+  const client = generateClient({ authMode: "userPool" }); //May need to update to apiKey since poster accounts are not authorized
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");

@@ -1,5 +1,6 @@
 import React from "react";
 import { useMobile } from "../../context/MobileContext";
+import { useUser } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { Formik, Form } from "formik";
@@ -15,6 +16,8 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 const VerifyAccount = () => {
   const { isMobile } = useMobile();
+  const { assessUserState } = useUser();
+
   const location = useLocation();
   const navigate = useNavigate();
   const [toastOpen, setToastOpen] = React.useState(false);
@@ -41,9 +44,10 @@ const VerifyAccount = () => {
       await confirmSignUp({ 
         username: values.email, confirmationCode: values.confirmationCode 
       });
+      await assessUserState();
       handleToastOpen("success", "Account verified");
       setTimeout(() => {
-        navigate("/");
+        navigate("/Login");
       }, 2000);
     } catch (error) {
       console.error("Error verifying account: ", error);

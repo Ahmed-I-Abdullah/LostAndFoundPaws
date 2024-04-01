@@ -41,9 +41,28 @@ const Login = () => {
     try {
       const username = values.email
       const password = values.password
-      await signIn({ username, password }); // AWS calls email username because its dumb
-      await assessUserState();
-      navigate("/");
+      const signInResponse = await signIn({ username, password }); // AWS calls email username because its dumb
+      const { nextStep } = signInResponse;
+      switch (nextStep.signInStep) {
+        case "CONFIRM_SIGN_UP":
+          console.log(
+            `Verify account before logging in`
+          );
+  
+          handleToastOpen(
+            "error",
+            `Verify account before logging in`
+          );
+  
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
+          break;
+        case "DONE":
+          await assessUserState();
+          navigate("/");
+          break;
+      }
     } catch (error) {
       console.error("Error logging in: ", error);
       handleToastOpen(

@@ -908,9 +908,9 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
-//This is for creating user for unsigned in users API key
-export const createUserSimplified = /* GraphQL */ `
-  mutation CreateUserSimplified(
+//Posters do not have access to report related fields
+export const createUserPoster = /* GraphQL */ `
+  mutation CreateUserPoster(
     $input: CreateUserInput!
     $condition: ModelUserConditionInput
   ) {
@@ -923,6 +923,20 @@ export const createUserSimplified = /* GraphQL */ `
       phone
       createdAt
       updatedAt
+      posts {
+        nextToken
+        __typename
+      }
+      sightings {
+        nextToken
+        __typename
+      }
+      comments {
+        nextToken
+        __typename
+      }
+      owner
+      __typename
     }
   }
 `;
