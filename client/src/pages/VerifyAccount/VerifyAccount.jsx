@@ -41,13 +41,11 @@ const VerifyAccount = () => {
       await confirmSignUp({ 
         username: values.email, confirmationCode: values.confirmationCode 
       });
-    } catch (error) {
-
       handleToastOpen("success", "Account verified");
       setTimeout(() => {
         navigate("/");
       }, 2000);
-
+    } catch (error) {
       console.error("Error verifying account: ", error);
       handleToastOpen(
         "error",
