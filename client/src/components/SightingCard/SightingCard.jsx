@@ -45,10 +45,9 @@ const SightingCard = ({
           sx={{
             display: "flex",
             flexDirection: "column",
-            marginTop: "1rem",
-            marginRight: "2rem",
+            margin: isMobile ? "1rem 1rem" : "1rem 2rem",
             width: isMobile ? "38vw" : "20vw",
-            height: isMobile ? "25vh" : "auto",
+            height: isMobile ? "30vh" : "auto",
           }}
         >
           <CardMedia

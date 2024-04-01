@@ -16,36 +16,46 @@ const mapPostTypeOptions = [
   { label: "All", color: theme.palette.custom.selectedCategory.view },
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting }
+  {
+    label: "Sighting",
+    color: theme.palette.custom.selectedCategory.sighting.light,
+  },
 ];
 
 const listPostTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting }
+  {
+    label: "Sighting",
+    color: theme.palette.custom.selectedCategory.sighting.light,
+  },
 ];
 
-  const viewOptions = [
-    {
-      label: "List View",
-      icon: <ListIcon />,
-      color: theme.palette.custom.selectedCategory.view,
-    },
-    {
-      label: "Map View",
-      icon: <MapIcon />,
-      color: theme.palette.custom.selectedCategory.view,
-    },
-  ];
+const viewOptions = [
+  {
+    label: "List View",
+    icon: <ListIcon />,
+    color: theme.palette.custom.selectedCategory.view,
+  },
+  {
+    label: "Map View",
+    icon: <MapIcon />,
+    color: theme.palette.custom.selectedCategory.view,
+  },
+];
 
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const [selectedView, setSelectedView] = useState("List View");
-  const [selectedType, setSelectedType] = useState(selectedView === "List View"? "Lost": "All");
+  const [selectedType, setSelectedType] = useState(
+    selectedView === "List View" ? "Lost" : "All"
+  );
 
-  const [postTypeOptions, setPostTypeOptions] = useState(selectedView === "List View"? listPostTypeOptions: mapPostTypeOptions);
+  const [postTypeOptions, setPostTypeOptions] = useState(
+    selectedView === "List View" ? listPostTypeOptions : mapPostTypeOptions
+  );
 
   const handlePostTypeToggle = (index) => {
     setSelectedType(postTypeOptions[index].label);
@@ -53,8 +63,12 @@ const HomePageTemp = () => {
 
   const handleViewToggle = (index) => {
     setSelectedView(viewOptions[index].label);
-    setPostTypeOptions(viewOptions[index].label === "List View"? listPostTypeOptions: mapPostTypeOptions);
-    setSelectedType(viewOptions[index].label === "List View"? "Lost": "All");
+    setPostTypeOptions(
+      viewOptions[index].label === "List View"
+        ? listPostTypeOptions
+        : mapPostTypeOptions
+    );
+    setSelectedType(viewOptions[index].label === "List View" ? "Lost" : "All");
   };
 
   return (
@@ -64,9 +78,9 @@ const HomePageTemp = () => {
           container
           item
           xs={12}
-          justifyContent="space-between"
+          justifyContent={isSideBarOpen ? "flex-start" : "space-between"}
           width={"95%"}
-          margin={"1rem auto"}
+          margin={"1rem"}
         >
           <Grid item xs={4} md={3} marginLeft={1}>
             <Toggle
@@ -113,7 +127,13 @@ const HomePageTemp = () => {
               </Box>
             </>
           )}
-          <Grid item xs={isMobile?10:5} md={isMobile?6:4} margin={isMobile&&"auto"}>
+          <Grid
+            item
+            xs={isMobile ? 10 : 5}
+            md={isMobile ? 6 : 4}
+            margin={isMobile && "auto"}
+            marginLeft={isSideBarOpen ? "10vw" : ""}
+          >
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -151,10 +171,18 @@ const HomePageTemp = () => {
           item
           xs={12}
           justifyContent="space-between"
-          style={{ position: "absolute", zIndex: 2 }}
-          margin={1}
+          style={{ position: "absolute" }}
+          width={"95%"}
+          margin={"1rem"}
         >
-          <Grid item xs={4} md={3} marginLeft={1}>
+          <Grid
+            item
+            xs={4}
+            md={3}
+            marginLeft={1}
+            marginBottom={1}
+            style={{ zIndex: 2 }}
+          >
             <Toggle
               options={
                 isMobile
@@ -170,22 +198,24 @@ const HomePageTemp = () => {
           </Grid>
           {isMobile &&
             (!isSideBarOpen ? (
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                  color: `${theme.palette.text.primary}`,
-                  "&:hover": {
-                    backgroundColor: `${theme.palette.primary.main}`,
-                  },
-                  height: "30px",
-                  marginRight: "1rem",
-                }}
-                onClick={() => setIsSideBarOpen(true)}
-              >
-                <TuneIcon />
-                <Typography>All Filters</Typography>
-              </Button>
+              <Grid style={{ zIndex: 2 }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                    color: `${theme.palette.text.primary}`,
+                    "&:hover": {
+                      backgroundColor: `${theme.palette.primary.main}`,
+                    },
+                    height: "30px",
+                    marginRight: "1rem",
+                  }}
+                  onClick={() => setIsSideBarOpen(true)}
+                >
+                  <TuneIcon />
+                  <Typography>All Filters</Typography>
+                </Button>
+              </Grid>
             ) : (
               <SideBar
                 selectedView={selectedView}
@@ -197,7 +227,14 @@ const HomePageTemp = () => {
             xs={isMobile ? 10 : 5}
             md={isMobile ? 6 : 4}
             margin={isMobile && "auto"}
-            marginTop={isMobile && 11}
+            marginTop={isMobile && 14}
+            marginRight={50}
+            style={{
+              zIndex: 2,
+              position: isMobile && "fixed",
+              marginLeft: isMobile && "50px",
+              width: "100%",
+            }}
           >
             <Toggle
               options={postTypeOptions}
@@ -205,30 +242,37 @@ const HomePageTemp = () => {
               containerWidth={"100%"}
             />
           </Grid>
-          {!isMobile && (
-            <>
-              <div />
-              <div />
-            </>
-          )}
           {!isMobile &&
             (!isSideBarOpen ? (
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                  color: `${theme.palette.text.primary}`,
-                  "&:hover": {
-                    backgroundColor: `${theme.palette.primary.main}`,
-                  },
-                  height: "30px",
-                  marginRight: "1rem",
+              <Grid
+                item
+                container
+                xs={12}
+                justifyContent="flex-end"
+                style={{
+                  zIndex: 2,
+                  position: "fixed",
+                  right: 0,
+                  marginTop: 40,
                 }}
-                onClick={() => setIsSideBarOpen(true)}
               >
-                <TuneIcon />
-                <Typography>All Filters</Typography>
-              </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                    color: `${theme.palette.text.primary}`,
+                    "&:hover": {
+                      backgroundColor: `${theme.palette.primary.main}`,
+                    },
+                    height: "30px",
+                    marginRight: "1rem",
+                  }}
+                  onClick={() => setIsSideBarOpen(true)}
+                >
+                  <TuneIcon />
+                  <Typography>All Filters</Typography>
+                </Button>
+              </Grid>
             ) : (
               <SideBar
                 selectedView={selectedView}
@@ -241,7 +285,7 @@ const HomePageTemp = () => {
         <Box
           className="list-view"
           style={{
-            width: isSideBarOpen && !isMobile ? "calc(100vw - 425px)" : "auto",
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 390px)" : "auto",
           }}
         >
           <ListView selectedType={selectedType} />
