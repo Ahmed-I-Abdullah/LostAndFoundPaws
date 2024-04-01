@@ -40,12 +40,6 @@ const commentData = [
   },
 ];
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return date.toLocaleDateString("en-US", options);
-};
-
 const Comments = () => {
   const [commentreply, setCommentReply] = useState("");
   const [postCommentText, setPostCommentText] = useState("");

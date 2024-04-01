@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   TextField,
+  useMediaQuery
 } from "@mui/material";
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,6 +20,7 @@ import Modal from "@mui/material/Modal";
 import { useMobile } from "../../context/MobileContext";
 import "./CommentCard.css";
 import ReportPost from "../ReportPopup/ReportPopup";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 
 const CommentCard = ({
   owner,
@@ -41,11 +43,16 @@ const CommentCard = ({
   const [expandedComment, setExpandedComment] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
+  const small = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [openDelete, setOpenDelete] = React.useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+  const [openSave, setOpenSave] = useState(false);
+  const handleOpenSave = () => setOpenSave(true);
+  const handleCloseSave = () => setOpenSave(false);
 
   const isMobile = useMobile();
 
@@ -63,19 +70,37 @@ const CommentCard = ({
     //TODO: Implement Report Functionality
   };
 
+  const handleConfirmDelete = () => {
+    //TODO: Implement Delete Backend Logic
+    handleCloseDelete();
+  }
+
+  const handleConfirmSave = () => {
+    //TODO: Implement Save Backend Logic
+    handleCloseSave();
+  }
+
   return (
     <Box
-      className="posted-comment"
-      style={{
+      sx={{
         backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`,
-        padding: 7,
+        padding: "7px",
+        width: "95%",
+        margin: "1rem auto",
+        gridTemplateColumns: small ? "30% 70%" : "10% 90%",
+        borderRadius: "1rem",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100px",
+        display: "grid",
+        gap: "1rem"
       }}
     >
       <IconButton>
         <Avatar
           style={{
-            width: isMobile ? "50px" : "100px",
-            height: isMobile ? "50px" : "100px",
+            width: "50px",
+            height: "50px" ,
           }}
         >
           <PersonOutline />
@@ -152,6 +177,7 @@ const CommentCard = ({
                 <Button
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
+                  onClick={handleOpenSave}
                 >
                   <CheckIcon />
                   <Typography variant="h9">Save</Typography>
@@ -190,46 +216,18 @@ const CommentCard = ({
           )}
         </Box>
       </Box>
-      <Modal
+      <ConfirmDialog
         open={openDelete}
         onClose={handleCloseDelete}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "60%",
-            backgroundColor: `${theme.palette.custom.primaryBkg}`,
-            borderRadius: "1rem",
-            boxShadow: 24,
-            p: 4,
-            textAlign: "center",
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to delete this comment?
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              width: "80%",
-              margin: "auto",
-              gap: "1rem",
-            }}
-          >
-            <Button variant="outlined" fullWidth onClick={handleCloseDelete}>
-              No
-            </Button>
-            <Button variant="contained" fullWidth>
-              Yes
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+        onConfirm={handleConfirmDelete}
+        title="Are you sure you want to delete this comment?"
+      />
+      <ConfirmDialog
+        open={openSave}
+        onClose={handleCloseSave}
+        onConfirm={handleConfirmSave}
+        title="Are you sure you want to save this comment change?"
+      />
       {isReportModalOpen && (
         <ReportPost
           contentType="comment"

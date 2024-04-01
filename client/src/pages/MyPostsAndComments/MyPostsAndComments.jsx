@@ -104,11 +104,13 @@ const MyPostsAndComments = () => {
 
   return (
     <Box className="my-content">
-      <Toggle
-        options={contentTypeOptions}
-        onToggleCallback={handleContentTypeToggle}
-        containerWidth={"100%"}
-      />
+      <Box width={"95%"} margin={"auto"}>
+        <Toggle
+          options={contentTypeOptions}
+          onToggleCallback={handleContentTypeToggle}
+          containerWidth={"100%"}
+        />
+      </Box>
       {selectedType.toLowerCase() === "comments"
         ? commentData.map((comment, index) => (
             <CommentCard

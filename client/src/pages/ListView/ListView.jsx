@@ -96,7 +96,7 @@ const ListView = ({ selectedType }) => {
     >
       {selectedType !== "Sighting"
         ? filteredPosts.map((post, index) => (
-            <Box sx={{ width: "100%" }}>
+            <Box sx={{ width: "100%" }} key={index}>
               <PetCard
                 key={index}
                 owner={false} //TODO: Check if the user logged in is the owner
