@@ -28,13 +28,54 @@ body {
   }
 }
 
-.popup-button {
-  color: black;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
+.popup-card {
+  width: auto;
+  height: auto;
+  background-color: white;
   border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.popup-image {
+  width: 150px;
+  height: 100px;
+  margin-right: 10px;
+}
+
+.popup-content {
+  width: 140px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  margin: "10px";
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  margin: 5px 0px 5px 0px;
+  width: 70px;
+  height: 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.arrow {
+  display: flex;
+  position: fixed;
+  right: 15px;
+  bottom: 75px;
+}
+
+.arrow-image {
+  width: 20px;
+  height: 20px;
 }

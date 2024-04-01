@@ -82,6 +82,29 @@ const HomePageTemp = () => {
   const handleViewToggle = (index) => {
     setSelectedTypeIndex(0);
     setSelectedView(viewOptions[index].label);
+    // const newView = viewOptions[index].label;
+    // setSelectedView(newView);
+    // console.log("newView: ", newView);
+
+    // if (
+    //   newView === "Map View" &&
+    //   ["Lost", "Found", "Sighting"].includes(selectedType)
+    // ) {
+    //   const typeIndex = postTypeOptions.findIndex(
+    //     (option) => option.label === selectedType
+    //   );
+    //   console.log("typeIndex: ", typeIndex);
+    //   setSelectedTypeIndex(typeIndex + 1); // Adjust index for "All" option in "Map View"
+    //   console.log("selectedTypeIndex: ", typeIndex + 1);
+    // } else if (
+    //   newView === "List View" &&
+    //   ["All", "Lost", "Found", "Sighting"].includes(selectedType)
+    // ) {
+    //   const typeIndex = postTypeOptions.findIndex(
+    //     (option) => option.label === selectedType
+    //   );
+    //   setSelectedTypeIndex(typeIndex > 0 ? typeIndex - 1 : 0); // Adjust index for absence of "All" option in "List View"
+    // }
   };
 
   return (
@@ -245,7 +268,7 @@ const HomePageTemp = () => {
           style={{ position: "absolute", zIndex: 2 }}
           margin={1}
         >
-          <Grid item xs={4} md={3} marginLeft={1}>
+          <Grid item xs={4} md={3} marginLeft={1} marginBottom={1}>
             <Toggle
               options={viewOptions}
               onToggleCallback={handleViewToggle}
@@ -253,7 +276,7 @@ const HomePageTemp = () => {
               initialIndex={1}
             />
           </Grid>
-          <Grid item xs={5} md={4}>
+          <Grid item xs={5} md={4} marginRight={60}>
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -261,8 +284,6 @@ const HomePageTemp = () => {
               initialIndex={selectedTypeIndex}
             />
           </Grid>
-          <div />
-          <div />
           {!isSideBarOpen && (
             <Grid
               item
@@ -301,10 +322,12 @@ const HomePageTemp = () => {
         <Box
           className="list-view"
           style={{
-            width: isSideBarOpen && !isMobile ? "calc(100vw - 425px)" : "auto",
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 440px)" : "auto",
           }}
         >
-          <ListView selectedType={selectedType} />
+          <ListView
+            selectedType={selectedType === "All" ? "Lost" : selectedType}
+          />
         </Box>
       ) : (
         <MapView selectedType={selectedType} />
