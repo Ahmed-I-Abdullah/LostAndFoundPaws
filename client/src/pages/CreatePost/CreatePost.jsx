@@ -9,6 +9,7 @@ import {
   MuiAlert,
 } from "@mui/material";
 import { Formik, Form } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { rgba } from "polished";
 import Toggle from "../../components/Toggle/Toggle";
@@ -53,6 +54,7 @@ const FieldTitle = ({ title }) => {
 const CreatePostForm = () => {
   const theme = useTheme();
   const { isMobile } = useMobile();
+  const navigate = useNavigate();
   const client = generateClient({ authMode: "userPool" }); //May need to update to apiKey since poster accounts are not authorized
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
@@ -104,6 +106,9 @@ const CreatePostForm = () => {
       });
 
       handleToastOpen("success", "Post created successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.error("Error creating post: ", error);
       handleToastOpen("error", "Error creating post. Please try again later");

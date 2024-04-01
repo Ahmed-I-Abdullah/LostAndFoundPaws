@@ -321,7 +321,6 @@ input ModelUserFilterInput {
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
-  owner: ModelStringInput
 }
 
 type Query {
@@ -363,7 +362,6 @@ input ModelUserConditionInput {
   and: [ModelUserConditionInput]
   or: [ModelUserConditionInput]
   not: ModelUserConditionInput
-  owner: ModelStringInput
 }
 
 input CreateUserInput {
@@ -427,7 +425,6 @@ input ModelSubscriptionUserFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionUserFilterInput]
   or: [ModelSubscriptionUserFilterInput]
-  owner: ModelStringInput
 }
 
 type Subscription {
@@ -501,7 +498,6 @@ input ModelPostFilterInput {
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
   not: ModelPostFilterInput
-  owner: ModelStringInput
 }
 
 input ModelPostConditionInput {
@@ -519,7 +515,6 @@ input ModelPostConditionInput {
   and: [ModelPostConditionInput]
   or: [ModelPostConditionInput]
   not: ModelPostConditionInput
-  owner: ModelStringInput
 }
 
 input CreatePostInput {
@@ -575,7 +570,6 @@ input ModelSubscriptionPostFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionPostFilterInput]
   or: [ModelSubscriptionPostFilterInput]
-  owner: ModelStringInput
 }
 
 type ModelCommentConnection @aws_api_key @aws_cognito_user_pools {
@@ -594,7 +588,6 @@ input ModelCommentFilterInput {
   and: [ModelCommentFilterInput]
   or: [ModelCommentFilterInput]
   not: ModelCommentFilterInput
-  owner: ModelStringInput
 }
 
 input ModelCommentConditionInput {
@@ -607,7 +600,6 @@ input ModelCommentConditionInput {
   and: [ModelCommentConditionInput]
   or: [ModelCommentConditionInput]
   not: ModelCommentConditionInput
-  owner: ModelStringInput
 }
 
 input CreateCommentInput {
@@ -644,7 +636,6 @@ input ModelSubscriptionCommentFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionCommentFilterInput]
   or: [ModelSubscriptionCommentFilterInput]
-  owner: ModelStringInput
 }
 
 type ModelSightingConnection @aws_api_key @aws_cognito_user_pools {
@@ -667,7 +658,6 @@ input ModelSightingFilterInput {
   and: [ModelSightingFilterInput]
   or: [ModelSightingFilterInput]
   not: ModelSightingFilterInput
-  owner: ModelStringInput
 }
 
 input ModelSightingConditionInput {
@@ -679,7 +669,6 @@ input ModelSightingConditionInput {
   and: [ModelSightingConditionInput]
   or: [ModelSightingConditionInput]
   not: ModelSightingConditionInput
-  owner: ModelStringInput
 }
 
 input CreateSightingInput {
@@ -717,7 +706,6 @@ input ModelSubscriptionSightingFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionSightingFilterInput]
   or: [ModelSubscriptionSightingFilterInput]
-  owner: ModelStringInput
 }
 
 type ModelPostReportConnection @aws_api_key @aws_cognito_user_pools {
@@ -741,7 +729,6 @@ input ModelPostReportFilterInput {
   and: [ModelPostReportFilterInput]
   or: [ModelPostReportFilterInput]
   not: ModelPostReportFilterInput
-  owner: ModelStringInput
 }
 
 input ModelPostReportConditionInput {
@@ -754,7 +741,6 @@ input ModelPostReportConditionInput {
   and: [ModelPostReportConditionInput]
   or: [ModelPostReportConditionInput]
   not: ModelPostReportConditionInput
-  owner: ModelStringInput
 }
 
 input CreatePostReportInput {
@@ -791,7 +777,6 @@ input ModelSubscriptionPostReportFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionPostReportFilterInput]
   or: [ModelSubscriptionPostReportFilterInput]
-  owner: ModelStringInput
 }
 
 type ModelCommentReportConnection @aws_api_key @aws_cognito_user_pools {
@@ -810,7 +795,6 @@ input ModelCommentReportFilterInput {
   and: [ModelCommentReportFilterInput]
   or: [ModelCommentReportFilterInput]
   not: ModelCommentReportFilterInput
-  owner: ModelStringInput
 }
 
 input ModelCommentReportConditionInput {
@@ -823,7 +807,6 @@ input ModelCommentReportConditionInput {
   and: [ModelCommentReportConditionInput]
   or: [ModelCommentReportConditionInput]
   not: ModelCommentReportConditionInput
-  owner: ModelStringInput
 }
 
 input CreateCommentReportInput {
@@ -860,7 +843,6 @@ input ModelSubscriptionCommentReportFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionCommentReportFilterInput]
   or: [ModelSubscriptionCommentReportFilterInput]
-  owner: ModelStringInput
 }
 
 type ModelSightingReportConnection @aws_api_key @aws_cognito_user_pools {
@@ -879,7 +861,6 @@ input ModelSightingReportFilterInput {
   and: [ModelSightingReportFilterInput]
   or: [ModelSightingReportFilterInput]
   not: ModelSightingReportFilterInput
-  owner: ModelStringInput
 }
 
 input ModelSightingReportConditionInput {
@@ -892,7 +873,6 @@ input ModelSightingReportConditionInput {
   and: [ModelSightingReportConditionInput]
   or: [ModelSightingReportConditionInput]
   not: ModelSightingReportConditionInput
-  owner: ModelStringInput
 }
 
 input CreateSightingReportInput {
@@ -929,5 +909,4 @@ input ModelSubscriptionSightingReportFilterInput {
   updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionSightingReportFilterInput]
   or: [ModelSubscriptionSightingReportFilterInput]
-  owner: ModelStringInput
 }

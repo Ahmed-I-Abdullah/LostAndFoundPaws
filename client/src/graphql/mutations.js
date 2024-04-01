@@ -113,18 +113,6 @@ export const createPost = /* GraphQL */ `
         phone
         __typename
       }
-      user {
-        id
-        username
-        role
-        profilePicture
-        email
-        phone
-        createdAt
-        updatedAt
-        owner
-        __typename
-      }
       userID
       comments {
         nextToken
