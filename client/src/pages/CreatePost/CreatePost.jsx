@@ -62,9 +62,7 @@ const CreatePostForm = () => {
     try {
       const user = await getCurrentUser();
 
-      // Upload images to storage
-      const imageKeys = [];
-      for (const image of values.images) {
+      const uploadTasks = values.images.map(async (image) => {
         const imageKey = `images/${Date.now()}_${image.name}`;
         await uploadData({
           key: imageKey,
@@ -73,9 +71,10 @@ const CreatePostForm = () => {
             accessLevel: "guest", // Guests should be able to view the images
           },
         }).result;
-
-        imageKeys.push(imageKey);
-      }
+        return imageKey;
+      });
+  
+      const imageKeys = await Promise.all(uploadTasks);
 
       // Store the data in the database
       const postInput = {
