@@ -5,6 +5,7 @@ type User
       { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
+      { allow: groups, operations: [read], groups: ["Poster"] }
     ]
   ) 
   {
@@ -31,6 +32,7 @@ type Post
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
+      { allow: groups, operations: [create, read], groups: ["Poster"] }
     ]
   ) 
   {
@@ -60,6 +62,7 @@ type Comment
       { allow: public, operations: [read] }
       { allow: owner, operations: [create, update, read] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
+      { allow: groups, operations: [create, read], groups: ["Poster"] }
     ]
   ) 
   {
@@ -84,6 +87,7 @@ type Sighting
       { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
+      { allow: groups, operations: [create, read], groups: ["Poster"] }
     ]
   ) 
   {
@@ -105,6 +109,7 @@ type PostReport
     rules: [
       { allow: owner, operations: [create, read] }
       { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
+      { allow: groups, operations: [create], groups: ["Poster"] }
     ]
   ) 
   {
@@ -125,6 +130,7 @@ type CommentReport
     rules: [
       { allow: owner, operations: [create, read] }
       { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
+      { allow: groups, operations: [create], groups: ["Poster"] }
     ]
   ) 
   {
@@ -145,6 +151,7 @@ type SightingReport
     rules: [
       { allow: owner, operations: [create, read] }
       { allow: groups, operations: [create, read, update, delete], groups: ["Admin"] }
+      { allow: groups, operations: [create], groups: ["Poster"] }
     ]
   ) 
   {

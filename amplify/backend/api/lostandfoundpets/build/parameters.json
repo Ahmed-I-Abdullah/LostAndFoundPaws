@@ -2,7 +2,6 @@
     "AppSyncApiName": "lostandfoundpets",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": false,
-    "AuthModeLastUpdated": "2024-03-20T05:12:15.631Z",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
             "authlostandfoundpetsfd158904",
@@ -10,5 +9,5 @@
         ]
     },
     "S3DeploymentBucket": "amplify-lostandfoundpets-staging-234006-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/91cd9608d04bcdf012c61606dadd8e85f1248732"
+    "S3DeploymentRootKey": "amplify-appsync-files/8c4a81a1d33790a90ed4c713ac8e9f0f2b1759bb"
 }
