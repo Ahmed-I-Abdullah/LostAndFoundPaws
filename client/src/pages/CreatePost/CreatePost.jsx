@@ -134,10 +134,10 @@ const CreatePostForm = () => {
         justifyContent="space-between"
         className="create-post-header"
       >
-        <Grid item xs={2} sm={1}>
+        <Grid item xs={12}>
+          <div style={{marginBottom: '10px'}}>
           <ArrowBackButton onClick={() => {}} />
-        </Grid>
-        <Grid item xs={8} sm={10}>
+          </div>
           <div>
             <Typography variant="h2" fontWeight="bold" gutterBottom>
               Create Post
@@ -367,7 +367,6 @@ const CreatePostForm = () => {
             handleClose={handleToastClose}
           />
         </Grid>
-        <Grid item xs={2} sm={1}></Grid>
       </Grid>
     </Container>
   );
