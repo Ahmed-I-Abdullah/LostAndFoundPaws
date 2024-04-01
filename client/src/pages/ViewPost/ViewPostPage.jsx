@@ -26,7 +26,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
 import { useParams } from "react-router-dom";
 import { downloadData } from "@aws-amplify/storage";
