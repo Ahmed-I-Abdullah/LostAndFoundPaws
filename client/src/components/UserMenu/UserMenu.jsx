@@ -68,7 +68,6 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
       <Divider />
       <MenuItem onClick={handleClose}>
         <Button variant="text" onClick={logoutUser} fullWidth> Log Out </Button>
-        <Button variant="outlined" href="login">Temp Login</Button>
       </MenuItem>
     </Menu>
   );

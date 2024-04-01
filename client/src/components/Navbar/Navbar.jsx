@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMobile } from '../../context/MobileContext';
+import { useUser } from '../../context/UserContext';
 import UserMenu from '../UserMenu/UserMenu';
 import "./Navbar.css";
 import "../../sharedStyles/SharedStyles.css";
@@ -20,10 +21,10 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const fakeLogin = true;
-  const isAdmin = false;
-
   const { isMobile, isMobileSmall } = useMobile();
+  const { userState } = useUser();
+
+  console.log(userState);
 
   return (
     <div className="navbar">
@@ -34,33 +35,30 @@ const Navbar = () => {
       </Link>
       </div>
       <div className="navbarRight">
-        {!isMobile && <div>
-          {isAdmin ? (
-            <div className="userActionSection"> 
-              <Button variant="contained" href="createSighting">View Reportings</Button>
-            </div> 
-          ) :
-          ( 
-            <div className="userActionSection">
-              <Button variant="outlined" href="createSighting">Report Sighting</Button>
-              <Button variant="contained" href="createPost">Report Pet</Button>
-            </div>
-          )}
-        </div>}
-        <div className="userSection">
-          {/* TODO ADD VALID CHECKS FOR WHETHER USER IS LOGGED IN/ADMIN */}
-          {fakeLogin ? (
-            <>
-              <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
-                  <AccountCircleIcon sx={{ fontSize: '40px' }} />
+        {userState != "Guest" ? (<>
+          {!isMobile && <div>
+            {userState == "Admin" ? (
+              <div className="userActionSection"> 
+                <Button variant="contained" href="createSighting">View Reportings</Button>
+              </div> 
+            ) :
+            ( 
+              <div className="userActionSection">
+                <Button variant="outlined" href="createSighting">Report Sighting</Button>
+                <Button variant="contained" href="createPost">Report Pet</Button>
               </div>
-              <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
-            </>
-          ) : (
+            )}
+          </div>}
+          <div className="userSection">
+            <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                {!isMobile && (<span className="username">{"fakeUsername"}</span>)} 
+                <AccountCircleIcon sx={{ fontSize: '40px' }} />
+            </div>
+            <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+          </div>
+        </>) : (
             <Button variant="outlined" href="login">Log In</Button>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );

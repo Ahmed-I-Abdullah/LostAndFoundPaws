@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
       console.log("Logged In");
       console.log(user);
       //TODO UPDATE THIS FOR ADMIN CHECKS WHEN FIGURE OUT HOW
-      setUserState('Poster');
+      setUserState('Admin');
     } catch (error) {
       console.log("Not Logged In");
       setUserState('Guest');
