@@ -78,12 +78,9 @@ const sightingsData = [
 
 const ListView = ({ selectedType }) => {
   const { isMobile } = useMobile();
-  const filteredPosts =
-    selectedType !== "All"
-      ? postsData.filter(
-          (post) => post.status.toLowerCase() === selectedType.toLowerCase()
-        )
-      : postsData;
+  const filteredPosts = postsData.filter(
+    (post) => post.status.toLowerCase() === selectedType.toLowerCase()
+  );
 
   return (
     <Box
