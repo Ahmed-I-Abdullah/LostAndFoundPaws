@@ -19,6 +19,7 @@ import CreatePostForm from "./pages/CreatePost/CreatePost";
 import CreateSightingForm from "./pages/CreateSighting/CreateSighting";
 import MyPostsAndComments from "./pages/MyPostsAndComments/MyPostsAndComments";
 import ViewPostPage from "./pages/ViewPost/ViewPostPage";
+import ViewReportsPage from "./pages/ViewReportings/ViewReportings";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function AppContent() {
           <Route path="/createPost" element={<CreatePostForm />} />
           <Route path="/createSighting" element={<CreateSightingForm />} />
           <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
+          <Route path="/viewReports" element={<ViewReportsPage />} />
           <Route path="/pets/:id" element={<ViewPostPage />} />
         </Routes>
       </div>

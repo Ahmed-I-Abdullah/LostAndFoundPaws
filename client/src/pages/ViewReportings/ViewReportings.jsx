@@ -9,9 +9,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import Toggle from "../../components/Toggle/Toggle";
 import MapView from "../MapView/MapView";
 import ReportView from "../ReportView/ReportView";
-import MapIcon from "@mui/icons-material/Map";
-import ListIcon from "@mui/icons-material/List";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBar from "../../components/SideBar/SideBar";
@@ -23,7 +21,7 @@ const postTypeOptions = [
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
 ];
 
-const HomePageTemp = () => {
+const ViewReportsPage = () => {
   const { isMobile } = useMobile();
 
   const [selectedType, setSelectedType] = useState("Lost");
@@ -138,4 +136,4 @@ const HomePageTemp = () => {
   );
 };
 
-export default HomePageTemp;
+export default ViewReportsPage;
