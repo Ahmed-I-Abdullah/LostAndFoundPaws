@@ -64,7 +64,7 @@ const Navbar = () => {
           {!isMobile && <div>
             {userState == "Admin" ? (
               <div className="userActionSection"> 
-                <Button variant="contained" href="createSighting">View Reportings</Button>
+                <Button variant="contained" onClick={() => navigate("/viewReportings")}>View Reportings</Button>
               </div> 
             ) :
             ( 
