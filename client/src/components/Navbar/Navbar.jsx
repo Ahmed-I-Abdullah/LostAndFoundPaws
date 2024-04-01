@@ -4,6 +4,7 @@ import { useUser } from '../../context/UserContext';
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser  } from "aws-amplify/auth";
 import * as queries from '../../graphql/queries.js';
+import { useNavigate } from 'react-router-dom';
 import UserMenu from '../UserMenu/UserMenu';
 import "./Navbar.css";
 import "../../sharedStyles/SharedStyles.css";
@@ -17,6 +18,7 @@ const client = generateClient({authMode: 'apiKey'});
 const Navbar = () => {  
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const { isMobile, isMobileSmall } = useMobile();
   const { userState } = useUser();
@@ -67,8 +69,8 @@ const Navbar = () => {
             ) :
             ( 
               <div className="userActionSection">
-                <Button variant="outlined" href="createSighting">Report Sighting</Button>
-                <Button variant="contained" href="createPost">Report Pet</Button>
+                <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
+                <Button variant="contained" onClick={() => navigate("/createPost")}>Report Pet</Button>
               </div>
             )}
           </div>}

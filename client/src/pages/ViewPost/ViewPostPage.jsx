@@ -9,6 +9,7 @@ import {
   IconButton,
   Divider,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Carousel from "react-spring-3d-carousel";
 import { config } from "react-spring";
@@ -25,13 +26,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
 import { useParams } from "react-router-dom";
 import { downloadData } from "@aws-amplify/storage";
 import * as queries from "../../graphql/queries";
 import CircularProgress from "@mui/material/CircularProgress";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
 
 // Toggle between admin and regular view for now
 const isAdmin = false;
@@ -46,6 +48,7 @@ const SectionTitle = ({ title }) => {
 
 const ViewPostPage = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { isMobile } = useMobile();
   const client = generateClient({ authMode: "apiKey" });
@@ -218,19 +221,20 @@ const ViewPostPage = () => {
           item
           xs={12}
           md={8}
-          spacing={1}
+          spacing={2}
           style={
             !medium
               ? { paddingRight: "5%", marginBottom: 20 }
               : { marginBottom: 20 }
           }
         >
-          <Grid item xs={2}>
-            <Typography variant="h1" sx={{ fontWeight: "bold" }}>
+          <Grid item container alignItems="center" xs={10} md={3} lg={3}>
+          <ArrowBackButton onClick={() => navigate("/")}/>
+            <Typography variant="h1" sx={{ fontWeight: "bold", marginLeft: '20px' }}>
               {petData.name}
             </Typography>
           </Grid>
-          <Grid item xs={10} container justifyContent="flex-end">
+          <Grid item xs={2} md={9} lg={9} container justifyContent="flex-end">
             {!isAdmin ? (
               <div>
                 <Button
@@ -250,7 +254,7 @@ const ViewPostPage = () => {
               </div>
             ) : (
               <div>
-                {isMobile ? (
+                {medium ? (
                   <div>
                     <div
                       className="userMenuSection"
@@ -270,9 +274,9 @@ const ViewPostPage = () => {
                     />
                   </div>
                 ) : (
-                  <div>
+                  <div style={{marginLeft: '-20px', marginRight: '-10px'}}>
                     <Button
-                      size={small ? "small" : "medium"}
+                      size={medium ? "small" : "medium"}
                       variant="contained"
                       onClick={() => setOpenConfirmResolve(true)}
                       sx={{
@@ -286,7 +290,7 @@ const ViewPostPage = () => {
                       Mark as resolved
                     </Button>
                     <Button
-                      size={small ? "small" : "medium"}
+                      size={medium ? "small" : "medium"}
                       variant="contained"
                       sx={{
                         backgroundColor: theme.palette.custom.greyBkg.tag,
@@ -299,7 +303,7 @@ const ViewPostPage = () => {
                       Edit
                     </Button>
                     <Button
-                      size={small ? "small" : "medium"}
+                      size={medium ? "small" : "medium"}
                       variant="contained"
                       color="error"
                       onClick={() => setOpenConfirmDelete(true)}
