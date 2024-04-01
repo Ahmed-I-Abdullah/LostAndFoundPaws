@@ -28,16 +28,6 @@ const PetCard = ({
   createdAt,
   updatedAt,
 }) => {
-  const getStatusColor = () => {
-    switch (status) {
-      case "LOST":
-        return theme.palette.custom.selectedCategory.lost.dark;
-      case "FOUND":
-        return theme.palette.custom.selectedCategory.found.dark;
-      default:
-        return "";
-    }
-  };
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const small = useMediaQuery(theme.breakpoints.down("sm"));
