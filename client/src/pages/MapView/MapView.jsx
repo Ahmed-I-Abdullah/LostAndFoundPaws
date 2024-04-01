@@ -143,7 +143,7 @@ const MapView = ({ selectedType }) => {
                     <p style="margin: 0px">Posted ${formatDistanceToNow(
                       new Date(markerData.createdAt)
                     )} ago</p>
-                    <a href="/viewPost" class="arrow">
+                    <a href="/pets/8e6baced-4b04-4f28-93a2-c5ee346a4b97" class="arrow">
         <img src=${arrowIcon} alt="view-post-arrow" class="arrow-image" />
       </a>
                   </div>
