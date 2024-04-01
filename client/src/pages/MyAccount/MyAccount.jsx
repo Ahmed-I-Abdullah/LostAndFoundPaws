@@ -77,11 +77,6 @@ const MyAccount = () => {
   return (
     <div className={'my-account-wrapper'}>
       <div className={'my-account-container'}>
-        <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
-        </div>
         <div className="account-header">
           <h1>My Account</h1>
           <div className="divider"></div>
