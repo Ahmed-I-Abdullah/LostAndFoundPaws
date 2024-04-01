@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
 }
 
 #map {
@@ -12,8 +11,7 @@ body {
 
 @media screen and (max-width: 768px) {
   #map {
-    height: calc(100vh - 250px);
-    margin-top: 50px;
+    height: calc(100vh - 185px);
   }
 }
 
@@ -25,6 +23,7 @@ body {
   .mapboxgl-ctrl-geocoder {
     width: 95vw;
     right: 40px;
+    margin-top: 60px !important;
   }
 }
 

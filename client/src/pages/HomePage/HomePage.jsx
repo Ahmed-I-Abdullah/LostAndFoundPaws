@@ -162,7 +162,6 @@ const HomePageTemp = () => {
           container
           item
           xs={12}
-          justifyContent="space-between"
           style={{ position: "absolute", zIndex: 2 }}
           margin={1}
         >
@@ -174,7 +173,7 @@ const HomePageTemp = () => {
               initialIndex={0}
             />
           </Grid>
-          <Grid item xs={5} md={4}>
+          <Grid item xs={5} md={4} marginLeft={"10vw"}>
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -183,22 +182,24 @@ const HomePageTemp = () => {
             />
           </Grid>
           {!isSideBarOpen && (
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                color: `${theme.palette.text.primary}`,
-                "&:hover": {
-                  backgroundColor: `${theme.palette.primary.main}`,
-                },
-                height: "30px",
-                marginRight: "2rem",
-              }}
-              onClick={() => setIsSideBarOpen(true)}
-            >
-              <TuneIcon />
-              <Typography>All Filters</Typography>
-            </Button>
+            <Grid item container position="absolute" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                  color: `${theme.palette.text.primary}`,
+                  "&:hover": {
+                    backgroundColor: `${theme.palette.primary.main}`,
+                  },
+                  height: "30px",
+                  marginRight: "2rem",
+                }}
+                onClick={() => setIsSideBarOpen(true)}
+              >
+                <TuneIcon />
+                <Typography>All Filters</Typography>
+              </Button>
+            </Grid>
           )}
           {isSideBarOpen && (
             <SideBar
@@ -213,10 +214,10 @@ const HomePageTemp = () => {
           item
           xs={12}
           justifyContent="space-between"
-          style={{ position: "absolute", zIndex: 2 }}
+          style={{ position: "absolute" }}
           margin={1}
         >
-          <Grid item xs={4} md={3} marginLeft={1}>
+          <Grid item xs={4} md={3} marginLeft={1} style={{ zIndex: 2 }}>
             <Toggle
               options={viewOptions.map((option) => ({
                 ...option,
@@ -227,22 +228,24 @@ const HomePageTemp = () => {
             />
           </Grid>
           {!isSideBarOpen && (
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                color: `${theme.palette.text.primary}`,
-                "&:hover": {
-                  backgroundColor: `${theme.palette.primary.main}`,
-                },
-                height: "30px",
-                marginRight: "1rem",
-              }}
-              onClick={() => setIsSideBarOpen(true)}
-            >
-              <TuneIcon />
-              <Typography>All Filters</Typography>
-            </Button>
+            <Grid style={{ zIndex: 2 }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                  color: `${theme.palette.text.primary}`,
+                  "&:hover": {
+                    backgroundColor: `${theme.palette.primary.main}`,
+                  },
+                  height: "30px",
+                  marginRight: "1rem",
+                }}
+                onClick={() => setIsSideBarOpen(true)}
+              >
+                <TuneIcon />
+                <Typography>All Filters</Typography>
+              </Button>
+            </Grid>
           )}
           {isSideBarOpen && (
             <SideBar
@@ -250,7 +253,14 @@ const HomePageTemp = () => {
               onClose={() => setIsSideBarOpen(false)}
             />
           )}
-          <Grid item xs={10} md={6} margin={"auto"} marginTop={11}>
+          <Grid
+            item
+            xs={10}
+            md={6}
+            margin={"auto"}
+            marginTop={11}
+            style={{ zIndex: 2 }}
+          >
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -265,10 +275,17 @@ const HomePageTemp = () => {
           item
           xs={12}
           justifyContent="space-between"
-          style={{ position: "absolute", zIndex: 2 }}
+          style={{ position: "absolute" }}
           margin={1}
         >
-          <Grid item xs={4} md={3} marginLeft={1} marginBottom={1}>
+          <Grid
+            item
+            xs={4}
+            md={3}
+            marginLeft={1}
+            marginBottom={1}
+            style={{ zIndex: 2 }}
+          >
             <Toggle
               options={viewOptions}
               onToggleCallback={handleViewToggle}
@@ -276,7 +293,7 @@ const HomePageTemp = () => {
               initialIndex={1}
             />
           </Grid>
-          <Grid item xs={5} md={4} marginRight={60}>
+          <Grid item xs={5} md={4} marginRight={60} style={{ zIndex: 2 }}>
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -291,6 +308,7 @@ const HomePageTemp = () => {
               xs={12}
               marginTop={3}
               justifyContent="flex-end"
+              style={{ zIndex: 2 }}
             >
               <Button
                 variant="contained"
