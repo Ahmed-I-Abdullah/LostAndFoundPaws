@@ -573,6 +573,12 @@ export const listPosts = /* GraphQL */ `
         resolved
         species
         images
+        lastKnownLocation {
+          latitude
+          longitude
+          address
+          __typename
+        }
         userID
         createdAt
         updatedAt

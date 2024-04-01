@@ -18,6 +18,7 @@ import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import StatusLabel from "../StatusLabel/StatusLabel";
 
 const PetCard = ({
+  id,
   owner,
   img,
   name,
@@ -34,7 +35,7 @@ const PetCard = ({
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
   const handleClickOpen = () => {
-    navigate("/pets/8e6baced-4b04-4f28-93a2-c5ee346a4b97");
+    navigate(`/pets/${id}`);
   };
 
   const handleDeleteConfirmed = (event) => {
