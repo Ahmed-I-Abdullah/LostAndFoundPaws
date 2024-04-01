@@ -31,7 +31,6 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
 
   const logoutUser = async () => {
     try {
-      console.log("attempt logout");
       await signOut();
       await assessUserState();
     } catch (error) {

@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser  } from "aws-amplify/auth";
+import * as queries from '../graphql/queries.js';
 
 const UserContext = createContext();
+
+const client = generateClient({authMode: 'userPool'});
 
 export const UserProvider = ({ children }) => {
   const [userState, setUserState] = useState('Guest');
@@ -9,18 +13,25 @@ export const UserProvider = ({ children }) => {
   const assessUserState = async () => {
     try {
       const user = await getCurrentUser();
-      console.log("Logged In");
-      console.log(user);
-      //TODO UPDATE THIS FOR ADMIN CHECKS WHEN FIGURE OUT HOW
-      setUserState('Admin');
+      const result = await client.graphql({
+        query: queries.getUser,
+        variables: { id: user.userId }
+      });
+      console.log("RESULT HERE")
+      console.log(result)
+      console.log(result.data.getUser.role)
+      if(result.data.getUser.role == 'ADMIN'){
+        setUserState('Admin');
+      }
+      else{
+        setUserState('Poster');
+      }
     } catch (error) {
-      console.log("Not Logged In");
       setUserState('Guest');
     }
   };
 
   useEffect(() => {
-    console.log("Hello");
     assessUserState();
   }, []);
 
