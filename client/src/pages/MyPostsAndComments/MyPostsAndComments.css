@@ -4,3 +4,8 @@
   justify-content: center;
   flex-direction: column;
 }
+
+.my-sigthing-content {
+  display: flex;
+  flex-direction: row;
+}

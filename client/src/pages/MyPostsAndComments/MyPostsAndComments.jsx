@@ -7,11 +7,15 @@ import PetCard from "../../components/PetCard/PetCard";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
+import SightingCard from "../../components/SightingCard/SightingCard";
 
 const contentTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
+  {
+    label: "Sighting",
+    color: theme.palette.custom.selectedCategory.sighting.light,
+  },
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
 ];
 const postsData = [
@@ -90,6 +94,37 @@ const commentData = [
   },
 ];
 
+const sightingsData = [
+  {
+    id: "1",
+    images: [
+      "https://storage.googleapis.com/proudcity/santaanaca/uploads/2022/07/Stray-Kittens-scaled.jpg",
+    ],
+    location: {
+      latitude: -114.0201,
+      longitude: 51.0342,
+      address: "Inglewood",
+    },
+    userID: "user1",
+    email: "guest@email.com",
+    phoneNumber: "123-456-7890",
+    createdAt: "2024-03-25T10:00:00Z",
+  },
+  {
+    id: "2",
+    images: ["https://toegrips.com/wp-content/uploads/stray-puppy-jake-.jpg"],
+    location: {
+      latitude: -114.14,
+      longitude: 51.0703,
+      address: "University Heights",
+    },
+    userID: "user2",
+    email: "poster@email.com",
+    phoneNumber: "098-765-4321",
+    createdAt: "2024-03-22T10:00:00Z",
+  },
+];
+
 const MyPostsAndComments = () => {
   const { isMobile } = useMobile();
   const [selectedType, setSelectedType] = useState("Lost");
@@ -111,35 +146,54 @@ const MyPostsAndComments = () => {
           containerWidth={"100%"}
         />
       </Box>
-      {selectedType.toLowerCase() === "comments"
-        ? commentData.map((comment, index) => (
-            <CommentCard
-              key={index}
-              owner={true}
-              id={comment.id}
-              content={comment.content}
-              parentCommentId={comment.parentCommentID}
-              parentCommentUsername={"hii"} //TODO: add parent username and content in shema
-              parentCommentContent={"jii"}
-              username={comment.userName}
-              createdAt={comment.createdAt}
-              updatedAt={comment.updatedAt}
-            />
-          ))
-        : filteredPosts.map((post, index) => (
-            <PetCard
-              key={index}
-              owner={true}
-              img={post.images[0]}
-              name={post.name}
-              status={post.status}
-              petType={post.species}
-              summary={post.summary}
-              location={post.lastKnownLocation.address}
-              createdAt={post.createdAt}
-              updatedAt={post.updatedAt}
-            />
-          ))}
+      <Box
+        className={
+          selectedType.toLowerCase() === "sighting" && "my-sigthing-content"
+        }
+        sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
+      >
+        {selectedType.toLowerCase() === "comments"
+          ? commentData.map((comment, index) => (
+              <CommentCard
+                key={index}
+                owner={true}
+                id={comment.id}
+                content={comment.content}
+                parentCommentId={comment.parentCommentID}
+                parentCommentUsername={"hii"} //TODO: add parent username and content in shema
+                parentCommentContent={"jii"}
+                username={comment.userName}
+                createdAt={comment.createdAt}
+                updatedAt={comment.updatedAt}
+              />
+            ))
+          : selectedType.toLowerCase() === "sighting"
+          ? sightingsData.map((sighting, index) => (
+              <SightingCard
+                key={index}
+                owner={true}
+                img={sighting.images[0]}
+                location={sighting.location.address}
+                email={sighting.email}
+                phoneNumber={sighting.phoneNumber}
+                createdAt={sighting.createdAt}
+              />
+            ))
+          : filteredPosts.map((post, index) => (
+              <PetCard
+                key={index}
+                owner={true}
+                img={post.images[0]}
+                name={post.name}
+                status={post.status}
+                petType={post.species}
+                summary={post.summary}
+                location={post.lastKnownLocation.address}
+                createdAt={post.createdAt}
+                updatedAt={post.updatedAt}
+              />
+            ))}
+      </Box>
     </Box>
   );
 };

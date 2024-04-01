@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import theme from "../../theme/theme";
 import { useMobile } from "../../context/MobileContext";
 import { formatDistanceToNow } from "date-fns";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 
 const SightingCard = ({
   owner,
@@ -29,6 +30,7 @@ const SightingCard = ({
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
   const handleClickOpen = () => {
     setIsCardOpen(true);
@@ -38,6 +40,12 @@ const SightingCard = ({
     setIsCardOpen(false);
   };
 
+  const handleDeleteConfirmed = (event) => {
+    event.stopPropagation();
+    /** TODO: handle delete post */
+    setOpenConfirmDelete(false);
+  };
+
   return (
     <div>
       <ButtonBase onClick={handleClickOpen}>
@@ -45,9 +53,9 @@ const SightingCard = ({
           sx={{
             display: "flex",
             flexDirection: "column",
-            margin: isMobile ? "1rem 1rem" : "1rem 2rem",
-            width: isMobile ? "38vw" : "20vw",
-            height: isMobile ? "30vh" : "auto",
+            margin: isMobile ? "1rem" : "1rem 2rem",
+            width: isMobile ? "40vw" : "20vw",
+            height: "auto",
           }}
         >
           <CardMedia
@@ -130,16 +138,17 @@ const SightingCard = ({
                 <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <Button
                     variant="contained"
-                    sx={{
-                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                      color: `${theme.palette.text.primary}`,
-                      "&:hover": {
-                        backgroundColor: `${theme.palette.primary.main}`,
-                      },
+                    color="error"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setOpenConfirmDelete(true);
                     }}
+                    sx={{
+                      borderRadius: 2,
+                    }}
+                    startIcon={<DeleteIcon />}
                   >
-                    <DeleteIcon />
-                    <Typography variant="h9">Delete</Typography>
+                    Delete
                   </Button>
                 </Grid>
               )}
@@ -147,6 +156,15 @@ const SightingCard = ({
           </Card>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog
+        open={openConfirmDelete}
+        onClose={(event) => {
+          event.stopPropagation();
+          setOpenConfirmDelete(false);
+        }}
+        onConfirm={(event) => handleDeleteConfirmed(event)}
+        title="Are you sure you want to delete this post?"
+      />
     </div>
   );
 };
