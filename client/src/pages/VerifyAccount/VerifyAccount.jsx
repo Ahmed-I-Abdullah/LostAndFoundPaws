@@ -30,7 +30,9 @@ const VerifyAccount = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email"),
+    email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
     confirmationCode: Yup.string().required("Confirmation code is required"),
   });
 
@@ -41,7 +43,7 @@ const VerifyAccount = () => {
       });
     } catch (error) {
 
-      handleToastOpen("success", "account verified");
+      handleToastOpen("success", "Account verified");
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -49,8 +51,11 @@ const VerifyAccount = () => {
       console.error("Error verifying account: ", error);
       handleToastOpen(
         "error",
-        "Error verifying account."
+        "Error verifying account"
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 

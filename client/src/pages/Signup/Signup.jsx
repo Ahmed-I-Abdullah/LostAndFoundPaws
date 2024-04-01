@@ -40,10 +40,12 @@ const Signup = () => {
     email: Yup.string()
       .email("Invalid email")
       .required("Email is required"),
-    password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters long"),
+    password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
     phoneNumber: Yup.string().optional(),
   });
 
@@ -100,11 +102,20 @@ const Signup = () => {
           }, 2000);
           break;
         case "DONE":
-          handleToastOpen("success", "Successfully verified password");
+          handleToastOpen(
+            "success", 
+            "Successfully verified password");
           break;
       }
     } catch (error) {
       console.log('error signing up:', error);
+      handleToastOpen(
+        "error",
+        "Error signing up"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 

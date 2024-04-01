@@ -12,11 +12,16 @@ import CustomTextField from "../../components/TextField/TextField";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
 const Login = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   const { assessUserState } = useUser();
+
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const initialValues = {
     email: "",
@@ -24,22 +29,41 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+    password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
   });
 
   const handleSubmit = async (values) => {
     try {
-      console.log(values)
       const username = values.email
       const password = values.password
       await signIn({ username, password }); // AWS calls email username because its dumb
       await assessUserState();
       navigate("/");
     } catch (error) {
-      console.log('error signing in', error);
-      //TODO ADD TOAST ERROR
+      console.error("Error logging in: ", error);
+      handleToastOpen(
+        "error",
+        "Error logging in"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
+  };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
   };
 
   return (
@@ -120,6 +144,12 @@ const Login = () => {
           </span>
         </div>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </div>
   );
 };

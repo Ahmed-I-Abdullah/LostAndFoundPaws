@@ -26,7 +26,9 @@ const ForgotPassword = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
   });
 
   const handleSubmit = async (values) => {
@@ -37,8 +39,11 @@ const ForgotPassword = () => {
       console.error("Error requesting password reset: ", error);
       handleToastOpen(
         "error",
-        "Error requesting password reset. Please try again later"
+        "Error requesting password reset"
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
