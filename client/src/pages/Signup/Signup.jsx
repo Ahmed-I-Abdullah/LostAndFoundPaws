@@ -3,11 +3,12 @@ import { useMobile } from "../../context/MobileContext";
 import { useUser } from '../../context/UserContext';
 import { signUp  } from "aws-amplify/auth";
 import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { generateClient } from 'aws-amplify/api';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
@@ -33,6 +34,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
+    poster: 'Poster',
   };
 
   const validationSchema = Yup.object().shape({
@@ -47,6 +49,7 @@ const Signup = () => {
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password is required"),
     phoneNumber: Yup.string().optional(),
+    role: Yup.string().required('Role is required'),
   });
 
   const handleSubmit = async (values) => {
@@ -55,7 +58,7 @@ const Signup = () => {
     const password = values.password
     const email = values.email
     const phoneNumber = values.phoneNumber
-    const role = 'POSTER'
+    const role = values.role
 
     try {
       const output = await signUp({
@@ -230,6 +233,24 @@ const Signup = () => {
                   }}
                   fullWidth
                 />
+              </div>
+              <div className="account-form-component-with-optional-text">
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Role</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="role"
+                    name="role"
+                    value={values.role}
+                    onChange={(event) => {
+                      setFieldValue("role", event.target.value);
+                    }}
+                    sx={{ marginBottom: '-16px', marginTop: '-8px'}}
+                  >
+                    <FormControlLabel value="Poster" control={<Radio />} label="Poster" />
+                    <FormControlLabel value="Admin" control={<Radio />} label="Admin" />
+                  </RadioGroup>
+                </FormControl>
               </div>
               <div className="account-form-component">
                 <Button type="submit" variant="contained" color="primary">
