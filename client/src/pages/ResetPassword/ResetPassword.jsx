@@ -1,5 +1,5 @@
 import React from "react";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { Formik, Form } from "formik";
@@ -31,10 +31,12 @@ const ResetPassword = () => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email"),
     confirmationCode: Yup.string().required("Confirmation code is required"),
-    password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters long"),
+    password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm password is required"),
   });
 
   const handleSubmit = async (values) => {
@@ -44,7 +46,7 @@ const ResetPassword = () => {
         confirmationCode: values.confirmationCode,
         newPassword: values.password,
       });
-      handleToastOpen("success", "Password updated successfully");
+      handleToastOpen("success", "Password updated");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -52,8 +54,11 @@ const ResetPassword = () => {
       console.error("Error changing password: ", error);
       handleToastOpen(
         "error",
-        "Error changing password. Please verify the code and try again"
+        "Error changing password."
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -95,7 +100,7 @@ const ResetPassword = () => {
           onSubmit={handleSubmit}
         >
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
-            <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
+            <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
                 Set your new password
               </div>

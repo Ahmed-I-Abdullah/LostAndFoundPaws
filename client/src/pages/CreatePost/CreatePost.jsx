@@ -16,13 +16,12 @@ import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
 import CustomDropdown from "../../components/DropDown/DropDown";
 import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";
 import { getCurrentUser } from "aws-amplify/auth";
 import { uploadData } from "@aws-amplify/storage";
 import * as mutations from "../../graphql/mutations";
-
 import "./CreatePost.css";
 
 const postTypeOptions = [
@@ -53,7 +52,7 @@ const FieldTitle = ({ title }) => {
 const CreatePostForm = () => {
   const theme = useTheme();
   const { isMobile } = useMobile();
-  const client = generateClient({ authMode: "userPool" });
+  const client = generateClient({ authMode: "userPool" }); //May need to update to apiKey since poster accounts are not authorized
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
@@ -61,7 +60,6 @@ const CreatePostForm = () => {
 
   const handleSubmit = async (values) => {
     try {
-        // Do not do this everywhere. We need to store the logged in user data globally
         const user = await getCurrentUser();
 
         // Upload images to storage

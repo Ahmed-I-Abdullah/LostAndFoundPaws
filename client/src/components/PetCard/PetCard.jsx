@@ -11,7 +11,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import theme from "../../theme/theme";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";

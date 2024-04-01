@@ -1,0 +1,45 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { generateClient } from 'aws-amplify/api';
+import { getCurrentUser  } from "aws-amplify/auth";
+import * as queries from '../graphql/queries.js';
+
+const UserContext = createContext();
+
+const client = generateClient({authMode: 'apiKey'});
+
+export const UserProvider = ({ children }) => {
+  const [userState, setUserState] = useState('Guest');
+
+  const assessUserState = async () => {
+    try {
+      const user = await getCurrentUser();
+      const result = await client.graphql({
+        query: queries.getUserPoster,
+        variables: { id: user.userId }
+      });
+      console.log("RESULT HERE")
+      console.log(result)
+      console.log(result.data.getUser.role)
+      if(result.data.getUser.role == 'ADMIN'){
+        setUserState('Admin');
+      }
+      else{
+        setUserState('Poster');
+      }
+    } catch (error) {
+      setUserState('Guest');
+    }
+  };
+
+  useEffect(() => {
+    assessUserState();
+  }, []);
+
+  return (
+    <UserContext.Provider value={{ userState, assessUserState }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUser = () => useContext(UserContext);

@@ -17,7 +17,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
 import Modal from "@mui/material/Modal";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import "./CommentCard.css";
 import ReportPost from "../ReportPopup/ReportPopup";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";

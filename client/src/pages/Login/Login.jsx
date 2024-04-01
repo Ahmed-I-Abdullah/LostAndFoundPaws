@@ -1,6 +1,8 @@
 import React from "react";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
+import { useUser } from '../../context/UserContext';
 import { Link } from "react-router-dom";
+import { signIn  } from "aws-amplify/auth";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
@@ -9,9 +11,17 @@ import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
+import { useNavigate } from "react-router-dom";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const { assessUserState } = useUser();
+
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const initialValues = {
     email: "",
@@ -19,12 +29,60 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Email or username is required"),
-    password: Yup.string().required("Password is required"),
+    email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+    password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    try {
+      const username = values.email
+      const password = values.password
+      const signInResponse = await signIn({ username, password }); // AWS calls email username because its dumb
+      const { nextStep } = signInResponse;
+      switch (nextStep.signInStep) {
+        case "CONFIRM_SIGN_UP":
+          console.log(
+            `Verify account before logging in`
+          );
+  
+          handleToastOpen(
+            "error",
+            `Verify account before logging in`
+          );
+  
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
+          break;
+        case "DONE":
+          await assessUserState();
+          navigate("/");
+          break;
+      }
+    } catch (error) {
+      console.error("Error logging in: ", error);
+      handleToastOpen(
+        "error",
+        "Error logging in"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+  };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
   };
 
   return (
@@ -55,11 +113,11 @@ const Login = () => {
           onSubmit={handleSubmit}
         >
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
-            <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
+            <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
                 <CustomTextField
-                  name="emailOrUsername"
-                  label="Email or Username"
+                  name="email"
+                  label="Email"
                   variant="outlined"
                   error={errors.email && touched.email}
                   helperText={touched.email ? errors.email : ""}
@@ -103,8 +161,20 @@ const Login = () => {
               Sign up
             </Link>
           </span>
+          <span>
+            Have an unverified account?{" "}
+            <Link to="/verifyAccount" className="account-link">
+              Verify Now
+            </Link>
+          </span>
         </div>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </div>
   );
 };

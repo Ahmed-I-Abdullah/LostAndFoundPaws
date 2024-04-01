@@ -1,5 +1,5 @@
 import React from "react";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import IconButton from "@mui/material/IconButton";
@@ -26,7 +26,9 @@ const ForgotPassword = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
   });
 
   const handleSubmit = async (values) => {
@@ -37,8 +39,11 @@ const ForgotPassword = () => {
       console.error("Error requesting password reset: ", error);
       handleToastOpen(
         "error",
-        "Error requesting password reset. Please try again later"
+        "Error requesting password reset"
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -104,7 +109,7 @@ const ForgotPassword = () => {
           onSubmit={handleSubmit}
         >
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
-            <Form onSubmit={handleSubmit} style={{ height: "100%" }}>
+            <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
                 Enter the email associated with your account
               </div>

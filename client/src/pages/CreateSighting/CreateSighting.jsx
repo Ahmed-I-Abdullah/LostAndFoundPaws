@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
 import CustomTextField from "../../components/TextField/TextField";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 import "./CreateSighting.css";
 

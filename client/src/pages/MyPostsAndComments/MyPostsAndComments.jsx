@@ -5,7 +5,7 @@ import theme from "../../theme/theme";
 import "./MyPostsAndComments.css";
 import PetCard from "../../components/PetCard/PetCard";
 import CommentCard from "../../components/CommentCard/CommentCard";
-import { useMobile } from "../../MobileContext";
+import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
 
 const contentTypeOptions = [

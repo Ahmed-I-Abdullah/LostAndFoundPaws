@@ -7,11 +7,16 @@ import {
   Divider,
   Button,
 } from "@mui/material";
+import { signOut  } from "aws-amplify/auth";
+import { useUser } from '../../context/UserContext';
 import Settings from "@mui/icons-material/Settings";
 import PostsIcon from "@mui/icons-material/Comment";
 import { useNavigate } from "react-router-dom";
 
 const UserMenu = ({ anchorEl, open, handleClose }) => {
+
+  const { assessUserState } = useUser();
+
   const navigate = useNavigate();
 
   const handleMyPostsAndComments = () => {
@@ -22,6 +27,15 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
   const handleMyAccount = () => {
     navigate("/myAccount");
     handleClose();
+  };
+
+  const logoutUser = async () => {
+    try {
+      await signOut();
+      await assessUserState();
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
   };
 
   return (
@@ -43,20 +57,16 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
           <Settings fontSize="small" />
         </ListItemIcon>
         <ListItemText primary="My Account" />
-        {/*TODO Add sign in/sign out functionality*/}
       </MenuItem>
       <MenuItem onClick={handleMyPostsAndComments}>
         <ListItemIcon>
           <PostsIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText primary="My Posts/Comments" />
-        {/*TODO Add view post/comment functionality*/}
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
-        <Button variant="text" fullWidth> Signout </Button>
-        {/*TODO Add sign out functionality*/}
-        <Button variant="outlined" href="login">Temp Login</Button>
+        <Button variant="text" onClick={logoutUser} fullWidth> Log Out </Button>
       </MenuItem>
     </Menu>
   );

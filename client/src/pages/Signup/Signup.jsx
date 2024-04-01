@@ -1,17 +1,32 @@
 import React from "react";
+import { useMobile } from "../../context/MobileContext";
+import { useUser } from '../../context/UserContext';
+import { signUp } from "aws-amplify/auth";
 import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
+import { useNavigate } from "react-router-dom";
+import { generateClient } from 'aws-amplify/api';
+import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
-import { useMobile } from "../../MobileContext";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const { assessUserState } = useUser();
+
+  const client = generateClient({authMode: 'apiKey'});
+
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const initialValues = {
     username: "",
@@ -19,22 +34,103 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
+    role: 'POSTER'
   };
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     email: Yup.string()
       .email("Invalid email")
-      .required("Email or Username is required"),
-    password: Yup.string().required("Password is required").min(8, "Password must be at least 8 characters long"),
+      .required("Email is required"),
+    password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
     phoneNumber: Yup.string().optional(),
+    role: Yup.string().required('Role is required'),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+
+    const username = values.username
+    const password = values.password
+    const email = values.email
+    const phoneNumber = values.phoneNumber
+    const role = values.role
+
+    try {
+      const signUpResponse = await signUp({
+        username: email, // AWS calls email username because its dumb
+        password: password,
+        options: {
+          userAttributes: {
+            email: email,
+            'custom:role': role // This is used for the post confirmation trigger to add the user to a cognito group
+          }
+        }
+      });
+
+      await assessUserState();
+ 
+      const result = await client.graphql({
+        query: mutations.createUserPoster.replaceAll("__typename", ""),
+        variables: {
+          input: {
+            id: signUpResponse.userId,
+            username: username,
+            email: email,
+            phone: phoneNumber,
+            role: role
+          }
+        },
+      });
+
+      const { nextStep } = signUpResponse;
+      switch (nextStep.signUpStep) {
+        case "CONFIRM_SIGN_UP":
+          const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+          console.log(
+            `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
+          );
+  
+          handleToastOpen(
+            "success",
+            `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
+          );
+  
+          setTimeout(() => {
+            navigate("/verifyAccount", { state: {  email: email } });
+          }, 2000);
+          break;
+        case "DONE":
+          handleToastOpen(
+            "success", 
+            "Successfully verified password");
+          break;
+      }
+    } catch (error) {
+      //TODO SEPERATE INTO TWO TRY CATCH AND IF SECOND FAILS DELETE ACCOUNT SO DONT NEED TO MANUALLY DELETE
+      console.log('error signing up:', error);
+      handleToastOpen(
+        "error",
+        "Error signing up"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+  };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
   };
 
   return (
@@ -139,6 +235,24 @@ const Signup = () => {
                   fullWidth
                 />
               </div>
+              <div className="account-form-component-with-optional-text">
+                <FormControl component="fieldset">
+                  <FormLabel component="legend" sx={{ color: '#000000' }}>Role</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="role"
+                    name="role"
+                    value={values.role}
+                    onChange={(event) => {
+                      setFieldValue("role", event.target.value);
+                    }}
+                    sx={{ marginBottom: '-16px', marginTop: '-8px'}}
+                  >
+                    <FormControlLabel value="POSTER" control={<Radio />} label="Poster" />
+                    <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
+                  </RadioGroup>
+                </FormControl>
+              </div>
               <div className="account-form-component">
                 <Button type="submit" variant="contained" color="primary">
                   Sign Up
@@ -154,8 +268,20 @@ const Signup = () => {
               Log In
             </Link>
           </span>
+          <span>
+            Have an unverified account?{" "}
+            <Link to="/verifyAccount" className="account-link">
+              Verify Now
+            </Link>
+          </span>
         </div>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </div>
   );
 };

@@ -470,6 +470,7 @@ const ViewPostPage = () => {
         onClose={() => setOpenConfirmDelete(false)}
         onConfirm={handleDeleteConfirmed}
         title="Are you sure you want to delete this post?"
+        isDelete={true}
       />
 
       {/* Use the ConfirmDialog for ignore confirmation */}
@@ -478,6 +479,7 @@ const ViewPostPage = () => {
         onClose={() => setOpenConfirmResolve(false)}
         onConfirm={handleResolveConfirmed}
         title="Are you sure you want to mark this post as resolved?"
+        isDelete={false}
       />
       <ToastNotification
         open={toastOpen}
