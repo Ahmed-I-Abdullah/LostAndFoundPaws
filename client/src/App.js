@@ -50,7 +50,7 @@ function AppContent() {
           <Route path="/createPost" element={<CreatePostForm />} />
           <Route path="/createSighting" element={<CreateSightingForm />} />
           <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
-          <Route path="/viewReports" element={<ViewReportsPage />} />
+          <Route path="/viewReportings" element={<ViewReportsPage />} />
           <Route path="/pets/:id" element={<ViewPostPage />} />
         </Routes>
       </div>
