@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import { formatDistanceToNow } from "date-fns";
 import theme from "../../theme/theme";
+import arrowIcon from "../../assets/images/arrowIcon.png";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "./MapView.css";
@@ -124,22 +125,33 @@ const MapView = ({ selectedType }) => {
             markerData.lastKnownLocation.latitude,
             markerData.lastKnownLocation.longitude,
           ])
-          // .setPopup(
-          // new mapboxgl.Popup().setHTML(
-          //   //TODO: Add onClick event
-          //   `<button id="popup" class="popup-button">
-          //   <img src="${markerData.images[0]}" alt="${
-          //     markerData.name
-          //   }" style="width: 50px; height: 50px;"/>
-          //   <h3>${markerData.name}</h3>
-          //   <p>Status: ${markerData.status}</p>
-          //   <p>Date: ${formatDistanceToNow(
-          //     new Date(markerData.createdAt)
-          //   )} ago</p>
-          //   </button>`
-          // )
-          // )
+          .setPopup(
+            new mapboxgl.Popup({ maxWidth: "350px" }).setHTML(`
+                <div class="popup-card">
+                    <img src=${
+                      markerData.images[0]
+                    } alt="pet-picture" class="popup-image" />
+                  <div class="popup-content">
+                    ${
+                      markerData.name
+                        ? `<h2 style="margin: 0px">${markerData.name}</h2>`
+                        : ""
+                    }
+                    <span style="background-color: ${getStatusColor(
+                      markerData.status
+                    )}" class="status">${markerData.status}</span>
+                    <p style="margin: 0px">Posted ${formatDistanceToNow(
+                      new Date(markerData.createdAt)
+                    )} ago</p>
+                    <a href="/pets/8e6baced-4b04-4f28-93a2-c5ee346a4b97" class="arrow">
+        <img src=${arrowIcon} alt="view-post-arrow" class="arrow-image" />
+      </a>
+                  </div>
+                </div>
+              `)
+          )
           .addTo(map);
+
         newMarkers.push(marker);
       }
       setMarkers(newMarkers);

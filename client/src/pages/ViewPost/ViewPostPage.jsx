@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Grid,
   Button,
@@ -13,9 +13,6 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Carousel from "react-spring-3d-carousel";
 import { config } from "react-spring";
 import "./ViewPostPage.css";
-import pet1Image from "../../assets/images/pet1.png";
-import pet2Image from "../../assets/images/pet2.png";
-import pet3Image from "../../assets/images/pet3.png";
 import StatusLabel from "../../components/StatusLabel/StatusLabel";
 import FlagIcon from "@mui/icons-material/Flag";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
@@ -27,28 +24,17 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
-import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
-import { useMobile } from '../../context/MobileContext';
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
+import { useMobile } from "../../MobileContext";
+import { generateClient } from "aws-amplify/api";
+import { useParams } from "react-router-dom";
+import { downloadData } from "@aws-amplify/storage";
+import * as queries from "../../graphql/queries";
+import CircularProgress from "@mui/material/CircularProgress";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
-
-/* MOCK DATA START */
-const petName = "Nala";
-const label = "LOST";
-const datePosted = "March 20, 2024";
-const dateUpdated = "March 22, 2024";
-const summary = "Brief summary explaining the case";
-const gender = "M";
-const species = "Cat";
-const description = "Detailed description about the pet";
-const lastKnownLocation = { latitude: 51.0745, longitude: -114.1458 };
-const contactInfo = {
-  email: "joe.smith@email.com",
-  phone: "+1 (431) 972 9107",
-  username: "Joe Smith",
-};
-/* MOCK DATA END */
-
-const isAdmin = true;
+// Toggle between admin and regular view for now
+const isAdmin = false;
 
 const SectionTitle = ({ title }) => {
   return (
@@ -60,12 +46,24 @@ const SectionTitle = ({ title }) => {
 
 const ViewPostPage = () => {
   const theme = useTheme();
+  const { id } = useParams();
+  const { isMobile } = useMobile();
+  const client = generateClient({ authMode: "apiKey" });
   const extraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const medium = useMediaQuery(theme.breakpoints.down("md"));
-  const { isMobile, isMobileSmall } = useMobile();
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [petData, setPetData] = useState(null);
+  const [slides, setSlides] = useState([]);
+  const [goToSlide, setGoToSlide] = useState(0);
+  const [offsetRadius] = useState(4);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
 
   const handleDeleteConfirmed = () => {
     onDelete(petData.id);
@@ -77,9 +75,6 @@ const ViewPostPage = () => {
     setOpenConfirmResolve(false); // Close the dialog
   };
 
-  const [goToSlide, setGoToSlide] = useState(0);
-  const [offsetRadius] = useState(4);
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const handleSlideChange = (forward) => {
     if (forward) {
       if (goToSlide === slides.length - 1) {
@@ -95,23 +90,6 @@ const ViewPostPage = () => {
       }
     }
   };
-
-  const slides = [
-    {
-      key: uuidv4(),
-      content: <img className="pet-image" src={pet1Image} />,
-    },
-    {
-      key: uuidv4(),
-      content: <img className="pet-image" src={pet2Image} />,
-    },
-    {
-      key: uuidv4(),
-      content: <img className="pet-image" src={pet3Image} />,
-    },
-  ].map((slide, index) => {
-    return { ...slide, onClick: () => setGoToSlide(index) };
-  });
 
   const handleForwardSlideChange = () => {
     if (goToSlide === slides.length - 1) {
@@ -149,6 +127,65 @@ const ViewPostPage = () => {
     setAnchorEl(null);
   };
 
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = () => {
+    setToastOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchPetData = async () => {
+      try {
+        const response = await client.graphql({
+          query: queries.getPost,
+          variables: { id },
+        });
+        setPetData(response.data.getPost);
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching post.");
+        console.error("Error fetching post: ", error);
+        setLoading(false);
+      }
+    };
+
+    fetchPetData();
+  }, []);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (petData && petData.images) {
+        const imageUrls = petData.images;
+        const slides = await Promise.all(
+          imageUrls.map(async (imageUrl, index) => {
+            try {
+              const imageData = await downloadData({ key: imageUrl }).result;
+              const imageSrc = URL.createObjectURL(imageData.body);
+              return {
+                key: uuidv4(),
+                content: <img className="pet-image" src={imageSrc} />,
+                onClick: () => setGoToSlide(index),
+              };
+            } catch (error) {
+              console.error("Error downloading image:", error);
+              return null;
+            }
+          })
+        );
+        setSlides(slides.filter((slide) => slide !== null));
+        setIsImageLoaded(true);
+      }
+    };
+
+    if (!isImageLoaded) {
+      fetchImages();
+    }
+  }, [petData]);
+
   const comments = () => {
     return (
       <>
@@ -157,6 +194,21 @@ const ViewPostPage = () => {
       </>
     );
   };
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <Container maxWidth="xl" style={{ marginTop: "20px" }}>
@@ -175,7 +227,7 @@ const ViewPostPage = () => {
         >
           <Grid item xs={2}>
             <Typography variant="h1" sx={{ fontWeight: "bold" }}>
-              {petName}
+              {petData.name}
             </Typography>
           </Grid>
           <Grid item xs={10} container justifyContent="flex-end">
@@ -195,65 +247,83 @@ const ViewPostPage = () => {
                 >
                   Report
                 </Button>
-            </div>) : (
-              <div> 
-                {isMobile ? (<div>
-                  <div className="userMenuSection" onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                    <MoreHorizIcon sx={{ fontSize: '40px' }} />
+              </div>
+            ) : (
+              <div>
+                {isMobile ? (
+                  <div>
+                    <div
+                      className="userMenuSection"
+                      onClick={handleMenu}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <MoreHorizIcon sx={{ fontSize: "40px" }} />
+                    </div>
+                    <ActionsMenu
+                      anchorEl={anchorEl}
+                      open={open}
+                      handleClose={handleClose}
+                    />
                   </div>
-                  <ActionsMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
-
-                </div>) : ( <div>
-                  <Button
-                    size={small ? "small" : "medium"}
-                    variant="contained"
-                    onClick={() => setOpenConfirmResolve(true)}
-                    sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: '8px'
-                    }}
-                    startIcon={<CheckIcon />}
-                  >
-                    Mark as resolved
-                  </Button>
-                  <Button
-                    size={small ? "small" : "medium"}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: '8px'
-                    }}
-                    startIcon={<EditIcon />}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size={small ? "small" : "medium"}
-                    variant="contained"
-                    color="error"
-                    onClick={() => setOpenConfirmDelete(true)}
-                    sx={{
-                      borderRadius: 2,
-                      marginRight: '8px'
-                    }}
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete
-                  </Button>
-                </div>)}
-            </div>)}
+                ) : (
+                  <div>
+                    <Button
+                      size={small ? "small" : "medium"}
+                      variant="contained"
+                      onClick={() => setOpenConfirmResolve(true)}
+                      sx={{
+                        backgroundColor: theme.palette.custom.greyBkg.tag,
+                        borderRadius: 2,
+                        color: "#000",
+                        marginRight: "8px",
+                      }}
+                      startIcon={<CheckIcon />}
+                    >
+                      Mark as resolved
+                    </Button>
+                    <Button
+                      size={small ? "small" : "medium"}
+                      variant="contained"
+                      sx={{
+                        backgroundColor: theme.palette.custom.greyBkg.tag,
+                        borderRadius: 2,
+                        color: "#000",
+                        marginRight: "8px",
+                      }}
+                      startIcon={<EditIcon />}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size={small ? "small" : "medium"}
+                      variant="contained"
+                      color="error"
+                      onClick={() => setOpenConfirmDelete(true)}
+                      sx={{
+                        borderRadius: 2,
+                        marginRight: "8px",
+                      }}
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </Grid>
 
           <Grid item xs={12}>
-            <StatusLabel status={label} />
+            <StatusLabel status={petData.status} />
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle2" color="#979797">
-              Posted: {datePosted} - Updated: {dateUpdated}
+              Posted: {new Date(petData.createdAt).toDateString()} - Updated:{" "}
+              {new Date(petData.updatedAt).toDateString()}
             </Typography>
           </Grid>
         </Grid>
@@ -326,41 +396,56 @@ const ViewPostPage = () => {
           <Grid container item xs={12} md={4} spacing={medium ? 4 : 0}>
             <Grid item xs={12}>
               <SectionTitle title="Summary" />
-              <Typography variant="body2">{summary}</Typography>
+              <Typography variant="body2">{petData.summary}</Typography>
             </Grid>
 
             <Grid item xs={12}>
               <SectionTitle title="Description" />
               <Typography variant="body2">
-                <span className="span-key">Gender:</span> {gender}
+                <span className="span-key">Gender:</span> {petData.gender}
               </Typography>
               <Typography variant="body2">
-                <span className="span-key">Species:</span> {species}
+                <span className="span-key">Species:</span> {petData.species}
               </Typography>
               <Typography variant="body2">
-                <span className="span-key">Description:</span> {description}
+                <span className="span-key">Description:</span>{" "}
+                {petData.description}
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <SectionTitle title="Last Known Location" />
               <MapWithPin
-                longitude={lastKnownLocation.longitude}
-                latitude={lastKnownLocation.latitude}
+                longitude={petData.lastKnownLocation.longitude}
+                latitude={petData.lastKnownLocation.latitude}
               />
             </Grid>
 
             <Grid item xs={12}>
               <SectionTitle title="Poster's Contact Info" />
-              <Typography variant="body2">
-                <span className="span-key">Email:</span> {contactInfo.email}
-              </Typography>
-              <Typography variant="body2">
-                <span className="span-key">Phone:</span> {contactInfo.phone}
-              </Typography>
-              <Typography variant="body2">
-                <span className="span-key">Username:</span>{" "}
-                {contactInfo.username}
-              </Typography>
+              {petData && (
+                <>
+                  <Typography variant="body2">
+                    <span className="span-key">Email:</span>{" "}
+                    {petData.contactInfo && petData.contactInfo.email
+                      ? petData.contactInfo.email
+                      : petData.user && petData.user.email
+                      ? petData.user.email
+                      : "Unavailable"}
+                  </Typography>
+                  <Typography variant="body2">
+                    <span className="span-key">Phone:</span>{" "}
+                    {petData.contactInfo && petData.contactInfo.phone
+                      ? petData.contactInfo.phone
+                      : "Unavailable"}
+                  </Typography>
+                  <Typography variant="body2">
+                    <span className="span-key">Username:</span>{" "}
+                    {petData.user && petData.user.username
+                      ? petData.user.username
+                      : "Unavailable"}
+                  </Typography>
+                </>
+              )}
             </Grid>
 
             {medium && (
@@ -379,23 +464,29 @@ const ViewPostPage = () => {
           onReport={handleReport}
         />
       )}
-    {/* Use the ConfirmDialog for delete confirmation */}
-    <ConfirmDialog
-      open={openConfirmDelete}
-      onClose={() => setOpenConfirmDelete(false)}
-      onConfirm={handleDeleteConfirmed}
-      title="Are you sure you want to delete this post?"
-      isDelete={true}
-    />
+      {/* Use the ConfirmDialog for delete confirmation */}
+      <ConfirmDialog
+        open={openConfirmDelete}
+        onClose={() => setOpenConfirmDelete(false)}
+        onConfirm={handleDeleteConfirmed}
+        title="Are you sure you want to delete this post?"
+        isDelete={true}
+      />
 
-    {/* Use the ConfirmDialog for ignore confirmation */}
-    <ConfirmDialog
-      open={openConfirmResolve}
-      onClose={() => setOpenConfirmResolve(false)}
-      onConfirm={handleResolveConfirmed}
-      title="Are you sure you want to mark this post as resolved?"
-      isDelete={false}
-    />
+      {/* Use the ConfirmDialog for ignore confirmation */}
+      <ConfirmDialog
+        open={openConfirmResolve}
+        onClose={() => setOpenConfirmResolve(false)}
+        onConfirm={handleResolveConfirmed}
+        title="Are you sure you want to mark this post as resolved?"
+        isDelete={false}
+      />
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </Container>
   );
 };

@@ -28,23 +28,13 @@ const PetCard = ({
   createdAt,
   updatedAt,
 }) => {
-  const getStatusColor = () => {
-    switch (status) {
-      case "LOST":
-        return theme.palette.custom.selectedCategory.lost.dark;
-      case "FOUND":
-        return theme.palette.custom.selectedCategory.found.dark;
-      default:
-        return "";
-    }
-  };
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
   const handleClickOpen = () => {
-    navigate("/viewPost");
+    navigate("/pets/8e6baced-4b04-4f28-93a2-c5ee346a4b97");
   };
 
   const handleDeleteConfirmed = (event) => {

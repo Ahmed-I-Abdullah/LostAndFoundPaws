@@ -15,7 +15,7 @@ const MapWithPin = ({ longitude, latitude }) => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/light-v11",
+      style: "mapbox://styles/mapbox/light-v10",
       center: [lng, lat],
       zoom: zoom,
     });
