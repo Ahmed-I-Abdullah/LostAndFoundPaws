@@ -140,7 +140,7 @@ const CreatePostForm = () => {
       >
         <Grid item xs={12}>
           <div style={{marginBottom: '10px'}}>
-          <ArrowBackButton onClick={() => {}} />
+          <ArrowBackButton onClick={() => navigate(-1)} />
           </div>
           <div>
             <Typography variant="h2" fontWeight="bold" gutterBottom>

@@ -229,7 +229,7 @@ const ViewPostPage = () => {
           }
         >
           <Grid item container alignItems="center" xs={10} md={3} lg={3}>
-          <ArrowBackButton onClick={() => navigate("/")}/>
+          <ArrowBackButton onClick={() => navigate(-1)}/>
             <Typography variant="h1" sx={{ fontWeight: "bold", marginLeft: '20px' }}>
               {petData.name}
             </Typography>
