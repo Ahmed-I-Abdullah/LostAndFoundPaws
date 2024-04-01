@@ -908,6 +908,24 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
+//This is for creating user for unsigned in users API key
+export const createUserSimplified = /* GraphQL */ `
+  mutation CreateUserSimplified(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      username
+      role
+      profilePicture
+      email
+      phone
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createSighting = /* GraphQL */ `
   mutation CreateSighting(
     $input: CreateSightingInput!

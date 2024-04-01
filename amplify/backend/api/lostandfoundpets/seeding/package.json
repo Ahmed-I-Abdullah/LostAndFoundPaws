@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "aws-amplify": "^6.0.19",
-    "readline-sync": "^1.4.10"
-  }
-}

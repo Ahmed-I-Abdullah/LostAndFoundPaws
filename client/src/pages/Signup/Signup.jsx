@@ -1,7 +1,7 @@
 import React from "react";
 import { useMobile } from "../../context/MobileContext";
 import { useUser } from '../../context/UserContext';
-import { signUp  } from "aws-amplify/auth";
+import { signUp } from "aws-amplify/auth";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const Signup = () => {
   const { isMobile } = useMobile();
   const { assessUserState } = useUser();
 
-  const client = generateClient({authMode: 'userPool'});
+  const client = generateClient({authMode: 'apiKey'});
 
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
@@ -34,7 +34,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
-    role: 'Poster'
+    role: 'POSTER'
   };
 
   const validationSchema = Yup.object().shape({
@@ -61,7 +61,7 @@ const Signup = () => {
     const role = values.role
 
     try {
-      const output = await signUp({
+      const signUpResponse = await signUp({
         username: email, // AWS calls email username because its dumb
         password: password,
         options: {
@@ -73,12 +73,12 @@ const Signup = () => {
       });
 
       await assessUserState();
-
-            
+ 
       const result = await client.graphql({
-        query: mutations.createUser.replaceAll("__typename", ""),
+        query: mutations.createUserSimplified.replaceAll("__typename", ""),
         variables: {
           input: {
+            id: signUpResponse.userId,
             username: username,
             email: email,
             phone: phoneNumber,
@@ -87,7 +87,7 @@ const Signup = () => {
         },
       });
 
-      const { nextStep } = output;
+      const { nextStep } = signUpResponse;
       switch (nextStep.signUpStep) {
         case "CONFIRM_SIGN_UP":
           const codeDeliveryDetails = nextStep.codeDeliveryDetails;
@@ -101,7 +101,7 @@ const Signup = () => {
           );
   
           setTimeout(() => {
-            navigate("/verifyAccount", { state: { username: username, password: password, email: email, phoneNumber: phoneNumber, role: role } });
+            navigate("/verifyAccount", { state: {  email: email } });
           }, 2000);
           break;
         case "DONE":
@@ -111,6 +111,7 @@ const Signup = () => {
           break;
       }
     } catch (error) {
+      //TODO SEPERATE INTO TWO TRY CATCH AND IF SECOND FAILS DELETE ACCOUNT SO DONT NEED TO MANUALLY DELETE
       console.log('error signing up:', error);
       handleToastOpen(
         "error",
@@ -247,8 +248,8 @@ const Signup = () => {
                     }}
                     sx={{ marginBottom: '-16px', marginTop: '-8px'}}
                   >
-                    <FormControlLabel value="Poster" control={<Radio />} label="Poster" />
-                    <FormControlLabel value="Admin" control={<Radio />} label="Admin" />
+                    <FormControlLabel value="POSTER" control={<Radio />} label="Poster" />
+                    <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
                   </RadioGroup>
                 </FormControl>
               </div>

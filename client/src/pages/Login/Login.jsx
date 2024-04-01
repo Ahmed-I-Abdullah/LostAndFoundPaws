@@ -142,6 +142,12 @@ const Login = () => {
               Sign up
             </Link>
           </span>
+          <span>
+            Have an unverified account?{" "}
+            <Link to="/verifyAccount" className="account-link">
+              Verify Now
+            </Link>
+          </span>
         </div>
       </div>
       <ToastNotification
