@@ -88,7 +88,7 @@ const ListView = ({ selectedType }) => {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: isMobile ? "space-between" : "flex-start",
+        justifyContent: isMobile ? "center" : "flex-start",
       }}
     >
       {selectedType !== "Sighting"

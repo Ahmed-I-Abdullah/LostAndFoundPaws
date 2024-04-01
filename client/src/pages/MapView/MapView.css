@@ -22,7 +22,6 @@ body {
 @media screen and (max-width: 768px) {
   .mapboxgl-ctrl-geocoder {
     width: 95vw;
-    right: 40px;
     margin-top: 60px !important;
   }
 }
