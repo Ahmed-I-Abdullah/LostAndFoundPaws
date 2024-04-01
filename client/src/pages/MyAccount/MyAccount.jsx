@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -9,10 +8,20 @@ import "../../sharedStyles/SharedStyles.css";
 import "./MyAccount.css";
 import Button from '@mui/material/Button';
 import CustomTextField from "../../components/TextField/TextField";
+import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 
 
 const MyAccount = () => {
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+
+  const handleDeleteConfirmed = () => {
+    //TODO
+    //Dont forget toast menu for on delete
+    setOpenConfirmDelete(false);
+  };
+
   const uploadPhotoPlaceholder = (event) => {
+    //TODO
   };
 
   return (
@@ -59,15 +68,34 @@ const MyAccount = () => {
           <div className="account-form-component-with-optional-text">
             <div className="account-optional-text">Optional</div>
             <CustomTextField name="phoneNumber" label="Phone Number" variant="outlined" fullWidth />
-            <Link className="forgot-password-link">Remove Phone Number</Link>
           </div>
           <div className="account-form-component">
-            <Button type="submit" variant="contained" color="primary">
-              Update
+            <Button 
+              type="submit" 
+              variant="contained" 
+              color="primary"
+            >
+              Update Account
+            </Button>
+          </div>
+          <div className="account-form-component">
+            <Button 
+              variant="outlined" 
+              color="secondary"
+              onClick={() => setOpenConfirmDelete(true)}
+            >
+              Delete Account
             </Button>
           </div>
         </form>
       </div>
+      <ConfirmDialog
+      open={openConfirmDelete}
+      onClose={() => setOpenConfirmDelete(false)}
+      onConfirm={handleDeleteConfirmed}
+      title="Are you sure you want to delete this account?"
+      isDelete={true}
+      />
     </div>
   );
 };

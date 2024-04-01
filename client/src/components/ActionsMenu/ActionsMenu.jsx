@@ -95,6 +95,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
             onClose={() => setOpenConfirmDelete(false)}
             onConfirm={handleDeleteConfirmed}
             title="Are you sure you want to delete this post?"
+            isDelete={true}
             />
 
             {/* Use the ConfirmDialog for ignore confirmation */}
@@ -103,6 +104,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
             onClose={() => setOpenConfirmResolve(false)}
             onConfirm={handleResolveConfirmed}
             title="Are you sure you want to mark this post as resolved?"
+            isDelete={false}
             />
         </div>
     );

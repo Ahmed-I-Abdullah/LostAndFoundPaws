@@ -34,7 +34,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
-    poster: 'Poster',
+    role: 'Poster'
   };
 
   const validationSchema = Yup.object().shape({
@@ -236,7 +236,7 @@ const Signup = () => {
               </div>
               <div className="account-form-component-with-optional-text">
                 <FormControl component="fieldset">
-                  <FormLabel component="legend">Role</FormLabel>
+                  <FormLabel component="legend" sx={{ color: '#000000' }}>Role</FormLabel>
                   <RadioGroup
                     row
                     aria-label="role"
