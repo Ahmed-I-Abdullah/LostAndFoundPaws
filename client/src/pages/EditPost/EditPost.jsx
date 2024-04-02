@@ -9,7 +9,7 @@ import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
 import CircularProgress from "@mui/material/CircularProgress";
 import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
-import { downloadData } from "@aws-amplify/storage";
+import { downloadData, remove } from "@aws-amplify/storage";
 
 const EditPost = () => {
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ const EditPost = () => {
   const [loading, setLoading] = useState(true);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [post, setPost] = useState(null);
 
   const fetchPost = async () => {
@@ -29,9 +28,9 @@ const EditPost = () => {
         variables: { id },
       });
 
-      console.log("respons is: ", postData);
+      const downloadedImages = await fetchImages(postData.data.getPost.images);
 
-      setPost(postData.data.getPost);
+      setPost({ ...postData.data.getPost, images: downloadedImages });
 
       setLoading(false);
     } catch (error) {
@@ -41,41 +40,43 @@ const EditPost = () => {
     }
   };
 
-  const fetchImages = async () => {
-    if (post && post.images) {
-      const imageUrls = post.images;
-      const images = await Promise.all(
-        imageUrls.map(async (imageUrl) => {
-          try {
-            const imageData = await downloadData({ key: imageUrl }).result;
-            return imageData.body
-          } catch (error) {
-            console.error("Error downloading image:", error);
-            return null;
-          }
-        })
-      );
-      setPost({...post, images: images})
-      setIsImageLoaded(true);
-    }
+  const fetchImages = async (imageUrls) => {
+    const images = await Promise.all(
+      imageUrls.map(async (imageUrl) => {
+        try {
+          const imageData = await downloadData({ key: imageUrl }).result;
+          const file = new File([imageData.body], imageUrl, {
+            type: imageData.contentType,
+          });
+          return file;
+        } catch (error) {
+          console.error("Error downloading image:", error);
+          return null;
+        }
+      })
+    );
+    return images;
   };
 
   useEffect(() => {
     fetchPost();
   }, []);
 
-  useEffect(() => {
-    if (!isImageLoaded) {
-      fetchImages();
-    }
-  }, [post]);
-
-
   const handleSubmit = async (values) => {
+    const deletedImages = post.images.filter(
+      (postImage) =>
+        !values.images.some((valueImage) => valueImage.name === postImage.name)
+    );
+
+    const addedImages = values.images.filter(
+      (valueImage) =>
+        !post.images.some((postImage) => postImage.name === valueImage.name)
+    );
+    
     try {
       const user = await getCurrentUser();
 
-      const uploadTasks = values.images.map(async (image) => {
+      const uploadTasks = addedImages.map(async (image) => {
         const imageKey = `images/${Date.now()}_${image.name}`;
         await uploadData({
           key: imageKey,
@@ -87,7 +88,25 @@ const EditPost = () => {
         return imageKey;
       });
 
-      const imageKeys = await Promise.all(uploadTasks);
+      const uploadedImageKeys = await Promise.all(uploadTasks);
+      const existingImageKeys = post.images
+        .filter(
+          (image) =>
+            !deletedImages.some(
+              (deletedImage) => deletedImage.name === image.name
+            )
+        )
+        .map((image) => image.name);
+
+      const imageKeys = [...existingImageKeys, ...uploadedImageKeys];
+
+      const deletionTasks = deletedImages.map(async (image) => {
+        await remove({
+          key: image.name,
+        }).result;
+      });
+
+      await Promise.all(deletionTasks);
 
       // Store the data in the database
       const postInput = {
@@ -99,8 +118,8 @@ const EditPost = () => {
         description: values.description,
         resolved: false,
         lastKnownLocation: {
-          latitude: values.location.coordinates.latitude,
-          longitude: values.location.coordinates.longitude,
+          latitude: values.location.latitude,
+          longitude: values.location.longitude,
           address: values.location.address,
         },
         species: values.species,
@@ -117,13 +136,13 @@ const EditPost = () => {
         variables: { input: postInput },
       });
 
-      handleToastOpen("success", "Post created successfully");
+      handleToastOpen("success", "Post updated successfully");
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      console.error("Error creating post: ", error);
-      handleToastOpen("error", "Error creating post. Please try again later");
+      console.error("Error updating post: ", error);
+      handleToastOpen("error", "Error updating post. Please try again later");
     }
   };
 
@@ -137,7 +156,7 @@ const EditPost = () => {
     setToastOpen(false);
   };
 
-  if (loading || !isImageLoaded) {
+  if (loading) {
     return (
       <div
         style={{

@@ -34,10 +34,8 @@ const accessToken =
     const handleChangeSelection = (_, newValue) => {
       onChange({
         address: newValue?.place_name, 
-        coordinates: {
-          longitude: newValue?.center[0], 
-          latitude: newValue?.center[1]
-        } 
+        longitude: newValue?.center[0], 
+        latitude: newValue?.center[1]
       });
     };
   

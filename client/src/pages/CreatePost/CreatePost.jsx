@@ -41,8 +41,8 @@ const CreatePost = () => {
         description: values.description,
         resolved: false,
         lastKnownLocation: {
-          latitude: values.location.coordinates.latitude,
-          longitude: values.location.coordinates.longitude,
+          latitude: values.location.latitude,
+          longitude: values.location.longitude,
           address: values.location.address,
         },
         species: values.species,
