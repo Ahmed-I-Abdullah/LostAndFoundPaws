@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import { rgba } from "polished";
 import Toggle from "../../components/Toggle/Toggle";
 import ImageUpload from "../../components/ImageUpload/ImageUpload";
@@ -45,6 +46,7 @@ const FieldTitle = ({ title }) => {
 
 const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { isMobile } = useMobile();
 
   const initialValues = {
