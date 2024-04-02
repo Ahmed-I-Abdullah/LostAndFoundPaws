@@ -8,7 +8,7 @@ import {
   TextField,
   useMediaQuery
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import theme from "../../theme/theme";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,6 +21,8 @@ import { useMobile } from "../../context/MobileContext";
 import "./CommentCard.css";
 import ReportPost from "../ReportPopup/ReportPopup";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import { generateClient } from "aws-amplify/api";
+import * as queries from "../../graphql/queries";
 
 const CommentCard = ({
   owner,
@@ -30,10 +32,10 @@ const CommentCard = ({
   createdAt,
   content,
   parentCommentId,
-  parentCommentUsername,
-  parentCommentContent,
   setReply,
 }) => {
+  const client = generateClient({ authMode: "userPool" });
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -54,11 +56,31 @@ const CommentCard = ({
   const handleOpenSave = () => setOpenSave(true);
   const handleCloseSave = () => setOpenSave(false);
 
-  const isMobile = useMobile();
+  const [parentCommentUsername, setParentCommentUsername] = useState("");
+  const [parentCommentContent, setParentCommentContent] = useState("");
 
   const handleEdit = (e) => {
     setEditedContent(e.target.value);
   };
+
+  useEffect(() => {
+    const fetchParentComment = async () => {
+      try {
+        const commentResponse = await client.graphql({
+          query: queries.listComments,
+          variables: { id: parentCommentId}
+        });
+        const parentComment = commentResponse.data.listComments.items[0];
+        setParentCommentContent(parentComment.content);
+        setParentCommentUsername(parentComment.user.username);
+      } catch (error) {
+        console.error('Error fetching comments for the post: ', error);
+      }
+    }
+    if(parentCommentId) {
+      fetchParentComment();
+    }
+  }, []);
 
   const handleReport = (reason, description) => {
     console.log(
@@ -116,7 +138,7 @@ const CommentCard = ({
           style={{ color: `${theme.palette.custom.greyBkg.comment.content}` }}
         >
           {parentCommentId && (
-            <Typography color={`${theme.palette.primary.main}`}>
+            <Typography color={`${theme.palette.primary.main}`} noWrap>
               {`@${parentCommentUsername} ${parentCommentContent}`}
             </Typography>
           )}
