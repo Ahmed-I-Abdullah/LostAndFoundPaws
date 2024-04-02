@@ -13,10 +13,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FlagIcon from "@mui/icons-material/Flag";
 import theme from "../../theme/theme";
 import { useMobile } from "../../context/MobileContext";
 import { formatDistanceToNow } from "date-fns";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import ReportPost from "../../components/ReportPopup/ReportPopup";
 
 const SightingCard = ({
   owner,
@@ -31,6 +33,7 @@ const SightingCard = ({
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const handleClickOpen = () => {
     setIsCardOpen(true);
@@ -44,6 +47,15 @@ const SightingCard = ({
     event.stopPropagation();
     /** TODO: handle delete post */
     setOpenConfirmDelete(false);
+  };
+
+  const handleReport = (reason, description) => {
+    console.log(
+      "Report submitted with reason: ",
+      reason,
+      " and description: ",
+      description
+    );
   };
 
   return (
@@ -133,6 +145,25 @@ const SightingCard = ({
                     }}
                   />
                 </Typography>
+                <Typography
+                  sx={{
+                    marginTop: "10px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    variant="text"
+                    sx={{
+                      color: `${theme.palette.text.primary}`,
+                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                    }}
+                    size="small"
+                  >
+                    <FlagIcon />
+                    <Typography variant="h9">Report</Typography>
+                  </Button>
+                </Typography>
               </Grid>
               {owner && (
                 <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -156,6 +187,14 @@ const SightingCard = ({
           </Card>
         </DialogContent>
       </Dialog>
+      {isReportModalOpen && (
+        <ReportPost
+          contentType="post"
+          itemId={"post.id"}
+          onClose={() => setIsReportModalOpen(false)}
+          onReport={handleReport}
+        />
+      )}
       <ConfirmDialog
         open={openConfirmDelete}
         onClose={(event) => {
