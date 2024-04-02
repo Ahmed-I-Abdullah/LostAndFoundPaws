@@ -50,7 +50,6 @@ const ViewPostPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { isMobile } = useMobile();
   const client = generateClient({ authMode: "apiKey" });
   const extraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const small = useMediaQuery(theme.breakpoints.down("sm"));
@@ -299,6 +298,7 @@ const ViewPostPage = () => {
                         marginRight: "8px",
                       }}
                       startIcon={<EditIcon />}
+                      onClick={() => navigate(`/posts/${petData.id}/edit`)}
                     >
                       Edit
                     </Button>
