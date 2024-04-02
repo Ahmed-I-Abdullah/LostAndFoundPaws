@@ -4,12 +4,9 @@ import {
   Grid,
   Typography,
   Button,
-  useTheme,
-  Snackbar,
-  MuiAlert,
+  useTheme
 } from "@mui/material";
 import { Formik, Form } from "formik";
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { rgba } from "polished";
 import Toggle from "../../components/Toggle/Toggle";
@@ -18,12 +15,7 @@ import CustomTextField from "../../components/TextField/TextField";
 import CustomDropdown from "../../components/DropDown/DropDown";
 import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 import { useMobile } from "../../context/MobileContext";
-import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
-import { generateClient } from "aws-amplify/api";
-import { getCurrentUser } from "aws-amplify/auth";
-import { uploadData } from "@aws-amplify/storage";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
-import * as mutations from "../../graphql/mutations";
 import "./CreatePostForm.css";
 
 const postTypeOptions = [
@@ -54,9 +46,6 @@ const FieldTitle = ({ title }) => {
 const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
   const theme = useTheme();
   const { isMobile } = useMobile();
-
-  console.log("postData is: ", postData);
-  console.log("is edit: ", isEdit);
 
   const initialValues = {
     type: isEdit ? postData.status : "Lost",
