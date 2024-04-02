@@ -193,7 +193,7 @@ const ViewPostPage = () => {
     return (
       <>
         <SectionTitle title="Comments" />
-        <Comments />
+        <Comments postId={id}/>
       </>
     );
   };
