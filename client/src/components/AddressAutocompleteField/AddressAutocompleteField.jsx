@@ -15,6 +15,7 @@ const accessToken =
     const [loading, setLoading] = useState(false);
     
     const handleChangeSearch = async (event) => {
+      if(!event) return
       const inputValue = event.target.value;
       
       try {
@@ -47,9 +48,10 @@ const accessToken =
         disableClearable
         options={options}
         loading={loading}
-        getOptionLabel={(option) => option.place_name}
+        getOptionLabel={(option) => option.place_name || option.address}
         onInputChange={handleChangeSearch}
         onChange={handleChangeSelection}
+        value={otherProps.value}
         renderInput={(params) => (
           <CustomTextField
             {...params}

@@ -1,18 +1,75 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";
 import { getCurrentUser } from "aws-amplify/auth";
 import { uploadData } from "@aws-amplify/storage";
+import { useParams } from "react-router-dom";
 import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
-import * as mutations from '../../graphql/mutations';
+import CircularProgress from "@mui/material/CircularProgress";
+import * as mutations from "../../graphql/mutations";
+import * as queries from "../../graphql/queries";
+import { downloadData } from "@aws-amplify/storage";
 
-const CreatePost = () => {
+const EditPost = () => {
   const navigate = useNavigate();
-  const client = generateClient({ authMode: "userPool" }); //May need to update to apiKey since poster accounts are not authorized
+  const client = generateClient({ authMode: "userPool" });
+  const { id } = useParams();
   const [toastOpen, setToastOpen] = React.useState(false);
+  const [loading, setLoading] = useState(true);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [post, setPost] = useState(null);
+
+  const fetchPost = async () => {
+    try {
+      const postData = await client.graphql({
+        query: queries.getPost,
+        variables: { id },
+      });
+
+      console.log("respons is: ", postData);
+
+      setPost(postData.data.getPost);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      handleToastOpen("error", "Error fetching post");
+      console.error("Error fetching post: ", error);
+    }
+  };
+
+  const fetchImages = async () => {
+    if (post && post.images) {
+      const imageUrls = post.images;
+      const images = await Promise.all(
+        imageUrls.map(async (imageUrl) => {
+          try {
+            const imageData = await downloadData({ key: imageUrl }).result;
+            return imageData.body
+          } catch (error) {
+            console.error("Error downloading image:", error);
+            return null;
+          }
+        })
+      );
+      setPost({...post, images: images})
+      setIsImageLoaded(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, []);
+
+  useEffect(() => {
+    if (!isImageLoaded) {
+      fetchImages();
+    }
+  }, [post]);
+
 
   const handleSubmit = async (values) => {
     try {
@@ -34,6 +91,7 @@ const CreatePost = () => {
 
       // Store the data in the database
       const postInput = {
+        id: post.id,
         name: values.name,
         status: values.type.toUpperCase(),
         gender: values.gender,
@@ -55,7 +113,7 @@ const CreatePost = () => {
       };
 
       await client.graphql({
-        query: mutations.createPost,
+        query: mutations.updatePost,
         variables: { input: postInput },
       });
 
@@ -79,9 +137,30 @@ const CreatePost = () => {
     setToastOpen(false);
   };
 
+  if (loading || !isImageLoaded) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <div>
-      <CreatePostForm isEdit={false} handleSubmit={handleSubmit} />
+      {post ? (
+        <CreatePostForm
+          isEdit={true}
+          postData={post}
+          handleSubmit={handleSubmit}
+        />
+      ) : null}
       <ToastNotification
         open={toastOpen}
         severity={toastSeverity}
@@ -92,4 +171,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;

@@ -15,11 +15,12 @@ import VerifyAccount from "./pages/VerifyAccount/VerifyAccount"
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import MyAccount from "./pages/MyAccount/MyAccount";
-import CreatePostForm from "./pages/CreatePost/CreatePost";
+import CreatePost from "./pages/CreatePost/CreatePost";
 import CreateSightingForm from "./pages/CreateSighting/CreateSighting";
 import MyPostsAndComments from "./pages/MyPostsAndComments/MyPostsAndComments";
 import ViewPostPage from "./pages/ViewPost/ViewPostPage";
 import ViewReportsPage from "./pages/ViewReportings/ViewReportings";
+import EditPost from "./pages/EditPost/EditPost";
 
 function App() {
   return (
@@ -47,10 +48,11 @@ function AppContent() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/myAccount" element={<MyAccount />} />
-          <Route path="/createPost" element={<CreatePostForm />} />
+          <Route path="/createPost" element={<CreatePost />} />
           <Route path="/createSighting" element={<CreateSightingForm />} />
           <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
           <Route path="/viewReportings" element={<ViewReportsPage />} />
+          <Route path="/post/edit/:id" element={<EditPost />} />
           <Route path="/pets/:id" element={<ViewPostPage />} />
         </Routes>
       </div>
