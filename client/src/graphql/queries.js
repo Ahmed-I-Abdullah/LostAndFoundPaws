@@ -693,6 +693,18 @@ export const listComments = /* GraphQL */ `
         postID
         parentCommentID
         userID
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -724,6 +736,18 @@ export const commentsByPost = /* GraphQL */ `
         postID
         parentCommentID
         userID
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         createdAt
         updatedAt
         owner

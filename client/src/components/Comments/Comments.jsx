@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Typography, TextField, Button, Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import "./Comments.css";
 import theme from "../../theme/theme";
 import CommentCard from "../CommentCard/CommentCard";
+import { generateClient } from "aws-amplify/api";
+import * as queries from "../../graphql/queries";
+import ToastNotification from "../ToastNotification/ToastNotificaiton";
+import * as mutations from "../../graphql/mutations"
+import { getCurrentUser } from "aws-amplify/auth"
 
 const commentData = [
   {
@@ -40,9 +45,46 @@ const commentData = [
   },
 ];
 
-const Comments = () => {
-  const [commentreply, setCommentReply] = useState("");
+const Comments = ( { postId} ) => {
+  const client = generateClient({ authMode: "userPool" });
+
+  const [commentReply, setCommentReply] = useState("");
+  const [commentReplyId, setCommentReplyId] = useState("");
   const [postCommentText, setPostCommentText] = useState("");
+  const [commentData, setCommentData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchPostComments = async () => {
+      try {
+        const commentResponse = await client.graphql({
+          query: queries.commentsByPost,
+          variables: { postID: postId}
+        });
+        const comments = commentResponse.data.commentsByPost.items;
+        setCommentData(comments);
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen('error', 'Error fetching comments for the post');
+        console.error('Error fetching comments for the post: ', error);
+      }
+    }
+    
+    fetchPostComments();
+  }, []);
 
   const findUsernameWithCommentId = (commentId) => {
     const comment = commentData.find((comment) => comment.id === commentId);
@@ -52,20 +94,44 @@ const Comments = () => {
   const setReply = (commentId) => {
     if (commentId === null) {
       setCommentReply("");
+      setCommentReplyId("");
       return;
     }
     const comment = findUsernameWithCommentId(commentId);
-    console.log(comment);
     if (comment === null) {
       setCommentReply("");
+      setCommentReplyId("");
       return;
     }
-    setCommentReply(comment.userName);
+    setCommentReply(comment.user.username);
+    setCommentReplyId(comment.id);
   };
 
   const handleChange = (e) => {
     setPostCommentText(e.target.value);
   };
+
+  const postComment = async () => {
+    try {
+      //TODO:  remove and store the logged in user information globally
+      const user = await getCurrentUser();
+
+      const commentInput = {
+        content: postCommentText,
+        postID: postId,
+        userID: user.userId,
+        ...(commentReplyId && {parentCommentID: commentReplyId})
+      }
+      await client.graphql({
+        query: mutations.createComment,
+        variables: { input: commentInput },
+      });
+      handleToastOpen('success', 'comment successfully added')
+    } catch (error) {
+      handleToastOpen('error', 'Error posting comment for the post. Make sure you are logged in.');
+      console.error('Error posting comment for the post');
+    }
+  }
 
   return (
     <Grid>
@@ -78,9 +144,7 @@ const Comments = () => {
               id={comment.id}
               content={comment.content}
               parentCommentId={comment.parentCommentID}
-              parentCommentUsername={"hii"} //TODO: add parent username and content in shema
-              parentCommentContent={"jii"}
-              username={comment.userName}
+              username={comment.user.username}
               createdAt={comment.createdAt}
               updatedAt={comment.updatedAt}
               setReply={setReply}
@@ -98,7 +162,7 @@ const Comments = () => {
       >
         <div className="post-comment-content">
           <div style={{ width: "80%" }}>
-            {commentreply && (
+            {commentReply && (
               <Box
                 sx={{
                   display: "flex",
@@ -110,7 +174,7 @@ const Comments = () => {
                   <HighlightOffIcon onClick={() => setReply(null)} />
                 </Button>
                 <Typography variant="subtitle">
-                  Replying to {commentreply}
+                  Replying to {commentReply}
                 </Typography>
               </Box>
             )}
@@ -134,11 +198,18 @@ const Comments = () => {
               color: `${theme.palette.custom.primaryBkg}`,
               minWidth: "fit-content",
             }}
+            onClick={postComment}
           >
             <Typography>Comment</Typography>
           </Button>
         </div>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </Grid>
   );
 };
