@@ -438,35 +438,6 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
-//Posters do not have access to report related fields
-export const getUserPoster = /* GraphQL */ `
-  query GetUserPoster($id: ID!) {
-    getUser(id: $id) {
-      id
-      username
-      role
-      profilePicture
-      email
-      phone
-      createdAt
-      updatedAt
-      posts {
-        nextToken
-        __typename
-      }
-      sightings {
-        nextToken
-        __typename
-      }
-      comments {
-        nextToken
-        __typename
-      }
-      owner
-      __typename
-    }
-  }
-`;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
     $id: ID

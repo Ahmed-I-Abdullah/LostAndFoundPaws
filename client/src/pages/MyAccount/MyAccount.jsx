@@ -20,7 +20,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 const MyAccount = () => {
   const { assessUserState } = useUser();
 
-  const client = generateClient({authMode: 'apiKey'});
+  const client = generateClient({authMode: 'userPool'});
 
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");

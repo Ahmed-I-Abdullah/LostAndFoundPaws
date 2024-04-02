@@ -908,9 +908,9 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
-//Posters do not have access to report related fields
-export const createUserPoster = /* GraphQL */ `
-  mutation CreateUserPoster(
+//Unauthorized do not have access to report or related fields
+export const createUserNoAuth = /* GraphQL */ `
+  mutation CreateUserNoAuth(
     $input: CreateUserInput!
     $condition: ModelUserConditionInput
   ) {
