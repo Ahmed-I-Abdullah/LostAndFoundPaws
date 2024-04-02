@@ -36,7 +36,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
 
 // Toggle between admin and regular view for now
-const isAdmin = false;
+const isAdmin = true;
 
 const SectionTitle = ({ title }) => {
   return (

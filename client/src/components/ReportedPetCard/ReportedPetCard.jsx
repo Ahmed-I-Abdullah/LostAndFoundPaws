@@ -19,8 +19,8 @@ const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
   };
 
   return (
-    <Box sx={{ margin: '16px', border: '1px solid #ccc', borderRadius: '8px', padding: '16px', backgroundColor: '#f9f9f9' }}>
-      <Box sx={{ marginBottom: '16px' }}>
+    <Box sx={{ margin: '16px', border: '1px solid #ccc', borderRadius: '8px', padding: '10px', backgroundColor: '#f9f9f9' }}>
+      <Box sx={{ marginBottom: '10px' }}>
         <PetCard
           owner={false} //TODO: Check if the user logged in is the owner
           img={petData.images[0]}
@@ -35,19 +35,23 @@ const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
       </Box>
       <Box sx={{ borderTop: '1px solid #eee', padding: '16px' }}>
         <Typography variant="h6" sx={{ marginBottom: '8px' }}>Report Description</Typography>
-        <Typography sx={{ marginBottom: '16px' }}>Report Reason: Inappropriate</Typography>
+        <Typography sx={{ marginBottom: '10px' }}>Report Reason: Inappropriate</Typography>
         <Typography sx={{ marginBottom: '16px' }}>Report Descriptions: Too cute</Typography>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => setOpenConfirmDelete(true)}
-          startIcon={<DeleteIcon />} 
-          sx={{ marginRight: '8px' }}
-        >
-            Delete
-        </Button>
-        <Button variant="contained" onClick={() => setOpenConfirmIgnore(true)}>Ignore</Button>
-      </Box>
+        
+        {/* Button container */}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+            variant="contained"
+            color="error"
+            onClick={() => setOpenConfirmDelete(true)}
+            startIcon={<DeleteIcon />} 
+            sx={{ marginRight: '8px' }}
+            >
+                Delete
+            </Button>
+            <Button variant="contained" onClick={() => setOpenConfirmIgnore(true)}>Ignore</Button>
+        </Box>
+        </Box>
 
     {/* Use the ConfirmDialog for delete confirmation */}
     <ConfirmDialog
