@@ -17,8 +17,8 @@ import FlagIcon from "@mui/icons-material/Flag";
 import theme from "../../theme/theme";
 import { useMobile } from "../../context/MobileContext";
 import { formatDistanceToNow } from "date-fns";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
-
 
 const SightingCard = ({
   owner,
@@ -32,6 +32,7 @@ const SightingCard = ({
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -40,6 +41,12 @@ const SightingCard = ({
 
   const handleClose = () => {
     setIsCardOpen(false);
+  };
+
+  const handleDeleteConfirmed = (event) => {
+    event.stopPropagation();
+    /** TODO: handle delete post */
+    setOpenConfirmDelete(false);
   };
 
   const handleReport = (reason, description) => {
@@ -58,9 +65,9 @@ const SightingCard = ({
           sx={{
             display: "flex",
             flexDirection: "column",
-            margin: isMobile ? "1rem 1rem" : "1rem 2rem",
-            width: isMobile ? "38vw" : "20vw",
-            height: isMobile ? "30vh" : "auto",
+            margin: isMobile ? "1rem" : "1rem 2rem",
+            width: isMobile ? "40vw" : "20vw",
+            height: "auto",
           }}
         >
           <CardMedia
@@ -139,34 +146,40 @@ const SightingCard = ({
                   />
                 </Typography>
                 <Typography
-                  sx={{ marginTop : "10px", display: "flex", justifyContent: "center" }}
+                  sx={{
+                    marginTop: "10px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                 >
-                  <Button 
+                  <Button
                     variant="text"
-                    sx={{ color: `${theme.palette.text.primary}`,
-                    backgroundColor: `${theme.palette.custom.greyBkg.tag}`
+                    sx={{
+                      color: `${theme.palette.text.primary}`,
+                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
                     }}
                     size="small"
                   >
-                  <FlagIcon />
-                  <Typography variant="h9">Report</Typography>
-                </Button>
+                    <FlagIcon />
+                    <Typography variant="h9">Report</Typography>
+                  </Button>
                 </Typography>
               </Grid>
               {owner && (
                 <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <Button
                     variant="contained"
-                    sx={{
-                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                      color: `${theme.palette.text.primary}`,
-                      "&:hover": {
-                        backgroundColor: `${theme.palette.primary.main}`,
-                      },
+                    color="error"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setOpenConfirmDelete(true);
                     }}
+                    sx={{
+                      borderRadius: 2,
+                    }}
+                    startIcon={<DeleteIcon />}
                   >
-                    <DeleteIcon />
-                    <Typography variant="h9">Delete</Typography>
+                    Delete
                   </Button>
                 </Grid>
               )}
@@ -182,6 +195,15 @@ const SightingCard = ({
           onReport={handleReport}
         />
       )}
+      <ConfirmDialog
+        open={openConfirmDelete}
+        onClose={(event) => {
+          event.stopPropagation();
+          setOpenConfirmDelete(false);
+        }}
+        onConfirm={(event) => handleDeleteConfirmed(event)}
+        title="Are you sure you want to delete this post?"
+      />
     </div>
   );
 };

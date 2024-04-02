@@ -77,7 +77,11 @@ const PetCard = ({
               marginBottom: "1rem",
             }}
           >
-            <Typography variant={small ? "h7" : "h6"} fontWeight={"bold"} noWrap>
+            <Typography
+              variant={small ? "h7" : "h6"}
+              fontWeight={"bold"}
+              noWrap
+            >
               {name}
             </Typography>
             {owner && (
