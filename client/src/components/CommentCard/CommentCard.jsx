@@ -67,10 +67,10 @@ const CommentCard = ({
     const fetchParentComment = async () => {
       try {
         const commentResponse = await client.graphql({
-          query: queries.listComments,
+          query: queries.getComment,
           variables: { id: parentCommentId}
         });
-        const parentComment = commentResponse.data.listComments.items[0];
+        const parentComment = commentResponse.data.getComment;
         setParentCommentContent(parentComment.content);
         setParentCommentUsername(parentComment.user.username);
       } catch (error) {
