@@ -46,7 +46,7 @@ const accessToken =
         disableClearable
         options={options}
         loading={loading}
-        getOptionLabel={(option) => option.place_name || option.address}
+        getOptionLabel={(option) => option.place_name || option.address || ''}
         onInputChange={handleChangeSearch}
         onChange={handleChangeSelection}
         value={otherProps.value}

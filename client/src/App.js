@@ -52,8 +52,8 @@ function AppContent() {
           <Route path="/createSighting" element={<CreateSightingForm />} />
           <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
           <Route path="/viewReportings" element={<ViewReportsPage />} />
-          <Route path="/post/edit/:id" element={<EditPost />} />
-          <Route path="/pets/:id" element={<ViewPostPage />} />
+          <Route path="/posts/:id/edit" element={<EditPost />} />
+          <Route path="/posts/:id" element={<ViewPostPage />} />
         </Routes>
       </div>
       {showNav && <NavbarBottom />}

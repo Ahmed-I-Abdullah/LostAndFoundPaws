@@ -35,7 +35,7 @@ const PetCard = ({
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
   const handleClickOpen = () => {
-    navigate(`/pets/${id}`);
+    navigate(`/posts/${id}`);
   };
 
   const handleDeleteConfirmed = (event) => {
