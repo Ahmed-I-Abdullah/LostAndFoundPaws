@@ -17,9 +17,6 @@ export const UserProvider = ({ children }) => {
         query: queries.getUser,
         variables: { id: user.userId }
       });
-      console.log("RESULT HERE")
-      console.log(result)
-      console.log(result.data.getUser.role)
       if(result.data.getUser.role == 'ADMIN'){
         setUserState('Admin');
       }

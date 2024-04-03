@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Formik, Form } from "formik";
 import { generateClient } from 'aws-amplify/api';
+import { getCurrentUser  } from "aws-amplify/auth";
+import * as queries from '../../graphql/queries.js';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from "@mui/material/Box";
@@ -18,6 +19,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 
 const MyAccount = () => {
+
   const { assessUserState } = useUser();
 
   const client = generateClient({authMode: 'userPool'});
@@ -26,14 +28,18 @@ const MyAccount = () => {
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
 
+  const [currentUsername, setCurrentUsername] = useState('');
+  const [currentEmail, setCurrentEmail] = useState('');
+  const [currentPhone, setCurrentPhone] = useState('');
+
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
   const initialValues = {
-    username: "",
-    email: "",
-    newPassword: "",
-    confirmNewPassword: "",
-    phoneNumber: "",
+    username: currentUsername,
+    email: currentEmail,
+    password: '',
+    confirmPassword: '',
+    phoneNumber: currentPhone,
   };
 
   const validationSchema = Yup.object().shape({
@@ -49,6 +55,28 @@ const MyAccount = () => {
     .required("Confirm Password is required"),
     phoneNumber: Yup.string().optional(),
   });
+
+  const getUserInfo = async () => {
+    try {
+      const user = await getCurrentUser();
+      const result = await client.graphql({
+        query: queries.getUser,
+        variables: { id: user.userId }
+      })
+      setCurrentUsername(result.data.getUser.username ?? '');
+      setCurrentEmail(result.data.getUser.email ?? '');
+      setCurrentPhone(result.data.getUser.phone ?? '');
+    } catch (error) {
+      console.log("Error fetching username:", error);
+      setCurrentUsername('');
+      setCurrentEmail('');
+      setCurrentPhone('');
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const handleSubmit = async (values) => {
     //TODO
@@ -99,6 +127,7 @@ const MyAccount = () => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
+          enableReinitialize={true} //To reload when fetch initial values from api
         >
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
             <Form onSubmit={handleSubmit}>
@@ -132,8 +161,8 @@ const MyAccount = () => {
               </div>
               <div className="account-form-component">
                 <CustomTextField
-                  name="newPassword"
-                  label="New Password"
+                  name="password"
+                  label="Password"
                   variant="outlined"
                   type="password"
                   error={errors.password && touched.password}
@@ -147,8 +176,8 @@ const MyAccount = () => {
               </div>
               <div className="account-form-component">
                 <CustomTextField
-                  name="confirm New Password"
-                  label="Confirm New Password"
+                  name="confirmPassword"
+                  label="Confirm Password"
                   variant="outlined"
                   type="password"
                   error={errors.confirmPassword && touched.confirmPassword}
