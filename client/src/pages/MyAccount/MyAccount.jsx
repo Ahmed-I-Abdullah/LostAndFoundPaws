@@ -48,11 +48,14 @@ const MyAccount = () => {
       .email("Invalid email")
       .required("Email is required"),
     password: Yup.string()
-    .required("Password is required")
     .min(8, "Password must be at least 8 characters long"),
     confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Confirm Password is required"),
+    .when("password", {
+      is: (password) => !!password && password.length > 0,
+      then: () => Yup.string()
+      .required("Confirm Password is required")
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+    }),
     phoneNumber: Yup.string().optional(),
   });
 
@@ -78,8 +81,17 @@ const MyAccount = () => {
     getUserInfo();
   }, []);
 
+  //For updating account
   const handleSubmit = async (values) => {
-    //TODO
+
+    console.log(values.password);
+    console.log(values);
+    console.log(values.password == "");
+    
+
+    if(values.password != null || values.email != null){
+
+    }
   };
 
   const handleDeleteConfirmed = () => {
