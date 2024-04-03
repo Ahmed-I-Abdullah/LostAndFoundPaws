@@ -3,7 +3,7 @@ type User
   @auth(
     rules: [
       { allow: public, operations: [read, create] }
-      { allow: owner, operations: [create, update, read] }
+      { allow: owner, operations: [create, update, read, delete] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
       { allow: groups, operations: [read], groups: ["Poster"] }
     ]
@@ -30,7 +30,7 @@ type Post
   @auth(
     rules: [
       { allow: public, operations: [read] }
-      { allow: owner, operations: [create, update, read] }
+      { allow: owner, operations: [create, update, read, delete] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
       { allow: groups, operations: [create, read], groups: ["Poster"] }
     ]
@@ -60,7 +60,7 @@ type Comment
   @auth(
     rules: [
       { allow: public, operations: [read] }
-      { allow: owner, operations: [create, update, read] }
+      { allow: owner, operations: [create, update, read, delete] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
       { allow: groups, operations: [create, read], groups: ["Poster"] }
     ]
@@ -85,7 +85,7 @@ type Sighting
   @auth(
     rules: [
       { allow: public, operations: [read, create] }
-      { allow: owner, operations: [create, update, read] }
+      { allow: owner, operations: [create, update, read, delete] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
       { allow: groups, operations: [create, read], groups: ["Poster"] }
     ]
