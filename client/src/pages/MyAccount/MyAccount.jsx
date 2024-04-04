@@ -229,7 +229,7 @@ const MyAccount = () => {
 
       setTimeout(() => {
         try {
-          logoutUser
+          logoutUser();
         } catch (error) {
           console.log('error signing out: ', error);
         }
