@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Formik, Form } from "formik";
 import { generateClient } from 'aws-amplify/api';
-import { getCurrentUser, updateUserAttributes, resetPassword } from "aws-amplify/auth";
+import { getCurrentUser, updateUserAttributes, resetPassword, deleteUser, signOut } from "aws-amplify/auth";
 import * as queries from '../../graphql/queries.js';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
@@ -21,7 +21,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 const MyAccount = () => {
 
-  const { updateUsername } = useUser();
+  const { updateUsername, assessUserState } = useUser();
   const navigate = useNavigate();
 
   const client = generateClient({authMode: 'userPool'});
@@ -140,11 +140,15 @@ const MyAccount = () => {
             console.log(`attribute was successfully updated.`);
             handleToastOpen(
               "success", 
-              "Successfully verified password");
+              "Successfully verified password"
+            );
+            setTimeout(() => {
+              setToastOpen(false);
+            }, 2000);
             break;
         }
       } catch (error) {
-        console.log('error updating email cognito, email in database and cognito may be out of sync now:', error);
+        console.log('Error updating email cognito, email in database and cognito may be out of sync now:', error);
         handleToastOpen(
           "error",
           "Error updating email cognito, email in database and cognito may be out of sync now"
@@ -191,10 +195,65 @@ const MyAccount = () => {
     }
   };
 
-  const handleDeleteConfirmed = () => {
-    //TODO
-    //Dont forget toast menu for on delete
+  const handleDeleteConfirmed = async () => {
     setOpenConfirmDelete(false);
+    try {
+      const user = await getCurrentUser();
+      const result = await client.graphql({
+        query: mutations.deleteUser,
+        variables: {
+          input: {
+            id: user.userId,
+          },
+        },
+      });
+    } catch (error) {
+      console.log('error deleting database:', error);
+      handleToastOpen(
+        "error",
+        "Error deleting database"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    try {
+      await deleteUser();
+      console.log(
+        `Deleted user`
+      );
+      handleToastOpen(
+        "success",
+        `Deleted user`
+      );
+
+      setTimeout(() => {
+        try {
+          logoutUser
+        } catch (error) {
+          console.log('error signing out: ', error);
+        }
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      console.log('Error deleting cognito user, user in database and cognito may be out of sync now:', error);
+      handleToastOpen(
+        "error",
+        "Error deleting cognito user, user in database and cognito may be out of sync now"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    };
+  };
+
+  const logoutUser = async () => {
+    try {
+      await signOut();
+      await assessUserState();
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
   };
 
   const updatePhoto = (event) => {
