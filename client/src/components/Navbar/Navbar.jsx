@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useMobile } from '../../context/MobileContext';
 import { useUser } from '../../context/UserContext';
 import { generateClient } from 'aws-amplify/api';
-import { getCurrentUser  } from "aws-amplify/auth";
-import * as queries from '../../graphql/queries.js';
 import { useNavigate } from 'react-router-dom';
 import UserMenu from '../UserMenu/UserMenu';
 import "./Navbar.css";
@@ -21,9 +19,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { isMobile, isMobileSmall } = useMobile();
-  const { userState } = useUser();
-
-  const [username, setUsername] = useState('');
+  const { userState, username } = useUser();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,24 +28,6 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const getUsername = async () => {
-    try {
-      const user = await getCurrentUser();
-      const result = await client.graphql({
-        query: queries.getUser,
-        variables: { id: user.userId }
-      });
-      setUsername(result.data.getUser.username)
-    } catch (error) {
-      console.log("Error fetching username:", error)
-      setUsername('');
-    }
-  };
-
-  useEffect(() => {
-    getUsername();
-  }, []);
 
   return (
     <div className="navbar">

@@ -908,38 +908,6 @@ export const createUser = /* GraphQL */ `
     }
   }
 `;
-//Unauthorized do not have access to report or related fields
-export const createUserNoAuth = /* GraphQL */ `
-  mutation CreateUserNoAuth(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      id
-      username
-      role
-      profilePicture
-      email
-      phone
-      createdAt
-      updatedAt
-      posts {
-        nextToken
-        __typename
-      }
-      sightings {
-        nextToken
-        __typename
-      }
-      comments {
-        nextToken
-        __typename
-      }
-      owner
-      __typename
-    }
-  }
-`;
 export const createSighting = /* GraphQL */ `
   mutation CreateSighting(
     $input: CreateSightingInput!

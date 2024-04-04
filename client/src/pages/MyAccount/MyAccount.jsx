@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Formik, Form } from "formik";
 import { generateClient } from 'aws-amplify/api';
-import { getCurrentUser  } from "aws-amplify/auth";
+import { getCurrentUser, updateUserAttributes, resetPassword } from "aws-amplify/auth";
 import * as queries from '../../graphql/queries.js';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
+import { useNavigate, Link } from "react-router-dom";
 import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,7 +21,8 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 const MyAccount = () => {
 
-  const { assessUserState } = useUser();
+  const { updateUsername } = useUser();
+  const navigate = useNavigate();
 
   const client = generateClient({authMode: 'userPool'});
 
@@ -37,8 +39,6 @@ const MyAccount = () => {
   const initialValues = {
     username: currentUsername,
     email: currentEmail,
-    password: '',
-    confirmPassword: '',
     phoneNumber: currentPhone,
   };
 
@@ -47,15 +47,6 @@ const MyAccount = () => {
     email: Yup.string()
       .email("Invalid email")
       .required("Email is required"),
-    password: Yup.string()
-    .min(8, "Password must be at least 8 characters long"),
-    confirmPassword: Yup.string()
-    .when("password", {
-      is: (password) => !!password && password.length > 0,
-      then: () => Yup.string()
-      .required("Confirm Password is required")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
-    }),
     phoneNumber: Yup.string().optional(),
   });
 
@@ -84,13 +75,119 @@ const MyAccount = () => {
   //For updating account
   const handleSubmit = async (values) => {
 
-    console.log(values.password);
-    console.log(values);
-    console.log(values.password == "");
+    //Update database
+    try {
+      const user = await getCurrentUser();
+      const result = await client.graphql({
+        query: mutations.updateUser.replaceAll("__typename", ""),
+        variables: {
+          input: {
+            id: user.userId,
+            username: values.username,
+            email: values.email,
+            phone: values.phoneNumber
+          }
+        },
+      });
+      await updateUsername();
+      if(values.email == currentEmail){//not updating email so don't need to do the verification toast
+        handleToastOpen(
+          "success",
+          `Updated account`
+        );
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
+        
+      }
+    } catch(error){
+      console.log('error updating database:', error);
+      handleToastOpen(
+        "error",
+        "Error updating database"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+
+    //Update cognito email if needed
+    if(values.email != currentEmail){
+      try {
+        const output = await updateUserAttributes({
+          //Signed up with username as email but that does not matter here, just need to update the email attribute, or maybe something liek verification will break and this will be the issue
+          userAttributes: {
+            email: values.email,
+          },
+        });
+        const { nextStep } = output.email;
+        switch (nextStep.updateAttributeStep) {
+          case 'CONFIRM_ATTRIBUTE_WITH_CODE':
+            const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+            console.log(
+              `Confirmation code was sent to ${codeDeliveryDetails?.deliveryMedium}.`
+            );
+            handleToastOpen(
+              "success",
+              `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
+            );
     
+            setTimeout(() => {
+              navigate("/VerifyUpdateEmail");
+            }, 2000);
+            break;
+          case 'DONE':
+            console.log(`attribute was successfully updated.`);
+            handleToastOpen(
+              "success", 
+              "Successfully verified password");
+            break;
+        }
+      } catch (error) {
+        console.log('error updating email cognito, email in database and cognito may be out of sync now:', error);
+        handleToastOpen(
+          "error",
+          "Error updating email cognito, email in database and cognito may be out of sync now"
+        );
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
+      }
+    }
+  };
 
-    if(values.password != null || values.email != null){
-
+  const handleUpdatePassword = async () => {
+    try {
+      const output = await resetPassword({ username: currentEmail });
+      const { nextStep } = output;
+      switch (nextStep.resetPasswordStep) {
+        case 'CONFIRM_RESET_PASSWORD_WITH_CODE':
+          const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+          console.log(
+            `Confirmation code was sent to ${codeDeliveryDetails.deliveryMedium}`
+          );
+          handleToastOpen(
+            "success",
+            `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
+          );
+  
+          setTimeout(() => {
+            navigate("/VerifyUpdatePassword", { state: {  email: currentEmail,  }});
+          }, 2000);
+          break;
+        case 'DONE':
+          console.log('Successfully reset password.');
+          break;
+      }
+    } catch (error) {
+      console.log("Error updating password cognito", error);
+      handleToastOpen(
+        "error",
+        "Error updating password cognito"
+      );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -102,6 +199,7 @@ const MyAccount = () => {
 
   const updatePhoto = (event) => {
     //TODO
+    //TODO FORCE PAGE RELOAD SO PIC UPDATE IS REFLECTED IN NAVBAR, THIS WAS ALREADY DONE IN UPDATE PAGE SO JUST STEAL FROM THERE
   };
 
   const handleToastOpen = (severity, message) => {
@@ -173,41 +271,8 @@ const MyAccount = () => {
               </div>
               <div className="account-form-component">
                 <CustomTextField
-                  name="password"
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                  error={errors.password && touched.password}
-                  helperText={touched.password ? errors.password : ""}
-                  value={values.password}
-                  onChange={(event) => {
-                    setFieldValue("password", event.target.value);
-                  }}
-                  fullWidth
-                />
-              </div>
-              <div className="account-form-component">
-                <CustomTextField
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  variant="outlined"
-                  type="password"
-                  error={errors.confirmPassword && touched.confirmPassword}
-                  helperText={
-                    touched.confirmPassword ? errors.confirmPassword : ""
-                  }
-                  value={values.confirmPassword}
-                  onChange={(event) => {
-                    setFieldValue("confirmPassword", event.target.value);
-                  }}
-                  fullWidth
-                />
-              </div>
-              <div className="account-form-component-with-optional-text">
-                <div className="account-optional-text">Optional</div>
-                <CustomTextField
                   name="phoneNumber"
-                  label="Phone Number"
+                  label="Phone Number (Optional)"
                   variant="outlined"
                   value={values.phoneNumber}
                   onChange={(event) => {
@@ -220,6 +285,23 @@ const MyAccount = () => {
                 <Button type="submit" variant="contained" color="primary">
                   Update Account
                 </Button>
+                <span style={{ paddingTop: '2px' }}> {/*should be in css file for consistancy */}
+                  Updated email but didn't verify?{" "}
+                  <Link to="/verifyUpdateEmail" className="account-link">
+                    Verify Now
+                  </Link>
+                </span>
+              </div>
+              <div className="account-form-component">
+                <Button variant="contained" color="primary" onClick={() => handleUpdatePassword()}>
+                  Update Password
+                </Button>
+                <span style={{ paddingTop: '2px' }}> {/*should be in css file for consistancy */}
+                Updated password but didn't verify?{" "}
+                  <Link to="/verifyUpdatePassword" className="account-link">
+                    Verify Now
+                  </Link>
+                </span>
               </div>
               <div className="account-form-component">
                 <Button variant="outlined" color="secondary" onClick={() => setOpenConfirmDelete(true)}>
@@ -230,12 +312,18 @@ const MyAccount = () => {
           )}
         </Formik>
       </div>
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
       <ConfirmDialog
-      open={openConfirmDelete}
-      onClose={() => setOpenConfirmDelete(false)}
-      onConfirm={handleDeleteConfirmed}
-      title="Are you sure you want to delete this account?"
-      isDelete={true}
+        open={openConfirmDelete}
+        onClose={() => setOpenConfirmDelete(false)}
+        onConfirm={handleDeleteConfirmed}
+        title="Are you sure you want to delete this account?"
+        isDelete={true}
       />
     </div>
   );

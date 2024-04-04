@@ -9,6 +9,21 @@ const client = generateClient({authMode: 'userPool'});
 
 export const UserProvider = ({ children }) => {
   const [userState, setUserState] = useState('Guest');
+  const [username, setUsername] = useState('');
+
+  const updateUsername = async () => {
+    try {
+      const user = await getCurrentUser();
+      const result = await client.graphql({
+        query: queries.getUser,
+        variables: { id: user.userId }
+      });
+      setUsername(result.data.getUser.username)
+    } catch (error) {
+      console.log("Error fetching username:", error)
+      setUsername('');
+    }
+  };
 
   const assessUserState = async () => {
     try {
@@ -30,10 +45,11 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     assessUserState();
+    updateUsername();
   }, []);
 
   return (
-    <UserContext.Provider value={{ userState, assessUserState }}>
+    <UserContext.Provider value={{ userState, username, assessUserState, updateUsername }}>
       {children}
     </UserContext.Provider>
   );
