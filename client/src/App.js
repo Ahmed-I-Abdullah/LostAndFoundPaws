@@ -11,7 +11,9 @@ import NavbarBottom from "./components/NavbarBottom/NavbarBottom";
 import HomePage from "./pages/HomePage/HomePage";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import VerifyAccount from "./pages/VerifyAccount/VerifyAccount"
+import VerifyAccount from "./pages/VerifyAccount/VerifyAccount";
+import VerifyUpdateEmail from "./pages/VerifyUpdateEmail/VerifyUpdateEmail";
+import VerifyUpdatePassword from "./pages/VerifyUpdatePassword/VerifyUpdatePassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import MyAccount from "./pages/MyAccount/MyAccount";
@@ -33,7 +35,7 @@ function App() {
 //Need AppContent instead of putting everything in App because useLocation needs to be context from <Router>
 function AppContent() {
   const location = useLocation();
-  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword", "/verifyAccount"];
+  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword", "/verifyAccount", "VerifyUpdateEmail"];
   const showNav = !noNavPages.includes(location.pathname);
 
   return (
@@ -45,6 +47,8 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/verifyAccount" element={<VerifyAccount />} />
+          <Route path="/VerifyUpdateEmail" element={<VerifyUpdateEmail />} />
+          <Route path="/verifyUpdatePassword" element={<VerifyUpdatePassword />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/myAccount" element={<MyAccount />} />

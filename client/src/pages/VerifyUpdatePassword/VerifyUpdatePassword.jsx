@@ -11,10 +11,10 @@ import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import CustomTextField from "../../components/TextField/TextField";
 import { useLocation, useNavigate } from "react-router-dom";
-import { confirmSignUp } from "aws-amplify/auth";
+import { confirmResetPassword } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
-const VerifyAccount = () => {
+const VerifyUpdatePassword = () => {
   const { isMobile } = useMobile();
   const { assessUserState } = useUser();
 
@@ -24,11 +24,12 @@ const VerifyAccount = () => {
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
 
-  // These are passed in from signup when navigating to VerifyAccount
   const { email } = location.state || {};
 
   const initialValues = {
     email: email,
+    newPassword: "",
+    confirmNewPassword: "",
     confirmationCode: "",
   };
 
@@ -36,21 +37,28 @@ const VerifyAccount = () => {
     email: Yup.string()
     .email("Invalid email")
     .required("Email is required"),
+    newPassword: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long"),
+    newConfirmPassword: Yup.string()
+    .required("Confirm Password is required")
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
     confirmationCode: Yup.string().required("Confirmation code is required"),
   });
 
   const handleSubmit = async (values) => {
     try {
-      await confirmSignUp({ 
-        username: values.email, confirmationCode: values.confirmationCode 
+      await confirmResetPassword({ 
+        username: values.email, 
+        confirmationCode: values.confirmationCode, 
+        newPassword: values.newPassword 
       });
-      await assessUserState();
-      handleToastOpen("success", "Account verified");
+      handleToastOpen("success", "Account information updated");
       setTimeout(() => {
-        navigate("/Login");
+        navigate("/MyAccount");
       }, 2000);
     } catch (error) {
-      console.error("Error verifying account: ", error);
+      console.error("Error updating account information: ", error);
       handleToastOpen(
         "error",
         "Error verifying account"
@@ -119,6 +127,38 @@ const VerifyAccount = () => {
               </div>
               <div className="account-form-component">
                 <CustomTextField
+                  name="newPassword"
+                  label="New Password"
+                  variant="outlined"
+                  type="password"
+                  error={errors.newPassword && touched.newPassword}
+                  helperText={touched.newPassword ? errors.newPassword : ""}
+                  value={values.newPassword}
+                  onChange={(event) => {
+                    setFieldValue("newPassword", event.target.value);
+                  }}
+                  fullWidth
+                />
+              </div>
+              <div className="account-form-component">
+                <CustomTextField
+                  name="newConfirmPassword"
+                  label="Confirm New Password"
+                  variant="outlined"
+                  type="password"
+                  error={errors.newConfirmPassword && touched.newConfirmPassword}
+                  helperText={
+                    touched.newConfirmPassword ? errors.newConfirmPassword : ""
+                  }
+                  value={values.newConfirmPassword}
+                  onChange={(event) => {
+                    setFieldValue("newConfirmPassword", event.target.value);
+                  }}
+                  fullWidth
+                />
+              </div>
+              <div className="account-form-component">
+                <CustomTextField
                   name="confirmationCode"
                   label="Confirmation Code"
                   variant="outlined"
@@ -141,15 +181,6 @@ const VerifyAccount = () => {
             </Form>
           )}
         </Formik>
-
-        <div className="account-link-container">
-          <span>
-            Already have an account?{" "}
-            <Link to="/login" className="account-link">
-              Log In
-            </Link>
-          </span>
-        </div>
       </div>
       <ToastNotification
         open={toastOpen}
@@ -161,4 +192,4 @@ const VerifyAccount = () => {
   );
 };
 
-export default VerifyAccount;
+export default VerifyUpdatePassword;

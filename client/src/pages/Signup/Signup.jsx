@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { generateClient } from 'aws-amplify/api';
-import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import IconButton from "@mui/material/IconButton";
@@ -16,6 +15,40 @@ import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+
+//Unauthorized do not have access to report or related fields
+//Living here since mutations are auto generated and will be overwritten, probably a better place to put it
+const createUserNoAuth = /* GraphQL */ `
+  mutation CreateUserNoAuth(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      username
+      role
+      profilePicture
+      email
+      phone
+      createdAt
+      updatedAt
+      posts {
+        nextToken
+        __typename
+      }
+      sightings {
+        nextToken
+        __typename
+      }
+      comments {
+        nextToken
+        __typename
+      }
+      owner
+      __typename
+    }
+  }
+`;
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -60,6 +93,7 @@ const Signup = () => {
     const phoneNumber = values.phoneNumber
     const role = values.role
 
+    //Could seperate into two try catches for better error handling
     try {
       const signUpResponse = await signUp({
         username: email, // AWS calls email username because its dumb
@@ -75,7 +109,7 @@ const Signup = () => {
       await assessUserState();
  
       const result = await client.graphql({
-        query: mutations.createUserPoster.replaceAll("__typename", ""),
+        query: createUserNoAuth.replaceAll("__typename", ""),
         variables: {
           input: {
             id: signUpResponse.userId,
@@ -101,7 +135,7 @@ const Signup = () => {
           );
   
           setTimeout(() => {
-            navigate("/verifyAccount", { state: {  email: email } });
+            navigate("/verifyAccount", { state: {  email: email }});
           }, 2000);
           break;
         case "DONE":
@@ -111,7 +145,6 @@ const Signup = () => {
           break;
       }
     } catch (error) {
-      //TODO SEPERATE INTO TWO TRY CATCH AND IF SECOND FAILS DELETE ACCOUNT SO DONT NEED TO MANUALLY DELETE
       console.log('error signing up:', error);
       handleToastOpen(
         "error",
@@ -222,11 +255,10 @@ const Signup = () => {
                   fullWidth
                 />
               </div>
-              <div className="account-form-component-with-optional-text">
-                <div className="account-optional-text">Optional</div>
+              <div className="account-form-component">
                 <CustomTextField
                   name="phoneNumber"
-                  label="Phone Number"
+                  label="Phone Number (Optional)"
                   variant="outlined"
                   value={values.phoneNumber}
                   onChange={(event) => {

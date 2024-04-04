@@ -5,7 +5,7 @@ type User
       { allow: public, operations: [read, create] }
       { allow: owner, operations: [create, update, read, delete] }
       { allow: groups, operations: [create, update, read, delete], groups: ["Admin"] }
-      { allow: groups, operations: [read], groups: ["Poster"] }
+      { allow: groups, operations: [update, read, delete], groups: ["Poster"] }
     ]
   ) 
   {
