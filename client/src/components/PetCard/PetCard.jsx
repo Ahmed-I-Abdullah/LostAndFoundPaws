@@ -35,7 +35,7 @@ const PetCard = ({
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
   const handleClickOpen = () => {
-    navigate(`/pets/${id}`);
+    navigate(`/posts/${id}`);
   };
 
   const handleDeleteConfirmed = (event) => {
@@ -77,7 +77,11 @@ const PetCard = ({
               marginBottom: "1rem",
             }}
           >
-            <Typography variant={small ? "h7" : "h6"} fontWeight={"bold"} noWrap>
+            <Typography
+              variant={small ? "h7" : "h6"}
+              fontWeight={"bold"}
+              noWrap
+            >
               {name}
             </Typography>
             {owner && (

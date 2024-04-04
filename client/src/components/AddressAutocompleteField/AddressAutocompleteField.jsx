@@ -15,6 +15,7 @@ const accessToken =
     const [loading, setLoading] = useState(false);
     
     const handleChangeSearch = async (event) => {
+      if(!event) return
       const inputValue = event.target.value;
       
       try {
@@ -33,10 +34,8 @@ const accessToken =
     const handleChangeSelection = (_, newValue) => {
       onChange({
         address: newValue?.place_name, 
-        coordinates: {
-          longitude: newValue?.center[0], 
-          latitude: newValue?.center[1]
-        } 
+        longitude: newValue?.center[0], 
+        latitude: newValue?.center[1]
       });
     };
   
@@ -47,9 +46,10 @@ const accessToken =
         disableClearable
         options={options}
         loading={loading}
-        getOptionLabel={(option) => option.place_name}
+        getOptionLabel={(option) => option.place_name || option.address || ''}
         onInputChange={handleChangeSearch}
         onChange={handleChangeSelection}
+        value={otherProps.value}
         renderInput={(params) => (
           <CustomTextField
             {...params}

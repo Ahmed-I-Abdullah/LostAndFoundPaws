@@ -36,7 +36,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
 
 // Toggle between admin and regular view for now
-const isAdmin = false;
+const isAdmin = true;
 
 const SectionTitle = ({ title }) => {
   return (
@@ -50,7 +50,6 @@ const ViewPostPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { isMobile } = useMobile();
   const client = generateClient({ authMode: "apiKey" });
   const extraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const small = useMediaQuery(theme.breakpoints.down("sm"));
@@ -193,7 +192,7 @@ const ViewPostPage = () => {
     return (
       <>
         <SectionTitle title="Comments" />
-        <Comments />
+        <Comments postId={id}/>
       </>
     );
   };
@@ -229,7 +228,7 @@ const ViewPostPage = () => {
           }
         >
           <Grid item container alignItems="center" xs={10} md={3} lg={3}>
-          <ArrowBackButton onClick={() => navigate("/")}/>
+          <ArrowBackButton onClick={() => navigate(-1)}/>
             <Typography variant="h1" sx={{ fontWeight: "bold", marginLeft: '20px' }}>
               {petData.name}
             </Typography>
@@ -299,6 +298,7 @@ const ViewPostPage = () => {
                         marginRight: "8px",
                       }}
                       startIcon={<EditIcon />}
+                      onClick={() => navigate(`/posts/${petData.id}/edit`)}
                     >
                       Edit
                     </Button>

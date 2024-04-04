@@ -28,6 +28,9 @@ const ViewReportsPage = () => {
   const [selectedView, setSelectedView] = useState("List View");
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isReporting, setIsReporting] = useState(true);
+  const toggleSideBar = () => {
+    setIsSideBarOpen(!isSideBarOpen);
+  };
 
   const handlePostTypeToggle = (index) => {
     setSelectedType(postTypeOptions[index].label);
@@ -36,55 +39,52 @@ const ViewReportsPage = () => {
   return (
     <div>
       {isMobile && selectedView === "List View" ? (
-        <Grid container item xs={12} justifyContent="space-between" margin={1}>
-          <Grid container justifyContent="flex-end">
-            {!isSideBarOpen && (
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                  color: `${theme.palette.text.primary}`,
-                  "&:hover": {
-                    backgroundColor: `${theme.palette.primary.main}`,
-                  },
-                  height: "30px",
-                  marginRight: "1rem",
-                }}
-                onClick={() => setIsSideBarOpen(true)}
-              >
-                <TuneIcon />
-                <Typography>All Filters</Typography>
-              </Button>
-            )}
+        <Grid
+        container
+        item
+        xs={12}
+        flexDirection={{ xs: 'column', sm: 'row' }} 
+        justifyContent="space-between"
+        spacing={2} 
+        >
+        <Grid item xs={12} sm="auto" sx={{ order: { xs: 2, sm: 1 }, marginLeft: "30px", marginRight: "30px" }}>
+            <Toggle
+            options={postTypeOptions}
+            onToggleCallback={handlePostTypeToggle}
+            />
+        </Grid>
+        <Grid item xs={12} sm="auto" sx={{ order: { xs: 1, sm: 2 }, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+            variant="contained"
+            sx={{
+                backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                color: `${theme.palette.text.primary}`,
+                "&:hover": {
+                backgroundColor: `${theme.palette.primary.main}`,
+                },
+                height: "30px",
+                marginRight: "30px",
+                marginTop: { xs: '1rem', sm: '0' }, 
+            }}
+            onClick={toggleSideBar}
+            >
+            <TuneIcon />
+            <Typography>{isSideBarOpen ? "Close Filters" : "All Filters"}</Typography>
+            </Button>
             {isSideBarOpen && (
-              <SideBar
+            <SideBar
                 selectedView={selectedView}
                 isReporting={isReporting}
                 onClose={() => setIsSideBarOpen(false)}
-              />
-            )}
-          </Grid>
-          <Box width={"100%"} sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
-            <SearchBar placeholder={"Enter city, neighborhood, address"} />
-          </Box>
-          <Grid item xs={10} md={6} margin={"auto"}>
-            <Toggle
-              options={postTypeOptions}
-              onToggleCallback={handlePostTypeToggle}
-              containerWidth={"100%"}
             />
-          </Grid>
+            )}
+        </Grid>
         </Grid>
       ) : !isMobile && selectedView === "List View" ? (
-        <Grid
-          container
-          item
-          xs={12}
-          justifyContent="space-between"
-          style={{ position: "absolute", zIndex: 2 }}
-          margin={1}
-        >
-          <Grid item xs={5} md={4} marginLeft={4}>
+        <Grid container item xs={12} justifyContent="space-between" margin={2}>
+
+          <Grid item xs={5} md={4} marginRight={3} marginLeft={"16px"}>
+
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -123,7 +123,7 @@ const ViewReportsPage = () => {
       {selectedView === "List View" ? (
         <Box
           className="list-view"
-          style={{
+          style={{ margin: "1rem", 
             width: isSideBarOpen && !isMobile ? "calc(100vw - 430px)" : "auto",
           }}
         >
