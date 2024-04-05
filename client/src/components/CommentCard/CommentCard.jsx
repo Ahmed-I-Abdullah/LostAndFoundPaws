@@ -140,7 +140,7 @@ const CommentCard = ({
         padding: "7px",
         width: "95%",
         margin: "1rem auto",
-        gridTemplateColumns: small ? "30% 70%" : "10% 90%",
+        gridTemplateColumns: small ? "30% 70%" : "15% 85%",
         borderRadius: "1rem",
         justifyContent: "center",
         alignItems: "center",

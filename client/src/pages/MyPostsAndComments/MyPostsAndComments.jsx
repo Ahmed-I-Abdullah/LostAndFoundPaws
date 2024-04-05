@@ -1,12 +1,16 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import Toggle from "../../components/Toggle/Toggle";
 import theme from "../../theme/theme";
 import "./MyPostsAndComments.css";
 import PetCard from "../../components/PetCard/PetCard";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import { useMobile } from "../../context/MobileContext";
-import TuneIcon from "@mui/icons-material/Tune";
+import { generateClient } from "aws-amplify/api";
+import { getCurrentUser } from "aws-amplify/auth";
+import * as queries from "../../graphql/queries";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import * as mutations from "../../graphql/mutations";
 import SightingCard from "../../components/SightingCard/SightingCard";
 
 const contentTypeOptions = [
@@ -59,41 +63,6 @@ const postsData = [
   },
 ];
 
-const commentData = [
-  {
-    id: 1,
-    content: "This is the first comment.",
-    postID: 1,
-    parentCommentID: null,
-    userID: 1,
-    userName: "Joe Smith",
-    createdAt: "2024-03-23T08:00:00Z",
-    updatedAt: "2024-03-23T08:00:00Z",
-  },
-  {
-    id: 2,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sem euismod, varius lorem ac, dignissim elit. Mauris vehicula consectetur odio id bibendum. Nullam dapibus felis nec justo vehicula luctus. Phasellus gravida augue at arcu faucibus, nec tincidunt lorem tincidunt. Integer sed felis sapien. Vivamus sed fermentum velit. Sed vel nibh at ipsum dictum pharetra. Quisque euismod libero vel justo hendrerit bibendum. Sed tristique sapien vel posuere ultrices. Donec suscipit odio sit amet ipsum feugiat, at venenatis quam fringilla. Vivamus gravida enim nec leo vehicula, id rutrum velit dapibus. Donec convallis massa id massa interdum consequat. Suspendisse potenti. Maecenas euismod ultricies lectus, id efficitur est finibus at. Sed dapibus mauris nec ultricies feugiat. Maecenas auctor erat non eros finibus lobortis.",
-    postID: 1,
-    parentCommentID: null,
-    userID: 2,
-    userName: "Joe Smith",
-    createdAt: "2024-02-01T08:15:00Z",
-    updatedAt: "2024-02-01T08:15:00Z",
-  },
-  {
-    id: 3,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sem euismod, varius lorem ac, dignissim elit. Mauris vehicula consectetur odio id bibendum. Nullam dapibus felis nec justo vehicula luctus. Phasellus gravida augue at arcu faucibus, nec tincidunt lorem tincidunt. Integer sed felis sapien. Vivamus sed fermentum velit. Sed vel nibh at ipsum dictum pharetra. Quisque euismod libero vel justo hendrerit bibendum. Sed tristique sapien vel posuere ultrices. Donec suscipit odio sit amet ipsum feugiat, at venenatis quam fringilla. Vivamus gravida enim nec leo vehicula, id rutrum velit dapibus. Donec convallis massa id massa interdum consequat. Suspendisse potenti. Maecenas euismod ultricies lectus, id efficitur est finibus at",
-    postID: 1,
-    parentCommentID: 1,
-    userID: 3,
-    userName: "Joe Smith",
-    createdAt: "2024-01-17T08:30:00Z",
-    updatedAt: "2024-01-17T08:30:00Z",
-  },
-];
-
 const sightingsData = [
   {
     id: "1",
@@ -128,9 +97,65 @@ const sightingsData = [
 const MyPostsAndComments = () => {
   const { isMobile } = useMobile();
   const [selectedType, setSelectedType] = useState("Lost");
+  const client = generateClient({ authMode: "apiKey" });
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastSeverity, setToastSeverity] = useState("success");
+  const [toastMessage, setToastMessage] = useState("");
+  const [commentData, setCommentData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+  const handleToastClose = () => {
+    setToastOpen(false);
+  };
 
   const handleContentTypeToggle = (index) => {
     setSelectedType(contentTypeOptions[index].label);
+  };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        //TODO: remove and store the logged in user information globally
+        const user = await getCurrentUser();
+
+        const commentsResponse = await client.graphql({
+          query: queries.commentsByUser,
+          variables: { userID: user.userId },
+        });
+        const comments = commentsResponse.data.commentsByUser.items;
+        setCommentData(comments);
+
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching comments for user.");
+        console.error("Error fetching comments for user: ", error);
+      }
+    };
+
+    fetchComments();
+  }, []);
+
+  const deleteComment = async (id) => {
+    const deleteCommentInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteComment,
+        variables: { input: deleteCommentInput },
+      });
+      const newCommentData = commentData.filter((comment) => comment.id !== id);
+      setCommentData(newCommentData);
+      handleToastOpen("success", "Successfully Deleted comment");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting comment");
+      console.error("Error deleting comment: ", error);
+    }
   };
 
   const filteredPosts = postsData.filter(
@@ -138,63 +163,83 @@ const MyPostsAndComments = () => {
   );
 
   return (
-    <Box className="my-content">
-      <Box width={"95%"} margin={"auto"}>
-        <Toggle
-          options={contentTypeOptions}
-          onToggleCallback={handleContentTypeToggle}
-          containerWidth={"100%"}
-        />
-      </Box>
-      <Box
-        className={
-          selectedType.toLowerCase() === "sighting" && "my-sigthing-content"
-        }
-        sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
-      >
-        {selectedType.toLowerCase() === "comments"
-          ? commentData.map((comment, index) => (
-              <CommentCard
-                key={index}
-                owner={true}
-                id={comment.id}
-                content={comment.content}
-                parentCommentId={comment.parentCommentID}
-                parentCommentUsername={"hii"} //TODO: add parent username and content in shema
-                parentCommentContent={"jii"}
-                username={comment.userName}
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-              />
-            ))
-          : selectedType.toLowerCase() === "sighting"
-          ? sightingsData.map((sighting, index) => (
-              <SightingCard
-                key={index}
-                owner={true}
-                img={sighting.images[0]}
-                location={sighting.location.address}
-                email={sighting.email}
-                phoneNumber={sighting.phoneNumber}
-                createdAt={sighting.createdAt}
-              />
-            ))
-          : filteredPosts.map((post, index) => (
-              <PetCard
-                key={index}
-                owner={true}
-                img={post.images[0]}
-                name={post.name}
-                status={post.status}
-                petType={post.species}
-                summary={post.summary}
-                location={post.lastKnownLocation.address}
-                createdAt={post.createdAt}
-                updatedAt={post.updatedAt}
-              />
-            ))}
-      </Box>
-    </Box>
+    <>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <Box className="my-content">
+          <Box width={"95%"} margin={"auto"}>
+            <Toggle
+              options={contentTypeOptions}
+              onToggleCallback={handleContentTypeToggle}
+              containerWidth={"100%"}
+            />
+          </Box>
+          <Box
+            className={
+              selectedType.toLowerCase() === "sighting" && "my-sigthing-content"
+            }
+            sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
+          >
+            {selectedType.toLowerCase() === "comments"
+                ? commentData.map((comment, index) => (
+                  <CommentCard
+                    key={index}
+                    owner={true}
+                    id={comment.id}
+                    content={comment.content}
+                    parentCommentId={comment.parentCommentID}
+                    username={comment.userName}
+                    createdAt={comment.createdAt}
+                    updatedAt={comment.updatedAt}
+                    onDelete={deleteComment}
+                  />
+                ))
+              : selectedType.toLowerCase() === "sighting"
+              ? sightingsData.map((sighting, index) => (
+                  <SightingCard
+                    key={index}
+                    owner={true}
+                    img={sighting.images[0]}
+                    location={sighting.location.address}
+                    email={sighting.email}
+                    phoneNumber={sighting.phoneNumber}
+                    createdAt={sighting.createdAt}
+                  />
+                ))
+              : filteredPosts.map((post, index) => (
+                  <PetCard
+                    key={index}
+                    owner={true}
+                    img={post.images[0]}
+                    name={post.name}
+                    status={post.status}
+                    petType={post.species}
+                    summary={post.summary}
+                    location={post.lastKnownLocation.address}
+                    createdAt={post.createdAt}
+                    updatedAt={post.updatedAt}
+                  />
+                ))}
+          </Box>
+          <ToastNotification
+            open={toastOpen}
+            severity={toastSeverity}
+            message={toastMessage}
+            handleClose={handleToastClose}
+          />
+        </Box>
+      )}
+    </>
   );
 };
 

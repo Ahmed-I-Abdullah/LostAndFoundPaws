@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, TextField, Button, Box } from "@mui/material";
+import { Grid, Typography, TextField, Button, Box, CircularProgress } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import "./Comments.css";
 import theme from "../../theme/theme";
@@ -42,7 +42,7 @@ const Comments = ({ postId }) => {
       setCommentData(comments);
       setLoading(false);
     } catch (error) {
-      handleToastOpen("error", "Error fetching comments for the post");
+      handleToastOpen("error", "Error fetching comments for the post. Make sure you are logged in");
       console.error("Error fetching comments for the post: ", error);
     }
   };
@@ -77,6 +77,7 @@ const Comments = ({ postId }) => {
   };
 
   const postComment = async () => {
+    setLoading(true);
     try {
       //TODO:  remove and store the logged in user information globally
       const user = await getCurrentUser();
@@ -102,6 +103,7 @@ const Comments = ({ postId }) => {
       );
       console.error("Error posting comment for the post: ", error);
     }
+    setLoading(false);
   };
   const deleteComment = async (id) => {
     const deleteCommentInput = {
@@ -122,84 +124,98 @@ const Comments = ({ postId }) => {
   };
 
   return (
-    <Grid>
-      <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
-        {commentData.length > 0 ? (
-          commentData.map((comment, index) => (
-            <CommentCard
-              key={index}
-              owner={false} //TODO: check if comment.userID matches the logged in user
-              id={comment.id}
-              content={comment.content}
-              parentCommentId={comment.parentCommentID}
-              username={comment.user.username}
-              createdAt={comment.createdAt}
-              updatedAt={comment.updatedAt}
-              setReply={setReply}
-              onDelete={deleteComment}
-            />
-          ))
-        ) : (
-          <p>No comments to show</p>
-        )}
-      </div>
-      <div
-        className="post-comment"
-        style={{
-          backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`,
-        }}
-      >
-        <div className="post-comment-content">
-          <div style={{ width: "80%" }}>
-            {commentReply && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button variant="text">
-                  <HighlightOffIcon onClick={() => setReply(null)} />
-                </Button>
-                <Typography variant="subtitle">
-                  Replying to {commentReply}
-                </Typography>
-              </Box>
-            )}
-            <TextField
-              multiline
-              placeholder="Write your comment here"
-              rows={2}
-              sx={{
-                width: "100%",
-              }}
-              value={postCommentText}
-              onChange={handleChange}
-            />
-          </div>
-          <Button
-            variant="contained"
-            disabled={postCommentText.length === 0}
-            sx={{
-              backgroundColor: `${theme.palette.primary.main}`,
-              borderRadius: "1rem",
-              color: `${theme.palette.custom.primaryBkg}`,
-              minWidth: "fit-content",
-            }}
-            onClick={postComment}
-          >
-            <Typography>Comment</Typography>
-          </Button>
+    <>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
         </div>
-      </div>
-      <ToastNotification
-        open={toastOpen}
-        severity={toastSeverity}
-        message={toastMessage}
-        handleClose={handleToastClose}
-      />
-    </Grid>
+      ) : (
+        <Grid>
+          <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
+            {commentData.length > 0 ? (
+              commentData.map((comment, index) => (
+                <CommentCard
+                  key={index}
+                  owner={false} //TODO: check if comment.userID matches the logged in user
+                  id={comment.id}
+                  content={comment.content}
+                  parentCommentId={comment.parentCommentID}
+                  username={comment.user.username}
+                  createdAt={comment.createdAt}
+                  updatedAt={comment.updatedAt}
+                  setReply={setReply}
+                  onDelete={deleteComment}
+                />
+              ))
+            ) : (
+              <p>No comments to show</p>
+            )}
+          </div>
+          <div
+            className="post-comment"
+            style={{
+              backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`,
+            }}
+          >
+            <div className="post-comment-content">
+              <div style={{ width: "80%" }}>
+                {commentReply && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button variant="text">
+                      <HighlightOffIcon onClick={() => setReply(null)} />
+                    </Button>
+                    <Typography variant="subtitle">
+                      Replying to {commentReply}
+                    </Typography>
+                  </Box>
+                )}
+                <TextField
+                  multiline
+                  placeholder="Write your comment here"
+                  rows={2}
+                  sx={{
+                    width: "100%",
+                  }}
+                  value={postCommentText}
+                  onChange={handleChange}
+                />
+              </div>
+              <Button
+                variant="contained"
+                disabled={postCommentText.length === 0 && client}
+                sx={{
+                  backgroundColor: `${theme.palette.primary.main}`,
+                  borderRadius: "1rem",
+                  color: `${theme.palette.custom.primaryBkg}`,
+                  minWidth: "fit-content",
+                }}
+                onClick={postComment}
+              >
+                <Typography>Comment</Typography>
+              </Button>
+            </div>
+          </div>
+          <ToastNotification
+            open={toastOpen}
+            severity={toastSeverity}
+            message={toastMessage}
+            handleClose={handleToastClose}
+          />
+        </Grid>
+      )}
+    </>
   );
 };
 
