@@ -8,6 +8,7 @@ import CommentCard from "../../components/CommentCard/CommentCard";
 import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
 import { getCurrentUser } from "aws-amplify/auth";
+import { downloadData } from "@aws-amplify/storage";
 import * as queries from "../../graphql/queries";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import * as mutations from "../../graphql/mutations";
@@ -21,46 +22,6 @@ const contentTypeOptions = [
     color: theme.palette.custom.selectedCategory.sighting.light,
   },
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
-];
-const postsData = [
-  {
-    id: "1",
-    name: "Cooper",
-    status: "LOST",
-    gender: "MALE",
-    summary: "A brown dog with a collar went missing near the park.",
-    lastKnownLocation: {
-      latitude: -114.1025,
-      longitude: 51.0342,
-      address: "Bankview",
-    },
-    species: "DOG",
-    images: [
-      "https://www.princeton.edu/sites/default/files/styles/1x_full_2x_half_crop/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=Bg2K7j7J",
-    ],
-    userID: "user1",
-    createdAt: "2024-03-24T10:00:00Z",
-    updatedAt: "2024-03-24T10:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Nala",
-    status: "FOUND",
-    gender: "FEMALE",
-    summary: "A black and white cat was found hiding in the bushes.",
-    lastKnownLocation: {
-      latitude: -114.078,
-      longitude: 51.0562,
-      address: "Sunnyside",
-    },
-    species: "CAT",
-    images: [
-      "https://hips.hearstapps.com/hmg-prod/images/cute-photos-of-cats-looking-at-camera-1593184780.jpg?crop=0.6672958942897593xw:1xh;center,top&resize=980:*",
-    ],
-    userID: "user2",
-    createdAt: "2024-03-23T15:30:00Z",
-    updatedAt: "2024-03-23T15:30:00Z",
-  },
 ];
 
 const sightingsData = [
@@ -103,6 +64,7 @@ const MyPostsAndComments = () => {
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
   const [commentData, setCommentData] = useState([]);
+  const [postsData, setPostsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleToastOpen = (severity, message) => {
@@ -120,6 +82,41 @@ const MyPostsAndComments = () => {
   };
 
   useEffect(() => {
+    const fetchPostsData = async () => {
+      try {
+        //TODO: remove and store the logged in user information globally
+        const user = await getCurrentUser();
+
+        const listResponse = await client.graphql({
+          query: queries.postsByUser,
+          variables: { userID: user.userId },
+        });
+        const posts = listResponse.data.postsByUser.items;
+        const postsWithImages = await Promise.all(
+          posts.map(async (post) => {
+            try {
+              const firstImageUrl = post.images[0];
+              const firstImageData = await downloadData({ key: firstImageUrl })
+                .result;
+              const firstImageSrc = URL.createObjectURL(firstImageData.body);
+
+              post.firstImg = firstImageSrc;
+              return post;
+            } catch (error) {
+              console.error("Error fetching image for post:", error);
+              return post;
+            }
+          })
+        );
+        setPostsData(postsWithImages);
+        console.log(postsWithImages)
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching posts.");
+        console.error("Error fetching posts: ", error);
+      }
+    };
+
     const fetchComments = async () => {
       try {
         //TODO: remove and store the logged in user information globally
@@ -131,7 +128,6 @@ const MyPostsAndComments = () => {
         });
         const comments = commentsResponse.data.commentsByUser.items;
         setCommentData(comments);
-        console.log(comments);
         setLoading(false);
       } catch (error) {
         handleToastOpen("error", "Error fetching comments for user.");
@@ -139,8 +135,29 @@ const MyPostsAndComments = () => {
       }
     };
 
+    fetchPostsData();
     fetchComments();
   }, []);
+
+  const deletePost = async (id) => {
+    setLoading(true);
+    const deletePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: deletePostInput },
+      });
+      const newPostData = postsData.filter((post) => post.id !== id);
+      setPostsData(newPostData);
+      handleToastOpen("success", "Successfully deleted post");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting post");
+      console.error("Error deleting post: ", error);
+    }
+    setLoading(false);
+  };
 
   const deleteComment = async (id) => {
     setLoading(true);
@@ -154,7 +171,7 @@ const MyPostsAndComments = () => {
       });
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
-      handleToastOpen("success", "Successfully Deleted comment");
+      handleToastOpen("success", "Successfully deleted comment");
     } catch (error) {
       handleToastOpen("error", "Error deleting comment");
       console.error("Error deleting comment: ", error);
@@ -221,11 +238,18 @@ const MyPostsAndComments = () => {
                     createdAt={sighting.createdAt}
                   />
                 ))
-              : filteredPosts.map((post, index) => (
+              :       
+              filteredPosts.length === 0 ? (
+                <Typography variant="h1" margin={'1rem'} display={'flex'}>
+                  No {selectedType} posts found
+                </Typography>
+              ) : (
+                filteredPosts.map((post, index) => (
                   <PetCard
                     key={index}
                     owner={true}
-                    img={post.images[0]}
+                    id={post.id}
+                    img={post.firstImg}
                     name={post.name}
                     status={post.status}
                     petType={post.species}
@@ -233,8 +257,11 @@ const MyPostsAndComments = () => {
                     location={post.lastKnownLocation.address}
                     createdAt={post.createdAt}
                     updatedAt={post.updatedAt}
+                    onDelete={deletePost}
                   />
-                ))}
+                ))
+              )
+            }
           </Box>
           <ToastNotification
             open={toastOpen}
