@@ -26,7 +26,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
-import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
 import { useParams } from "react-router-dom";
 import { downloadData } from "@aws-amplify/storage";
@@ -35,6 +34,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
 import { useUser } from "../../context/UserContext";
+import * as mutations from "../../graphql/mutations";
 
 const SectionTitle = ({ title }) => {
   return (
@@ -75,12 +75,32 @@ const ViewPostPage = () => {
 
   const handleDeleteConfirmed = () => {
     onDelete(petData.id);
-    setOpenConfirmDelete(false); // Close the dialog
+    setOpenConfirmDelete(false);
   };
 
   const handleResolveConfirmed = () => {
     onResolve(petData.id);
     setOpenConfirmResolve(false); // Close the dialog
+  };
+
+  const onDelete = async (id) => {
+    const deletePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: deletePostInput },
+      });
+      handleToastOpen("success", "Successfully Deleted Post");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error deleting post");
+      console.error("Error deleting post: ", error);
+    }
   };
 
   const handleSlideChange = (forward) => {
