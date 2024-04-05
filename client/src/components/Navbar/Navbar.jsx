@@ -54,7 +54,7 @@ const Navbar = () => {
             </div>
             <div className="userSection">
               <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                <span className="username">{username}</span>
+                <span className="username">{currentUser?.username || ''}</span>
                 <AccountCircleIcon sx={{ fontSize: '40px' }} />
               </div>
               <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
@@ -69,7 +69,7 @@ const Navbar = () => {
           <div className="userSection">
             {userState !== "Guest" && 
               <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <span className="username">{username}</span>
+                  <span className="username">{currentUser?.username || ''}</span>
                   <AccountCircleIcon sx={{ fontSize: '40px' }} />
                 <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
               </div>
