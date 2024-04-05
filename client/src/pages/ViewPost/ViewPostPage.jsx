@@ -26,7 +26,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ActionsMenu from "../../components/ActionsMenu/ActionsMenu";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
-import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
 import { useParams } from "react-router-dom";
 import { downloadData } from "@aws-amplify/storage";
@@ -34,9 +33,8 @@ import * as queries from "../../graphql/queries";
 import CircularProgress from "@mui/material/CircularProgress";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
-
-// Toggle between admin and regular view for now
-const isAdmin = true;
+import { useUser } from "../../context/UserContext";
+import * as mutations from "../../graphql/mutations";
 
 const SectionTitle = ({ title }) => {
   return (
@@ -50,7 +48,7 @@ const ViewPostPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
-  const client = generateClient({ authMode: "apiKey" });
+  const { userState, currentUser } = useUser();
   const extraSmall = useMediaQuery(theme.breakpoints.down("xs"));
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const medium = useMediaQuery(theme.breakpoints.down("md"));
@@ -66,15 +64,63 @@ const ViewPostPage = () => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  let client = generateClient({ authMode: "apiKey" });
+
+  const isAdminOrOwner =
+    userState == "Admin" || petData?.userID == currentUser?.id;
+
+  if (userState != "Guest") {
+    client = generateClient({ authMode: "userPool" });
+  }
 
   const handleDeleteConfirmed = () => {
     onDelete(petData.id);
-    setOpenConfirmDelete(false); // Close the dialog
+    setOpenConfirmDelete(false);
   };
 
   const handleResolveConfirmed = () => {
     onResolve(petData.id);
-    setOpenConfirmResolve(false); // Close the dialog
+    setOpenConfirmResolve(false);
+  };
+
+  const onDelete = async (id) => {
+    const deletePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: deletePostInput },
+      });
+      handleToastOpen("success", "Successfully Deleted Post");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error deleting post");
+      console.error("Error deleting post: ", error);
+    }
+  };
+
+
+  const onResolve = async (id) => {
+    const postInput = {
+      id: id,
+      resolved: true,
+    };
+    try {
+      await client.graphql({
+        query: mutations.updatePost,
+        variables: { input: postInput },
+      });
+      handleToastOpen("success", "Successfully marked post as resolved");
+
+      setPetData({...petData, resolved: 'true'})
+    } catch (error) {
+      handleToastOpen("error", "Error marking post as resolved");
+      console.error("Error marking post as resolved: ", error);
+    }
   };
 
   const handleSlideChange = (forward) => {
@@ -192,7 +238,7 @@ const ViewPostPage = () => {
     return (
       <>
         <SectionTitle title="Comments" />
-        <Comments postId={id}/>
+        <Comments postId={id} />
       </>
     );
   };
@@ -228,13 +274,16 @@ const ViewPostPage = () => {
           }
         >
           <Grid item container alignItems="center" xs={10} md={3} lg={3}>
-          <ArrowBackButton onClick={() => navigate(-1)}/>
-            <Typography variant="h1" sx={{ fontWeight: "bold", marginLeft: '20px' }}>
+            <ArrowBackButton onClick={() => navigate(-1)} />
+            <Typography
+              variant="h1"
+              sx={{ fontWeight: "bold", marginLeft: "20px" }}
+            >
               {petData.name}
             </Typography>
           </Grid>
           <Grid item xs={2} md={9} lg={9} container justifyContent="flex-end">
-            {!isAdmin ? (
+            {!isAdminOrOwner ? (
               <div>
                 <Button
                   size={small ? "small" : "medium"}
@@ -273,7 +322,7 @@ const ViewPostPage = () => {
                     />
                   </div>
                 ) : (
-                  <div style={{marginLeft: '-20px', marginRight: '-10px'}}>
+                  <div style={{ marginLeft: "-20px", marginRight: "-10px" }}>
                     <Button
                       size={medium ? "small" : "medium"}
                       variant="contained"
@@ -285,6 +334,7 @@ const ViewPostPage = () => {
                         marginRight: "8px",
                       }}
                       startIcon={<CheckIcon />}
+                      disabled={petData.resolved == 'true'}
                     >
                       Mark as resolved
                     </Button>

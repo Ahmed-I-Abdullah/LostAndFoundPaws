@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMobile } from '../../context/MobileContext';
 import { useUser } from '../../context/UserContext';
 import { generateClient } from 'aws-amplify/api';
@@ -19,7 +19,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { isMobile, isMobileSmall } = useMobile();
-  const { userState, username } = useUser();
+  const { userState, currentUser } = useUser();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

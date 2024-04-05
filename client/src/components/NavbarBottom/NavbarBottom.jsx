@@ -2,9 +2,11 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import { useMobile } from '../../context/MobileContext';
 import { useUser } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import './NavbarBottom.css';
 
 const NavbarBottom = () => {
+  const navigate = useNavigate();
   const { userState } = useUser();
   const { isMobile } = useMobile();
 

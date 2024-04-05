@@ -1,12 +1,17 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import Toggle from "../../components/Toggle/Toggle";
 import theme from "../../theme/theme";
 import "./MyPostsAndComments.css";
 import PetCard from "../../components/PetCard/PetCard";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import { useMobile } from "../../context/MobileContext";
-import TuneIcon from "@mui/icons-material/Tune";
+import { generateClient } from "aws-amplify/api";
+import { getCurrentUser } from "aws-amplify/auth";
+import { downloadData } from "@aws-amplify/storage";
+import * as queries from "../../graphql/queries";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import * as mutations from "../../graphql/mutations";
 import SightingCard from "../../components/SightingCard/SightingCard";
 
 const contentTypeOptions = [
@@ -17,81 +22,6 @@ const contentTypeOptions = [
     color: theme.palette.custom.selectedCategory.sighting.light,
   },
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
-];
-const postsData = [
-  {
-    id: "1",
-    name: "Cooper",
-    status: "LOST",
-    gender: "MALE",
-    summary: "A brown dog with a collar went missing near the park.",
-    lastKnownLocation: {
-      latitude: -114.1025,
-      longitude: 51.0342,
-      address: "Bankview",
-    },
-    species: "DOG",
-    images: [
-      "https://www.princeton.edu/sites/default/files/styles/1x_full_2x_half_crop/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=Bg2K7j7J",
-    ],
-    userID: "user1",
-    createdAt: "2024-03-24T10:00:00Z",
-    updatedAt: "2024-03-24T10:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Nala",
-    status: "FOUND",
-    gender: "FEMALE",
-    summary: "A black and white cat was found hiding in the bushes.",
-    lastKnownLocation: {
-      latitude: -114.078,
-      longitude: 51.0562,
-      address: "Sunnyside",
-    },
-    species: "CAT",
-    images: [
-      "https://hips.hearstapps.com/hmg-prod/images/cute-photos-of-cats-looking-at-camera-1593184780.jpg?crop=0.6672958942897593xw:1xh;center,top&resize=980:*",
-    ],
-    userID: "user2",
-    createdAt: "2024-03-23T15:30:00Z",
-    updatedAt: "2024-03-23T15:30:00Z",
-  },
-];
-
-const commentData = [
-  {
-    id: 1,
-    content: "This is the first comment.",
-    postID: 1,
-    parentCommentID: null,
-    userID: 1,
-    userName: "Joe Smith",
-    createdAt: "2024-03-23T08:00:00Z",
-    updatedAt: "2024-03-23T08:00:00Z",
-  },
-  {
-    id: 2,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sem euismod, varius lorem ac, dignissim elit. Mauris vehicula consectetur odio id bibendum. Nullam dapibus felis nec justo vehicula luctus. Phasellus gravida augue at arcu faucibus, nec tincidunt lorem tincidunt. Integer sed felis sapien. Vivamus sed fermentum velit. Sed vel nibh at ipsum dictum pharetra. Quisque euismod libero vel justo hendrerit bibendum. Sed tristique sapien vel posuere ultrices. Donec suscipit odio sit amet ipsum feugiat, at venenatis quam fringilla. Vivamus gravida enim nec leo vehicula, id rutrum velit dapibus. Donec convallis massa id massa interdum consequat. Suspendisse potenti. Maecenas euismod ultricies lectus, id efficitur est finibus at. Sed dapibus mauris nec ultricies feugiat. Maecenas auctor erat non eros finibus lobortis.",
-    postID: 1,
-    parentCommentID: null,
-    userID: 2,
-    userName: "Joe Smith",
-    createdAt: "2024-02-01T08:15:00Z",
-    updatedAt: "2024-02-01T08:15:00Z",
-  },
-  {
-    id: 3,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sem euismod, varius lorem ac, dignissim elit. Mauris vehicula consectetur odio id bibendum. Nullam dapibus felis nec justo vehicula luctus. Phasellus gravida augue at arcu faucibus, nec tincidunt lorem tincidunt. Integer sed felis sapien. Vivamus sed fermentum velit. Sed vel nibh at ipsum dictum pharetra. Quisque euismod libero vel justo hendrerit bibendum. Sed tristique sapien vel posuere ultrices. Donec suscipit odio sit amet ipsum feugiat, at venenatis quam fringilla. Vivamus gravida enim nec leo vehicula, id rutrum velit dapibus. Donec convallis massa id massa interdum consequat. Suspendisse potenti. Maecenas euismod ultricies lectus, id efficitur est finibus at",
-    postID: 1,
-    parentCommentID: 1,
-    userID: 3,
-    userName: "Joe Smith",
-    createdAt: "2024-01-17T08:30:00Z",
-    updatedAt: "2024-01-17T08:30:00Z",
-  },
 ];
 
 const sightingsData = [
@@ -128,9 +58,125 @@ const sightingsData = [
 const MyPostsAndComments = () => {
   const { isMobile } = useMobile();
   const [selectedType, setSelectedType] = useState("Lost");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const client = generateClient({ authMode: "userPool" });
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastSeverity, setToastSeverity] = useState("success");
+  const [toastMessage, setToastMessage] = useState("");
+  const [commentData, setCommentData] = useState([]);
+  const [postsData, setPostsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+  const handleToastClose = () => {
+    setToastOpen(false);
+  };
 
   const handleContentTypeToggle = (index) => {
     setSelectedType(contentTypeOptions[index].label);
+    setSelectedIndex(index);
+  };
+
+  useEffect(() => {
+    const fetchPostsData = async () => {
+      try {
+        //TODO: remove and store the logged in user information globally
+        const user = await getCurrentUser();
+
+        const listResponse = await client.graphql({
+          query: queries.postsByUser,
+          variables: { userID: user.userId },
+        });
+        const posts = listResponse.data.postsByUser.items;
+        const postsWithImages = await Promise.all(
+          posts.map(async (post) => {
+            try {
+              const firstImageUrl = post.images[0];
+              const firstImageData = await downloadData({ key: firstImageUrl })
+                .result;
+              const firstImageSrc = URL.createObjectURL(firstImageData.body);
+
+              post.firstImg = firstImageSrc;
+              return post;
+            } catch (error) {
+              console.error("Error fetching image for post:", error);
+              return post;
+            }
+          })
+        );
+        setPostsData(postsWithImages);
+        console.log(postsWithImages)
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching posts.");
+        console.error("Error fetching posts: ", error);
+      }
+    };
+
+    const fetchComments = async () => {
+      try {
+        //TODO: remove and store the logged in user information globally
+        const user = await getCurrentUser();
+
+        const commentsResponse = await client.graphql({
+          query: queries.commentsByUser,
+          variables: { userID: user.userId },
+        });
+        const comments = commentsResponse.data.commentsByUser.items;
+        setCommentData(comments);
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching comments for user.");
+        console.error("Error fetching comments for user: ", error);
+      }
+    };
+
+    fetchPostsData();
+    fetchComments();
+  }, []);
+
+  const deletePost = async (id) => {
+    setLoading(true);
+    const deletePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: deletePostInput },
+      });
+      const newPostData = postsData.filter((post) => post.id !== id);
+      setPostsData(newPostData);
+      handleToastOpen("success", "Successfully deleted post");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting post");
+      console.error("Error deleting post: ", error);
+    }
+    setLoading(false);
+  };
+
+  const deleteComment = async (id) => {
+    setLoading(true);
+    const deleteCommentInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteComment,
+        variables: { input: deleteCommentInput },
+      });
+      const newCommentData = commentData.filter((comment) => comment.id !== id);
+      setCommentData(newCommentData);
+      handleToastOpen("success", "Successfully deleted comment");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting comment");
+      console.error("Error deleting comment: ", error);
+    }
+    setLoading(false);
   };
 
   const filteredPosts = postsData.filter(
@@ -138,63 +184,94 @@ const MyPostsAndComments = () => {
   );
 
   return (
-    <Box className="my-content">
-      <Box width={"95%"} margin={"auto"}>
-        <Toggle
-          options={contentTypeOptions}
-          onToggleCallback={handleContentTypeToggle}
-          containerWidth={"100%"}
-        />
-      </Box>
-      <Box
-        className={
-          selectedType.toLowerCase() === "sighting" && "my-sigthing-content"
-        }
-        sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
-      >
-        {selectedType.toLowerCase() === "comments"
-          ? commentData.map((comment, index) => (
-              <CommentCard
-                key={index}
-                owner={true}
-                id={comment.id}
-                content={comment.content}
-                parentCommentId={comment.parentCommentID}
-                parentCommentUsername={"hii"} //TODO: add parent username and content in shema
-                parentCommentContent={"jii"}
-                username={comment.userName}
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-              />
-            ))
-          : selectedType.toLowerCase() === "sighting"
-          ? sightingsData.map((sighting, index) => (
-              <SightingCard
-                key={index}
-                owner={true}
-                img={sighting.images[0]}
-                location={sighting.location.address}
-                email={sighting.email}
-                phoneNumber={sighting.phoneNumber}
-                createdAt={sighting.createdAt}
-              />
-            ))
-          : filteredPosts.map((post, index) => (
-              <PetCard
-                key={index}
-                owner={true}
-                img={post.images[0]}
-                name={post.name}
-                status={post.status}
-                petType={post.species}
-                summary={post.summary}
-                location={post.lastKnownLocation.address}
-                createdAt={post.createdAt}
-                updatedAt={post.updatedAt}
-              />
-            ))}
-      </Box>
-    </Box>
+    <>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <Box className="my-content">
+          <Box width={"95%"} margin={"auto"}>
+            <Toggle
+              options={contentTypeOptions}
+              onToggleCallback={handleContentTypeToggle}
+              containerWidth={"100%"}
+              initialIndex={selectedIndex}
+            />
+          </Box>
+          <Box
+            className={
+              selectedType.toLowerCase() === "sighting" && "my-sigthing-content"
+            }
+            sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
+          >
+            {selectedType.toLowerCase() === "comments"
+                ? commentData.map((comment, index) => (
+                  <CommentCard
+                    key={index}
+                    owner={true}
+                    id={comment.id}
+                    content={comment.content}
+                    parentCommentId={comment.parentCommentID}
+                    username={comment.userName}
+                    createdAt={comment.createdAt}
+                    updatedAt={comment.updatedAt}
+                    onDelete={deleteComment}
+                  />
+                ))
+              : selectedType.toLowerCase() === "sighting"
+              ? sightingsData.map((sighting, index) => (
+                  <SightingCard
+                    key={index}
+                    owner={true}
+                    img={sighting.images[0]}
+                    location={sighting.location.address}
+                    email={sighting.email}
+                    phoneNumber={sighting.phoneNumber}
+                    createdAt={sighting.createdAt}
+                  />
+                ))
+              :       
+              filteredPosts.length === 0 ? (
+                <Typography variant="h1" margin={'1rem'} display={'flex'}>
+                  No {selectedType} posts found
+                </Typography>
+              ) : (
+                filteredPosts.map((post, index) => (
+                  <PetCard
+                    key={index}
+                    owner={true}
+                    id={post.id}
+                    img={post.firstImg}
+                    name={post.name}
+                    status={post.status}
+                    petType={post.species}
+                    summary={post.summary}
+                    location={post.lastKnownLocation.address}
+                    createdAt={post.createdAt}
+                    updatedAt={post.updatedAt}
+                    onDelete={deletePost}
+                  />
+                ))
+              )
+            }
+          </Box>
+          <ToastNotification
+            open={toastOpen}
+            severity={toastSeverity}
+            message={toastMessage}
+            handleClose={handleToastClose}
+          />
+        </Box>
+      )}
+    </>
   );
 };
 
