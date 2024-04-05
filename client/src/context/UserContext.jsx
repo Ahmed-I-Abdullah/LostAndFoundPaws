@@ -9,7 +9,7 @@ const client = generateClient({authMode: 'userPool'});
 
 export const UserProvider = ({ children }) => {
   const [userState, setUserState] = useState('Guest');
-  const [username, setUsername] = useState('');
+  const [currentUser, setCurrentUser] = useState(null)
 
   const updateUsername = async () => {
     try {
@@ -18,10 +18,10 @@ export const UserProvider = ({ children }) => {
         query: queries.getUser,
         variables: { id: user.userId }
       });
-      setUsername(result.data.getUser.username)
+      setCurrentUser(result.data.getUser)
     } catch (error) {
       console.log("Error fetching username:", error)
-      setUsername('');
+      setCurrentUser(null)
     }
   };
 
@@ -49,7 +49,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userState, username, assessUserState, updateUsername }}>
+    <UserContext.Provider value={{ userState, currentUser, assessUserState, updateUsername }}>
       {children}
     </UserContext.Provider>
   );

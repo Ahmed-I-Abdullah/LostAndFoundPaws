@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMobile } from '../../context/MobileContext';
 import { useUser } from '../../context/UserContext';
 import { generateClient } from 'aws-amplify/api';
@@ -19,7 +19,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { isMobile, isMobileSmall } = useMobile();
-  const { userState, username } = useUser();
+  const { userState, currentUser } = useUser();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,13 +54,13 @@ const Navbar = () => {
           </div>}
           <div className="userSection">
             <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                {!isMobile && (<span className="username">{username}</span>)} 
+                {!isMobile && (<span className="username">{currentUser?.username || ''}</span>)} 
                 <AccountCircleIcon sx={{ fontSize: '40px' }} />
             </div>
             <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
           </div>
         </>) : (
-            <Button variant="outlined" href="login">Log In</Button>
+            <Button variant="outlined" onClick={() => navigate("/login")}>Log In</Button>
         )}
       </div>
     </div>
