@@ -6,7 +6,7 @@ import {
   Typography,
   Button,
   TextField,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -33,6 +33,7 @@ const CommentCard = ({
   content,
   parentCommentId,
   setReply,
+  onDelete,
 }) => {
   const client = generateClient({ authMode: "userPool" });
   const [commentContent, setCommentContent] = useState(content);
@@ -83,16 +84,16 @@ const CommentCard = ({
       try {
         const commentResponse = await client.graphql({
           query: queries.getComment,
-          variables: { id: parentCommentId}
+          variables: { id: parentCommentId },
         });
         const parentComment = commentResponse.data.getComment;
         setParentCommentContent(parentComment.content);
         setParentCommentUsername(parentComment.user.username);
       } catch (error) {
-        console.error('Error fetching parent comment: ', error);
+        console.error("Error fetching parent comment: ", error);
       }
-    }
-    if(parentCommentId) {
+    };
+    if (parentCommentId) {
       fetchParentComment();
     }
   }, []);
@@ -106,32 +107,31 @@ const CommentCard = ({
     );
     //TODO: Implement Report Functionality
   };
-
-  const handleConfirmDelete = () => {
-    //TODO: Implement Delete Backend Logic
+  const handleConfirmDelete = async () => {
+    onDelete(id);
     handleCloseDelete();
-  }
+  };
 
   const handleConfirmSave = async () => {
     const updateCommentInput = {
       id: id,
-      content: editedContent
-    }
+      content: editedContent,
+    };
     try {
       const updatedComment = await client.graphql({
         query: mutations.updateComment,
         variables: { input: updateCommentInput },
       });
-      handleToastOpen('success', 'Successfully Updated comment');
+      handleToastOpen("success", "Successfully Updated comment");
       setCommentContent(updatedComment.data.updateComment.content);
       setEditedContent(updatedComment.data.updateComment.content);
     } catch (error) {
-      handleToastOpen('error', 'Error Updating comment');
-      console.error('Error Updating comment: ', error);
+      handleToastOpen("error", "Error Updating comment");
+      console.error("Error Updating comment: ", error);
     }
     setEditing(false);
     handleCloseSave();
-  }
+  };
 
   return (
     <Box
@@ -146,14 +146,14 @@ const CommentCard = ({
         alignItems: "center",
         minHeight: "100px",
         display: "grid",
-        gap: "1rem"
+        gap: "1rem",
       }}
     >
       <IconButton>
         <Avatar
           style={{
             width: "50px",
-            height: "50px" ,
+            height: "50px",
           }}
         >
           <PersonOutline />
@@ -192,7 +192,7 @@ const CommentCard = ({
                 : commentContent.length > 150
                 ? commentContent.slice(0, 75) + "..."
                 : commentContent}
-              {content.length > 150 && (
+              {commentContent.length > 150 && (
                 <Button
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
@@ -287,7 +287,7 @@ const CommentCard = ({
       {isReportModalOpen && (
         <ReportPost
           contentType="comment"
-          itemId={"comment.id"} 
+          itemId={"comment.id"}
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />

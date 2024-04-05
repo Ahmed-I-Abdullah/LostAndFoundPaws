@@ -7,10 +7,10 @@ import CommentCard from "../CommentCard/CommentCard";
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
-import * as mutations from "../../graphql/mutations"
-import { getCurrentUser } from "aws-amplify/auth"
+import * as mutations from "../../graphql/mutations";
+import { getCurrentUser } from "aws-amplify/auth";
 
-const Comments = ( { postId} ) => {
+const Comments = ({ postId }) => {
   const client = generateClient({ authMode: "userPool" });
 
   const [commentReply, setCommentReply] = useState("");
@@ -36,14 +36,14 @@ const Comments = ( { postId} ) => {
     try {
       const commentResponse = await client.graphql({
         query: queries.commentsByPost,
-        variables: { postID: postId}
+        variables: { postID: postId },
       });
       const comments = commentResponse.data.commentsByPost.items;
       setCommentData(comments);
       setLoading(false);
     } catch (error) {
-      handleToastOpen('error', 'Error fetching comments for the post');
-      console.error('Error fetching comments for the post: ', error);
+      handleToastOpen("error", "Error fetching comments for the post");
+      console.error("Error fetching comments for the post: ", error);
     }
   };
 
@@ -85,8 +85,8 @@ const Comments = ( { postId} ) => {
         content: postCommentText,
         postID: postId,
         userID: user.userId,
-        ...(commentReplyId && {parentCommentID: commentReplyId})
-      }
+        ...(commentReplyId && { parentCommentID: commentReplyId }),
+      };
       const newComment = await client.graphql({
         query: mutations.createComment,
         variables: { input: commentInput },
@@ -94,12 +94,32 @@ const Comments = ( { postId} ) => {
       setPostCommentText("");
       const newCommentData = [newComment.data.createComment, ...commentData];
       setCommentData(newCommentData);
-      handleToastOpen('success', 'comment successfully added');
+      handleToastOpen("success", "comment successfully added");
     } catch (error) {
-      handleToastOpen('error', 'Error posting comment for the post. Make sure you are logged in.');
-      console.error('Error posting comment for the post: ', error);
+      handleToastOpen(
+        "error",
+        "Error posting comment for the post. Make sure you are logged in."
+      );
+      console.error("Error posting comment for the post: ", error);
     }
-  }
+  };
+  const deleteComment = async (id) => {
+    const deleteCommentInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteComment,
+        variables: { input: deleteCommentInput },
+      });
+      const newCommentData = commentData.filter((comment) => comment.id !== id);
+      setCommentData(newCommentData);
+      handleToastOpen("success", "Successfully Deleted comment");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting comment");
+      console.error("Error deleting comment: ", error);
+    }
+  };
 
   return (
     <Grid>
@@ -116,6 +136,7 @@ const Comments = ( { postId} ) => {
               createdAt={comment.createdAt}
               updatedAt={comment.updatedAt}
               setReply={setReply}
+              onDelete={deleteComment}
             />
           ))
         ) : (
