@@ -6,7 +6,7 @@ import {
   Typography,
   Button,
   TextField,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,13 +16,13 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import FlagIcon from "@mui/icons-material/Flag";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
-import Modal from "@mui/material/Modal";
-import { useMobile } from "../../context/MobileContext";
 import "./CommentCard.css";
 import ReportPost from "../ReportPopup/ReportPopup";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
+import * as mutations from "../../graphql/mutations";
+import ToastNotification from "../ToastNotification/ToastNotificaiton";
 
 const CommentCard = ({
   owner,
@@ -33,8 +33,10 @@ const CommentCard = ({
   content,
   parentCommentId,
   setReply,
+  onDelete,
 }) => {
   const client = generateClient({ authMode: "userPool" });
+  const [commentContent, setCommentContent] = useState(content);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -59,6 +61,20 @@ const CommentCard = ({
   const [parentCommentUsername, setParentCommentUsername] = useState("");
   const [parentCommentContent, setParentCommentContent] = useState("");
 
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
+  };
+
   const handleEdit = (e) => {
     setEditedContent(e.target.value);
   };
@@ -68,16 +84,18 @@ const CommentCard = ({
       try {
         const commentResponse = await client.graphql({
           query: queries.getComment,
-          variables: { id: parentCommentId}
+          variables: { id: parentCommentId },
         });
         const parentComment = commentResponse.data.getComment;
-        setParentCommentContent(parentComment.content);
-        setParentCommentUsername(parentComment.user.username);
+        if (parentComment) {
+          setParentCommentContent(parentComment.content);
+          setParentCommentUsername(parentComment.user.username);
+        }
       } catch (error) {
-        console.error('Error fetching comments for the post: ', error);
+        console.log("Error fetching parent comment, parent comment might have been deleted: ", error);
       }
-    }
-    if(parentCommentId) {
+    };
+    if (parentCommentId) {
       fetchParentComment();
     }
   }, []);
@@ -91,16 +109,31 @@ const CommentCard = ({
     );
     //TODO: Implement Report Functionality
   };
-
-  const handleConfirmDelete = () => {
-    //TODO: Implement Delete Backend Logic
+  const handleConfirmDelete = async () => {
+    onDelete(id);
     handleCloseDelete();
-  }
+  };
 
-  const handleConfirmSave = () => {
-    //TODO: Implement Save Backend Logic
+  const handleConfirmSave = async () => {
+    const updateCommentInput = {
+      id: id,
+      content: editedContent,
+    };
+    try {
+      const updatedComment = await client.graphql({
+        query: mutations.updateComment,
+        variables: { input: updateCommentInput },
+      });
+      handleToastOpen("success", "Successfully Updated comment");
+      setCommentContent(updatedComment.data.updateComment.content);
+      setEditedContent(updatedComment.data.updateComment.content);
+    } catch (error) {
+      handleToastOpen("error", "Error Updating comment");
+      console.error("Error Updating comment: ", error);
+    }
+    setEditing(false);
     handleCloseSave();
-  }
+  };
 
   return (
     <Box
@@ -109,20 +142,20 @@ const CommentCard = ({
         padding: "7px",
         width: "95%",
         margin: "1rem auto",
-        gridTemplateColumns: small ? "30% 70%" : "10% 90%",
+        gridTemplateColumns: small ? "30% 70%" : "15% 85%",
         borderRadius: "1rem",
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100px",
         display: "grid",
-        gap: "1rem"
+        gap: "1rem",
       }}
     >
       <IconButton>
         <Avatar
           style={{
             width: "50px",
-            height: "50px" ,
+            height: "50px",
           }}
         >
           <PersonOutline />
@@ -137,7 +170,7 @@ const CommentCard = ({
           className="comment-content"
           style={{ color: `${theme.palette.custom.greyBkg.comment.content}` }}
         >
-          {parentCommentId && (
+          {(parentCommentContent && parentCommentUsername) && (
             <Typography color={`${theme.palette.primary.main}`} noWrap>
               {`@${parentCommentUsername} ${parentCommentContent}`}
             </Typography>
@@ -157,11 +190,11 @@ const CommentCard = ({
           ) : (
             <Typography variant="subtitle2">
               {expandedComment
-                ? content
-                : content.length > 150
-                ? content.slice(0, 75) + "..."
-                : content}
-              {content.length > 150 && (
+                ? commentContent
+                : commentContent.length > 150
+                ? commentContent.slice(0, 75) + "..."
+                : commentContent}
+              {commentContent.length > 150 && (
                 <Button
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
@@ -180,7 +213,10 @@ const CommentCard = ({
               <Button
                 variant="text"
                 sx={{ color: `${theme.palette.text.primary}` }}
-                onClick={() => setEditing(!editing)}
+                onClick={() => {
+                  setEditedContent(commentContent); // Reset editedContent to original content
+                  setEditing(!editing);
+                }}
                 size="small"
               >
                 {editing ? (
@@ -253,11 +289,17 @@ const CommentCard = ({
       {isReportModalOpen && (
         <ReportPost
           contentType="comment"
-          itemId={"comment.id"} 
+          itemId={"comment.id"}
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />
       )}
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </Box>
   );
 };
