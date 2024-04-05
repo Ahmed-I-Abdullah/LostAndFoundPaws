@@ -38,8 +38,10 @@ export const UserProvider = ({ children }) => {
       else{
         setUserState('Poster');
       }
+      setCurrentUser(result.data.getUser);
     } catch (error) {
       setUserState('Guest');
+      setCurrentUser(null);
     }
   };
 
