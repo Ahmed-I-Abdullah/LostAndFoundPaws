@@ -28,6 +28,7 @@ const PetCard = ({
   location,
   createdAt,
   updatedAt,
+  onDelete
 }) => {
   const { isMobile } = useMobile();
   const navigate = useNavigate();
@@ -38,9 +39,9 @@ const PetCard = ({
     navigate(`/posts/${id}`);
   };
 
-  const handleDeleteConfirmed = (event) => {
+  const handleDeleteConfirmed = (event, id) => {
     event.stopPropagation();
-    /** TODO: handle delete post */
+    onDelete(id);
     setOpenConfirmDelete(false);
   };
 
@@ -147,7 +148,7 @@ const PetCard = ({
           event.stopPropagation();
           setOpenConfirmDelete(false);
         }}
-        onConfirm={(event) => handleDeleteConfirmed(event)}
+        onConfirm={(event) => handleDeleteConfirmed(event, id)}
         title="Are you sure you want to delete this post?"
       />
     </Card>

@@ -587,6 +587,12 @@ export const postsByUser = /* GraphQL */ `
         species
         images
         userID
+        lastKnownLocation {
+          latitude
+          longitude
+          address
+          __typename
+        }
         createdAt
         updatedAt
         owner
