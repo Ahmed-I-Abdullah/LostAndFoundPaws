@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMobile } from '../../context/MobileContext';
 import { useUser } from '../../context/UserContext';
 import { generateClient } from 'aws-amplify/api';
@@ -60,7 +60,7 @@ const Navbar = () => {
             <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
           </div>
         </>) : (
-            <Button variant="outlined" href="login">Log In</Button>
+            <Button variant="outlined" onClick={() => navigate("/login")}>Log In</Button>
         )}
       </div>
     </div>
