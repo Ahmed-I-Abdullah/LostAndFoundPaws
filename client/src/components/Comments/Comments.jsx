@@ -11,8 +11,16 @@ import * as mutations from "../../graphql/mutations";
 import { getCurrentUser } from "aws-amplify/auth";
 
 const Comments = ({ postId }) => {
-  const client = generateClient({ authMode: "userPool" });
+  //TODO: check user role
+  const userRole = "Guest"
+  let client;
 
+  if (userRole === "Guest"){
+    client = generateClient({ authMode: "apiKey" });
+  } else {
+    client = generateClient({ authMode: "userPool" });
+  }
+ 
   const [commentReply, setCommentReply] = useState("");
   const [commentReplyId, setCommentReplyId] = useState("");
   const [postCommentText, setPostCommentText] = useState("");
@@ -99,7 +107,7 @@ const Comments = ({ postId }) => {
     } catch (error) {
       handleToastOpen(
         "error",
-        "Error posting comment for the post. Make sure you are logged in."
+        "Unable to add comment for the post. Make sure you are logged in."
       );
       console.error("Error posting comment for the post: ", error);
     }
@@ -194,7 +202,7 @@ const Comments = ({ postId }) => {
               </div>
               <Button
                 variant="contained"
-                disabled={postCommentText.length === 0 && client}
+                disabled={postCommentText.length === 0}
                 sx={{
                   backgroundColor: `${theme.palette.primary.main}`,
                   borderRadius: "1rem",

@@ -97,7 +97,8 @@ const sightingsData = [
 const MyPostsAndComments = () => {
   const { isMobile } = useMobile();
   const [selectedType, setSelectedType] = useState("Lost");
-  const client = generateClient({ authMode: "apiKey" });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const client = generateClient({ authMode: "userPool" });
   const [toastOpen, setToastOpen] = useState(false);
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
@@ -115,6 +116,7 @@ const MyPostsAndComments = () => {
 
   const handleContentTypeToggle = (index) => {
     setSelectedType(contentTypeOptions[index].label);
+    setSelectedIndex(index);
   };
 
   useEffect(() => {
@@ -129,7 +131,7 @@ const MyPostsAndComments = () => {
         });
         const comments = commentsResponse.data.commentsByUser.items;
         setCommentData(comments);
-
+        console.log(comments);
         setLoading(false);
       } catch (error) {
         handleToastOpen("error", "Error fetching comments for user.");
@@ -141,6 +143,7 @@ const MyPostsAndComments = () => {
   }, []);
 
   const deleteComment = async (id) => {
+    setLoading(true);
     const deleteCommentInput = {
       id: id,
     };
@@ -156,6 +159,7 @@ const MyPostsAndComments = () => {
       handleToastOpen("error", "Error deleting comment");
       console.error("Error deleting comment: ", error);
     }
+    setLoading(false);
   };
 
   const filteredPosts = postsData.filter(
@@ -182,6 +186,7 @@ const MyPostsAndComments = () => {
               options={contentTypeOptions}
               onToggleCallback={handleContentTypeToggle}
               containerWidth={"100%"}
+              initialIndex={selectedIndex}
             />
           </Box>
           <Box

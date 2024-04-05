@@ -87,10 +87,12 @@ const CommentCard = ({
           variables: { id: parentCommentId },
         });
         const parentComment = commentResponse.data.getComment;
-        setParentCommentContent(parentComment.content);
-        setParentCommentUsername(parentComment.user.username);
+        if (parentComment) {
+          setParentCommentContent(parentComment.content);
+          setParentCommentUsername(parentComment.user.username);
+        }
       } catch (error) {
-        console.error("Error fetching parent comment: ", error);
+        console.log("Error fetching parent comment, parent comment might have been deleted: ", error);
       }
     };
     if (parentCommentId) {
@@ -168,7 +170,7 @@ const CommentCard = ({
           className="comment-content"
           style={{ color: `${theme.palette.custom.greyBkg.comment.content}` }}
         >
-          {parentCommentId && (
+          {(parentCommentContent && parentCommentUsername) && (
             <Typography color={`${theme.palette.primary.main}`} noWrap>
               {`@${parentCommentUsername} ${parentCommentContent}`}
             </Typography>
