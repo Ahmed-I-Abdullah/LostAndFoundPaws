@@ -16,13 +16,13 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import FlagIcon from "@mui/icons-material/Flag";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
-import Modal from "@mui/material/Modal";
-import { useMobile } from "../../context/MobileContext";
 import "./CommentCard.css";
 import ReportPost from "../ReportPopup/ReportPopup";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
+import * as mutations from "../../graphql/mutations";
+import ToastNotification from "../ToastNotification/ToastNotificaiton";
 
 const CommentCard = ({
   owner,
@@ -35,6 +35,7 @@ const CommentCard = ({
   setReply,
 }) => {
   const client = generateClient({ authMode: "userPool" });
+  const [commentContent, setCommentContent] = useState(content);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -59,6 +60,20 @@ const CommentCard = ({
   const [parentCommentUsername, setParentCommentUsername] = useState("");
   const [parentCommentContent, setParentCommentContent] = useState("");
 
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
+  };
+
   const handleEdit = (e) => {
     setEditedContent(e.target.value);
   };
@@ -74,7 +89,7 @@ const CommentCard = ({
         setParentCommentContent(parentComment.content);
         setParentCommentUsername(parentComment.user.username);
       } catch (error) {
-        console.error('Error fetching comments for the post: ', error);
+        console.error('Error fetching parent comment: ', error);
       }
     }
     if(parentCommentId) {
@@ -97,8 +112,24 @@ const CommentCard = ({
     handleCloseDelete();
   }
 
-  const handleConfirmSave = () => {
-    //TODO: Implement Save Backend Logic
+  const handleConfirmSave = async () => {
+    const updateCommentInput = {
+      id: id,
+      content: editedContent
+    }
+    try {
+      const updatedComment = await client.graphql({
+        query: mutations.updateComment,
+        variables: { input: updateCommentInput },
+      });
+      handleToastOpen('success', 'Successfully Updated comment');
+      setCommentContent(updatedComment.data.updateComment.content);
+      setEditedContent(updatedComment.data.updateComment.content);
+    } catch (error) {
+      handleToastOpen('error', 'Error Updating comment');
+      console.error('Error Updating comment: ', error);
+    }
+    setEditing(false);
     handleCloseSave();
   }
 
@@ -157,10 +188,10 @@ const CommentCard = ({
           ) : (
             <Typography variant="subtitle2">
               {expandedComment
-                ? content
-                : content.length > 150
-                ? content.slice(0, 75) + "..."
-                : content}
+                ? commentContent
+                : commentContent.length > 150
+                ? commentContent.slice(0, 75) + "..."
+                : commentContent}
               {content.length > 150 && (
                 <Button
                   variant="text"
@@ -180,7 +211,10 @@ const CommentCard = ({
               <Button
                 variant="text"
                 sx={{ color: `${theme.palette.text.primary}` }}
-                onClick={() => setEditing(!editing)}
+                onClick={() => {
+                  setEditedContent(commentContent); // Reset editedContent to original content
+                  setEditing(!editing);
+                }}
                 size="small"
               >
                 {editing ? (
@@ -258,6 +292,12 @@ const CommentCard = ({
           onReport={handleReport}
         />
       )}
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </Box>
   );
 };
