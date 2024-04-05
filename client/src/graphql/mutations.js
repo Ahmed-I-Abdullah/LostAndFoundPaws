@@ -263,6 +263,18 @@ export const createComment = /* GraphQL */ `
         __typename
       }
       userID
+      user {
+        id
+        username
+        role
+        profilePicture
+        email
+        phone
+        createdAt
+        updatedAt
+        owner
+        __typename
+      }
       commentReports {
         nextToken
         __typename

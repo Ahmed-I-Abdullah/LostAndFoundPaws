@@ -10,41 +10,6 @@ import ToastNotification from "../ToastNotification/ToastNotificaiton";
 import * as mutations from "../../graphql/mutations"
 import { getCurrentUser } from "aws-amplify/auth"
 
-const commentData = [
-  {
-    id: 1,
-    content: "This is the first comment.",
-    postID: 1,
-    parentCommentID: null,
-    userID: 1,
-    userName: "John Doe",
-    createdAt: "2024-03-23T08:00:00Z",
-    updatedAt: "2024-03-23T08:00:00Z",
-  },
-  {
-    id: 2,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sem euismod, varius lorem ac, dignissim elit. Mauris vehicula consectetur odio id bibendum. Nullam dapibus felis nec justo vehicula luctus. Phasellus gravida augue at arcu faucibus, nec tincidunt lorem tincidunt. Integer sed felis sapien. Vivamus sed fermentum velit. Sed vel nibh at ipsum dictum pharetra. Quisque euismod libero vel justo hendrerit bibendum. Sed tristique sapien vel posuere ultrices. Donec suscipit odio sit amet ipsum feugiat, at venenatis quam fringilla. Vivamus gravida enim nec leo vehicula, id rutrum velit dapibus. Donec convallis massa id massa interdum consequat. Suspendisse potenti. Maecenas euismod ultricies lectus, id efficitur est finibus at. Sed dapibus mauris nec ultricies feugiat. Maecenas auctor erat non eros finibus lobortis.",
-    postID: 1,
-    parentCommentID: null,
-    userID: 2,
-    userName: "Samantha Rose",
-    createdAt: "2024-02-01T08:15:00Z",
-    updatedAt: "2024-02-01T08:15:00Z",
-  },
-  {
-    id: 3,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sem euismod, varius lorem ac, dignissim elit. Mauris vehicula consectetur odio id bibendum. Nullam dapibus felis nec justo vehicula luctus. Phasellus gravida augue at arcu faucibus, nec tincidunt lorem tincidunt. Integer sed felis sapien. Vivamus sed fermentum velit. Sed vel nibh at ipsum dictum pharetra. Quisque euismod libero vel justo hendrerit bibendum. Sed tristique sapien vel posuere ultrices. Donec suscipit odio sit amet ipsum feugiat, at venenatis quam fringilla. Vivamus gravida enim nec leo vehicula, id rutrum velit dapibus. Donec convallis massa id massa interdum consequat. Suspendisse potenti. Maecenas euismod ultricies lectus, id efficitur est finibus at",
-    postID: 1,
-    parentCommentID: 1,
-    userID: 3,
-    userName: "Joe Smith",
-    createdAt: "2024-01-17T08:30:00Z",
-    updatedAt: "2024-01-17T08:30:00Z",
-  },
-];
-
 const Comments = ( { postId} ) => {
   const client = generateClient({ authMode: "userPool" });
 
@@ -67,22 +32,22 @@ const Comments = ( { postId} ) => {
     setToastOpen(false);
   };
 
-  useEffect(() => {
-    const fetchPostComments = async () => {
-      try {
-        const commentResponse = await client.graphql({
-          query: queries.commentsByPost,
-          variables: { postID: postId}
-        });
-        const comments = commentResponse.data.commentsByPost.items;
-        setCommentData(comments);
-        setLoading(false);
-      } catch (error) {
-        handleToastOpen('error', 'Error fetching comments for the post');
-        console.error('Error fetching comments for the post: ', error);
-      }
+  const fetchPostComments = async () => {
+    try {
+      const commentResponse = await client.graphql({
+        query: queries.commentsByPost,
+        variables: { postID: postId}
+      });
+      const comments = commentResponse.data.commentsByPost.items;
+      setCommentData(comments);
+      setLoading(false);
+    } catch (error) {
+      handleToastOpen('error', 'Error fetching comments for the post');
+      console.error('Error fetching comments for the post: ', error);
     }
-    
+  };
+
+  useEffect(() => {
     fetchPostComments();
   }, []);
 
@@ -122,14 +87,17 @@ const Comments = ( { postId} ) => {
         userID: user.userId,
         ...(commentReplyId && {parentCommentID: commentReplyId})
       }
-      await client.graphql({
+      const newComment = await client.graphql({
         query: mutations.createComment,
         variables: { input: commentInput },
       });
-      handleToastOpen('success', 'comment successfully added')
+      setPostCommentText("");
+      const newCommentData = [newComment.data.createComment, ...commentData];
+      setCommentData(newCommentData);
+      handleToastOpen('success', 'comment successfully added');
     } catch (error) {
       handleToastOpen('error', 'Error posting comment for the post. Make sure you are logged in.');
-      console.error('Error posting comment for the post');
+      console.error('Error posting comment for the post: ', error);
     }
   }
 
