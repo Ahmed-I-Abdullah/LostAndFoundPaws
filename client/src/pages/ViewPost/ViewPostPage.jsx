@@ -80,7 +80,7 @@ const ViewPostPage = () => {
 
   const handleResolveConfirmed = () => {
     onResolve(petData.id);
-    setOpenConfirmResolve(false); // Close the dialog
+    setOpenConfirmResolve(false);
   };
 
   const onDelete = async (id) => {
@@ -100,6 +100,26 @@ const ViewPostPage = () => {
     } catch (error) {
       handleToastOpen("error", "Error deleting post");
       console.error("Error deleting post: ", error);
+    }
+  };
+
+
+  const onResolve = async (id) => {
+    const postInput = {
+      id: id,
+      resolved: true,
+    };
+    try {
+      await client.graphql({
+        query: mutations.updatePost,
+        variables: { input: postInput },
+      });
+      handleToastOpen("success", "Successfully marked post as resolved");
+
+      setPetData({...petData, resolved: 'true'})
+    } catch (error) {
+      handleToastOpen("error", "Error marking post as resolved");
+      console.error("Error marking post as resolved: ", error);
     }
   };
 
@@ -314,6 +334,7 @@ const ViewPostPage = () => {
                         marginRight: "8px",
                       }}
                       startIcon={<CheckIcon />}
+                      disabled={petData.resolved == 'true'}
                     >
                       Mark as resolved
                     </Button>
