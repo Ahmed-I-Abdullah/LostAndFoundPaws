@@ -10,21 +10,26 @@ const NavbarBottom = () => {
   const { userState } = useUser();
   const { isMobile } = useMobile();
 
-  if (!isMobile || userState == ("Guest")) {
+  if (!isMobile) {
     return null;
   }
-
+  
   return (
     <div>
-      {userState == "Admin" ? 
-        (<div className="navbarBottom">
-          <Button variant="contained" onClick={() => navigate("/viewReportings")}>View Reportings</Button> 
-        </div>) :
-        (<div className="navbarBottom">
-          <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
-          <Button variant="contained" onClick={() => navigate("/createPost")}>Report Pet</Button>
-        </div>)
-      }
+      {userState === "Admin" ? (
+        <div className="navbarBottom">
+          <Button variant="contained" href="createSighting">View Reportings</Button> 
+        </div>
+      ) : userState === "Guest" ? (
+        <div className="navbarBottom">
+          <Button variant="outlined" href="createSighting">Report Sighting</Button>
+        </div>
+      ) : (
+        <div className="navbarBottom">
+          <Button variant="outlined" href="createSighting">Report Sighting</Button>
+          <Button variant="contained" href="createPost">Report Pet</Button>
+        </div>
+      )}
     </div>
   );
 };
