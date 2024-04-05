@@ -38,29 +38,46 @@ const Navbar = () => {
       </Link>
       </div>
       <div className="navbarRight">
-        {userState != "Guest" ? (<>
-          {!isMobile && <div>
-            {userState == "Admin" ? (
-              <div className="userActionSection"> 
-                <Button variant="contained" onClick={() => navigate("/viewReportings")}>View Reportings</Button>
-              </div> 
-            ) :
-            ( 
-              <div className="userActionSection">
-                <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
-                <Button variant="contained" onClick={() => navigate("/createPost")}>Report Pet</Button>
-              </div>
-            )}
-          </div>}
-          <div className="userSection">
-            <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                {!isMobile && (<span className="username">{username}</span>)} 
-                <AccountCircleIcon sx={{ fontSize: '40px' }} />
+        {!isMobile ? (<>
+          {userState !== "Guest" ? (<>
+            <div>
+              {userState === "Admin" ? (
+                <div className="userActionSection">
+                  <Button variant="contained" onClick={() => navigate("/viewReportings")}>View Reportings</Button>
+                </div>
+              ) : (
+                <div className="userActionSection">
+                  <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
+                  <Button variant="contained" onClick={() => navigate("/createPost")}>Report Pet</Button>
+                </div>
+              )}
             </div>
-            <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
-          </div>
+            <div className="userSection">
+              <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                <span className="username">{username}</span>
+                <AccountCircleIcon sx={{ fontSize: '40px' }} />
+              </div>
+              <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+            </div>
+          </>) : (<>
+            <div className="userActionSection">
+              <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
+            </div>
+            <Button variant="contained" href="login">Log In</Button>
+          </>)}
         </>) : (
-            <Button variant="outlined" href="login">Log In</Button>
+          <div className="userSection">
+            {userState !== "Guest" && 
+              <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                  <span className="username">{username}</span>
+                  <AccountCircleIcon sx={{ fontSize: '40px' }} />
+                <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+              </div>
+            }
+            {userState == "Guest" && 
+              <Button variant="contained" href="login">Log In</Button>
+            }
+          </div>
         )}
       </div>
     </div>
