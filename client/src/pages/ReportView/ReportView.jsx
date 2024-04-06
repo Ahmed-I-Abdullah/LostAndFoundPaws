@@ -1,76 +1,153 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import ReportedPetCard from "../../components/ReportedPetCard/ReportedPetCard";
-
-const postsData = [
-  {
-    id: "1",
-    name: "Cooper",
-    status: "LOST",
-    gender: "MALE",
-    summary: "A brown dog with a collar went missing near the park.",
-    lastKnownLocation: {
-      latitude: -114.1025,
-      longitude: 51.0342,
-      address: "Bankview",
-    },
-    species: "DOG",
-    images: [
-      "https://www.princeton.edu/sites/default/files/styles/1x_full_2x_half_crop/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=Bg2K7j7J",
-    ],
-    userID: "user1",
-    createdAt: "2024-03-24T10:00:00Z",
-    updatedAt: "2024-03-24T10:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Nala",
-    status: "FOUND",
-    gender: "FEMALE",
-    summary: "A black and white cat was found hiding in the bushes.",
-    lastKnownLocation: {
-      latitude: -114.078,
-      longitude: 51.0562,
-      address: "Sunnyside",
-    },
-    species: "CAT",
-    images: [
-      "https://hips.hearstapps.com/hmg-prod/images/cute-photos-of-cats-looking-at-camera-1593184780.jpg?crop=0.6672958942897593xw:1xh;center,top&resize=980:*",
-    ],
-    userID: "user2",
-    createdAt: "2024-03-23T15:30:00Z",
-    updatedAt: "2024-03-23T15:30:00Z",
-  },
-];
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import { generateClient } from "aws-amplify/api";
+import * as queries from "../../graphql/queries";
+import * as mutations from '../../graphql/mutations';
+import { downloadData } from "@aws-amplify/storage";
 
 const ReportView = ({ selectedType }) => {
-  const filteredPosts =
-    selectedType !== "All"
-      ? postsData.filter(
-          (post) => post.status.toLowerCase() === selectedType.toLowerCase()
-        )
-      : postsData;
+  const client = generateClient({ authMode: "userPool" });
+  const [loading, setLoading] = useState(true);
+  const [reports, setReports] = useState([]);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastSeverity, setToastSeverity] = useState("success");
+  const [toastMessage, setToastMessage] = useState("");
 
-  const handleDelete = (postId) => {
-    console.log("Deleting report for post with id:", postId);
-    // TODO: Delete logic
+  useEffect(() => {
+    const fetchReportsAndPosts = async () => {
+      try {
+        const reportsData = await client.graphql({
+          query: queries.listPostReports,
+        });
+        const fetchedReports = reportsData.data.listPostReports.items;
+
+        // Fetch associated posts for each report
+        const postsWithDetails = await Promise.all(fetchedReports.map(async (report) => {
+          if (report.postID) {
+            try {
+              const postData = await client.graphql({
+                query: queries.getPost, // Make sure you have a query to fetch individual posts by ID
+                variables: { id: report.postID },
+              });
+
+              const post = postData.data.getPost;
+              const firstImageUrl = post.images[0];
+              const firstImageData = await downloadData({ key: firstImageUrl })
+                .result;
+              const firstImageSrc = URL.createObjectURL(firstImageData.body);
+
+              post.firstImg = firstImageSrc;
+              return { ...report, post: post };
+            } catch (error) {
+              console.error(`Error fetching post for report ${report.id}:`, error);
+              return report; // Return report without post data in case of an error
+            }
+          }
+          return report;
+        }));
+
+        // Apply the selectedType filter to the reports with their associated posts
+        const filteredReports = selectedType !== "All" ?
+          postsWithDetails.filter((report) => report.post && report.post.status.toLowerCase() === selectedType.toLowerCase()) :
+          postsWithDetails;
+
+        setReports(filteredReports);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching reports: ", error);
+        setLoading(false);
+        setToastSeverity("error");
+        setToastMessage("Error fetching reports.");
+        setToastOpen(true);
+      }
+    };
+
+    fetchReportsAndPosts();
+  }, [selectedType]);
+
+  const handleDelete = async (reportId, postId) => {
+    setLoading(true);
+    try {
+      // Delete the post associated with the report
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: { id: postId } },
+      });
+      // Delete the report itself
+      await client.graphql({
+        query: mutations.deletePostReport,
+        variables: { input: { id: reportId } },
+      });
+      // Update the UI by removing the deleted report
+      const updatedReports = reports.filter((report) => report.id !== reportId);
+      setReports(updatedReports);
+      handleToastOpen("success", "Report and associated post deleted successfully");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting report and associated post");
+      console.error("Error deleting report and associated post: ", error);
+    }
+    setLoading(false);
   };
 
-  const handleIgnore = (postId) => {
-    console.log("Ignoring report for post with id:", postId);
-    // TODO: Ignore logic
+  const handleIgnore = async (reportId) => {
+    setLoading(true);
+    try {
+      // Delete the report only
+      await client.graphql({
+        query: mutations.deletePostReport,
+        variables: { input: { id: reportId } },
+      });
+      // Update the UI by removing the ignored report
+      const updatedReports = reports.filter((report) => report.id !== reportId);
+      setReports(updatedReports);
+      handleToastOpen("success", "Report ignored successfully");
+    } catch (error) {
+      handleToastOpen("error", "Error ignoring report");
+      console.error("Error ignoring report: ", error);
+    }
+    setLoading(false);
   };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
+  };
+
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
-      {filteredPosts.map((post) => (
+      {reports.length > 0 ? reports.map((report) => (
         <ReportedPetCard
-          key={post.id}
-          petData={post}
-          onDelete={handleDelete}
-          onIgnore={handleIgnore}
+          key={report.id}
+          report={report}
+          petData={report.post} // Assuming the report has a 'post' field with all necessary data
+          onDelete={() => handleDelete(report.id, report.postID)}
+          onIgnore={() => handleIgnore(report.id)}
         />
-      ))}
+      )) : (
+        <Box sx={{ textAlign: 'center' }}>No reports found for this category.</Box>
+      )}
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
     </Box>
   );
 };

@@ -1,25 +1,44 @@
 import React, { useState } from 'react';
 import './ReportPopup.css';
 import Button from '@mui/material/Button';
+import { generateClient } from "aws-amplify/api"; // Assuming this is how you've been doing it
+import * as mutations from '../../graphql/mutations';
 
-function ReportPost({ onClose, onReport, contentType, itemId }) {
+function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
   const [reason, setReason] = useState('');
   const [description, setDescription] = useState('');
+  const client = generateClient({ authMode: "userPool" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Construct a report object with all necessary information
-    const reportDetails = {
-      reason,
-      description,
-      contentType,
-      itemId,     
+    let mutation;
+    let input = {
+      reason: reason,
+      description: description,
+      userID: userId, 
     };
 
-    // Send request to Amplify here
-    onReport(reportDetails);
-    onClose(); // Close the modal after reporting.
+    if (contentType === "comment") {
+      mutation = mutations.createCommentReport;
+      input.commentID = itemId; 
+    } else if (contentType === "post") {
+      mutation = mutations.createPostReport;
+      input.postID = itemId; 
+    }
+
+    try {
+      const { data } = await client.graphql({
+        query: mutation,
+        variables: { input },
+      });
+      console.log(`${contentType} report created: `, data);
+      onClose(); 
+      onReport(); 
+    } catch (error) {
+      console.error(`Error creating ${contentType} report:`, error);
+    }
   };
+  
 
   return (
     <div className="report-post-overlay">
@@ -34,8 +53,9 @@ function ReportPost({ onClose, onReport, contentType, itemId }) {
             required
           >
             <option value="">Select a reason...</option>
-            <option value="spam">Spam</option>
-            <option value="harassment">Harassment</option>
+            <option value="SPAM">Spam</option>
+            <option value="INAPPROPRIATE">Inappropriate</option>
+            <option value="OTHER">Other</option>
           </select>
           <textarea
             value={description}
@@ -52,4 +72,4 @@ function ReportPost({ onClose, onReport, contentType, itemId }) {
   );
 }
 
-export default ReportPost;
+export default ReportEntity;
