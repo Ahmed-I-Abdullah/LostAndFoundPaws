@@ -16,10 +16,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import StatusLabel from "../StatusLabel/StatusLabel";
+import { useUser } from "../../context/UserContext";
 
 const PetCard = ({
   id,
-  owner,
+  userId,
   img,
   name,
   summary,
@@ -31,6 +32,7 @@ const PetCard = ({
   onDelete
 }) => {
   const { isMobile } = useMobile();
+  const { userState, currentUser } = useUser();
   const navigate = useNavigate();
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -85,7 +87,7 @@ const PetCard = ({
             >
               {name}
             </Typography>
-            {owner && (
+            {(userId === currentUser?.id || userState === "Admin") && (
               <Button
                 size={small ? "small" : "medium"}
                 variant="contained"
