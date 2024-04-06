@@ -141,9 +141,6 @@
     },
     "authProviders": {
       "Type": "CommaDelimitedList"
-    },
-    "thirdPartyAuth": {
-      "Type": "String"
     }
   },
   "Conditions": {

@@ -25,7 +25,7 @@ const Navbar = () => {
   const [currentProfilePicture, setCurrentProfilePicture] = useState('');
 
   const getUserInfo = async () => {
-    setCurrentUsername(currentUser.username ?? '');
+    setCurrentUsername(currentUser?.username ?? '');
     if (currentProfilePictureImageData.body instanceof Blob) {
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
@@ -87,7 +87,7 @@ const Navbar = () => {
             <div className="userActionSection">
               <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
             </div>
-            <Button variant="contained" href="login">Log In</Button>
+            <Button variant="contained" onClick={() => navigate("/login")}>Log In</Button>
           </>)}
         </>) : (
           <div className="userSection">
@@ -107,7 +107,7 @@ const Navbar = () => {
               </div>
             }
             {userState == "Guest" && 
-              <Button variant="contained" href="login">Log In</Button>
+              <Button variant="contained" onClick={() => navigate("/login")}>Log In</Button>
             }
           </div>
         )}

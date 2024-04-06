@@ -25,7 +25,7 @@ import * as mutations from "../../graphql/mutations";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
 import { useUser } from "../../context/UserContext";
 import { downloadData } from "@aws-amplify/storage";
-
+import { useLocation } from "react-router-dom";
 
 const CommentCard = ({
   id,
@@ -74,6 +74,8 @@ const CommentCard = ({
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+
+  const { pathname } = useLocation();
 
   const handleToastOpen = (severity, message) => {
     setToastSeverity(severity);
@@ -226,7 +228,7 @@ const CommentCard = ({
           )}
         </Box>
         <Box className="comment-actions">
-          {(userState === "Admin" || currentUser?.id === userId) ? (
+          {((userState === "Admin" || currentUser?.id === userId) && pathname !== "/viewReportings") ? (
             <>
               <Button
                 variant="text"
@@ -268,7 +270,7 @@ const CommentCard = ({
                 <Typography variant="h9">Delete</Typography>
               </Button>
             </>
-          ) : (userState !== "Guest") && (
+          ) : ((userState !== "Guest") && pathname !== "/viewReportings") && (
             <>
               <Button
                 variant="text"
