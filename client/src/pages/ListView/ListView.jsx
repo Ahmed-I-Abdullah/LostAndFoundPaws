@@ -60,10 +60,21 @@ const ListView = ({ selectedType }) => {
           query: queries.listSightings,
         });
         const sightings = listResponse.data.listSightings.items;
-        const sightingsWithImages = sightings.map((sighting) => {
-          sighting.firstImg = sighting.image;
-          return sighting;
-        });
+        const sightingsWithImages = await Promise.all(
+          sightings.map(async (sighting) => {
+            try {
+              const firstImageData = await downloadData({ key: sighting.image })
+                .result;
+              const firstImageSrc = URL.createObjectURL(firstImageData.body);
+
+              sighting.firstImg = firstImageSrc;
+              return sighting;
+            } catch (error) {
+              console.error("Error fetching image for sighting:", error);
+              return sighting;
+            }
+          })
+        );
         setSightingsData(sightingsWithImages);
       } catch (error) {
         handleToastOpen("error", "Error fetching sighting posts.");
@@ -109,6 +120,8 @@ const ListView = ({ selectedType }) => {
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
+
+  // console.log(sightingsData);
 
   return (
     <>
@@ -173,13 +186,23 @@ const ListView = ({ selectedType }) => {
                   <SigthingCard
                     key={index}
                     owner={false} //TODO: Check if the user logged in is the owner
-                    img={sighting.images[0]}
-                    location={sighting.location.address}
-                    reporterType={sighting.reporterType}
-                    email={sighting.email}
-                    phoneNumber={sighting.phoneNumber}
+                    img={sighting.firstImg}
+                    location={
+                      sighting.location
+                        ? sighting.location.address
+                        : "Unknown Location"
+                    }
+                    email={
+                      sighting.contactInfo
+                        ? sighting.contactInfo.email
+                        : "No email provided"
+                    }
+                    phoneNumber={
+                      sighting.contactInfo
+                        ? sighting.contactInfo.phone
+                        : "No email provided"
+                    }
                     createdAt={sighting.createdAt}
-                    updatedAt={sighting.updatedAt}
                   />
                 ))
               )}
