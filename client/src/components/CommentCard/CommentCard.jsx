@@ -181,8 +181,8 @@ const CommentCard = ({
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
-          <Typography variant="h7">{username}</Typography>
-          <Typography variant="caption">{formatDate(createdAt)}</Typography>
+          <Typography variant="h7" noWrap>{username}</Typography>
+          <Typography variant="caption" >{formatDate(createdAt)}</Typography>
         </Box>
         <Box
           className="comment-content"
