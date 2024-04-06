@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMobile } from '../../context/MobileContext';
 import { useUser } from '../../context/UserContext';
 import { generateClient } from 'aws-amplify/api';
@@ -19,7 +19,23 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { isMobile, isMobileSmall } = useMobile();
-  const { userState, currentUser } = useUser();
+  const { userState, currentUser, currentProfilePictureImageData } = useUser();
+
+  const [currentUsername, setCurrentUsername] = useState('');
+  const [currentProfilePicture, setCurrentProfilePicture] = useState('');
+
+  const getUserInfo = async () => {
+    setCurrentUsername(currentUser.username ?? '');
+    if (currentProfilePictureImageData.body instanceof Blob) {
+      setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
+    } else {
+      setCurrentProfilePicture('');
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, [currentUser, currentProfilePictureImageData]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,8 +70,16 @@ const Navbar = () => {
             </div>
             <div className="userSection">
               <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                <span className="username">{currentUser?.username || ''}</span>
-                <AccountCircleIcon sx={{ fontSize: '40px' }} />
+                <span className="username">{currentUsername || ''}</span>
+                {currentProfilePicture === '' ? (
+                  <AccountCircleIcon sx={{ fontSize: '45px' }} />
+                ) : (
+                  <img
+                    src={currentProfilePicture}
+                    alt="Profile"
+                    style={{ width: 37.5, height: 37.5, borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                )}
               </div>
               <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
             </div>
@@ -69,8 +93,16 @@ const Navbar = () => {
           <div className="userSection">
             {userState !== "Guest" && 
               <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <span className="username">{currentUser?.username || ''}</span>
-                  <AccountCircleIcon sx={{ fontSize: '40px' }} />
+                  <span className="username">{currentUsername || ''}</span>
+                  {currentProfilePicture === '' ? (
+                  <AccountCircleIcon sx={{ fontSize: '45px' }} />
+                  ) : (
+                    <img
+                      src={currentProfilePicture}
+                      alt="Profile"
+                      style={{ width: 37.5, height: 37.5, borderRadius: '50%', objectFit: 'cover' }}
+                    />
+                  )}
                 <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
               </div>
             }
