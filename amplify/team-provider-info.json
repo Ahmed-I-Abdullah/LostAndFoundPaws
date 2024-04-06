@@ -13,25 +13,22 @@
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
-      "auth": {
-        "lostandfoundpetsfd158904": {},
-        "userPoolGroups": {}
-      },
-      "api": {
-        "lostandfoundpets": {}
-      },
-      "hosting": {
-        "amplifyhosting": {}
-      },
       "function": {
         "lostandfoundpetsfd158904PostConfirmation": {
           "GROUP": "Admin",
           "deploymentBucketName": "amplify-lostandfoundpets-staging-234006-deployment",
-          "s3Key": "amplify-builds/lostandfoundpetsfd158904PostConfirmation-45526e6d763871555130-build.zip"
+          "s3Key": "amplify-builds/lostandfoundpetsfd158904PostConfirmation-3942736944487839336d-build.zip"
         }
+      },
+      "auth": {
+        "lostandfoundpetsfd158904": {},
+        "userPoolGroups": {}
       },
       "storage": {
         "s34719207c": {}
+      },
+      "api": {
+        "lostandfoundpets": {}
       }
     }
   }
