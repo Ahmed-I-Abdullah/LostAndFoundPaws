@@ -88,7 +88,7 @@ const PetCard = ({
             >
               {name}
             </Typography>
-            {((userId === currentUser?.id || userState === "Admin") && pathname !== "/ViewReportings")&& (
+            {((userId === currentUser?.id || userState === "Admin") && pathname !== "/viewReportings")&& (
               <Button
                 size={small ? "small" : "medium"}
                 variant="contained"

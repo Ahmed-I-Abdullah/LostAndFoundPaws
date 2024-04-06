@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import ReportedPetCard from "../../components/ReportedPetCard/ReportedPetCard";
+import ReportedCommentCard from "../../components/ReportedCommentCard/ReportedCommentCard";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
@@ -8,148 +9,180 @@ import * as mutations from '../../graphql/mutations';
 import { downloadData } from "@aws-amplify/storage";
 
 const ReportView = ({ selectedType }) => {
-  const client = generateClient({ authMode: "userPool" });
-  const [loading, setLoading] = useState(true);
-  const [reports, setReports] = useState([]);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastSeverity, setToastSeverity] = useState("success");
-  const [toastMessage, setToastMessage] = useState("");
+    const client = useMemo(() => generateClient({ authMode: "userPool" }), []);
+    const [loading, setLoading] = useState(true);
+    const [reports, setReports] = useState([]);
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastSeverity, setToastSeverity] = useState("success");
+    const [toastMessage, setToastMessage] = useState("");
 
-  useEffect(() => {
-    const fetchReportsAndPosts = async () => {
-      try {
-        const reportsData = await client.graphql({
-          query: queries.listPostReports,
-        });
-        const fetchedReports = reportsData.data.listPostReports.items;
-
-        // Fetch associated posts for each report
-        const postsWithDetails = await Promise.all(fetchedReports.map(async (report) => {
-          if (report.postID) {
+    useEffect(() => {
+        const fetchReports = async () => {
+            setLoading(true);
             try {
-              const postData = await client.graphql({
-                query: queries.getPost, // Make sure you have a query to fetch individual posts by ID
-                variables: { id: report.postID },
-              });
-
-              const post = postData.data.getPost;
-              const firstImageUrl = post.images[0];
-              const firstImageData = await downloadData({ key: firstImageUrl })
-                .result;
-              const firstImageSrc = URL.createObjectURL(firstImageData.body);
-
-              post.firstImg = firstImageSrc;
-              return { ...report, post: post };
+                let fetchedReports = [];
+    
+                // Conditionally fetch reports based on selectedType
+                if (selectedType.toLowerCase() === "comments") {
+                    const data = await client.graphql({ query: queries.listCommentReports });
+                    fetchedReports = data.data.listCommentReports.items.map(report => ({ ...report, entityType: 'comment' }));
+                } else {
+                    const data = await client.graphql({ query: queries.listPostReports });
+                    fetchedReports = data.data.listPostReports.items.map(report => ({ ...report, entityType: 'post' }));
+                }
+    
+                // Fetch additional details for posts or comments as needed
+                const detailedReports = await Promise.all(fetchedReports.map(async (report) => {
+                    if (report.entityType === 'post' && report.postID) {
+                        const postData = await client.graphql({
+                            query: queries.getPost,
+                            variables: { id: report.postID },
+                        });
+                        const post = postData.data.getPost;
+                        const firstImageUrl = post.images[0];
+                        const firstImageData = await downloadData({ key: firstImageUrl }).result;
+                        const firstImageSrc = URL.createObjectURL(firstImageData.body);
+                        return { ...report, post: { ...post, firstImg: firstImageSrc } };
+                    } else if (report.entityType === 'comment' && report.commentID) {
+                        const commentData = await client.graphql({
+                            query: queries.getComment,
+                            variables: { id: report.commentID },
+                        });
+                        const comment = commentData.data.getComment;
+                        const detailedComment = {
+                            ...comment,
+                            username: comment.user.username,
+                            avatar: comment.user.profilePicture,
+                            userId: comment.user.id,
+                            replyTo : comment.replyTo
+                        };
+                        return { ...report, comment: detailedComment };
+                    }
+                    return report;
+                }));
+    
+                // Filter reports based on selectedType for posts (ignore for comments since already filtered)
+                const filteredReports = selectedType.toLowerCase() === "comments" ?
+                    detailedReports :
+                    detailedReports.filter(report => report.post && report.post.status.toLowerCase() === selectedType.toLowerCase());
+    
+                setReports(filteredReports);
             } catch (error) {
-              console.error(`Error fetching post for report ${report.id}:`, error);
-              return report; // Return report without post data in case of an error
+                console.error("Error fetching reports: ", error);
+                setToastSeverity("error");
+                setToastMessage("Error fetching reports.");
+                setToastOpen(true);
+            } finally {
+                setLoading(false);
             }
-          }
-          return report;
-        }));
+        };
+    
+        fetchReports();
+    }, [selectedType, client]);
 
-        // Apply the selectedType filter to the reports with their associated posts
-        const filteredReports = selectedType !== "All" ?
-          postsWithDetails.filter((report) => report.post && report.post.status.toLowerCase() === selectedType.toLowerCase()) :
-          postsWithDetails;
-
-        setReports(filteredReports);
+    const handleDelete = async (reportId, entityId, entityType) => {
+        setLoading(true);
+        try {
+            // Delete the entity (post or comment) associated with the report
+            if (entityType === 'post') {
+                await client.graphql({
+                    query: mutations.deletePost,
+                    variables: { input: { id: entityId } },
+                });
+            } else if (entityType === 'comment') {
+                await client.graphql({
+                    query: mutations.deleteComment,
+                    variables: { input: { id: entityId } },
+                });
+            }
+    
+            // Delete the report itself
+            const deleteReportMutation = entityType === 'post' ? mutations.deletePostReport : mutations.deleteCommentReport;
+            await client.graphql({
+                query: deleteReportMutation,
+                variables: { input: { id: reportId } },
+            });
+    
+            // Update the UI by removing the deleted report
+            const updatedReports = reports.filter((report) => report.id !== reportId);
+            setReports(updatedReports);
+            handleToastOpen("success", `Report and associated ${entityType} deleted successfully`);
+        } catch (error) {
+            handleToastOpen("error", `Error deleting report and associated ${entityType}`);
+            console.error(`Error deleting report and associated ${entityType}: `, error);
+        }
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching reports: ", error);
+    };
+    
+    const handleIgnore = async (reportId, entityType) => {
+        setLoading(true);
+        try {
+            // Delete the report only
+            const deleteReportMutation = entityType === 'post' ? mutations.deletePostReport : mutations.deleteCommentReport;
+            await client.graphql({
+                query: deleteReportMutation,
+                variables: { input: { id: reportId } },
+            });
+    
+            // Update the UI by removing the ignored report
+            const updatedReports = reports.filter((report) => report.id !== reportId);
+            setReports(updatedReports);
+            handleToastOpen("success", `Report ignored successfully`);
+        } catch (error) {
+            handleToastOpen("error", `Error ignoring report`);
+            console.error(`Error ignoring report: `, error);
+        }
         setLoading(false);
-        setToastSeverity("error");
-        setToastMessage("Error fetching reports.");
-        setToastOpen(true);
-      }
     };
 
-    fetchReportsAndPosts();
-  }, [selectedType]);
+    const handleToastOpen = (severity, message) => {
+        setToastSeverity(severity);
+        setToastMessage(message);
+        setToastOpen(true);
+    };
 
-  const handleDelete = async (reportId, postId) => {
-    setLoading(true);
-    try {
-      // Delete the post associated with the report
-      await client.graphql({
-        query: mutations.deletePost,
-        variables: { input: { id: postId } },
-      });
-      // Delete the report itself
-      await client.graphql({
-        query: mutations.deletePostReport,
-        variables: { input: { id: reportId } },
-      });
-      // Update the UI by removing the deleted report
-      const updatedReports = reports.filter((report) => report.id !== reportId);
-      setReports(updatedReports);
-      handleToastOpen("success", "Report and associated post deleted successfully");
-    } catch (error) {
-      handleToastOpen("error", "Error deleting report and associated post");
-      console.error("Error deleting report and associated post: ", error);
+    const handleToastClose = (event, reason) => {
+        setToastOpen(false);
+    };
+
+
+    if (loading) {
+        return (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+                <CircularProgress />
+            </Box>
+        );
     }
-    setLoading(false);
-  };
 
-  const handleIgnore = async (reportId) => {
-    setLoading(true);
-    try {
-      // Delete the report only
-      await client.graphql({
-        query: mutations.deletePostReport,
-        variables: { input: { id: reportId } },
-      });
-      // Update the UI by removing the ignored report
-      const updatedReports = reports.filter((report) => report.id !== reportId);
-      setReports(updatedReports);
-      handleToastOpen("success", "Report ignored successfully");
-    } catch (error) {
-      handleToastOpen("error", "Error ignoring report");
-      console.error("Error ignoring report: ", error);
-    }
-    setLoading(false);
-  };
-
-  const handleToastOpen = (severity, message) => {
-    setToastSeverity(severity);
-    setToastMessage(message);
-    setToastOpen(true);
-  };
-
-  const handleToastClose = (event, reason) => {
-    setToastOpen(false);
-  };
-
-
-  if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <CircularProgress />
-      </Box>
+        <Box>
+            {reports.length > 0 ? reports.map((report) =>
+                report.postID ? (
+                    <ReportedPetCard
+                        key={report.id}
+                        report={report}
+                        petData={report.post} 
+                        onDelete={() => handleDelete(report.id, report.postID, 'post')}
+                        onIgnore={() => handleIgnore(report.id, 'post')}
+                    />
+                ) : (
+                    <ReportedCommentCard
+                        key={report.id}
+                        report={report}
+                        commentData={report.comment} 
+                        onDelete={() => handleDelete(report.id, report.commentID, 'comment')}
+                        onIgnore={() => handleIgnore(report.id, 'comment')}
+                    />
+                )
+            ) : <Box sx={{ textAlign: 'center' }}>No reports found for this category.</Box>}
+            <ToastNotification
+                open={toastOpen}
+                severity={toastSeverity}
+                message={toastMessage}
+                handleClose={() => setToastOpen(false)}
+            />
+        </Box>
     );
-  }
-
-  return (
-    <Box>
-      {reports.length > 0 ? reports.map((report) => (
-        <ReportedPetCard
-          key={report.id}
-          report={report}
-          petData={report.post} // Assuming the report has a 'post' field with all necessary data
-          onDelete={() => handleDelete(report.id, report.postID)}
-          onIgnore={() => handleIgnore(report.id)}
-        />
-      )) : (
-        <Box sx={{ textAlign: 'center' }}>No reports found for this category.</Box>
-      )}
-      <ToastNotification
-        open={toastOpen}
-        severity={toastSeverity}
-        message={toastMessage}
-        handleClose={handleToastClose}
-      />
-    </Box>
-  );
 };
 
 export default ReportView;
