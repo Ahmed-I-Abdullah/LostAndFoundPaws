@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Formik, Form } from "formik";
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser, updateUserAttributes, resetPassword, deleteUser, signOut } from "aws-amplify/auth";
+import { uploadData } from "@aws-amplify/storage";
 import * as queries from '../../graphql/queries.js';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
@@ -17,9 +18,12 @@ import Button from '@mui/material/Button';
 import CustomTextField from "../../components/TextField/TextField";
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import ImageUploadOnly from "../../components/ImageUploadOnly/ImageUploadOnly";
 
 
 const MyAccount = () => {
+
+  const imageUploadRef = useRef();
 
   const { updateUsername, assessUserState } = useUser();
   const navigate = useNavigate();
@@ -231,7 +235,14 @@ const MyAccount = () => {
         try {
           logoutUser();
         } catch (error) {
-          console.log('error signing out: ', error);
+          console.log('Error signing out: ', error);
+          handleToastOpen(
+            "error",
+            "Error signing out"
+          );
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
         }
         navigate("/");
       }, 2000);
@@ -256,9 +267,60 @@ const MyAccount = () => {
     }
   };
 
-  const updatePhoto = (event) => {
-    //TODO
-    //TODO FORCE PAGE RELOAD SO PIC UPDATE IS REFLECTED IN NAVBAR, THIS WAS ALREADY DONE IN UPDATE PAGE SO JUST STEAL FROM THERE
+  const handleImageUploadSuccess = async (file) => {
+    console.log('File selected successfully:', file.name); //TODO DELETE THIS STATEMENT
+    //Note since the uploading to S3 bucket and database are in same place, if database upload fails there will be images in the S3 bucket not linked to the database
+    try {
+      const user = await getCurrentUser();
+
+      console.log(file);
+      console.log(file.name)
+
+      const imageKey = `images/${Date.now()}_${file.name}`;
+      await uploadData({
+        key: imageKey,
+        data: file,
+        options: {
+          accessLevel: "guest", // Guests should be able to view the images
+        },
+      }).result;
+
+      const userInput = {
+        id: user.userId,
+        profilePicture: imageKey,
+      };
+
+      await client.graphql({
+        query: mutations.updateUser,
+        variables: { input: userInput },
+      });
+
+      handleToastOpen(
+        "success", 
+        "Profile picture updated");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error uploading image", error);
+      handleToastOpen(
+        "error", 
+        "Error uploading profile picture");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+  };
+
+  const handleImageUploadError = (error) => {
+    console.log('Error selecting image:', error);
+    handleToastOpen(
+      "error",
+      "Error selecing image"
+    );
+    setTimeout(() => {
+      setToastOpen(false);
+    }, 2000);
   };
 
   const handleToastOpen = (severity, message) => {
@@ -278,19 +340,27 @@ const MyAccount = () => {
           <h1>My Account</h1>
           <div className="divider"></div>
         </div>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
-          <AccountCircleIcon 
-            onClick={updatePhoto} 
-            sx={{ fontSize: 200,
-              '&:hover': {cursor: 'pointer'
-            }}} 
-          />
-          <Box sx={{ position: 'absolute', transform: 'translate(175%, 175%)', borderRadius: '50%', backgroundColor: '#f5f5f5' }}>
-            <IconButton onClick={updatePhoto} size="small">
-              <EditIcon sx={{ fontSize: 24 }}/>
-            </IconButton>
+        <div>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
+            <AccountCircleIcon 
+              onClick={() => imageUploadRef.current.click()}
+              sx={{ fontSize: 200, '&:hover': {cursor: 'pointer'}}} 
+            />
+            <Box sx={{ position: 'absolute', transform: 'translate(175%, 175%)', borderRadius: '50%', backgroundColor: '#f5f5f5' }}>
+              <IconButton 
+                onClick={() => imageUploadRef.current.click()}
+                size="small"
+              >
+                <EditIcon sx={{ fontSize: 24 }}/>
+              </IconButton>
+            </Box>
+            <ImageUploadOnly 
+              ref={imageUploadRef} 
+              onFileSelectSuccess={handleImageUploadSuccess} 
+              onFileSelectError={handleImageUploadError}
+            />
           </Box>
-        </Box>
+        </div>
 
         <Formik
           initialValues={initialValues}
