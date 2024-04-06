@@ -24,11 +24,13 @@ import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
 import { useUser } from "../../context/UserContext";
+import { downloadData } from "@aws-amplify/storage";
+
 
 const CommentCard = ({
   id,
   userId,
-  avatar,
+  userProfilePicture,
   username,
   createdAt,
   content,
@@ -41,6 +43,8 @@ const CommentCard = ({
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
   }
+
+  const [commentProfilePicture, setCommentProfilePicture] = useState('');
 
   const [commentContent, setCommentContent] = useState(content);
 
@@ -90,6 +94,15 @@ const CommentCard = ({
   };
 
   useEffect(() => {
+    const fetchProfilePicture = async () => {
+      try {
+        const imageData = await downloadData({ key: userProfilePicture }).result;
+        const imageSrc = URL.createObjectURL(imageData.body);
+        setCommentProfilePicture(imageSrc);
+      } catch (error) {
+        console.error("Error fetching comment profile picture ", error);
+      }
+    };
     const fetchParentComment = async () => {
       try {
         const commentResponse = await client.graphql({
@@ -102,9 +115,12 @@ const CommentCard = ({
           setParentCommentUsername(parentComment.user.username);
         }
       } catch (error) {
-        console.log("Error fetching parent comment, parent comment might have been deleted: ", error);
+        console.error("Error fetching parent comment, parent comment might have been deleted: ", error);
       }
     };
+    if(userProfilePicture) {
+      fetchProfilePicture();
+    }
     if (parentCommentId) {
       fetchParentComment();
     }
@@ -153,15 +169,15 @@ const CommentCard = ({
         gap: "1rem",
       }}
     >
-      <IconButton>
+      <IconButton disabled>
         <Avatar
-          style={{
-            width: "50px",
-            height: "50px",
-          }}
-        >
-          <PersonOutline />
-        </Avatar>
+            style={{
+              width: "50px",
+              height: "50px",
+            }}
+            src={commentProfilePicture}
+          >
+          </Avatar>
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
