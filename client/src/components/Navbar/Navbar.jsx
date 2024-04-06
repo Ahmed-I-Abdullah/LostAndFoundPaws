@@ -25,7 +25,7 @@ const Navbar = () => {
   const [currentProfilePicture, setCurrentProfilePicture] = useState('');
 
   const getUserInfo = async () => {
-    setCurrentUsername(currentUser.username ?? '');
+    setCurrentUsername(currentUser?.username ?? '');
     if (currentProfilePictureImageData.body instanceof Blob) {
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
