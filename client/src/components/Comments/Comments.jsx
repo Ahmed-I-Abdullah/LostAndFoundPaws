@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, TextField, Button, Box, CircularProgress } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import "./Comments.css";
 import theme from "../../theme/theme";
@@ -8,19 +15,15 @@ import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
 import * as mutations from "../../graphql/mutations";
-import { getCurrentUser } from "aws-amplify/auth";
+import { useUser } from "../../context/UserContext";
 
 const Comments = ({ postId }) => {
-  //TODO: check user role
-  const userRole = "Guest"
-  let client;
-
-  if (userRole === "Guest"){
-    client = generateClient({ authMode: "apiKey" });
-  } else {
+  const { userState, currentUser } = useUser();
+  let client = generateClient({ authMode: "apiKey" });
+  if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
   }
- 
+
   const [commentReply, setCommentReply] = useState("");
   const [commentReplyId, setCommentReplyId] = useState("");
   const [postCommentText, setPostCommentText] = useState("");
@@ -50,7 +53,10 @@ const Comments = ({ postId }) => {
       setCommentData(comments);
       setLoading(false);
     } catch (error) {
-      handleToastOpen("error", "Error fetching comments for the post. Make sure you are logged in");
+      handleToastOpen(
+        "error",
+        "Error fetching comments for the post. Make sure you are logged in"
+      );
       console.error("Error fetching comments for the post: ", error);
     }
   };
@@ -87,13 +93,10 @@ const Comments = ({ postId }) => {
   const postComment = async () => {
     setLoading(true);
     try {
-      //TODO:  remove and store the logged in user information globally
-      const user = await getCurrentUser();
-
       const commentInput = {
         content: postCommentText,
         postID: postId,
-        userID: user.userId,
+        userID: currentUser?.id,
         ...(commentReplyId && { parentCommentID: commentReplyId }),
       };
       const newComment = await client.graphql({
@@ -150,7 +153,7 @@ const Comments = ({ postId }) => {
               commentData.map((comment, index) => (
                 <CommentCard
                   key={index}
-                  owner={false} //TODO: check if comment.userID matches the logged in user
+                  userId={comment.user.id}
                   id={comment.id}
                   content={comment.content}
                   parentCommentId={comment.parentCommentID}
@@ -171,49 +174,55 @@ const Comments = ({ postId }) => {
               backgroundColor: `${theme.palette.custom.greyBkg.comment.bkg}`,
             }}
           >
-            <div className="post-comment-content">
-              <div style={{ width: "80%" }}>
-                {commentReply && (
-                  <Box
+            {userState !== "Guest" ? (
+              <div className="post-comment-content">
+                <div style={{ width: "80%" }}>
+                  {commentReply && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Button variant="text">
+                        <HighlightOffIcon onClick={() => setReply(null)} />
+                      </Button>
+                      <Typography variant="subtitle">
+                        Replying to {commentReply}
+                      </Typography>
+                    </Box>
+                  )}
+                  <TextField
+                    multiline
+                    placeholder="Write your comment here"
+                    rows={2}
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      width: "100%",
                     }}
-                  >
-                    <Button variant="text">
-                      <HighlightOffIcon onClick={() => setReply(null)} />
-                    </Button>
-                    <Typography variant="subtitle">
-                      Replying to {commentReply}
-                    </Typography>
-                  </Box>
-                )}
-                <TextField
-                  multiline
-                  placeholder="Write your comment here"
-                  rows={2}
+                    value={postCommentText}
+                    onChange={handleChange}
+                  />
+                </div>
+                <Button
+                  variant="contained"
+                  disabled={postCommentText.length === 0}
                   sx={{
-                    width: "100%",
+                    backgroundColor: `${theme.palette.primary.main}`,
+                    borderRadius: "1rem",
+                    color: `${theme.palette.custom.primaryBkg}`,
+                    minWidth: "fit-content",
                   }}
-                  value={postCommentText}
-                  onChange={handleChange}
-                />
+                  onClick={postComment}
+                >
+                  <Typography>Comment</Typography>
+                </Button>
               </div>
-              <Button
-                variant="contained"
-                disabled={postCommentText.length === 0}
-                sx={{
-                  backgroundColor: `${theme.palette.primary.main}`,
-                  borderRadius: "1rem",
-                  color: `${theme.palette.custom.primaryBkg}`,
-                  minWidth: "fit-content",
-                }}
-                onClick={postComment}
-              >
-                <Typography>Comment</Typography>
-              </Button>
-            </div>
+            ) : (
+              <div className="post-comment-content">
+                <Typography variant="h6">Log in to be able to comment on post</Typography>
+              </div>
+            )}
           </div>
           <ToastNotification
             open={toastOpen}

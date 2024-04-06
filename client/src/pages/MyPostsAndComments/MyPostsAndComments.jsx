@@ -7,12 +7,12 @@ import PetCard from "../../components/PetCard/PetCard";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
-import { getCurrentUser } from "aws-amplify/auth";
 import { downloadData } from "@aws-amplify/storage";
 import * as queries from "../../graphql/queries";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import * as mutations from "../../graphql/mutations";
 import SightingCard from "../../components/SightingCard/SightingCard";
+import { useUser } from "../../context/UserContext";
 
 const contentTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
@@ -56,10 +56,14 @@ const sightingsData = [
 ];
 
 const MyPostsAndComments = () => {
+  const { userState, currentUser } = useUser();
+  let client = generateClient({ authMode: "apiKey" });
+  if (userState !== "Guest") {
+    client = generateClient({ authMode: "userPool" });
+  }
   const { isMobile } = useMobile();
   const [selectedType, setSelectedType] = useState("Lost");
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const client = generateClient({ authMode: "userPool" });
   const [toastOpen, setToastOpen] = useState(false);
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
@@ -84,12 +88,9 @@ const MyPostsAndComments = () => {
   useEffect(() => {
     const fetchPostsData = async () => {
       try {
-        //TODO: remove and store the logged in user information globally
-        const user = await getCurrentUser();
-
         const listResponse = await client.graphql({
           query: queries.postsByUser,
-          variables: { userID: user.userId },
+          variables: { userID: currentUser?.id },
         });
         const posts = listResponse.data.postsByUser.items;
         const postsWithImages = await Promise.all(
@@ -109,7 +110,6 @@ const MyPostsAndComments = () => {
           })
         );
         setPostsData(postsWithImages);
-        console.log(postsWithImages)
         setLoading(false);
       } catch (error) {
         handleToastOpen("error", "Error fetching posts.");
@@ -119,12 +119,9 @@ const MyPostsAndComments = () => {
 
     const fetchComments = async () => {
       try {
-        //TODO: remove and store the logged in user information globally
-        const user = await getCurrentUser();
-
         const commentsResponse = await client.graphql({
           query: queries.commentsByUser,
-          variables: { userID: user.userId },
+          variables: { userID: currentUser?.id },
         });
         const comments = commentsResponse.data.commentsByUser.items;
         setCommentData(comments);
@@ -134,10 +131,11 @@ const MyPostsAndComments = () => {
         console.error("Error fetching comments for user: ", error);
       }
     };
-
-    fetchPostsData();
-    fetchComments();
-  }, []);
+    if(currentUser) {
+      fetchPostsData();
+      fetchComments();
+    }
+  }, [currentUser]);
 
   const deletePost = async (id) => {
     setLoading(true);
@@ -216,7 +214,7 @@ const MyPostsAndComments = () => {
                 ? commentData.map((comment, index) => (
                   <CommentCard
                     key={index}
-                    owner={true}
+                    userId={comment.userID}
                     id={comment.id}
                     content={comment.content}
                     parentCommentId={comment.parentCommentID}
@@ -247,8 +245,8 @@ const MyPostsAndComments = () => {
                 filteredPosts.map((post, index) => (
                   <PetCard
                     key={index}
-                    owner={true}
                     id={post.id}
+                    userId={post.userID}
                     img={post.firstImg}
                     name={post.name}
                     status={post.status}

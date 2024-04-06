@@ -23,10 +23,11 @@ import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
+import { useUser } from "../../context/UserContext";
 
 const CommentCard = ({
-  owner,
-  id, //will be used when connected to backend
+  id,
+  userId,
   avatar,
   username,
   createdAt,
@@ -35,7 +36,12 @@ const CommentCard = ({
   setReply,
   onDelete,
 }) => {
-  const client = generateClient({ authMode: "userPool" });
+  const { userState, currentUser } = useUser();
+  let client = generateClient({ authMode: "apiKey" });
+  if (userState !== "Guest") {
+    client = generateClient({ authMode: "userPool" });
+  }
+
   const [commentContent, setCommentContent] = useState(content);
 
   const formatDate = (dateString) => {
@@ -208,7 +214,7 @@ const CommentCard = ({
           )}
         </Box>
         <Box className="comment-actions">
-          {owner ? (
+          {(userState === "Admin" || currentUser?.id === userId) ? (
             <>
               <Button
                 variant="text"
@@ -250,7 +256,7 @@ const CommentCard = ({
                 <Typography variant="h9">Delete</Typography>
               </Button>
             </>
-          ) : (
+          ) : (userState !== "Guest") && (
             <>
               <Button
                 variant="text"
