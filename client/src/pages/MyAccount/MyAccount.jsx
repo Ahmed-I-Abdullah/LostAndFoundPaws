@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useUser } from '../../context/UserContext';
 import { Formik, Form } from "formik";
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser, updateUserAttributes, resetPassword, deleteUser, signOut } from "aws-amplify/auth";
+import { uploadData } from "@aws-amplify/storage";
 import * as queries from '../../graphql/queries.js';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
@@ -16,12 +17,16 @@ import "./MyAccount.css";
 import Button from '@mui/material/Button';
 import CustomTextField from "../../components/TextField/TextField";
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import ImageEditorDialog from '../../components/ImageEditorDialog/ImageEditorDialog';
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import ImageUploadOnly from "../../components/ImageUploadOnly/ImageUploadOnly";
 
 
 const MyAccount = () => {
 
-  const { updateUsername, assessUserState } = useUser();
+  const imageUploadRef = useRef();
+
+  const { currentUser, currentProfilePictureImageData, updateUserContext, assessUserState } = useUser();
   const navigate = useNavigate();
 
   const client = generateClient({authMode: 'userPool'});
@@ -33,6 +38,10 @@ const MyAccount = () => {
   const [currentUsername, setCurrentUsername] = useState('');
   const [currentEmail, setCurrentEmail] = useState('');
   const [currentPhone, setCurrentPhone] = useState('');
+  const [currentProfilePicture, setCurrentProfilePicture] = useState('');
+
+  const [openEditorDialog, setOpenEditorDialog] = useState(false);
+  const [imageToEdit, setImageToEdit] = useState(null);
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
@@ -51,26 +60,19 @@ const MyAccount = () => {
   });
 
   const getUserInfo = async () => {
-    try {
-      const user = await getCurrentUser();
-      const result = await client.graphql({
-        query: queries.getUser,
-        variables: { id: user.userId }
-      })
-      setCurrentUsername(result.data.getUser.username ?? '');
-      setCurrentEmail(result.data.getUser.email ?? '');
-      setCurrentPhone(result.data.getUser.phone ?? '');
-    } catch (error) {
-      console.log("Error fetching username:", error);
-      setCurrentUsername('');
-      setCurrentEmail('');
-      setCurrentPhone('');
+    setCurrentUsername(currentUser.username ?? '');
+    setCurrentEmail(currentUser.email ?? '');
+    setCurrentPhone(currentUser.phone ?? '');
+    if (currentProfilePictureImageData.body instanceof Blob) {
+      setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
+    } else {
+      setCurrentProfilePicture('');
     }
   };
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [currentUser, currentProfilePictureImageData]);
 
   //For updating account
   const handleSubmit = async (values) => {
@@ -89,7 +91,7 @@ const MyAccount = () => {
           }
         },
       });
-      await updateUsername();
+      await updateUserContext();
       if(values.email == currentEmail){//not updating email so don't need to do the verification toast
         handleToastOpen(
           "success",
@@ -231,7 +233,14 @@ const MyAccount = () => {
         try {
           logoutUser();
         } catch (error) {
-          console.log('error signing out: ', error);
+          console.log('Error signing out: ', error);
+          handleToastOpen(
+            "error",
+            "Error signing out"
+          );
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
         }
         navigate("/");
       }, 2000);
@@ -256,9 +265,63 @@ const MyAccount = () => {
     }
   };
 
-  const updatePhoto = (event) => {
-    //TODO
-    //TODO FORCE PAGE RELOAD SO PIC UPDATE IS REFLECTED IN NAVBAR, THIS WAS ALREADY DONE IN UPDATE PAGE SO JUST STEAL FROM THERE
+  //This happens after a image is selected from file explorer
+  const handleImageUploadSuccess = async (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImageToEdit(e.target.result);
+      setOpenEditorDialog(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  //This happens after a error occurs when selecting an image from file explorer
+  const handleImageUploadError = (error) => {
+    console.log('Error selecting image:', error);
+  };
+
+  //This uploads an image after the image is edited (using ImageEditorDiologue) to make it a circle
+  const handleFinalImageUpload = async (blob) => {
+    setOpenEditorDialog(false)
+    setImageToEdit(null)
+    
+    try {
+      const user = await getCurrentUser();
+      const imageKey = `images/${Date.now()}_${user.username}_profile_pic.png`;
+      
+      await uploadData({
+        key: imageKey,
+        data: blob,
+        options: {
+          accessLevel: "guest",
+        },
+      });
+      
+      const userInput = {
+        id: user.userId,
+        profilePicture: imageKey,
+      };
+      
+      await client.graphql({
+        query: mutations.updateUser,
+        variables: { input: userInput },
+      });
+
+      await updateUserContext();
+      
+      handleToastOpen(
+        "success", 
+        "Profile picture updated");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      console.log("Error uploading cropped image: ", error);
+      handleToastOpen("error", "Error uploading cropped image");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
   };
 
   const handleToastOpen = (severity, message) => {
@@ -278,19 +341,36 @@ const MyAccount = () => {
           <h1>My Account</h1>
           <div className="divider"></div>
         </div>
+        <div>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
-          <AccountCircleIcon 
-            onClick={updatePhoto} 
-            sx={{ fontSize: 200,
-              '&:hover': {cursor: 'pointer'
-            }}} 
-          />
+          {currentProfilePicture === '' ? (
+            <AccountCircleIcon
+              onClick={() => imageUploadRef.current.click()}
+              sx={{ fontSize: 200, '&:hover': {cursor: 'pointer'}}}
+            />
+          ) : (
+            <img
+              src={currentProfilePicture}
+              alt="Profile"
+              style={{ width: 166.67, height: 166.67, borderRadius: '50%', objectFit: 'cover', cursor: 'pointer' }}
+              onClick={() => imageUploadRef.current.click()}
+            />
+          )}
           <Box sx={{ position: 'absolute', transform: 'translate(175%, 175%)', borderRadius: '50%', backgroundColor: '#f5f5f5' }}>
-            <IconButton onClick={updatePhoto} size="small">
+            <IconButton
+              onClick={() => imageUploadRef.current.click()}
+              size="small"
+            >
               <EditIcon sx={{ fontSize: 24 }}/>
             </IconButton>
           </Box>
+          <ImageUploadOnly
+            ref={imageUploadRef}
+            onFileSelectSuccess={handleImageUploadSuccess}
+            onFileSelectError={handleImageUploadError}
+          />
         </Box>
+        </div>
 
         <Formik
           initialValues={initialValues}
@@ -383,6 +463,12 @@ const MyAccount = () => {
         onConfirm={handleDeleteConfirmed}
         title="Are you sure you want to delete this account?"
         isDelete={true}
+      />
+      <ImageEditorDialog
+        open={openEditorDialog}
+        onClose={() => setOpenEditorDialog(false)}
+        onSave={handleFinalImageUpload}
+        image={imageToEdit}
       />
     </div>
   );

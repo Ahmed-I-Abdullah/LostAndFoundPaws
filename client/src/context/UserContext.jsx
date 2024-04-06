@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser  } from "aws-amplify/auth";
 import * as queries from '../graphql/queries.js';
+import { downloadData } from "@aws-amplify/storage";
 
 const UserContext = createContext();
 
@@ -9,9 +10,10 @@ const client = generateClient({authMode: 'userPool'});
 
 export const UserProvider = ({ children }) => {
   const [userState, setUserState] = useState('Guest');
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState('')
+  const [currentProfilePictureImageData, setCurrentProfilePictureImageData] = useState('')
 
-  const updateUsername = async () => {
+  const updateUserContext = async () => {
     try {
       const user = await getCurrentUser();
       const result = await client.graphql({
@@ -19,9 +21,19 @@ export const UserProvider = ({ children }) => {
         variables: { id: user.userId }
       });
       setCurrentUser(result.data.getUser)
+
+      try {
+        const imageUrl = result.data.getUser.profilePicture;
+        const imageData = await downloadData({ key: imageUrl })
+          .result;
+        setCurrentProfilePictureImageData(imageData)
+      } catch (error) {
+        console.error("Error fetching image for post:", error);
+        setCurrentProfilePicture('');
+      }
     } catch (error) {
       console.log("Error fetching username:", error)
-      setCurrentUser(null)
+      setCurrentUser('')
     }
   };
 
@@ -47,11 +59,11 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     assessUserState();
-    updateUsername();
+    updateUserContext();
   }, []);
 
   return (
-    <UserContext.Provider value={{ userState, currentUser, assessUserState, updateUsername }}>
+    <UserContext.Provider value={{ userState, currentUser, currentProfilePictureImageData, assessUserState, updateUserContext }}>
       {children}
     </UserContext.Provider>
   );
