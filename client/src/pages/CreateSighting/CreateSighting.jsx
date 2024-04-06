@@ -4,7 +4,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import { generateClient } from "aws-amplify/api";
 import { getCurrentUser } from "aws-amplify/auth";
 import { uploadData } from "@aws-amplify/storage";
-import * as mutations from "../../graphql/mutations.mjs";
+import * as mutations from "../../graphql/mutations";
 import CreateSightingForm from "../../components/CreateSightingForm/CreateSightingForm";
 
 const CreateSighting = () => {
@@ -40,6 +40,7 @@ const CreateSighting = () => {
           address: values.location.address,
         },
         image: imageKey || "",
+        userID: currentUser.userId,
         contactInfo: {
           email: values.email || "",
           phone: values.phoneNumber || "",

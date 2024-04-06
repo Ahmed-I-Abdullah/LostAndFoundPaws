@@ -23,6 +23,7 @@ import MyPostsAndComments from "./pages/MyPostsAndComments/MyPostsAndComments";
 import ViewPostPage from "./pages/ViewPost/ViewPostPage";
 import ViewReportsPage from "./pages/ViewReportings/ViewReportings";
 import EditPost from "./pages/EditPost/EditPost";
+import EditSighting from "./pages/EditSighting/EditSighting";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function AppContent() {
           <Route path="/viewReportings" element={<ViewReportsPage />} />
           <Route path="/posts/:id/edit" element={<EditPost />} />
           <Route path="/posts/:id" element={<ViewPostPage />} />
+          <Route path="/sightings/:id/edit" element={<EditSighting />} />
         </Routes>
       </div>
       {showNav && <NavbarBottom />}

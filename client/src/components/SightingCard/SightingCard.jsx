@@ -11,24 +11,31 @@ import {
   DialogContent,
   IconButton,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlagIcon from "@mui/icons-material/Flag";
+import EditIcon from "@mui/icons-material/Edit";
 import theme from "../../theme/theme";
 import { useMobile } from "../../context/MobileContext";
 import { formatDistanceToNow } from "date-fns";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
+import { useUser } from "../../context/UserContext";
 
 const SightingCard = ({
-  owner,
+  id,
+  userId,
   img,
   location,
   email,
   phoneNumber,
   createdAt,
+  onDelete,
 }) => {
   const { isMobile } = useMobile();
+  const navigate = useNavigate();
+  const { userState, currentUser } = useUser();
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -41,9 +48,9 @@ const SightingCard = ({
     setIsCardOpen(false);
   };
 
-  const handleDeleteConfirmed = (event) => {
+  const handleDeleteConfirmed = (event, id) => {
     event.stopPropagation();
-    /** TODO: handle delete post */
+    onDelete(id);
     setOpenConfirmDelete(false);
   };
 
@@ -128,7 +135,9 @@ const SightingCard = ({
                 >
                   <span
                     dangerouslySetInnerHTML={{
-                      __html: `<strong>Phone Number:</strong> ${phoneNumber}`,
+                      __html: `<strong>Phone Number:</strong> ${
+                        phoneNumber ? phoneNumber : "N/A"
+                      }`,
                     }}
                   />
                 </Typography>
@@ -139,7 +148,9 @@ const SightingCard = ({
                 >
                   <span
                     dangerouslySetInnerHTML={{
-                      __html: `<strong>Email:</strong> ${email}`,
+                      __html: `<strong>Email:</strong> ${
+                        email ? email : "N/A"
+                      }`,
                     }}
                   />
                 </Typography>
@@ -163,8 +174,22 @@ const SightingCard = ({
                   </Button>
                 </Typography>
               </Grid>
-              {owner && (
+              {(userId === currentUser?.id || userState === "Admin") && (
                 <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    size={"small"}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: "8px",
+                    }}
+                    startIcon={<EditIcon />}
+                    onClick={() => navigate(`/sightings/${id}/edit`)}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     variant="contained"
                     color="error"
@@ -185,7 +210,7 @@ const SightingCard = ({
           </Card>
         </DialogContent>
       </Dialog>
-      {isReportModalOpen && (
+      {isReportModalOpen && userId !== currentUser?.id && (
         <ReportPost
           contentType="post"
           itemId={"post.id"}
@@ -199,8 +224,8 @@ const SightingCard = ({
           event.stopPropagation();
           setOpenConfirmDelete(false);
         }}
-        onConfirm={(event) => handleDeleteConfirmed(event)}
-        title="Are you sure you want to delete this post?"
+        onConfirm={(event) => handleDeleteConfirmed(event, id)}
+        title="Are you sure you want to delete this sighting post?"
       />
     </div>
   );

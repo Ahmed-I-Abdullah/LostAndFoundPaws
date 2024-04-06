@@ -106,6 +106,28 @@ const ListView = ({ selectedType }) => {
     setLoading(false);
   };
 
+  const deleteSighting = async (id) => {
+    setLoading(true);
+    const deleteSightingInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: deleteSightingInput },
+      });
+      const newSightingsData = sightingsData.filter(
+        (sighting) => sighting.id !== id
+      );
+      setSightingsData(newSightingsData);
+      handleToastOpen("success", "Successfully deleted sighting post.");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting sighting post.");
+      console.error("Error deleting sighting post: ", error);
+    }
+    setLoading(false);
+  };
+
   const handleToastOpen = (severity, message) => {
     setToastSeverity(severity);
     setToastMessage(message);
@@ -185,24 +207,14 @@ const ListView = ({ selectedType }) => {
                 sightingsData.map((sighting, index) => (
                   <SigthingCard
                     key={index}
-                    owner={false} //TODO: Check if the user logged in is the owner
+                    id={sighting.id}
+                    userId={sighting.userID}
                     img={sighting.firstImg}
-                    location={
-                      sighting.location
-                        ? sighting.location.address
-                        : "Unknown Location"
-                    }
-                    email={
-                      sighting.contactInfo
-                        ? sighting.contactInfo.email
-                        : "No email provided"
-                    }
-                    phoneNumber={
-                      sighting.contactInfo
-                        ? sighting.contactInfo.phone
-                        : "No email provided"
-                    }
+                    location={sighting.location.address}
+                    email={sighting.contactInfo.email}
+                    phoneNumber={sighting.contactInfo.phone}
                     createdAt={sighting.createdAt}
+                    onDelete={deleteSighting}
                   />
                 ))
               )}
