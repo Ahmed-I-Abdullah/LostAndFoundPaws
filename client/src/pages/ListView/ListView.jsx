@@ -6,38 +6,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
 import { downloadData } from "@aws-amplify/storage";
-import * as queries from "../../graphql/queries";
-
-const sightingsData = [
-  {
-    id: "1",
-    images: [
-      "https://storage.googleapis.com/proudcity/santaanaca/uploads/2022/07/Stray-Kittens-scaled.jpg",
-    ],
-    location: {
-      latitude: -114.0201,
-      longitude: 51.0342,
-      address: "Inglewood",
-    },
-    userID: "user1",
-    email: "guest@email.com",
-    phoneNumber: "123-456-7890",
-    createdAt: "2024-03-25T10:00:00Z",
-  },
-  {
-    id: "2",
-    images: ["https://toegrips.com/wp-content/uploads/stray-puppy-jake-.jpg"],
-    location: {
-      latitude: -114.14,
-      longitude: 51.0703,
-      address: "University Heights",
-    },
-    userID: "user2",
-    email: "poster@email.com",
-    phoneNumber: "098-765-4321",
-    createdAt: "2024-03-22T10:00:00Z",
-  },
-];
+import * as queries from "../../graphql/queries.mjs";
 
 const ListView = ({ selectedType }) => {
   const client = generateClient({ authMode: "apiKey" });
@@ -45,6 +14,7 @@ const ListView = ({ selectedType }) => {
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
   const [postData, setPostData] = useState([]);
+  const [sightingsData, setSightingsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -78,7 +48,25 @@ const ListView = ({ selectedType }) => {
       }
     };
 
+    const fetchSightingsData = async () => {
+      try {
+        const listResponse = await client.graphql({
+          query: queries.listSightings,
+        });
+        const sightings = listResponse.data.listSightings.items;
+        const sightingsWithImages = sightings.map((sighting) => {
+          sighting.firstImg = sighting.image;
+          return sighting;
+        });
+        setSightingsData(sightingsWithImages);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching sighting posts.");
+        console.error("Error fetching sighting posts: ", error);
+      }
+    };
+
     fetchPostsData();
+    fetchSightingsData();
   }, []);
 
   const handleToastOpen = (severity, message) => {
@@ -86,10 +74,13 @@ const ListView = ({ selectedType }) => {
     setToastMessage(message);
     setToastOpen(true);
   };
+
   const handleToastClose = () => {
     setToastOpen(false);
   };
+
   const { isMobile } = useMobile();
+
   const filteredPosts = postData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
@@ -151,13 +142,15 @@ const ListView = ({ selectedType }) => {
                     <SigthingCard
                       key={index}
                       owner={false} //TODO: Check if the user logged in is the owner
-                      img={sighting.images[0]}
-                      location={sighting.location.address}
-                      reporterType={sighting.reporterType}
+                      img={sighting.firstImg}
+                      location={
+                        sighting.location
+                          ? sighting.location.address
+                          : "Location not available"
+                      }
                       email={sighting.email}
                       phoneNumber={sighting.phoneNumber}
                       createdAt={sighting.createdAt}
-                      updatedAt={sighting.updatedAt}
                     />
                   ))}
             </>
