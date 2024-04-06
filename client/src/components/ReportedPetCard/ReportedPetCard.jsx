@@ -4,7 +4,7 @@ import PetCard from "../PetCard/PetCard";
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
+const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openConfirmIgnore, setOpenConfirmIgnore] = useState(false);
 
@@ -23,7 +23,7 @@ const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
       <Box sx={{ marginBottom: '10px' }}>
         <PetCard
           owner={false} //TODO: Check if the user logged in is the owner
-          img={petData.images[0]}
+          img={petData.firstImg}
           name={petData.name}
           status={petData.status}
           petType={petData.species}
@@ -35,8 +35,8 @@ const ReportedPetCard = ({ petData, onDelete, onIgnore }) => {
       </Box>
       <Box sx={{ borderTop: '1px solid #eee', padding: '16px' }}>
         <Typography variant="h6" sx={{ marginBottom: '8px' }}>Report Description</Typography>
-        <Typography sx={{ marginBottom: '10px' }}>Report Reason: Inappropriate</Typography>
-        <Typography sx={{ marginBottom: '16px' }}>Report Descriptions: Too cute</Typography>
+        <Typography sx={{ marginBottom: '10px' }}>Report Reason: {report.reason}</Typography>
+        <Typography sx={{ marginBottom: '16px' }}>Report Descriptions: {report.description}</Typography>
         
         {/* Button container */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

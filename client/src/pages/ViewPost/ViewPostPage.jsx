@@ -155,13 +155,8 @@ const ViewPostPage = () => {
     }
   };
 
-  const handleReport = (reason, description) => {
-    console.log(
-      "Report submitted with reason: ",
-      reason,
-      " and description: ",
-      description
-    );
+  const handleReportSubmitted = () => {
+    handleToastOpen("success", "Report submitted successfully");
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -513,9 +508,10 @@ const ViewPostPage = () => {
       {isReportModalOpen && (
         <ReportPost
           contentType="post"
-          itemId={"post.id"}
+          itemId={petData.id}
+          userId={currentUser?.id}
           onClose={() => setIsReportModalOpen(false)}
-          onReport={handleReport}
+          onReport={handleReportSubmitted}
         />
       )}
       {/* Use the ConfirmDialog for delete confirmation */}

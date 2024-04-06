@@ -17,7 +17,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
 import "./CommentCard.css";
-import ReportPost from "../ReportPopup/ReportPopup";
+import ReportEntity from "../ReportPopup/ReportPopup";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
@@ -85,6 +85,10 @@ const CommentCard = ({
     setEditedContent(e.target.value);
   };
 
+  const handleReportSubmitted = () => {
+    handleToastOpen("success", "Report submitted successfully");
+  };
+
   useEffect(() => {
     const fetchParentComment = async () => {
       try {
@@ -106,15 +110,7 @@ const CommentCard = ({
     }
   }, []);
 
-  const handleReport = (reason, description) => {
-    console.log(
-      "Report submitted with reason: ",
-      reason,
-      " and description: ",
-      description
-    );
-    //TODO: Implement Report Functionality
-  };
+
   const handleConfirmDelete = async () => {
     onDelete(id);
     handleCloseDelete();
@@ -293,11 +289,12 @@ const CommentCard = ({
         title="Are you sure you want to save this comment change?"
       />
       {isReportModalOpen && (
-        <ReportPost
+        <ReportEntity
           contentType="comment"
-          itemId={"comment.id"}
+          itemId={id}
+          userId={currentUser?.id}
           onClose={() => setIsReportModalOpen(false)}
-          onReport={handleReport}
+          onReport={handleReportSubmitted}
         />
       )}
       <ToastNotification
