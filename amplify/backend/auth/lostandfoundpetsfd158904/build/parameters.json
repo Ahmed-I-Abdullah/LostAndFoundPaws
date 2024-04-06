@@ -34,7 +34,7 @@
   "sharedId": "fd158904",
   "resourceName": "lostandfoundpetsfd158904",
   "authSelections": "identityPoolAndUserPool",
-  "useDefault": "manual",
+  "useDefault": "default",
   "usernameAttributes": [
     "email"
   ],
@@ -82,6 +82,5 @@
   "authTriggerConnections": [
     "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"lostandfoundpetsfd158904PostConfirmation\"}"
   ],
-  "authProviders": [],
-  "thirdPartyAuth": false
+  "authProviders": []
 }
