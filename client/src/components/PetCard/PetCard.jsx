@@ -13,7 +13,7 @@ import {
 import theme from "../../theme/theme";
 import { useMobile } from "../../context/MobileContext";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import StatusLabel from "../StatusLabel/StatusLabel";
 import { useUser } from "../../context/UserContext";
@@ -36,6 +36,7 @@ const PetCard = ({
   const navigate = useNavigate();
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const {pathname} = useLocation();
 
   const handleClickOpen = () => {
     navigate(`/posts/${id}`);
@@ -87,7 +88,7 @@ const PetCard = ({
             >
               {name}
             </Typography>
-            {(userId === currentUser?.id || userState === "Admin") && (
+            {((userId === currentUser?.id || userState === "Admin") && pathname !== "/ViewReportings")&& (
               <Button
                 size={small ? "small" : "medium"}
                 variant="contained"
