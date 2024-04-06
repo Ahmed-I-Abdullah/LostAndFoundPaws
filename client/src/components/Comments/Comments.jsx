@@ -51,7 +51,6 @@ const Comments = ({ postId }) => {
       });
       const comments = commentResponse.data.commentsByPost.items;
       setCommentData(comments);
-      setLoading(false);
     } catch (error) {
       handleToastOpen(
         "error",
@@ -59,6 +58,7 @@ const Comments = ({ postId }) => {
       );
       console.error("Error fetching comments for the post: ", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -117,6 +117,7 @@ const Comments = ({ postId }) => {
     setLoading(false);
   };
   const deleteComment = async (id) => {
+    setLoading(true);
     const deleteCommentInput = {
       id: id,
     };
@@ -127,11 +128,12 @@ const Comments = ({ postId }) => {
       });
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
-      handleToastOpen("success", "Successfully Deleted comment");
+      handleToastOpen("success", "Successfully deleted comment");
     } catch (error) {
       handleToastOpen("error", "Error deleting comment");
       console.error("Error deleting comment: ", error);
     }
+    setLoading(false);
   };
 
   return (
@@ -154,6 +156,7 @@ const Comments = ({ postId }) => {
                 <CommentCard
                   key={index}
                   userId={comment.user.id}
+                  userProfilePicture={comment.user.profilePicture}
                   id={comment.id}
                   content={comment.content}
                   parentCommentId={comment.parentCommentID}
@@ -206,7 +209,7 @@ const Comments = ({ postId }) => {
                 </div>
                 <Button
                   variant="contained"
-                  disabled={postCommentText.length === 0}
+                  disabled={postCommentText.length === 0 || loading}
                   sx={{
                     backgroundColor: `${theme.palette.primary.main}`,
                     borderRadius: "1rem",
