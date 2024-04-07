@@ -16,7 +16,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 const VerifyUpdatePassword = () => {
   const { isMobile } = useMobile();
-  const { assessUserState } = useUser();
+  const { updateUserContext } = useUser();
 
   const location = useLocation();
   const navigate = useNavigate();

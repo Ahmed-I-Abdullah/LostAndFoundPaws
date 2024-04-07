@@ -21,11 +21,24 @@ export const UserProvider = ({ children }) => {
         variables: { id: user.userId }
       });
       setCurrentUser(result.data.getUser);
+
+      //Find if poster or admin
+      if(result.data.getUser.role == 'ADMIN'){
+        setUserState('Admin');
+      }
+      else{
+        setUserState('Poster');
+      }
+
+      //Find all results for currently logged in user
+      setCurrentUser(result.data.getUser);
   
+      //Find profile picture
       const imageUrl = result.data.getUser.profilePicture;
+      console.log(imageUrl)
       if (imageUrl) {
         try {
-          const imageData = await downloadData({ key: imageUrl });
+          const imageData = await downloadData({ key: imageUrl }).result;
           setCurrentProfilePictureImageData(imageData);
         } catch (error) {
           console.error("Error fetching image for post:", error);
@@ -35,38 +48,21 @@ export const UserProvider = ({ children }) => {
         setCurrentProfilePictureImageData('');
       }
     } catch (error) {
-      console.log("Error fetching username:", error);
-      setCurrentUser('');
-    }
-  };
-
-  const assessUserState = async () => {
-    try {
-      const user = await getCurrentUser();
-      const result = await client.graphql({
-        query: queries.getUser,
-        variables: { id: user.userId }
-      });
-      if(result.data.getUser.role == 'ADMIN'){
-        setUserState('Admin');
-      }
-      else{
-        setUserState('Poster');
-      }
-      setCurrentUser(result.data.getUser);
-    } catch (error) {
+      //Case user is not logged in
       setUserState('Guest');
-      setCurrentUser(null);
+      setCurrentUser('');
+      setCurrentProfilePictureImageData('');
     }
+    console.log("END")
+    console.log(currentProfilePictureImageData)
   };
 
   useEffect(() => {
-    assessUserState();
     updateUserContext();
   }, []);
 
   return (
-    <UserContext.Provider value={{ userState, currentUser, currentProfilePictureImageData, assessUserState, updateUserContext }}>
+    <UserContext.Provider value={{ userState, currentUser, currentProfilePictureImageData, updateUserContext }}>
       {children}
     </UserContext.Provider>
   );

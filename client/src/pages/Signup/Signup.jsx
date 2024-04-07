@@ -53,7 +53,7 @@ const createUserNoAuth = /* GraphQL */ `
 const Signup = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
-  const { assessUserState } = useUser();
+  const { updateUserContext } = useUser();
 
   const client = generateClient({authMode: 'apiKey'});
 
@@ -106,7 +106,7 @@ const Signup = () => {
         }
       });
 
-      await assessUserState();
+      await updateUserContext();
  
       const result = await client.graphql({
         query: createUserNoAuth.replaceAll("__typename", ""),

@@ -26,7 +26,7 @@ const MyAccount = () => {
 
   const imageUploadRef = useRef();
 
-  const { currentUser, currentProfilePictureImageData, updateUserContext, assessUserState } = useUser();
+  const { currentUser, currentProfilePictureImageData, updateUserContext } = useUser();
   const navigate = useNavigate();
 
   const client = generateClient({authMode: 'userPool'});
@@ -63,9 +63,13 @@ const MyAccount = () => {
     setCurrentUsername(currentUser?.username ?? '');
     setCurrentEmail(currentUser?.email ?? '');
     setCurrentPhone(currentUser?.phone ?? '');
+    console.log("IN getUserInfo");
+    console.log(currentProfilePictureImageData)
     if (currentProfilePictureImageData.body instanceof Blob) {
+      console.log("IF")
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
+      console.log("ELSE")
       setCurrentProfilePicture('');
     }
   };
@@ -259,7 +263,7 @@ const MyAccount = () => {
   const logoutUser = async () => {
     try {
       await signOut();
-      await assessUserState();
+      await updateUserContext();
     } catch (error) {
       console.log('error signing out: ', error);
     }
