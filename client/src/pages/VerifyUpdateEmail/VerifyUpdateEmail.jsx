@@ -16,7 +16,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 const VerifyUpdateEmail = () => {
   const { isMobile } = useMobile();
-  const { assessUserState } = useUser();
+  const { updateUserContext } = useUser();
 
   const navigate = useNavigate();
   const [toastOpen, setToastOpen] = React.useState(false);

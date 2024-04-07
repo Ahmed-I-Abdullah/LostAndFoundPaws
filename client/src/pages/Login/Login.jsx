@@ -17,7 +17,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 const Login = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
-  const { assessUserState } = useUser();
+  const { updateUserContext } = useUser();
 
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
@@ -59,7 +59,7 @@ const Login = () => {
           }, 2000);
           break;
         case "DONE":
-          await assessUserState();
+          await updateUserContext();
           navigate("/");
           break;
       }

@@ -16,7 +16,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 
 const VerifyAccount = () => {
   const { isMobile } = useMobile();
-  const { assessUserState } = useUser();
+  const { updateUserContext } = useUser();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const VerifyAccount = () => {
       await confirmSignUp({ 
         username: values.email, confirmationCode: values.confirmationCode 
       });
-      await assessUserState();
+      await updateUserContext();
       handleToastOpen("success", "Account verified");
       setTimeout(() => {
         navigate("/Login");
