@@ -35,7 +35,6 @@ export const UserProvider = ({ children }) => {
   
       //Find profile picture
       const imageUrl = result.data.getUser.profilePicture;
-      console.log(imageUrl)
       if (imageUrl) {
         try {
           const imageData = await downloadData({ key: imageUrl }).result;
@@ -53,7 +52,6 @@ export const UserProvider = ({ children }) => {
       setCurrentUser('');
       setCurrentProfilePictureImageData('');
     }
-    console.log(currentProfilePictureImageData)
   };
 
   useEffect(() => {
