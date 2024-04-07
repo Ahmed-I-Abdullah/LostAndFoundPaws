@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, ButtonBase, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import PetCard from "../../components/PetCard/PetCard";
 import SigthingCard from "../../components/SightingCard/SightingCard";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
@@ -142,8 +142,6 @@ const ListView = ({ selectedType }) => {
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
-
-  // console.log(sightingsData);
 
   return (
     <>

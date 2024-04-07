@@ -5,11 +5,16 @@ import { generateClient } from "aws-amplify/api";
 import { getCurrentUser } from "aws-amplify/auth";
 import { uploadData } from "@aws-amplify/storage";
 import * as mutations from "../../graphql/mutations";
+import { useUser } from "../../context/UserContext";
 import CreateSightingForm from "../../components/CreateSightingForm/CreateSightingForm";
 
 const CreateSighting = () => {
   const navigate = useNavigate();
-  const client = generateClient({ authMode: "apiKey" }); // Use apiKey since users are not required to be logged in
+  const { userState, currentUser } = useUser();
+  let client = generateClient({ authMode: "apiKey" });
+  if (userState !== "Guest") {
+    client = generateClient({ authMode: "userPool" });
+  }
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");

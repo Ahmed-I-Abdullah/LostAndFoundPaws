@@ -9,13 +9,18 @@ import CircularProgress from "@mui/material/CircularProgress";
 import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
 import { downloadData, remove } from "@aws-amplify/storage";
+import { useUser } from "../../context/UserContext";
 import CreateSightingForm from "../../components/CreateSightingForm/CreateSightingForm";
 
 const EditSighting = () => {
   const [sighting, setSighting] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const client = generateClient({ authMode: "userPool" });
+  const { userState, currentUser } = useUser();
+  let client = generateClient({ authMode: "apiKey" });
+  if (userState !== "Guest") {
+    client = generateClient({ authMode: "userPool" });
+  }
   const { id } = useParams();
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");

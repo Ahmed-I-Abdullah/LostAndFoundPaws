@@ -1,27 +1,7 @@
 import React, { useState } from "react";
-import {
-  Typography,
-  Grid,
-  Card,
-  CardMedia,
-  Box,
-  Button,
-  ButtonBase,
-  Dialog,
-  DialogContent,
-  IconButton,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FlagIcon from "@mui/icons-material/Flag";
-import EditIcon from "@mui/icons-material/Edit";
-import theme from "../../theme/theme";
+import { Typography, Card, CardMedia, Box, ButtonBase } from "@mui/material";
 import { useMobile } from "../../context/MobileContext";
-import { formatDistanceToNow } from "date-fns";
-import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
-import ReportPost from "../../components/ReportPopup/ReportPopup";
-import { useUser } from "../../context/UserContext";
+import SightingDialog from "../SightingDialog/SightingDialog";
 
 const SightingCard = ({
   id,
@@ -34,33 +14,10 @@ const SightingCard = ({
   onDelete,
 }) => {
   const { isMobile } = useMobile();
-  const navigate = useNavigate();
-  const { userState, currentUser } = useUser();
   const [isCardOpen, setIsCardOpen] = useState(false);
-  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const handleClickOpen = () => {
     setIsCardOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsCardOpen(false);
-  };
-
-  const handleDeleteConfirmed = (event, id) => {
-    event.stopPropagation();
-    onDelete(id);
-    setOpenConfirmDelete(false);
-  };
-
-  const handleReport = (reason, description) => {
-    console.log(
-      "Report submitted with reason: ",
-      reason,
-      " and description: ",
-      description
-    );
   };
 
   return (
@@ -86,146 +43,23 @@ const SightingCard = ({
               {location}
             </Typography>
             <Typography variant="body3" color="text.secondary">
-              Posted {formatDistanceToNow(new Date(createdAt))} ago
+              Posted on {createdAt.split("T")[0]}
             </Typography>
           </Box>
         </Card>
       </ButtonBase>
 
-      <Dialog open={isCardOpen} onClose={handleClose}>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{ position: "absolute", right: 3, top: 3, color: "black" }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent>
-          <Card sx={{ marginTop: "1rem" }}>
-            <CardMedia
-              component="img"
-              sx={{ width: "100%", height: "auto" }}
-              image={img}
-              alt="sighting-picture"
-            />
-            <Box sx={{ padding: "1rem" }}>
-              <Grid
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="h1" component="div">
-                  {location}
-                </Typography>
-                <Typography variant="body3" color="text.secondary">
-                  Posted {formatDistanceToNow(new Date(createdAt))} ago
-                </Typography>
-              </Grid>
-              <Grid sx={{ marginTop: "30px" }} />
-              <Grid>
-                <Typography variant="h3" color="text.secondary">
-                  <strong>Contact Information</strong>
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: `<strong>Phone Number:</strong> ${
-                        phoneNumber ? phoneNumber : "N/A"
-                      }`,
-                    }}
-                  />
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: `<strong>Email:</strong> ${
-                        email ? email : "N/A"
-                      }`,
-                    }}
-                  />
-                </Typography>
-                <Typography
-                  sx={{
-                    marginTop: "10px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    variant="text"
-                    sx={{
-                      color: `${theme.palette.text.primary}`,
-                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                    }}
-                    size="small"
-                  >
-                    <FlagIcon />
-                    <Typography variant="h9">Report</Typography>
-                  </Button>
-                </Typography>
-              </Grid>
-              {(userId === currentUser?.id || userState === "Admin") && (
-                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button
-                    size={"small"}
-                    variant="contained"
-                    sx={{
-                      backgroundColor: theme.palette.custom.greyBkg.tag,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: "8px",
-                    }}
-                    startIcon={<EditIcon />}
-                    onClick={() => navigate(`/sightings/${id}/edit`)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setOpenConfirmDelete(true);
-                    }}
-                    sx={{
-                      borderRadius: 2,
-                    }}
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete
-                  </Button>
-                </Grid>
-              )}
-            </Box>
-          </Card>
-        </DialogContent>
-      </Dialog>
-      {isReportModalOpen && userId !== currentUser?.id && (
-        <ReportPost
-          contentType="post"
-          itemId={"post.id"}
-          onClose={() => setIsReportModalOpen(false)}
-          onReport={handleReport}
-        />
-      )}
-      <ConfirmDialog
-        open={openConfirmDelete}
-        onClose={(event) => {
-          event.stopPropagation();
-          setOpenConfirmDelete(false);
-        }}
-        onConfirm={(event) => handleDeleteConfirmed(event, id)}
-        title="Are you sure you want to delete this sighting post?"
+      <SightingDialog
+        id={id}
+        userId={userId}
+        img={img}
+        location={location}
+        email={email}
+        phoneNumber={phoneNumber}
+        createdAt={createdAt}
+        onDelete={onDelete}
+        isCardOpen={isCardOpen}
+        setIsCardOpen={setIsCardOpen}
       />
     </div>
   );

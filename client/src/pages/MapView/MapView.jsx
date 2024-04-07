@@ -1,72 +1,140 @@
 import React, { useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import { formatDistanceToNow } from "date-fns";
-import theme from "../../theme/theme";
-import arrowIcon from "../../assets/images/arrowIcon.png";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "./MapView.css";
 
-// TODO: Implement fetching reports from the server
-const markersData = [
-  {
-    id: "1",
-    name: "Cooper",
-    status: "LOST",
-    lastKnownLocation: {
-      latitude: -114.1025,
-      longitude: 51.0342,
-      address: "Bankview",
-    },
-    images: [
-      "https://www.princeton.edu/sites/default/files/styles/1x_full_2x_half_crop/public/images/2022/02/KOA_Nassau_2697x1517.jpg?itok=Bg2K7j7J",
-    ],
-    createdAt: "2024-03-24T10:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Nala",
-    status: "FOUND",
-    lastKnownLocation: {
-      latitude: -114.078,
-      longitude: 51.0562,
-      address: "Sunnyside",
-    },
-    images: [
-      "https://hips.hearstapps.com/hmg-prod/images/cute-photos-of-cats-looking-at-camera-1593184780.jpg?crop=0.6672958942897593xw:1xh;center,top&resize=980:*",
-    ],
-    createdAt: "2024-03-23T15:30:00Z",
-  },
-  {
-    id: "3",
-    status: "SIGHTING",
-    lastKnownLocation: {
-      latitude: -114.0201,
-      longitude: 51.0342,
-      address: "Inglewood",
-    },
-    images: [
-      "https://storage.googleapis.com/proudcity/santaanaca/uploads/2022/07/Stray-Kittens-scaled.jpg",
-    ],
-    createdAt: "2024-03-25T10:00:00Z",
-  },
-  {
-    id: "4",
-    status: "SIGHTING",
-    lastKnownLocation: {
-      latitude: -114.14,
-      longitude: 51.0703,
-      address: "University Heights",
-    },
-    images: ["https://toegrips.com/wp-content/uploads/stray-puppy-jake-.jpg"],
-    createdAt: "2024-03-22T10:00:00Z",
-  },
-];
+import theme from "../../theme/theme";
+import SightingDialog from "../../components/SightingDialog/SightingDialog";
+import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+
+import { generateClient } from "aws-amplify/api";
+import * as queries from "../../graphql/queries";
+import * as mutations from "../../graphql/mutations";
+import { CircularProgress } from "@mui/material";
+import { downloadData } from "@aws-amplify/storage";
+import { useUser } from "../../context/UserContext";
 
 const MapView = ({ selectedType }) => {
-  const [markers, setMarkers] = useState([]);
+  const [, setMarkers] = useState([]);
+  const [markersData, setMarkersData] = useState([]);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastSeverity, setToastSeverity] = useState("success");
+  const [toastMessage, setToastMessage] = useState("");
+  const [postsData, setPostsData] = useState([]);
+  const [sightingsData, setSightingsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [, setSelectedId] = useState(null);
+  const [selectedSighting, setSelectedSighting] = useState(null);
   const calgaryCoords = [-114.0719, 51.0447];
+  const { userState, currentUser } = useUser();
+  let client = generateClient({ authMode: "apiKey" });
+  if (userState !== "Guest") {
+    client = generateClient({ authMode: "userPool" });
+  }
+
+  const openDialog = (id) => {
+    setOpen(true);
+    setSelectedId(id);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const listPostsResponse = await client.graphql({
+          query: queries.listPosts,
+        });
+        const posts = listPostsResponse.data.listPosts.items;
+        const postsInfo = await Promise.all(
+          posts.map(async (post) => {
+            const imageData = await downloadData({ key: post.images[0] })
+              .result;
+            const imageSrc = URL.createObjectURL(imageData.body);
+            return {
+              id: post.id,
+              userId: post.userID,
+              name: post.name,
+              species: post.species,
+              image: imageSrc,
+              status: post.status,
+              lastKnownLocation: post.lastKnownLocation,
+              email: "",
+              phoneNumber: "",
+              createdAt: post.createdAt,
+            };
+          })
+        );
+
+        const listSightingsResponse = await client.graphql({
+          query: queries.listSightings,
+        });
+        const sightings = listSightingsResponse.data.listSightings.items;
+        const sightingsInfo = await Promise.all(
+          sightings.map(async (sighting) => {
+            const imageData = await downloadData({ key: sighting.image })
+              .result;
+            const imageSrc = URL.createObjectURL(imageData.body);
+            return {
+              id: sighting.id,
+              userId: sighting.userID || "",
+              name: "",
+              species: "",
+              image: imageSrc,
+              status: "SIGHTING",
+              lastKnownLocation: sighting.location,
+              email: sighting.contactInfo.email,
+              phoneNumber: sighting.contactInfo.phone,
+              createdAt: sighting.createdAt,
+            };
+          })
+        );
+
+        const newMarkersData = [...postsInfo, ...sightingsInfo];
+        setMarkersData(newMarkersData);
+        setPostsData(posts);
+        setSightingsData(sightings);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, [selectedType]);
+
+  const deleteSighting = async (id) => {
+    setLoading(true);
+    const deleteInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: deleteInput },
+      });
+      const newSightingsData = sightingsData.filter(
+        (sighting) => sighting.id !== id
+      );
+      setSightingsData(newSightingsData);
+      handleToastOpen("success", "Successfully deleted sighting post.");
+    } catch (error) {
+      handleToastOpen("error", "Error deleting sighting post.");
+      console.error("Error deleting sighting post: ", error);
+    }
+    setLoading(false);
+  };
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = () => {
+    setToastOpen(false);
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -77,8 +145,32 @@ const MapView = ({ selectedType }) => {
       case "SIGHTING":
         return theme.palette.custom.selectedCategory.sighting.dark;
       default:
-        return "";
+        return theme.palette.custom.greyBkg.tag;
     }
+  };
+
+  const getStatusLabelHTML = (status) => {
+    const backgroundColor = getStatusColor(status);
+
+    return `
+      <div style="
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        height: 32px;
+        width: fit-content;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.75;
+        letter-spacing: 0.02857em;
+        text-transform: uppercase;
+        border-radius: 5px;
+        background-color: ${backgroundColor};
+      ">
+        ${status}
+      </div>
+    `;
   };
 
   mapboxgl.accessToken =
@@ -118,51 +210,104 @@ const MapView = ({ selectedType }) => {
           continue;
         }
 
+        const popup = new mapboxgl.Popup({
+          maxWidth: "400px",
+          closeButton: false,
+        }).setHTML(`
+          <div id="popup-${markerData.id}" class="popup-card">
+            <img src="${
+              markerData.image
+            }" alt="pet-picture" class="popup-image" />
+            <div class="popup-content">
+              ${`<h2 style="margin: 0px">${markerData.name}</h2>`}
+              <div class="labels">
+                <div class="label">
+                  ${getStatusLabelHTML(markerData.status)}
+                </div>
+                ${
+                  markerData.species
+                    ? getStatusLabelHTML(markerData.species)
+                    : ""
+                }
+              </div>  
+              <p style="margin: 0px; font-weight: bold">Posted on ${
+                markerData.createdAt.split("T")[0]
+              }</p>
+            </div>
+          </div>
+      `);
+
         const marker = new mapboxgl.Marker({
           color: getStatusColor(markerData.status),
         })
           .setLngLat([
-            markerData.lastKnownLocation.latitude,
             markerData.lastKnownLocation.longitude,
+            markerData.lastKnownLocation.latitude,
           ])
-          .setPopup(
-            new mapboxgl.Popup({ maxWidth: "350px" }).setHTML(`
-                <div class="popup-card">
-                    <img src=${
-                      markerData.images[0]
-                    } alt="pet-picture" class="popup-image" />
-                  <div class="popup-content">
-                    ${
-                      markerData.name
-                        ? `<h2 style="margin: 0px">${markerData.name}</h2>`
-                        : ""
-                    }
-                    <span style="background-color: ${getStatusColor(
-                      markerData.status
-                    )}" class="status">${markerData.status}</span>
-                    <p style="margin: 0px">Posted ${formatDistanceToNow(
-                      new Date(markerData.createdAt)
-                    )} ago</p>
-                    <a href="/posts/8e6baced-4b04-4f28-93a2-c5ee346a4b97" class="arrow">
-        <img src=${arrowIcon} alt="view-post-arrow" class="arrow-image" />
-      </a>
-                  </div>
-                </div>
-              `)
-          )
+          .setPopup(popup)
           .addTo(map);
 
         newMarkers.push(marker);
+
+        popup.on("open", () => {
+          const popupElement = document.getElementById(
+            `popup-${markerData.id}`
+          );
+          popupElement.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (markerData.status === "SIGHTING") {
+              setSelectedSighting(markerData);
+              openDialog(markerData.id);
+            } else {
+              window.location.href = `/posts/${markerData.id}`;
+            }
+          });
+        });
       }
       setMarkers(newMarkers);
     });
     return () => map.remove();
-  }, [selectedType]);
+  }, [selectedType, markersData]);
 
   return (
-    <body>
-      <div id="map" />
-    </body>
+    <>
+      <div id="map">
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </div>
+        )}
+      </div>
+      {!loading && (
+        <>
+          <SightingDialog
+            id={selectedSighting?.id}
+            userId={selectedSighting?.userId}
+            img={selectedSighting?.image}
+            location={selectedSighting?.lastKnownLocation.address}
+            email={selectedSighting?.email}
+            phoneNumber={selectedSighting?.phoneNumber}
+            createdAt={selectedSighting?.createdAt}
+            onDelete={deleteSighting}
+            isCardOpen={open}
+            setIsCardOpen={setOpen}
+          />
+          <ToastNotification
+            open={toastOpen}
+            severity={toastSeverity}
+            message={toastMessage}
+            handleClose={handleToastClose}
+          />
+        </>
+      )}
+    </>
   );
 };
 
