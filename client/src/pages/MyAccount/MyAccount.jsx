@@ -63,13 +63,10 @@ const MyAccount = () => {
     setCurrentUsername(currentUser?.username ?? '');
     setCurrentEmail(currentUser?.email ?? '');
     setCurrentPhone(currentUser?.phone ?? '');
-    console.log("IN getUserInfo");
     console.log(currentProfilePictureImageData)
     if (currentProfilePictureImageData.body instanceof Blob) {
-      console.log("IF")
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
-      console.log("ELSE")
       setCurrentProfilePicture('');
     }
   };

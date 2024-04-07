@@ -53,7 +53,6 @@ export const UserProvider = ({ children }) => {
       setCurrentUser('');
       setCurrentProfilePictureImageData('');
     }
-    console.log("END")
     console.log(currentProfilePictureImageData)
   };
 
