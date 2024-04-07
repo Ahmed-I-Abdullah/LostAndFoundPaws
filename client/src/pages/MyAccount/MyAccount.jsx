@@ -3,7 +3,7 @@ import { useUser } from '../../context/UserContext';
 import { Formik, Form } from "formik";
 import { generateClient } from 'aws-amplify/api';
 import { getCurrentUser, updateUserAttributes, resetPassword, deleteUser, signOut } from "aws-amplify/auth";
-import { uploadData } from "@aws-amplify/storage";
+import { uploadData, remove } from "@aws-amplify/storage";
 import * as queries from '../../graphql/queries.js';
 import * as mutations from '../../graphql/mutations.js';
 import * as Yup from "yup";
@@ -26,7 +26,7 @@ const MyAccount = () => {
 
   const imageUploadRef = useRef();
 
-  const { currentUser, currentProfilePictureImageData, updateUserContext, assessUserState } = useUser();
+  const { currentUser, currentProfilePictureImageData, updateUserContext } = useUser();
   const navigate = useNavigate();
 
   const client = generateClient({authMode: 'userPool'});
@@ -60,9 +60,9 @@ const MyAccount = () => {
   });
 
   const getUserInfo = async () => {
-    setCurrentUsername(currentUser.username ?? '');
-    setCurrentEmail(currentUser.email ?? '');
-    setCurrentPhone(currentUser.phone ?? '');
+    setCurrentUsername(currentUser?.username ?? '');
+    setCurrentEmail(currentUser?.email ?? '');
+    setCurrentPhone(currentUser?.phone ?? '');
     if (currentProfilePictureImageData.body instanceof Blob) {
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
@@ -76,7 +76,6 @@ const MyAccount = () => {
 
   //For updating account
   const handleSubmit = async (values) => {
-
     //Update database
     try {
       const user = await getCurrentUser();
@@ -201,6 +200,14 @@ const MyAccount = () => {
     setOpenConfirmDelete(false);
     try {
       const user = await getCurrentUser();
+
+      //Delete profile pic from S3
+      const imageKey = currentUser.profilePicture
+      if(imageKey){
+        await remove({ key: imageKey });
+      };
+
+      //Delete user from database
       const result = await client.graphql({
         query: mutations.deleteUser,
         variables: {
@@ -210,20 +217,19 @@ const MyAccount = () => {
         },
       });
     } catch (error) {
-      console.log('error deleting database:', error);
+      console.log('error deleting database/S3:', error);
       handleToastOpen(
         "error",
-        "Error deleting database"
+        "Error deleting database/S3"
       );
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
     }
     try {
+      //Delete use from amplify user list
       await deleteUser();
-      console.log(
-        `Deleted user`
-      );
+      console.log(`Deleted user`);
       handleToastOpen(
         "success",
         `Deleted user`
@@ -259,7 +265,7 @@ const MyAccount = () => {
   const logoutUser = async () => {
     try {
       await signOut();
-      await assessUserState();
+      await updateUserContext();
     } catch (error) {
       console.log('error signing out: ', error);
     }
@@ -288,6 +294,7 @@ const MyAccount = () => {
     try {
       const user = await getCurrentUser();
       const imageKey = `images/${Date.now()}_${user.username}_profile_pic.png`;
+      const oldImageKey = currentUser.profilePicture
       
       await uploadData({
         key: imageKey,
@@ -308,6 +315,11 @@ const MyAccount = () => {
       });
 
       await updateUserContext();
+
+      //Delete old image since replacing it with new image, done down here so only happens on success
+      if(oldImageKey){
+        await remove({ key: oldImageKey });
+      }
       
       handleToastOpen(
         "success", 

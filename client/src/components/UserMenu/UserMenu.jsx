@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserMenu = ({ anchorEl, open, handleClose }) => {
 
-  const { assessUserState } = useUser();
+  const { updateUserContext } = useUser();
 
   const navigate = useNavigate();
 
@@ -32,9 +32,9 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
   const logoutUser = async () => {
     try {
       await signOut();
-      await assessUserState();
+      await updateUserContext();
     } catch (error) {
-      console.log('error signing out: ', error);
+      console.log('error logging out: ', error);
     }
   };
 

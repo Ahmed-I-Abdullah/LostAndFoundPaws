@@ -25,7 +25,7 @@ const Navbar = () => {
   const [currentProfilePicture, setCurrentProfilePicture] = useState('');
 
   const getUserInfo = async () => {
-    setCurrentUsername(currentUser.username ?? '');
+    setCurrentUsername(currentUser?.username ?? '');
     if (currentProfilePictureImageData.body instanceof Blob) {
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
@@ -49,7 +49,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navbarLeft">
       <Link to="/" className="logo">
-        <img src= {PawLogo} alt="Logo" />
+        <img src= {PawLogo} alt="Logo" /> 
         {!isMobileSmall && <span>LostAndFoundPaws</span>}
       </Link>
       </div>
@@ -87,27 +87,27 @@ const Navbar = () => {
             <div className="userActionSection">
               <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
             </div>
-            <Button variant="contained" href="login">Log In</Button>
+            <Button variant="contained" onClick={() => navigate("/login")}>Log In</Button>
           </>)}
         </>) : (
           <div className="userSection">
-            {userState !== "Guest" && 
+            {userState !== "Guest" && <>
               <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <span className="username">{currentUsername || ''}</span>
-                  {currentProfilePicture === '' ? (
-                  <AccountCircleIcon sx={{ fontSize: '45px' }} />
-                  ) : (
-                    <img
-                      src={currentProfilePicture}
-                      alt="Profile"
-                      style={{ width: 37.5, height: 37.5, borderRadius: '50%', objectFit: 'cover' }}
-                    />
-                  )}
-                <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+                <span className="username">{currentUsername || ''}</span>
+                {currentProfilePicture === '' ? (
+                <AccountCircleIcon sx={{ fontSize: '45px' }} />
+                ) : (
+                  <img
+                    src={currentProfilePicture}
+                    alt="Profile"
+                    style={{ width: 37.5, height: 37.5, borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                )}
               </div>
-            }
+              <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+            </>}
             {userState == "Guest" && 
-              <Button variant="contained" href="login">Log In</Button>
+              <Button variant="contained" onClick={() => navigate("/login")}>Log In</Button>
             }
           </div>
         )}
