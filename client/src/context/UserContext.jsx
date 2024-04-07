@@ -20,20 +20,23 @@ export const UserProvider = ({ children }) => {
         query: queries.getUser,
         variables: { id: user.userId }
       });
-      setCurrentUser(result.data.getUser)
-
-      try {
-        const imageUrl = result.data.getUser.profilePicture;
-        const imageData = await downloadData({ key: imageUrl })
-          .result;
-        setCurrentProfilePictureImageData(imageData)
-      } catch (error) {
-        console.error("Error fetching image for post:", error);
+      setCurrentUser(result.data.getUser);
+  
+      const imageUrl = result.data.getUser.profilePicture;
+      if (imageUrl) {
+        try {
+          const imageData = await downloadData({ key: imageUrl });
+          setCurrentProfilePictureImageData(imageData);
+        } catch (error) {
+          console.error("Error fetching image for post:", error);
+          setCurrentProfilePicture('');
+        }
+      } else {
         setCurrentProfilePicture('');
       }
     } catch (error) {
-      console.log("Error fetching username:", error)
-      setCurrentUser('')
+      console.log("Error fetching username:", error);
+      setCurrentUser('');
     }
   };
 

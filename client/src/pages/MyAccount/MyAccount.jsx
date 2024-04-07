@@ -60,9 +60,9 @@ const MyAccount = () => {
   });
 
   const getUserInfo = async () => {
-    setCurrentUsername(currentUser.username ?? '');
-    setCurrentEmail(currentUser.email ?? '');
-    setCurrentPhone(currentUser.phone ?? '');
+    setCurrentUsername(currentUser?.username ?? '');
+    setCurrentEmail(currentUser?.email ?? '');
+    setCurrentPhone(currentUser?.phone ?? '');
     if (currentProfilePictureImageData.body instanceof Blob) {
       setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
     } else {
