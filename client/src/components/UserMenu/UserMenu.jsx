@@ -31,11 +31,10 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
 
   const logoutUser = async () => {
     try {
-      console.log("SIGN OUT PART")
       await signOut();
       await updateUserContext();
     } catch (error) {
-      console.log('error signing out: ', error);
+      console.log('error logging out: ', error);
     }
   };
 
