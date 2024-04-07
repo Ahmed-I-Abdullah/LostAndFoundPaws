@@ -29,10 +29,10 @@ export const UserProvider = ({ children }) => {
           setCurrentProfilePictureImageData(imageData);
         } catch (error) {
           console.error("Error fetching image for post:", error);
-          setCurrentProfilePicture('');
+          setCurrentProfilePictureImageData('');
         }
       } else {
-        setCurrentProfilePicture('');
+        setCurrentProfilePictureImageData('');
       }
     } catch (error) {
       console.log("Error fetching username:", error);
