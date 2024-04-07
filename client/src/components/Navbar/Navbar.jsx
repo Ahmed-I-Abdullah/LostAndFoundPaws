@@ -49,7 +49,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navbarLeft">
       <Link to="/" className="logo">
-        <img src= {PawLogo} alt="Logo" />
+        <img src= {PawLogo} alt="Logo" /> 
         {!isMobileSmall && <span>LostAndFoundPaws</span>}
       </Link>
       </div>
@@ -91,21 +91,21 @@ const Navbar = () => {
           </>)}
         </>) : (
           <div className="userSection">
-            {userState !== "Guest" && 
+            {userState !== "Guest" && <>
               <div onClick={handleMenu} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <span className="username">{currentUsername || ''}</span>
-                  {currentProfilePicture === '' ? (
-                  <AccountCircleIcon sx={{ fontSize: '45px' }} />
-                  ) : (
-                    <img
-                      src={currentProfilePicture}
-                      alt="Profile"
-                      style={{ width: 37.5, height: 37.5, borderRadius: '50%', objectFit: 'cover' }}
-                    />
-                  )}
-                <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+                <span className="username">{currentUsername || ''}</span>
+                {currentProfilePicture === '' ? (
+                <AccountCircleIcon sx={{ fontSize: '45px' }} />
+                ) : (
+                  <img
+                    src={currentProfilePicture}
+                    alt="Profile"
+                    style={{ width: 37.5, height: 37.5, borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                )}
               </div>
-            }
+              <UserMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+            </>}
             {userState == "Guest" && 
               <Button variant="contained" onClick={() => navigate("/login")}>Log In</Button>
             }
