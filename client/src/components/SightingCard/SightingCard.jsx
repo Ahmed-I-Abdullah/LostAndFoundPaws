@@ -28,18 +28,26 @@ const SightingCard = ({
             display: "flex",
             flexDirection: "column",
             margin: isMobile ? "1rem" : "1rem 2rem",
-            width: isMobile ? "40vw" : "20vw",
-            height: "auto",
+            width: isMobile ? "300px" : "350px",
+            height: "350px",
           }}
         >
           <CardMedia
             component="img"
-            sx={{ width: "100%", height: "auto" }}
+            sx={{ width: "100%", height: "250px" }}
             image={img}
             alt="sighting-picture"
           />
-          <Box sx={{ padding: "1rem" }}>
-            <Typography variant="h1" component="div">
+          <Box sx={{ padding: "1rem", marginTop: "10px" }}>
+            <Typography
+              variant="h1"
+              component="div"
+              sx={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
               {location}
             </Typography>
             <Typography variant="body3" color="text.secondary">

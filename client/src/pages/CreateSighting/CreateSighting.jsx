@@ -34,7 +34,12 @@ const CreateSighting = () => {
       }
 
       // Determine the reporter type
-      const currentUser = await getCurrentUser();
+      let currentUser = null;
+      try {
+        currentUser = await getCurrentUser();
+      } catch (error) {
+        console.log("No current user. User is a guest.");
+      }
       const reporterType = currentUser ? "POSTER" : "GUEST";
 
       // Store the data in the database
@@ -45,7 +50,7 @@ const CreateSighting = () => {
           address: values.location.address,
         },
         image: imageKey || "",
-        userID: currentUser.userId,
+        userID: currentUser ? currentUser.userId : null,
         contactInfo: {
           email: values.email || "",
           phone: values.phoneNumber || "",

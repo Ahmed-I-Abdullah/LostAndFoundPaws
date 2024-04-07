@@ -70,7 +70,7 @@ const SightingDialog = ({
           <Card sx={{ marginTop: "1rem" }}>
             <CardMedia
               component="img"
-              sx={{ width: "100%", height: "auto" }}
+              sx={{ width: "100%", height: "400px" }}
               image={img}
               alt="sighting-picture"
             />
@@ -82,11 +82,20 @@ const SightingDialog = ({
                   justifyContent: "space-between",
                 }}
               >
-                <Typography variant="h1" component="div">
+                <Typography
+                  variant="h1"
+                  component="div"
+                  style={{ paddingRight: "10px", width: "600px" }}
+                >
                   {location}
                 </Typography>
-                <Typography variant="body3" color="text.secondary">
-                  Posted on {createdAt ? createdAt.split("T")[0] : "N/A"}
+                <Typography
+                  variant="body3"
+                  color="text.secondary"
+                  style={{ width: "200px" }}
+                >
+                  Posted on{" "}
+                  {createdAt ? createdAt.split("T")[0] : "Unavailable"}
                 </Typography>
               </Grid>
               <Grid sx={{ marginTop: "30px" }} />
@@ -102,7 +111,7 @@ const SightingDialog = ({
                   <span
                     dangerouslySetInnerHTML={{
                       __html: `<strong>Phone Number:</strong> ${
-                        phoneNumber ? phoneNumber : "N/A"
+                        phoneNumber ? phoneNumber : "Unavailable"
                       }`,
                     }}
                   />
@@ -115,7 +124,7 @@ const SightingDialog = ({
                   <span
                     dangerouslySetInnerHTML={{
                       __html: `<strong>Email:</strong> ${
-                        email ? email : "N/A"
+                        email ? email : "Unavailable"
                       }`,
                     }}
                   />
@@ -192,6 +201,7 @@ const SightingDialog = ({
         }}
         onConfirm={(event) => handleDeleteConfirmed(event, id)}
         title="Are you sure you want to delete this sighting post?"
+        isDelete={true}
       />
     </>
   );

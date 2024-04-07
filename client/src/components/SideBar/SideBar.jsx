@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -34,8 +34,43 @@ const SideBar = ({ selectedView, isReporting, onClose }) => {
     spam: false,
   });
   const { isMobile } = useMobile();
+  let data = [];
 
-  //TODO: Add functionality to all filters
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const listPostsResponse = await client.graphql({
+          query: queries.listPosts,
+        });
+        const postsData = listPostsResponse.data.listPosts.items;
+
+        const listSightingsResponse = await client.graphql({
+          query: queries.listSightings,
+        });
+        const sightingsData = listSightingsResponse.data.listSightings.items;
+
+        // setMarkers([...postsData, ...sightingsData]);
+        data = [...postsData, ...sightingsData];
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  });
+
+  // const handleSpeciesChange = (speciesType) => (e) => {
+  //   setSpecies({ ...species, [speciesType]: e.target.checked });
+  // };
+
+  // console.log(data);
+
+  // useEffect(() => {
+  //   const filteredData = data.filter((item) => species[item.species]);
+  //   // Set your filtered data
+  //   // Assuming you have a `setFilteredData` function
+  //   setFilteredData(filteredData);
+  // }, [species]);
 
   return (
     <aside className="sidebar">

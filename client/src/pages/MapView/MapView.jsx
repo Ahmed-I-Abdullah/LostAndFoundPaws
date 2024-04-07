@@ -279,6 +279,7 @@ const MapView = ({ selectedType }) => {
               justifyContent: "center",
               alignItems: "center",
               height: "100vh",
+              zIndex: 1,
             }}
           >
             <CircularProgress />

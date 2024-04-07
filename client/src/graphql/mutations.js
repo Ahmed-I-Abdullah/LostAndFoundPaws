@@ -929,10 +929,6 @@ export const createSighting = /* GraphQL */ `
         phone
         __typename
       }
-      sightingReports {
-        nextToken
-        __typename
-      }
       createdAt
       updatedAt
       owner

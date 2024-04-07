@@ -29,14 +29,14 @@ const PetCard = ({
   location,
   createdAt,
   updatedAt,
-  onDelete
+  onDelete,
 }) => {
   const { isMobile } = useMobile();
   const { userState, currentUser } = useUser();
   const navigate = useNavigate();
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const handleClickOpen = () => {
     navigate(`/posts/${id}`);
@@ -88,23 +88,24 @@ const PetCard = ({
             >
               {name}
             </Typography>
-            {((userId === currentUser?.id || userState === "Admin") && pathname !== "/ViewReportings")&& (
-              <Button
-                size={small ? "small" : "medium"}
-                variant="contained"
-                color="error"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setOpenConfirmDelete(true);
-                }}
-                sx={{
-                  borderRadius: 2,
-                }}
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button>
-            )}
+            {(userId === currentUser?.id || userState === "Admin") &&
+              pathname !== "/ViewReportings" && (
+                <Button
+                  size={small ? "small" : "medium"}
+                  variant="contained"
+                  color="error"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setOpenConfirmDelete(true);
+                  }}
+                  sx={{
+                    borderRadius: 2,
+                  }}
+                  startIcon={<DeleteIcon />}
+                >
+                  Delete
+                </Button>
+              )}
           </Box>
           <Stack
             direction="row"
@@ -153,6 +154,7 @@ const PetCard = ({
         }}
         onConfirm={(event) => handleDeleteConfirmed(event, id)}
         title="Are you sure you want to delete this post?"
+        isDelete={true}
       />
     </Card>
   );
