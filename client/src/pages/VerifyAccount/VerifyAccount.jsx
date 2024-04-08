@@ -43,13 +43,13 @@ const VerifyAccount = () => {
         confirmationCode: values.confirmationCode,
       });
       await updateUserContext();
-      handleToastOpen("success", "Account verified");
+      handleToastOpen("success", "Account verified.");
       setTimeout(() => {
         navigate("/Login");
       }, 2000);
     } catch (error) {
       console.error("Error verifying account: ", error);
-      handleToastOpen("error", "Error verifying account");
+      handleToastOpen("error", "Error verifying account.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);

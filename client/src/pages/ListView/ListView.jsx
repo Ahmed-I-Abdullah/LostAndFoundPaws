@@ -99,9 +99,9 @@ const ListView = ({ selectedType }) => {
       });
       const newpostsData = postsData.filter((post) => post.id !== id);
       setPostsData(newpostsData);
-      handleToastOpen("success", "Successfully deleted post");
+      handleToastOpen("success", "Successfully deleted post.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting post");
+      handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
     }
     setLoading(false);

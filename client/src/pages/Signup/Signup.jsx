@@ -144,12 +144,12 @@ const Signup = () => {
           }, 2000);
           break;
         case "DONE":
-          handleToastOpen("success", "Successfully verified password");
+          handleToastOpen("success", "Successfully verified password.");
           break;
       }
     } catch (error) {
       console.log("error signing up:", error);
-      handleToastOpen("error", "Error signing up");
+      handleToastOpen("error", "Error signing up.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);

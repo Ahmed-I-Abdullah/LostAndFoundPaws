@@ -55,13 +55,13 @@ const CreatePost = () => {
         variables: { input: postInput },
       });
 
-      handleToastOpen("success", "Post created successfully");
+      handleToastOpen("success", "Post created successfully.");
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
       console.error("Error creating post: ", error);
-      handleToastOpen("error", "Error creating post. Please try again later");
+      handleToastOpen("error", "Error creating post.");
     }
   };
 

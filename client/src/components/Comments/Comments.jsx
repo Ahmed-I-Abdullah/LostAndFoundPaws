@@ -106,7 +106,7 @@ const Comments = ({ postId }) => {
       setPostCommentText("");
       const newCommentData = [newComment.data.createComment, ...commentData];
       setCommentData(newCommentData);
-      handleToastOpen("success", "comment successfully added");
+      handleToastOpen("success", "Comment successfully added.");
     } catch (error) {
       handleToastOpen(
         "error",
@@ -128,9 +128,9 @@ const Comments = ({ postId }) => {
       });
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
-      handleToastOpen("success", "Successfully deleted comment");
+      handleToastOpen("success", "Successfully deleted comment.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting comment");
+      handleToastOpen("error", "Error deleting comment.");
       console.error("Error deleting comment: ", error);
     }
     setLoading(false);
