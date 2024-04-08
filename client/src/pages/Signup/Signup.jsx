@@ -22,6 +22,7 @@ import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import PhoneField from "../../components/PhoneField/PhoneField";
+import CloseButton from "../../components/CloseButton/CloseButton";
 
 //Unauthorized do not have access to report or related fields
 //Living here since mutations are auto generated and will be overwritten, probably a better place to put it
@@ -175,9 +176,7 @@ const Signup = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          <CloseButton onClick={() => navigate('/')} />
         </div>
         <div className="account-header">
           <div className="logo">

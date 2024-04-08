@@ -1,9 +1,7 @@
 import React from "react";
 import { useMobile } from "../../context/MobileContext";
 import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
 import { Formik, Form } from "formik";
-import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
@@ -12,6 +10,7 @@ import CustomTextField from "../../components/TextField/TextField";
 import { useLocation, useNavigate } from "react-router-dom";
 import { confirmResetPassword } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import CloseButton from "../../components/CloseButton/CloseButton";
 
 const ResetPassword = () => {
   const { isMobile } = useMobile();
@@ -82,9 +81,7 @@ const ResetPassword = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+        <CloseButton onClick={() => navigate('/')} />
         </div>
         <div className="account-header">
           <div className="logo">
