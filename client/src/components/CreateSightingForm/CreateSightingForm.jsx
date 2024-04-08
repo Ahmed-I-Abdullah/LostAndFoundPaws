@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Grid, Typography, Button, useTheme } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -10,6 +10,7 @@ import { useMobile } from "../../context/MobileContext";
 import AddressAutocompleteField from "../AddressAutocompleteField/AddressAutocompleteField";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
 import PhoneField from "../PhoneField/PhoneField";
+import { useUser } from "../../context/UserContext";
 import "./CreateSightingForm.css";
 
 const FieldTitle = ({ title }) => {
@@ -23,13 +24,38 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
+  const { userState, currentUser } = useUser();
 
-  const initialValues = {
+  let initialValues = {
     location: isEdit ? sightingData.location : "",
-    phoneNumber: isEdit ? sightingData.contactInfo.phone : "",
-    email: isEdit ? sightingData.contactInfo.email : "",
+    phoneNumber: isEdit
+      ? sightingData.contactInfo.phone
+      : currentUser?.phone
+      ? currentUser.phone
+      : "",
+    email: isEdit
+      ? sightingData.contactInfo.email
+      : currentUser?.email
+      ? currentUser.email
+      : "",
     image: isEdit ? sightingData.image : "",
   };
+
+  useEffect(() => {
+    initialValues = {
+      ...initialValues,
+      phoneNumber: isEdit
+        ? sightingData.contactInfo.phone
+        : currentUser?.phone
+        ? currentUser.phone
+        : "",
+      email: isEdit
+        ? sightingData.contactInfo.email
+        : currentUser?.email
+        ? currentUser.email
+        : "",
+    };
+  }, [currentUser]);
 
   const validationSchema = Yup.object().shape({
     location: Yup.object().required("Sighting location is required"),
@@ -65,6 +91,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            enableReinitialize
           >
             {({ values, errors, touched, setFieldValue, handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
@@ -91,6 +118,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
                         onChange={(value) => {
                           setFieldValue("phoneNumber", value);
                         }}
+                        disabled={userState != "Guest"}
                       />
                     </Grid>
                   </Grid>
@@ -123,6 +151,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
                         onChange={(event) => {
                           setFieldValue("email", event.target.value);
                         }}
+                        disabled={userState != "Guest"}
                       />
                     </Grid>
                   </Grid>
