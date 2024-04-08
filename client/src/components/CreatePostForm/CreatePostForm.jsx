@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  Container,
-  Grid,
-  Typography,
-  Button,
-  useTheme
-} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import { Container, Grid, Typography, Button, useTheme } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +12,7 @@ import AddressAutocompleteField from "../../components/AddressAutocompleteField/
 import { useMobile } from "../../context/MobileContext";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
 import PhoneField from "../PhoneField/PhoneField";
+import { useUser } from "../../context/UserContext";
 import "./CreatePostForm.css";
 
 const postTypeOptions = [
@@ -49,8 +44,8 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
-
-  const initialValues = {
+  const { userState, currentUser } = useUser();
+  const [initialValues, setInitialValues] = useState({
     type: isEdit ? postData.status : "Lost",
     name: isEdit ? postData.name : "",
     gender: isEdit ? postData.gender : "",
@@ -58,10 +53,34 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
     description: isEdit ? postData.description : "",
     location: isEdit ? postData.lastKnownLocation : "",
     species: isEdit ? postData.species : "",
-    phoneNumber: isEdit ? postData.contactInfo.phone : "",
-    email: isEdit ? postData.contactInfo.email : "",
+    phoneNumber: isEdit
+      ? postData.user?.phone
+      : currentUser?.phones
+      ? currentUser.phone
+      : "",
+    email: isEdit
+      ? postData.user?.email
+      : currentUser?.email
+      ? currentUser.email
+      : "",
     images: isEdit ? postData.images : [],
-  };
+  });
+
+  useEffect(() => {
+    setInitialValues(prevValues => ({
+      ...prevValues,
+      phoneNumber: isEdit
+        ? postData.user?.phone
+        : currentUser?.phone
+        ? currentUser.phone
+        : "",
+      email: isEdit
+        ? postData.user?.email
+        : currentUser?.email
+        ? currentUser.email
+        : "",
+    }));
+  }, [currentUser]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -108,6 +127,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            enableReinitialize
           >
             {({ errors, touched, handleSubmit, setFieldValue, values }) => (
               <Form onSubmit={handleSubmit}>
@@ -239,6 +259,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
                         onChange={(value) => {
                           setFieldValue("phoneNumber", value);
                         }}
+                        disabled={userState != "Guest"}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -253,6 +274,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
                         onChange={(event) => {
                           setFieldValue("email", event.target.value);
                         }}
+                        disabled={userState != "Guest"}
                       />
                     </Grid>
                   </Grid>

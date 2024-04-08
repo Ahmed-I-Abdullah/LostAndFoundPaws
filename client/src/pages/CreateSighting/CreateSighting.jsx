@@ -51,10 +51,10 @@ const CreateSighting = () => {
         },
         image: imageKey || "",
         userID: currentUser ? currentUser.userId : null,
-        contactInfo: {
+        contactInfo: !currentUser ? {
           email: values.email || "",
           phone: values.phoneNumber || "",
-        },
+        } : null,
         reporterType: reporterType,
       };
 
