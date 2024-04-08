@@ -12,7 +12,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
 import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
@@ -230,10 +230,12 @@ const MapView = ({ selectedType }) => {
                     ? getStatusLabelHTML(markerData.species)
                     : ""
                 }
-              </div>  
-              <p style="margin: 0px; font-weight: bold">Posted on ${
-                markerData.createdAt.split("T")[0]
-              }</p>
+              </div>
+              <Typography style="margin: 0px; font-size: 14px; color: #979797;">
+                Posted: ${
+                  markerData.createdAt.split("T")[0]
+                }
+              </Typography>
             </div>
           </div>
       `);

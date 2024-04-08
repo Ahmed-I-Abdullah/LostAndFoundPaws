@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogContent,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,6 +37,7 @@ const SightingDialog = ({
   const { userState, currentUser } = useUser();
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const small = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClose = () => {
     setIsCardOpen(false);
@@ -83,25 +85,28 @@ const SightingDialog = ({
                 }}
               >
                 <Typography
-                  variant="h1"
-                  component="div"
+                  variant={small ? "h7" : "h6"}
+                  fontWeight={"bold"}
                   style={{ paddingRight: "10px", width: "600px" }}
                 >
                   {location}
                 </Typography>
                 <Typography
-                  variant="body3"
-                  color="text.secondary"
-                  style={{ width: "200px" }}
+                  variant="subtitle2"
+                  color="#979797"
+                  style={{ width: "250px" }}
                 >
-                  Posted on{" "}
-                  {createdAt ? createdAt.split("T")[0] : "Unavailable"}
+                  Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"}
                 </Typography>
               </Grid>
               <Grid sx={{ marginTop: "30px" }} />
               <Grid>
-                <Typography variant="h3" color="text.secondary">
-                  <strong>Contact Information</strong>
+                <Typography
+                  variant="h2"
+                  fontWeight="bold"
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  Contact Information
                 </Typography>
                 <Typography
                   variant="body2"
@@ -150,7 +155,13 @@ const SightingDialog = ({
                 </Typography>
               </Grid>
               {(userId === currentUser?.id || userState === "Admin") && (
-                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Grid
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginTop: "10px",
+                  }}
+                >
                   <Button
                     size={"small"}
                     variant="contained"

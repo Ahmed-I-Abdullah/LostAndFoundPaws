@@ -371,9 +371,10 @@ const ViewPostPage = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle2" color="#979797">
-              Posted: {new Date(petData.createdAt).toDateString()} - Updated:{" "}
-              {new Date(petData.updatedAt).toDateString()}
-            </Typography>
+            {`Posted: ${petData.createdAt.split("T")[0]} - Updated: ${
+              petData.updatedAt.split("T")[0]
+            }`}
+          </Typography>
           </Grid>
         </Grid>
         <Grid item container columnSpacing={15}>
