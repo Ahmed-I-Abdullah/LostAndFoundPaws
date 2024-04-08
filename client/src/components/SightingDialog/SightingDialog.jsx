@@ -94,15 +94,18 @@ const SightingDialog = ({
                 <Typography
                   variant="subtitle2"
                   color="#979797"
-                  style={{ width: "200px" }}
+                  style={{ width: "250px" }}
                 >
-                  Posted:{" "}
-                  {createdAt ? createdAt.split("T")[0] : "Unavailable"}
+                  Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"}
                 </Typography>
               </Grid>
               <Grid sx={{ marginTop: "30px" }} />
               <Grid>
-                <Typography variant="h2" fontWeight="bold" sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography
+                  variant="h2"
+                  fontWeight="bold"
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
                   Contact Information
                 </Typography>
                 <Typography
@@ -152,7 +155,13 @@ const SightingDialog = ({
                 </Typography>
               </Grid>
               {(userId === currentUser?.id || userState === "Admin") && (
-                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Grid
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginTop: "10px",
+                  }}
+                >
                   <Button
                     size={"small"}
                     variant="contained"
