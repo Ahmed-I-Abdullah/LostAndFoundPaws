@@ -1,44 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useUser } from '../../context/UserContext';
+import React, { useState, useEffect, useRef } from "react";
+import { useUser } from "../../context/UserContext";
 import { Formik, Form } from "formik";
-import { generateClient } from 'aws-amplify/api';
-import { getCurrentUser, updateUserAttributes, resetPassword, deleteUser, signOut } from "aws-amplify/auth";
+import { generateClient } from "aws-amplify/api";
+import {
+  getCurrentUser,
+  updateUserAttributes,
+  resetPassword,
+  deleteUser,
+  signOut,
+} from "aws-amplify/auth";
 import { uploadData, remove } from "@aws-amplify/storage";
-import * as queries from '../../graphql/queries.js';
-import * as mutations from '../../graphql/mutations.js';
+import * as queries from "../../graphql/queries.js";
+import * as mutations from "../../graphql/mutations.js";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
-import IconButton from '@mui/material/IconButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EditIcon from '@mui/icons-material/Edit';
+import IconButton from "@mui/material/IconButton";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import "../../sharedStyles/SharedStyles.css";
 import "./MyAccount.css";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
-import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
-import ImageEditorDialog from '../../components/ImageEditorDialog/ImageEditorDialog';
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
+import ImageEditorDialog from "../../components/ImageEditorDialog/ImageEditorDialog";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import ImageUploadOnly from "../../components/ImageUploadOnly/ImageUploadOnly";
-
+import PhoneField from "../../components/PhoneField/PhoneField";
 
 const MyAccount = () => {
-
   const imageUploadRef = useRef();
 
-  const { currentUser, currentProfilePictureImageData, updateUserContext } = useUser();
+  const { currentUser, currentProfilePictureImageData, updateUserContext } =
+    useUser();
   const navigate = useNavigate();
 
-  const client = generateClient({authMode: 'userPool'});
+  const client = generateClient({ authMode: "userPool" });
 
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
 
-  const [currentUsername, setCurrentUsername] = useState('');
-  const [currentEmail, setCurrentEmail] = useState('');
-  const [currentPhone, setCurrentPhone] = useState('');
-  const [currentProfilePicture, setCurrentProfilePicture] = useState('');
+  const [currentUsername, setCurrentUsername] = useState("");
+  const [currentEmail, setCurrentEmail] = useState("");
+  const [currentPhone, setCurrentPhone] = useState("");
+  const [currentProfilePicture, setCurrentProfilePicture] = useState("");
 
   const [openEditorDialog, setOpenEditorDialog] = useState(false);
   const [imageToEdit, setImageToEdit] = useState(null);
@@ -53,20 +59,20 @@ const MyAccount = () => {
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
-    email: Yup.string()
-      .email("Invalid email")
-      .required("Email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
     phoneNumber: Yup.string().optional(),
   });
 
   const getUserInfo = async () => {
-    setCurrentUsername(currentUser?.username ?? '');
-    setCurrentEmail(currentUser?.email ?? '');
-    setCurrentPhone(currentUser?.phone ?? '');
+    setCurrentUsername(currentUser?.username ?? "");
+    setCurrentEmail(currentUser?.email ?? "");
+    setCurrentPhone(currentUser?.phone ?? "");
     if (currentProfilePictureImageData.body instanceof Blob) {
-      setCurrentProfilePicture(URL.createObjectURL(currentProfilePictureImageData.body));
+      setCurrentProfilePicture(
+        URL.createObjectURL(currentProfilePictureImageData.body)
+      );
     } else {
-      setCurrentProfilePicture('');
+      setCurrentProfilePicture("");
     }
   };
 
@@ -86,34 +92,28 @@ const MyAccount = () => {
             id: user.userId,
             username: values.username,
             email: values.email,
-            phone: values.phoneNumber
-          }
+            phone: values.phoneNumber,
+          },
         },
       });
       await updateUserContext();
-      if(values.email == currentEmail){//not updating email so don't need to do the verification toast
-        handleToastOpen(
-          "success",
-          `Updated account`
-        );
+      if (values.email == currentEmail) {
+        //not updating email so don't need to do the verification toast
+        handleToastOpen("success", `Updated account`);
         setTimeout(() => {
           setToastOpen(false);
         }, 2000);
-        
       }
-    } catch(error){
-      console.log('error updating database:', error);
-      handleToastOpen(
-        "error",
-        "Error updating database"
-      );
+    } catch (error) {
+      console.log("error updating database:", error);
+      handleToastOpen("error", "Error updating database");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
     }
 
     //Update cognito email if needed
-    if(values.email != currentEmail){
+    if (values.email != currentEmail) {
       try {
         const output = await updateUserAttributes({
           //Signed up with username as email but that does not matter here, just need to update the email attribute, or maybe something liek verification will break and this will be the issue
@@ -123,7 +123,7 @@ const MyAccount = () => {
         });
         const { nextStep } = output.email;
         switch (nextStep.updateAttributeStep) {
-          case 'CONFIRM_ATTRIBUTE_WITH_CODE':
+          case "CONFIRM_ATTRIBUTE_WITH_CODE":
             const codeDeliveryDetails = nextStep.codeDeliveryDetails;
             console.log(
               `Confirmation code was sent to ${codeDeliveryDetails?.deliveryMedium}.`
@@ -132,24 +132,24 @@ const MyAccount = () => {
               "success",
               `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
             );
-    
+
             setTimeout(() => {
               navigate("/VerifyUpdateEmail");
             }, 2000);
             break;
-          case 'DONE':
+          case "DONE":
             console.log(`attribute was successfully updated.`);
-            handleToastOpen(
-              "success", 
-              "Successfully verified password"
-            );
+            handleToastOpen("success", "Successfully verified password");
             setTimeout(() => {
               setToastOpen(false);
             }, 2000);
             break;
         }
       } catch (error) {
-        console.log('Error updating email cognito, email in database and cognito may be out of sync now:', error);
+        console.log(
+          "Error updating email cognito, email in database and cognito may be out of sync now:",
+          error
+        );
         handleToastOpen(
           "error",
           "Error updating email cognito, email in database and cognito may be out of sync now"
@@ -166,7 +166,7 @@ const MyAccount = () => {
       const output = await resetPassword({ username: currentEmail });
       const { nextStep } = output;
       switch (nextStep.resetPasswordStep) {
-        case 'CONFIRM_RESET_PASSWORD_WITH_CODE':
+        case "CONFIRM_RESET_PASSWORD_WITH_CODE":
           const codeDeliveryDetails = nextStep.codeDeliveryDetails;
           console.log(
             `Confirmation code was sent to ${codeDeliveryDetails.deliveryMedium}`
@@ -175,21 +175,20 @@ const MyAccount = () => {
             "success",
             `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
           );
-  
+
           setTimeout(() => {
-            navigate("/VerifyUpdatePassword", { state: {  email: currentEmail,  }});
+            navigate("/VerifyUpdatePassword", {
+              state: { email: currentEmail },
+            });
           }, 2000);
           break;
-        case 'DONE':
-          console.log('Successfully reset password.');
+        case "DONE":
+          console.log("Successfully reset password.");
           break;
       }
     } catch (error) {
       console.log("Error updating password cognito", error);
-      handleToastOpen(
-        "error",
-        "Error updating password cognito"
-      );
+      handleToastOpen("error", "Error updating password cognito");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -202,10 +201,10 @@ const MyAccount = () => {
       const user = await getCurrentUser();
 
       //Delete profile pic from S3
-      const imageKey = currentUser.profilePicture
-      if(imageKey){
+      const imageKey = currentUser.profilePicture;
+      if (imageKey) {
         await remove({ key: imageKey });
-      };
+      }
 
       //Delete user from database
       const result = await client.graphql({
@@ -217,11 +216,8 @@ const MyAccount = () => {
         },
       });
     } catch (error) {
-      console.log('error deleting database/S3:', error);
-      handleToastOpen(
-        "error",
-        "Error deleting database/S3"
-      );
+      console.log("error deleting database/S3:", error);
+      handleToastOpen("error", "Error deleting database/S3");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -230,20 +226,14 @@ const MyAccount = () => {
       //Delete use from amplify user list
       await deleteUser();
       console.log(`Deleted user`);
-      handleToastOpen(
-        "success",
-        `Deleted user`
-      );
+      handleToastOpen("success", `Deleted user`);
 
       setTimeout(() => {
         try {
           logoutUser();
         } catch (error) {
-          console.log('Error signing out: ', error);
-          handleToastOpen(
-            "error",
-            "Error signing out"
-          );
+          console.log("Error signing out: ", error);
+          handleToastOpen("error", "Error signing out");
           setTimeout(() => {
             setToastOpen(false);
           }, 2000);
@@ -251,7 +241,10 @@ const MyAccount = () => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      console.log('Error deleting cognito user, user in database and cognito may be out of sync now:', error);
+      console.log(
+        "Error deleting cognito user, user in database and cognito may be out of sync now:",
+        error
+      );
       handleToastOpen(
         "error",
         "Error deleting cognito user, user in database and cognito may be out of sync now"
@@ -259,7 +252,7 @@ const MyAccount = () => {
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
-    };
+    }
   };
 
   const logoutUser = async () => {
@@ -267,7 +260,7 @@ const MyAccount = () => {
       await signOut();
       await updateUserContext();
     } catch (error) {
-      console.log('error signing out: ', error);
+      console.log("error signing out: ", error);
     }
   };
 
@@ -283,19 +276,19 @@ const MyAccount = () => {
 
   //This happens after a error occurs when selecting an image from file explorer
   const handleImageUploadError = (error) => {
-    console.log('Error selecting image:', error);
+    console.log("Error selecting image:", error);
   };
 
   //This uploads an image after the image is edited (using ImageEditorDiologue) to make it a circle
   const handleFinalImageUpload = async (blob) => {
-    setOpenEditorDialog(false)
-    setImageToEdit(null)
-    
+    setOpenEditorDialog(false);
+    setImageToEdit(null);
+
     try {
       const user = await getCurrentUser();
       const imageKey = `images/${Date.now()}_${user.username}_profile_pic.png`;
-      const oldImageKey = currentUser.profilePicture
-      
+      const oldImageKey = currentUser.profilePicture;
+
       await uploadData({
         key: imageKey,
         data: blob,
@@ -303,12 +296,12 @@ const MyAccount = () => {
           accessLevel: "guest",
         },
       });
-      
+
       const userInput = {
         id: user.userId,
         profilePicture: imageKey,
       };
-      
+
       await client.graphql({
         query: mutations.updateUser,
         variables: { input: userInput },
@@ -317,13 +310,11 @@ const MyAccount = () => {
       await updateUserContext();
 
       //Delete old image since replacing it with new image, done down here so only happens on success
-      if(oldImageKey){
+      if (oldImageKey) {
         await remove({ key: oldImageKey });
       }
-      
-      handleToastOpen(
-        "success", 
-        "Profile picture updated");
+
+      handleToastOpen("success", "Profile picture updated");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -347,41 +338,61 @@ const MyAccount = () => {
   };
 
   return (
-    <div className={'my-account-wrapper'}>
-      <div className={'my-account-container'}>
+    <div className={"my-account-wrapper"}>
+      <div className={"my-account-container"}>
         <div className="account-header">
           <h1>My Account</h1>
           <div className="divider"></div>
         </div>
         <div>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'}}>
-          {currentProfilePicture === '' ? (
-            <AccountCircleIcon
-              onClick={() => imageUploadRef.current.click()}
-              sx={{ fontSize: 200, '&:hover': {cursor: 'pointer'}}}
-            />
-          ) : (
-            <img
-              src={currentProfilePicture}
-              alt="Profile"
-              style={{ width: 166.67, height: 166.67, borderRadius: '50%', objectFit: 'cover', cursor: 'pointer' }}
-              onClick={() => imageUploadRef.current.click()}
-            />
-          )}
-          <Box sx={{ position: 'absolute', transform: 'translate(175%, 175%)', borderRadius: '50%', backgroundColor: '#f5f5f5' }}>
-            <IconButton
-              onClick={() => imageUploadRef.current.click()}
-              size="small"
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+            }}
+          >
+            {currentProfilePicture === "" ? (
+              <AccountCircleIcon
+                onClick={() => imageUploadRef.current.click()}
+                sx={{ fontSize: 200, "&:hover": { cursor: "pointer" } }}
+              />
+            ) : (
+              <img
+                src={currentProfilePicture}
+                alt="Profile"
+                style={{
+                  width: 166.67,
+                  height: 166.67,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  cursor: "pointer",
+                }}
+                onClick={() => imageUploadRef.current.click()}
+              />
+            )}
+            <Box
+              sx={{
+                position: "absolute",
+                transform: "translate(175%, 175%)",
+                borderRadius: "50%",
+                backgroundColor: "#f5f5f5",
+              }}
             >
-              <EditIcon sx={{ fontSize: 24 }}/>
-            </IconButton>
+              <IconButton
+                onClick={() => imageUploadRef.current.click()}
+                size="small"
+              >
+                <EditIcon sx={{ fontSize: 24 }} />
+              </IconButton>
+            </Box>
+            <ImageUploadOnly
+              ref={imageUploadRef}
+              onFileSelectSuccess={handleImageUploadSuccess}
+              onFileSelectError={handleImageUploadError}
+            />
           </Box>
-          <ImageUploadOnly
-            ref={imageUploadRef}
-            onFileSelectSuccess={handleImageUploadSuccess}
-            onFileSelectError={handleImageUploadError}
-          />
-        </Box>
         </div>
 
         <Formik
@@ -421,22 +432,21 @@ const MyAccount = () => {
                 />
               </div>
               <div className="account-form-component">
-                <CustomTextField
-                  name="phoneNumber"
-                  label="Phone Number (Optional)"
-                  variant="outlined"
+                <PhoneField
                   value={values.phoneNumber}
-                  onChange={(event) => {
-                    setFieldValue("phoneNumber", event.target.value);
+                  onChange={(value) => {
+                    setFieldValue("phoneNumber", value);
                   }}
-                  fullWidth
+                  label="Phone Number (Optional)"
                 />
               </div>
               <div className="account-form-component">
                 <Button type="submit" variant="contained" color="primary">
                   Update Account
                 </Button>
-                <span style={{ paddingTop: '2px' }}> {/*should be in css file for consistancy */}
+                <span style={{ paddingTop: "2px" }}>
+                  {" "}
+                  {/*should be in css file for consistancy */}
                   Updated email but didn't verify?{" "}
                   <Link to="/verifyUpdateEmail" className="account-link">
                     Verify Now
@@ -444,18 +454,28 @@ const MyAccount = () => {
                 </span>
               </div>
               <div className="account-form-component">
-                <Button variant="contained" color="primary" onClick={() => handleUpdatePassword()}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleUpdatePassword()}
+                >
                   Update Password
                 </Button>
-                <span style={{ paddingTop: '2px' }}> {/*should be in css file for consistancy */}
-                Updated password but didn't verify?{" "}
+                <span style={{ paddingTop: "2px" }}>
+                  {" "}
+                  {/*should be in css file for consistancy */}
+                  Updated password but didn't verify?{" "}
                   <Link to="/verifyUpdatePassword" className="account-link">
                     Verify Now
                   </Link>
                 </span>
               </div>
               <div className="account-form-component">
-                <Button variant="outlined" color="secondary" onClick={() => setOpenConfirmDelete(true)}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setOpenConfirmDelete(true)}
+                >
                   Delete Account
                 </Button>
               </div>
