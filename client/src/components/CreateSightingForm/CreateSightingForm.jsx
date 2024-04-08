@@ -9,6 +9,7 @@ import CustomTextField from "../TextField/TextField";
 import { useMobile } from "../../context/MobileContext";
 import AddressAutocompleteField from "../AddressAutocompleteField/AddressAutocompleteField";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
+import PhoneField from "../PhoneField/PhoneField";
 import "./CreateSightingForm.css";
 
 const FieldTitle = ({ title }) => {
@@ -85,17 +86,10 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
                     </Grid>
                     <Grid item xs={12}>
                       <FieldTitle title="Phone Number (Optional)" />
-                      <CustomTextField
-                        name="phoneNumber"
-                        variant="outlined"
-                        className="textField"
-                        error={errors.phoneNumber && touched.phoneNumber}
-                        helperText={
-                          touched.phoneNumber ? errors.phoneNumber : ""
-                        }
+                      <PhoneField
                         value={values.phoneNumber}
-                        onChange={(event) => {
-                          setFieldValue("phoneNumber", event.target.value);
+                        onChange={(value) => {
+                          setFieldValue("phoneNumber", value);
                         }}
                       />
                     </Grid>

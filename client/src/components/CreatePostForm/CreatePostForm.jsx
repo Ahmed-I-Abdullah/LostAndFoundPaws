@@ -17,6 +17,7 @@ import CustomDropdown from "../../components/DropDown/DropDown";
 import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 import { useMobile } from "../../context/MobileContext";
 import ArrowBackButton from "../../components/ArrowBackButton/ArrowBackButton";
+import PhoneField from "../PhoneField/PhoneField";
 import "./CreatePostForm.css";
 
 const postTypeOptions = [
@@ -233,17 +234,10 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
                     </Grid>
                     <Grid item xs={12}>
                       <FieldTitle title="Phone Number (Optional)" />
-                      <CustomTextField
-                        name="phoneNumber"
-                        variant="outlined"
-                        className="textField"
-                        error={errors.phoneNumber && touched.phoneNumber}
-                        helperText={
-                          touched.phoneNumber ? errors.phoneNumber : ""
-                        }
+                      <PhoneField
                         value={values.phoneNumber}
-                        onChange={(event) => {
-                          setFieldValue("phoneNumber", event.target.value);
+                        onChange={(value) => {
+                          setFieldValue("phoneNumber", value);
                         }}
                       />
                     </Grid>
