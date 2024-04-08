@@ -125,10 +125,6 @@ const EditPost = () => {
         species: values.species,
         userID: user.userId,
         images: imageKeys,
-        contactInfo: {
-          email: values.email || "",
-          phone: values.phoneNumber || "",
-        },
       };
 
       await client.graphql({

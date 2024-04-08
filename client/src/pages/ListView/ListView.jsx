@@ -9,6 +9,7 @@ import { downloadData } from "@aws-amplify/storage";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import { useUser } from "../../context/UserContext";
+import { getSightingPhoneNumber, getSightingEmail } from "../../utils/utils";
 
 const ListView = ({ selectedType }) => {
   const { userState, currentUser } = useUser();
@@ -209,8 +210,8 @@ const ListView = ({ selectedType }) => {
                     userId={sighting.userID}
                     img={sighting.firstImg}
                     location={sighting.location.address}
-                    email={sighting.contactInfo.email}
-                    phoneNumber={sighting.contactInfo.phone}
+                    email={getSightingEmail(sighting)}
+                    phoneNumber={getSightingPhoneNumber(sighting)}
                     createdAt={sighting.createdAt}
                     onDelete={deleteSighting}
                   />

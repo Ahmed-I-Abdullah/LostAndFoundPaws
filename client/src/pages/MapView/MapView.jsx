@@ -15,6 +15,7 @@ import * as mutations from "../../graphql/mutations";
 import { CircularProgress } from "@mui/material";
 import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
+import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
 
 const MapView = ({ selectedType }) => {
   const [, setMarkers] = useState([]);
@@ -84,8 +85,8 @@ const MapView = ({ selectedType }) => {
               image: imageSrc,
               status: "SIGHTING",
               lastKnownLocation: sighting.location,
-              email: sighting.contactInfo.email,
-              phoneNumber: sighting.contactInfo.phone,
+              email: getSightingEmail(sighting),
+              phoneNumber: getSightingPhoneNumber(sighting),
               createdAt: sighting.createdAt,
             };
           })

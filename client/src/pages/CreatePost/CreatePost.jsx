@@ -47,11 +47,7 @@ const CreatePost = () => {
         },
         species: values.species,
         userID: user.userId,
-        images: imageKeys,
-        contactInfo: {
-          email: values.email || "",
-          phone: values.phoneNumber || "",
-        },
+        images: imageKeys
       };
 
       await client.graphql({

@@ -475,16 +475,16 @@ const ViewPostPage = () => {
                 <>
                   <Typography variant="body2">
                     <span className="span-key">Email:</span>{" "}
-                    {petData.contactInfo && petData.contactInfo.email
-                      ? petData.contactInfo.email
+                    {petData.user && petData.user.email
+                      ? petData.user.email
                       : petData.user && petData.user.email
                       ? petData.user.email
                       : "Unavailable"}
                   </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Phone:</span>{" "}
-                    {petData.contactInfo && petData.contactInfo.phone
-                      ? petData.contactInfo.phone
+                    {petData.user && petData.user.phone
+                      ? petData.user.phone
                       : "Unavailable"}
                   </Typography>
                   <Typography variant="body2">

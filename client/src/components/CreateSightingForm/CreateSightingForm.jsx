@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Grid, Typography, Button, useTheme } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -20,41 +20,48 @@ const FieldTitle = ({ title }) => {
     </Typography>
   );
 };
+
+
 const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   const { userState, currentUser } = useUser();
 
-  let initialValues = {
-    location: isEdit ? sightingData.location : "",
-    phoneNumber: isEdit
-      ? sightingData.contactInfo.phone
-      : currentUser?.phone
-      ? currentUser.phone
-      : "",
-    email: isEdit
-      ? sightingData.contactInfo.email
-      : currentUser?.email
-      ? currentUser.email
-      : "",
-    image: isEdit ? sightingData.image : "",
+  const getPhoneNumber = () => {
+    if (isEdit && sightingData.user?.phone) {
+      return sightingData.user.phone;
+    } else if (isEdit && sightingData.contactInfo?.phone) {
+      return sightingData.contactInfo.phone;
+    } else {
+      return currentUser?.phone || "";
+    }
   };
 
+  const getEmail = () => {
+    if (isEdit && sightingData.user?.email) {
+      return sightingData.user.email;
+    } else if (isEdit && sightingData.contactInfo?.email) {
+      return sightingData.contactInfo.email;
+    } else {
+      return currentUser?.email || "";
+    }
+  };
+
+
+  const [initialValues, setInitialValues] = useState({
+    location: isEdit ? sightingData.location : "",
+    phoneNumber: getPhoneNumber(),
+    email: getEmail(),
+    image: isEdit ? sightingData.image : "",
+  });
+
   useEffect(() => {
-    initialValues = {
-      ...initialValues,
-      phoneNumber: isEdit
-        ? sightingData.contactInfo.phone
-        : currentUser?.phone
-        ? currentUser.phone
-        : "",
-      email: isEdit
-        ? sightingData.contactInfo.email
-        : currentUser?.email
-        ? currentUser.email
-        : "",
-    };
+    setInitialValues((prevValues) => ({
+      ...prevValues,
+      phoneNumber: getPhoneNumber(),
+      email: getEmail(),
+    }));
   }, [currentUser]);
 
   const validationSchema = Yup.object().shape({
