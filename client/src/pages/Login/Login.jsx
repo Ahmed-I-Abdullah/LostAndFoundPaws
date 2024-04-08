@@ -1,10 +1,8 @@
 import React from "react";
 import { useMobile } from "../../context/MobileContext";
-import { useUser } from '../../context/UserContext';
+import { useUser } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-import { signIn  } from "aws-amplify/auth";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import { signIn } from "aws-amplify/auth";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
@@ -13,6 +11,7 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import CloseButton from "../../components/CloseButton/CloseButton";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,31 +28,24 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters long"),
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long"),
   });
 
   const handleSubmit = async (values) => {
     try {
-      const username = values.email
-      const password = values.password
+      const username = values.email;
+      const password = values.password;
       const signInResponse = await signIn({ username, password }); // AWS calls email username because its dumb
       const { nextStep } = signInResponse;
       switch (nextStep.signInStep) {
         case "CONFIRM_SIGN_UP":
-          console.log(
-            `Verify account before logging in`
-          );
-  
-          handleToastOpen(
-            "error",
-            `Verify account before logging in`
-          );
-  
+          console.log(`Verify account before logging in`);
+
+          handleToastOpen("error", `Verify account before logging in`);
+
           setTimeout(() => {
             setToastOpen(false);
           }, 2000);
@@ -65,10 +57,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Error logging in: ", error);
-      handleToastOpen(
-        "error",
-        "Error logging in"
-      );
+      handleToastOpen("error", "Error logging in");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -95,9 +84,7 @@ const Login = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          <CloseButton onClick={() => navigate("/")} />
         </div>
         <div className="account-header">
           <div className="logo">

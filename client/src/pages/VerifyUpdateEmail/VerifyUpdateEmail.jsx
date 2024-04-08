@@ -2,9 +2,7 @@ import React from "react";
 import { useMobile } from "../../context/MobileContext";
 import { useUser } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
 import { Formik, Form } from "formik";
-import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
@@ -13,6 +11,7 @@ import CustomTextField from "../../components/TextField/TextField";
 import { useNavigate } from "react-router-dom";
 import { confirmUserAttribute } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import CloseButton from "../../components/CloseButton/CloseButton";
 
 const VerifyUpdateEmail = () => {
   const { isMobile } = useMobile();
@@ -33,9 +32,10 @@ const VerifyUpdateEmail = () => {
 
   const handleSubmit = async (values) => {
     try {
-      await confirmUserAttribute({ 
+      await confirmUserAttribute({
         //dont actually need to provide email here just saying updating email
-        userAttributeKey: "email", confirmationCode: values.confirmationCode 
+        userAttributeKey: "email",
+        confirmationCode: values.confirmationCode,
       });
       handleToastOpen("success", "Email verified");
       setTimeout(() => {
@@ -43,10 +43,7 @@ const VerifyUpdateEmail = () => {
       }, 2000);
     } catch (error) {
       console.error("Error verifying email: ", error);
-      handleToastOpen(
-        "error",
-        "Error verifying email"
-      );
+      handleToastOpen("error", "Error verifying email");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -73,9 +70,7 @@ const VerifyUpdateEmail = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          <CloseButton onClick={() => navigate("/")} />
         </div>
         <div className="account-header">
           <div className="logo">
