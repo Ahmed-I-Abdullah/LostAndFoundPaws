@@ -33,7 +33,7 @@ const ForgotPassword = () => {
       handleResetPasswordNextSteps(output, values.email);
     } catch (error) {
       console.error("Error requesting password reset: ", error);
-      handleToastOpen("error", "Error requesting password reset");
+      handleToastOpen("error", "Error requesting password reset.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -59,7 +59,7 @@ const ForgotPassword = () => {
         }, 2000);
         break;
       case "DONE":
-        handleToastOpen("success", "Successfully reset password");
+        handleToastOpen("success", "Successfully reset password.");
         break;
     }
   };

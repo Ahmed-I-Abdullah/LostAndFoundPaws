@@ -149,9 +149,9 @@ const MyPostsAndComments = () => {
       });
       const newPostData = postsData.filter((post) => post.id !== id);
       setPostsData(newPostData);
-      handleToastOpen("success", "Successfully deleted post");
+      handleToastOpen("success", "Successfully deleted post.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting post");
+      handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
     }
     setLoading(false);
@@ -169,9 +169,9 @@ const MyPostsAndComments = () => {
       });
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
-      handleToastOpen("success", "Successfully deleted comment");
+      handleToastOpen("success", "Successfully deleted comment.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting comment");
+      handleToastOpen("error", "Error deleting comment.");
       console.error("Error deleting comment: ", error);
     }
     setLoading(false);

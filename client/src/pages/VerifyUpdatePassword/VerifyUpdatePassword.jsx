@@ -50,13 +50,13 @@ const VerifyUpdatePassword = () => {
         confirmationCode: values.confirmationCode,
         newPassword: values.newPassword,
       });
-      handleToastOpen("success", "Account information updated");
+      handleToastOpen("success", "Account information updated.");
       setTimeout(() => {
         navigate("/MyAccount");
       }, 2000);
     } catch (error) {
       console.error("Error updating account information: ", error);
-      handleToastOpen("error", "Error verifying account");
+      handleToastOpen("error", "Error verifying account.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);

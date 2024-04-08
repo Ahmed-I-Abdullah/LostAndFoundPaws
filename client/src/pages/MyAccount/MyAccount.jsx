@@ -106,7 +106,7 @@ const MyAccount = () => {
       }
     } catch (error) {
       console.log("error updating database:", error);
-      handleToastOpen("error", "Error updating database");
+      handleToastOpen("error", "Error updating database.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -139,7 +139,7 @@ const MyAccount = () => {
             break;
           case "DONE":
             console.log(`attribute was successfully updated.`);
-            handleToastOpen("success", "Successfully verified password");
+            handleToastOpen("success", "Successfully verified password.");
             setTimeout(() => {
               setToastOpen(false);
             }, 2000);
@@ -188,7 +188,7 @@ const MyAccount = () => {
       }
     } catch (error) {
       console.log("Error updating password cognito", error);
-      handleToastOpen("error", "Error updating password cognito");
+      handleToastOpen("error", "Error updating password cognito.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -217,7 +217,7 @@ const MyAccount = () => {
       });
     } catch (error) {
       console.log("error deleting database/S3:", error);
-      handleToastOpen("error", "Error deleting database/S3");
+      handleToastOpen("error", "Error deleting database/s3.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -233,7 +233,7 @@ const MyAccount = () => {
           logoutUser();
         } catch (error) {
           console.log("Error signing out: ", error);
-          handleToastOpen("error", "Error signing out");
+          handleToastOpen("error", "Error signing out.");
           setTimeout(() => {
             setToastOpen(false);
           }, 2000);
@@ -314,13 +314,13 @@ const MyAccount = () => {
         await remove({ key: oldImageKey });
       }
 
-      handleToastOpen("success", "Profile picture updated");
+      handleToastOpen("success", "Profile picture updated.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
     } catch (error) {
       console.log("Error uploading cropped image: ", error);
-      handleToastOpen("error", "Error uploading cropped image");
+      handleToastOpen("error", "Error uploading cropped image.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);

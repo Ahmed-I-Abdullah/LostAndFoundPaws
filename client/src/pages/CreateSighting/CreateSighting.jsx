@@ -63,7 +63,7 @@ const CreateSighting = () => {
         variables: { input: sightingInput },
       });
 
-      handleToastOpen("success", "Sighting post created successfully");
+      handleToastOpen("success", "Sighting post created successfully.");
       setTimeout(() => {
         navigate("/");
       }, 2000);

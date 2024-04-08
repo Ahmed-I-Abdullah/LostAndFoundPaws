@@ -37,13 +37,13 @@ const VerifyUpdateEmail = () => {
         userAttributeKey: "email",
         confirmationCode: values.confirmationCode,
       });
-      handleToastOpen("success", "Email verified");
+      handleToastOpen("success", "Email verified.");
       setTimeout(() => {
         navigate("/MyAccount");
       }, 2000);
     } catch (error) {
       console.error("Error verifying email: ", error);
-      handleToastOpen("error", "Error verifying email");
+      handleToastOpen("error", "Error verifying email.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);

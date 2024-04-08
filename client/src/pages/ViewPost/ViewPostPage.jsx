@@ -92,13 +92,13 @@ const ViewPostPage = () => {
         query: mutations.deletePost,
         variables: { input: deletePostInput },
       });
-      handleToastOpen("success", "Successfully Deleted Post");
+      handleToastOpen("success", "Successfully deleted post.");
 
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      handleToastOpen("error", "Error deleting post");
+      handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
     }
   };
@@ -114,11 +114,11 @@ const ViewPostPage = () => {
         query: mutations.updatePost,
         variables: { input: postInput },
       });
-      handleToastOpen("success", "Successfully marked post as resolved");
+      handleToastOpen("success", "Successfully marked post as resolved.");
 
       setPetData({...petData, resolved: 'true'})
     } catch (error) {
-      handleToastOpen("error", "Error marking post as resolved");
+      handleToastOpen("error", "Error marking post as resolved.");
       console.error("Error marking post as resolved: ", error);
     }
   };
@@ -156,7 +156,7 @@ const ViewPostPage = () => {
   };
 
   const handleReportSubmitted = () => {
-    handleToastOpen("success", "Report submitted successfully");
+    handleToastOpen("success", "Report submitted successfully.");
   };
 
   const [anchorEl, setAnchorEl] = useState(null);

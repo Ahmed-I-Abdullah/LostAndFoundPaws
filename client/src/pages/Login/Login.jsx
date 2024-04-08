@@ -57,7 +57,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Error logging in: ", error);
-      handleToastOpen("error", "Error logging in");
+      handleToastOpen("error", "Error logging in.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);

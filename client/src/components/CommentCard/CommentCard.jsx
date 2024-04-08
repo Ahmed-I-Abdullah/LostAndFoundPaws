@@ -92,7 +92,7 @@ const CommentCard = ({
   };
 
   const handleReportSubmitted = () => {
-    handleToastOpen("success", "Report submitted successfully");
+    handleToastOpen("success", "Report submitted successfully.");
   };
 
   useEffect(() => {
@@ -144,11 +144,11 @@ const CommentCard = ({
         query: mutations.updateComment,
         variables: { input: updateCommentInput },
       });
-      handleToastOpen("success", "Successfully Updated comment");
+      handleToastOpen("success", "Successfully updated comment.");
       setCommentContent(updatedComment.data.updateComment.content);
       setEditedContent(updatedComment.data.updateComment.content);
     } catch (error) {
-      handleToastOpen("error", "Error Updating comment");
+      handleToastOpen("error", "Error updating comment.");
       console.error("Error Updating comment: ", error);
     }
     setEditing(false);
