@@ -155,12 +155,12 @@ const Comments = ({ postId }) => {
               commentData.map((comment, index) => (
                 <CommentCard
                   key={index}
-                  userId={comment.user.id}
-                  userProfilePicture={comment.user.profilePicture}
+                  userId={comment.userID}
+                  userProfilePicture={comment.user?.profilePicture}
                   id={comment.id}
                   content={comment.content}
                   parentCommentId={comment.parentCommentID}
-                  username={comment.user.username}
+                  username={comment.user?.username}
                   createdAt={comment.createdAt}
                   updatedAt={comment.updatedAt}
                   setReply={setReply}
