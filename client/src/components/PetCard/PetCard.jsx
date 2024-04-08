@@ -139,7 +139,7 @@ const PetCard = ({
             marginRight: "1rem",
           }}
         >
-          <Typography variant="subtitle2">
+          <Typography variant="subtitle2" color="#979797">
             {`Posted: ${createdAt.split("T")[0]} - Updated: ${
               updatedAt.split("T")[0]
             }`}

@@ -90,11 +90,11 @@ const SightingDialog = ({
                   {location}
                 </Typography>
                 <Typography
-                  variant="body3"
-                  color="text.secondary"
+                  variant="subtitle2"
+                  color="#979797"
                   style={{ width: "200px" }}
                 >
-                  Posted on{" "}
+                  Posted:{" "}
                   {createdAt ? createdAt.split("T")[0] : "Unavailable"}
                 </Typography>
               </Grid>

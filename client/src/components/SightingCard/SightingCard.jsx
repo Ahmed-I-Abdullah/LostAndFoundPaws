@@ -50,8 +50,8 @@ const SightingCard = ({
             >
               {location}
             </Typography>
-            <Typography variant="body3" color="text.secondary">
-              Posted on {createdAt.split("T")[0]}
+            <Typography variant="subtitle2" color="#979797">
+              Posted: {createdAt.split("T")[0]}
             </Typography>
           </Box>
         </Card>
