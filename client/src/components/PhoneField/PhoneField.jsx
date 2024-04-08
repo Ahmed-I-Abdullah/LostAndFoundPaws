@@ -8,9 +8,6 @@ const PhoneField = (props) => {
   return (
     <MuiPhoneInput
       value={props.value}
-      onChange={(value, data, event, formattedValue) => {
-        props.onChange(formattedValue);
-      }}
       inputClass="phone-field-container"
       buttonStyle={{ marginLeft: 10 }}
       component={CustomTextField}
@@ -19,6 +16,10 @@ const PhoneField = (props) => {
       label=""
       autoFormat
       {...props}
+      onChange={(value, data, event, formattedValue) => {
+        console.log("formatted Value is: ", formattedValue)
+        props.onChange(formattedValue);
+      }}
     />
   );
 };
