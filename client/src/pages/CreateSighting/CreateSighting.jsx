@@ -51,10 +51,10 @@ const CreateSighting = () => {
         },
         image: imageKey || "",
         userID: currentUser ? currentUser.userId : null,
-        contactInfo: {
+        contactInfo: !currentUser ? {
           email: values.email || "",
           phone: values.phoneNumber || "",
-        },
+        } : null,
         reporterType: reporterType,
       };
 
@@ -63,7 +63,7 @@ const CreateSighting = () => {
         variables: { input: sightingInput },
       });
 
-      handleToastOpen("success", "Sighting post created successfully");
+      handleToastOpen("success", "Sighting post created successfully.");
       setTimeout(() => {
         navigate("/");
       }, 2000);

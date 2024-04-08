@@ -9,6 +9,7 @@ import { downloadData } from "@aws-amplify/storage";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import { useUser } from "../../context/UserContext";
+import { getSightingPhoneNumber, getSightingEmail } from "../../utils/utils";
 
 const ListView = ({ selectedType }) => {
   const { userState, currentUser } = useUser();
@@ -98,9 +99,9 @@ const ListView = ({ selectedType }) => {
       });
       const newpostsData = postsData.filter((post) => post.id !== id);
       setPostsData(newpostsData);
-      handleToastOpen("success", "Successfully deleted post");
+      handleToastOpen("success", "Successfully deleted post.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting post");
+      handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
     }
     setLoading(false);
@@ -213,8 +214,8 @@ const ListView = ({ selectedType }) => {
                     userId={sighting.userID}
                     img={sighting.firstImg}
                     location={sighting.location.address}
-                    email={sighting.contactInfo.email}
-                    phoneNumber={sighting.contactInfo.phone}
+                    email={getSightingEmail(sighting)}
+                    phoneNumber={getSightingPhoneNumber(sighting)}
                     createdAt={sighting.createdAt}
                     onDelete={deleteSighting}
                   />

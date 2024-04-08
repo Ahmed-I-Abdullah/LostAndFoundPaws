@@ -2,8 +2,6 @@ import React from "react";
 import { useMobile } from "../../context/MobileContext";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import CustomTextField from "../../components/TextField/TextField";
@@ -11,8 +9,8 @@ import Button from "@mui/material/Button";
 import { resetPassword } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { useNavigate } from "react-router-dom";
+import CloseButton from "../../components/CloseButton/CloseButton";
 import * as Yup from "yup";
-
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -26,9 +24,7 @@ const ForgotPassword = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
   });
 
   const handleSubmit = async (values) => {
@@ -37,10 +33,7 @@ const ForgotPassword = () => {
       handleResetPasswordNextSteps(output, values.email);
     } catch (error) {
       console.error("Error requesting password reset: ", error);
-      handleToastOpen(
-        "error",
-        "Error requesting password reset"
-      );
+      handleToastOpen("error", "Error requesting password reset.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -66,7 +59,7 @@ const ForgotPassword = () => {
         }, 2000);
         break;
       case "DONE":
-        handleToastOpen("success", "Successfully reset password");
+        handleToastOpen("success", "Successfully reset password.");
         break;
     }
   };
@@ -91,9 +84,7 @@ const ForgotPassword = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          <CloseButton onClick={() => navigate("/")} />
         </div>
         <div className="account-header">
           <div className="logo">

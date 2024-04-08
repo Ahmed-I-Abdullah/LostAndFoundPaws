@@ -35,7 +35,7 @@ const EditPost = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      handleToastOpen("error", "Error fetching post");
+      handleToastOpen("error", "Error fetching post.");
       console.error("Error fetching post: ", error);
     }
   };
@@ -125,10 +125,6 @@ const EditPost = () => {
         species: values.species,
         userID: user.userId,
         images: imageKeys,
-        contactInfo: {
-          email: values.email || "",
-          phone: values.phoneNumber || "",
-        },
       };
 
       await client.graphql({
@@ -136,13 +132,13 @@ const EditPost = () => {
         variables: { input: postInput },
       });
 
-      handleToastOpen("success", "Post updated successfully");
+      handleToastOpen("success", "Post updated successfully.");
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
       console.error("Error updating post: ", error);
-      handleToastOpen("error", "Error updating post. Please try again later");
+      handleToastOpen("error", "Error updating post.");
     }
   };
 

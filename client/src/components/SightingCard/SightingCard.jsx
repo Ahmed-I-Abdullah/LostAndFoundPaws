@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Typography, Card, CardMedia, Box, ButtonBase } from "@mui/material";
+import { Typography, Card, CardMedia, Box, ButtonBase, useMediaQuery } from "@mui/material";
 import { useMobile } from "../../context/MobileContext";
 import SightingDialog from "../SightingDialog/SightingDialog";
+import theme from "../../theme/theme";
 
 const SightingCard = ({
   id,
@@ -15,6 +16,7 @@ const SightingCard = ({
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const small = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClickOpen = () => {
     setIsCardOpen(true);
@@ -40,7 +42,8 @@ const SightingCard = ({
           />
           <Box sx={{ padding: "1rem", marginTop: "10px" }}>
             <Typography
-              variant="h1"
+              variant={small ? "h7" : "h6"}
+              fontWeight={"bold"}
               component="div"
               sx={{
                 whiteSpace: "nowrap",
@@ -50,8 +53,8 @@ const SightingCard = ({
             >
               {location}
             </Typography>
-            <Typography variant="body3" color="text.secondary">
-              Posted on {createdAt.split("T")[0]}
+            <Typography variant="subtitle2" color="#979797">
+              Posted: {createdAt.split("T")[0]}
             </Typography>
           </Box>
         </Card>

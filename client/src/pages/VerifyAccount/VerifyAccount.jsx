@@ -2,9 +2,7 @@ import React from "react";
 import { useMobile } from "../../context/MobileContext";
 import { useUser } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
 import { Formik, Form } from "formik";
-import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
 import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
@@ -13,6 +11,7 @@ import CustomTextField from "../../components/TextField/TextField";
 import { useLocation, useNavigate } from "react-router-dom";
 import { confirmSignUp } from "aws-amplify/auth";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import CloseButton from "../../components/CloseButton/CloseButton";
 
 const VerifyAccount = () => {
   const { isMobile } = useMobile();
@@ -33,28 +32,24 @@ const VerifyAccount = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
     confirmationCode: Yup.string().required("Confirmation code is required"),
   });
 
   const handleSubmit = async (values) => {
     try {
-      await confirmSignUp({ 
-        username: values.email, confirmationCode: values.confirmationCode 
+      await confirmSignUp({
+        username: values.email,
+        confirmationCode: values.confirmationCode,
       });
       await updateUserContext();
-      handleToastOpen("success", "Account verified");
+      handleToastOpen("success", "Account verified.");
       setTimeout(() => {
         navigate("/Login");
       }, 2000);
     } catch (error) {
       console.error("Error verifying account: ", error);
-      handleToastOpen(
-        "error",
-        "Error verifying account"
-      );
+      handleToastOpen("error", "Error verifying account.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -81,9 +76,7 @@ const VerifyAccount = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          <CloseButton onClick={() => navigate("/")} />
         </div>
         <div className="account-header">
           <div className="logo">
@@ -101,7 +94,7 @@ const VerifyAccount = () => {
           {({ errors, touched, handleSubmit, setFieldValue, values }) => (
             <Form onSubmit={handleSubmit}>
               <div className="account-form-component">
-              Enter the confirmation code emailed to you
+                Enter the confirmation code emailed to you
               </div>
               <div className="account-form-component">
                 <CustomTextField

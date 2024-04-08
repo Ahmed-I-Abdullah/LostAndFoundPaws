@@ -1,13 +1,19 @@
 import React from "react";
 import { useMobile } from "../../context/MobileContext";
-import { useUser } from '../../context/UserContext';
+import { useUser } from "../../context/UserContext";
 import { signUp } from "aws-amplify/auth";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import { generateClient } from 'aws-amplify/api';
+import { generateClient } from "aws-amplify/api";
 import * as Yup from "yup";
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "../../sharedStyles/SharedStyles.css";
@@ -15,6 +21,8 @@ import PawLogo from "../../sharedStyles/PawLogo.png";
 import Button from "@mui/material/Button";
 import CustomTextField from "../../components/TextField/TextField";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
+import PhoneField from "../../components/PhoneField/PhoneField";
+import CloseButton from "../../components/CloseButton/CloseButton";
 
 //Unauthorized do not have access to report or related fields
 //Living here since mutations are auto generated and will be overwritten, probably a better place to put it
@@ -55,7 +63,7 @@ const Signup = () => {
   const { isMobile } = useMobile();
   const { updateUserContext } = useUser();
 
-  const client = generateClient({authMode: 'apiKey'});
+  const client = generateClient({ authMode: "apiKey" });
 
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
@@ -67,31 +75,28 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
-    role: 'POSTER'
+    role: "POSTER",
   };
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
-    email: Yup.string()
-      .email("Invalid email")
-      .required("Email is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters long"),
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long"),
     confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Confirm Password is required"),
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
     phoneNumber: Yup.string().optional(),
-    role: Yup.string().required('Role is required'),
+    role: Yup.string().required("Role is required"),
   });
 
   const handleSubmit = async (values) => {
-
-    const username = values.username
-    const password = values.password
-    const email = values.email
-    const phoneNumber = values.phoneNumber
-    const role = values.role
+    const username = values.username;
+    const password = values.password;
+    const email = values.email;
+    const phoneNumber = values.phoneNumber;
+    const role = values.role;
 
     //Could seperate into two try catches for better error handling
     try {
@@ -101,13 +106,13 @@ const Signup = () => {
         options: {
           userAttributes: {
             email: email,
-            'custom:role': role // This is used for the post confirmation trigger to add the user to a cognito group
-          }
-        }
+            "custom:role": role, // This is used for the post confirmation trigger to add the user to a cognito group
+          },
+        },
       });
 
       await updateUserContext();
- 
+
       const result = await client.graphql({
         query: createUserNoAuth.replaceAll("__typename", ""),
         variables: {
@@ -116,8 +121,8 @@ const Signup = () => {
             username: username,
             email: email,
             phone: phoneNumber,
-            role: role
-          }
+            role: role,
+          },
         },
       });
 
@@ -128,28 +133,23 @@ const Signup = () => {
           console.log(
             `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
           );
-  
+
           handleToastOpen(
             "success",
             `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
           );
-  
+
           setTimeout(() => {
-            navigate("/verifyAccount", { state: {  email: email }});
+            navigate("/verifyAccount", { state: { email: email } });
           }, 2000);
           break;
         case "DONE":
-          handleToastOpen(
-            "success", 
-            "Successfully verified password");
+          handleToastOpen("success", "Successfully verified password.");
           break;
       }
     } catch (error) {
-      console.log('error signing up:', error);
-      handleToastOpen(
-        "error",
-        "Error signing up"
-      );
+      console.log("error signing up:", error);
+      handleToastOpen("error", "Error signing up.");
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -176,9 +176,7 @@ const Signup = () => {
         }`}
       >
         <div className="close-button">
-          <IconButton href="./" aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          <CloseButton onClick={() => navigate('/')} />
         </div>
         <div className="account-header">
           <div className="logo">
@@ -256,20 +254,19 @@ const Signup = () => {
                 />
               </div>
               <div className="account-form-component">
-                <CustomTextField
-                  name="phoneNumber"
-                  label="Phone Number (Optional)"
-                  variant="outlined"
+                <PhoneField
                   value={values.phoneNumber}
-                  onChange={(event) => {
-                    setFieldValue("phoneNumber", event.target.value);
+                  onChange={(value) => {
+                    setFieldValue("phoneNumber", value);
                   }}
-                  fullWidth
+                  label="Phone Number (Optional)"
                 />
               </div>
               <div className="account-form-component-with-optional-text">
                 <FormControl component="fieldset">
-                  <FormLabel component="legend" sx={{ color: '#000000' }}>Role</FormLabel>
+                  <FormLabel component="legend" sx={{ color: "#000000" }}>
+                    Role
+                  </FormLabel>
                   <RadioGroup
                     row
                     aria-label="role"
@@ -278,10 +275,18 @@ const Signup = () => {
                     onChange={(event) => {
                       setFieldValue("role", event.target.value);
                     }}
-                    sx={{ marginBottom: '-16px', marginTop: '-8px'}}
+                    sx={{ marginBottom: "-16px", marginTop: "-8px" }}
                   >
-                    <FormControlLabel value="POSTER" control={<Radio />} label="Poster" />
-                    <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
+                    <FormControlLabel
+                      value="POSTER"
+                      control={<Radio />}
+                      label="Poster"
+                    />
+                    <FormControlLabel
+                      value="ADMIN"
+                      control={<Radio />}
+                      label="Admin"
+                    />
                   </RadioGroup>
                 </FormControl>
               </div>

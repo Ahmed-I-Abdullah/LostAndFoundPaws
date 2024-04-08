@@ -24,7 +24,7 @@ const ImageUpload = ({
                 className="delete-button"
                 onClick={() => handleRemoveImage(index)}
               >
-                <RemoveCircleIcon />
+                <RemoveCircleIcon sx={{ stroke: "#ffffff", strokeWidth: 1 }} />
               </button>
             </div>
           ))}

@@ -56,7 +56,7 @@ const sightingsData = [
 ];
 
 const MyPostsAndComments = () => {
-  const { userState, currentUser } = useUser();
+  const { userState, currentUser, currentProfilePictureImageData } = useUser();
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
@@ -149,9 +149,9 @@ const MyPostsAndComments = () => {
       });
       const newPostData = postsData.filter((post) => post.id !== id);
       setPostsData(newPostData);
-      handleToastOpen("success", "Successfully deleted post");
+      handleToastOpen("success", "Successfully deleted post.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting post");
+      handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
     }
     setLoading(false);
@@ -169,9 +169,9 @@ const MyPostsAndComments = () => {
       });
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
-      handleToastOpen("success", "Successfully deleted comment");
+      handleToastOpen("success", "Successfully deleted comment.");
     } catch (error) {
-      handleToastOpen("error", "Error deleting comment");
+      handleToastOpen("error", "Error deleting comment.");
       console.error("Error deleting comment: ", error);
     }
     setLoading(false);
@@ -214,11 +214,12 @@ const MyPostsAndComments = () => {
                 ? commentData.map((comment, index) => (
                   <CommentCard
                     key={index}
-                    userId={comment.userID}
+                    userId={currentUser?.id}
                     id={comment.id}
+                    userProfilePicture={currentProfilePictureImageData.key}
                     content={comment.content}
                     parentCommentId={comment.parentCommentID}
-                    username={comment.userName}
+                    username={currentUser?.username}
                     createdAt={comment.createdAt}
                     updatedAt={comment.updatedAt}
                     onDelete={deleteComment}

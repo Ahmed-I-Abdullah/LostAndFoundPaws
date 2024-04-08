@@ -550,6 +550,18 @@ export const listPosts = /* GraphQL */ `
           __typename
         }
         userID
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -866,6 +878,18 @@ export const listSightings = /* GraphQL */ `
         contactInfo {
           email
           phone
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          owner
           __typename
         }
         createdAt

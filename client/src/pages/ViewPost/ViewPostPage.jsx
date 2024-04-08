@@ -92,13 +92,13 @@ const ViewPostPage = () => {
         query: mutations.deletePost,
         variables: { input: deletePostInput },
       });
-      handleToastOpen("success", "Successfully Deleted Post");
+      handleToastOpen("success", "Successfully deleted post.");
 
       setTimeout(() => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      handleToastOpen("error", "Error deleting post");
+      handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
     }
   };
@@ -114,11 +114,11 @@ const ViewPostPage = () => {
         query: mutations.updatePost,
         variables: { input: postInput },
       });
-      handleToastOpen("success", "Successfully marked post as resolved");
+      handleToastOpen("success", "Successfully marked post as resolved.");
 
       setPetData({...petData, resolved: 'true'})
     } catch (error) {
-      handleToastOpen("error", "Error marking post as resolved");
+      handleToastOpen("error", "Error marking post as resolved.");
       console.error("Error marking post as resolved: ", error);
     }
   };
@@ -156,7 +156,7 @@ const ViewPostPage = () => {
   };
 
   const handleReportSubmitted = () => {
-    handleToastOpen("success", "Report submitted successfully");
+    handleToastOpen("success", "Report submitted successfully.");
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -371,9 +371,10 @@ const ViewPostPage = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle2" color="#979797">
-              Posted: {new Date(petData.createdAt).toDateString()} - Updated:{" "}
-              {new Date(petData.updatedAt).toDateString()}
-            </Typography>
+            {`Posted: ${petData.createdAt.split("T")[0]} - Updated: ${
+              petData.updatedAt.split("T")[0]
+            }`}
+          </Typography>
           </Grid>
         </Grid>
         <Grid item container columnSpacing={15}>
@@ -475,16 +476,16 @@ const ViewPostPage = () => {
                 <>
                   <Typography variant="body2">
                     <span className="span-key">Email:</span>{" "}
-                    {petData.contactInfo && petData.contactInfo.email
-                      ? petData.contactInfo.email
+                    {petData.user && petData.user.email
+                      ? petData.user.email
                       : petData.user && petData.user.email
                       ? petData.user.email
                       : "Unavailable"}
                   </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Phone:</span>{" "}
-                    {petData.contactInfo && petData.contactInfo.phone
-                      ? petData.contactInfo.phone
+                    {petData.user && petData.user.phone
+                      ? petData.user.phone
                       : "Unavailable"}
                   </Typography>
                   <Typography variant="body2">
