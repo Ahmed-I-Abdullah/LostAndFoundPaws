@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState  } from "react";
 import theme from "../../theme/theme";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Toggle from "../../components/Toggle/Toggle";
@@ -285,7 +285,7 @@ const HomePageTemp = () => {
         <Box
           className="list-view"
           style={{
-            width: isSideBarOpen && !isMobile ? "calc(100vw - 390px)" : "auto",
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 400px)" : "auto",
           }}
         >
           <ListView selectedType={selectedType} />
