@@ -34,7 +34,7 @@ const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
         />
       </Box>
       <Box sx={{ borderTop: '1px solid #eee', padding: '16px' }}>
-        <Typography variant="h6" sx={{ marginBottom: '8px' }}>Report Description</Typography>
+        <Typography variant="h2" fontWeight="bold" sx={{ marginBottom: '8px' }}>Report Description</Typography>
         <Typography sx={{ marginBottom: '10px' }}>Report Reason: {report.reason}</Typography>
         <Typography sx={{ marginBottom: '16px' }}>Report Descriptions: {report.description}</Typography>
         

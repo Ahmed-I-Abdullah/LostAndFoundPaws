@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogContent,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,6 +37,7 @@ const SightingDialog = ({
   const { userState, currentUser } = useUser();
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const small = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClose = () => {
     setIsCardOpen(false);
@@ -83,8 +85,8 @@ const SightingDialog = ({
                 }}
               >
                 <Typography
-                  variant="h1"
-                  component="div"
+                  variant={small ? "h7" : "h6"}
+                  fontWeight={"bold"}
                   style={{ paddingRight: "10px", width: "600px" }}
                 >
                   {location}
@@ -100,8 +102,8 @@ const SightingDialog = ({
               </Grid>
               <Grid sx={{ marginTop: "30px" }} />
               <Grid>
-                <Typography variant="h3" color="text.secondary">
-                  <strong>Contact Information</strong>
+                <Typography variant="h2" fontWeight="bold" sx={{ display: "flex", justifyContent: "center" }}>
+                  Contact Information
                 </Typography>
                 <Typography
                   variant="body2"
