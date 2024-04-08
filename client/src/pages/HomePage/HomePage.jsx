@@ -228,11 +228,11 @@ const HomePageTemp = () => {
             md={isMobile ? 6 : 4}
             margin={isMobile && "auto"}
             marginTop={isMobile && 14}
-            marginRight={50}
+            marginRight={isMobile ? 0 : 50}
             style={{
               zIndex: 2,
               position: isMobile && "fixed",
-              marginLeft: isMobile && "50px",
+              marginLeft: isMobile && "25px",
               width: "100%",
             }}
           >

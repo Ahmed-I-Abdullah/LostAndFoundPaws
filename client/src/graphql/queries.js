@@ -518,7 +518,6 @@ export const getPost = /* GraphQL */ `
   }
 `;
 
-
 export const listPosts = /* GraphQL */ `
   query ListPosts(
     $id: ID
@@ -858,6 +857,17 @@ export const listSightings = /* GraphQL */ `
         image
         reporterType
         userID
+        location {
+          latitude
+          longitude
+          address
+          __typename
+        }
+        contactInfo {
+          email
+          phone
+          __typename
+        }
         createdAt
         updatedAt
         owner

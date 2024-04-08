@@ -28,30 +28,38 @@ body {
 
 .popup-card {
   width: auto;
-  height: auto;
+  height: 120px;
   background-color: white;
   border-radius: 10px;
-  padding: 10px;
+  padding-right: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  cursor: pointer;
 }
 
 .popup-image {
   width: 150px;
-  height: 100px;
-  margin-right: 10px;
+  object-fit: cover;
 }
 
 .popup-content {
-  width: 140px;
-  height: 70px;
+  width: auto;
+  height: auto;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  margin: "10px";
   justify-content: space-between;
-  margin-top: 15px;
+  align-content: space-between;
+}
+
+.labels {
+  display: flex;
+  flex-direction: row;
+}
+
+.label {
+  padding-right: 5px;
 }
 
 .status {
@@ -64,16 +72,4 @@ body {
   height: 10px;
   border-radius: 5px;
   color: white;
-}
-
-.arrow {
-  display: flex;
-  position: fixed;
-  right: 15px;
-  bottom: 75px;
-}
-
-.arrow-image {
-  width: 20px;
-  height: 20px;
 }
