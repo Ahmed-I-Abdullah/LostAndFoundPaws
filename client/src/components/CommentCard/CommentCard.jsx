@@ -44,16 +44,9 @@ const CommentCard = ({
     client = generateClient({ authMode: "userPool" });
   }
 
-  const [commentProfilePicture, setCommentProfilePicture] = useState('');
+  const [commentProfilePicture, setCommentProfilePicture] = useState("");
 
   const [commentContent, setCommentContent] = useState(content);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return date.toLocaleDateString("en-US", options);
-  };
-
   const [expandedComment, setExpandedComment] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
@@ -98,7 +91,8 @@ const CommentCard = ({
   useEffect(() => {
     const fetchProfilePicture = async () => {
       try {
-        const imageData = await downloadData({ key: userProfilePicture }).result;
+        const imageData = await downloadData({ key: userProfilePicture })
+          .result;
         const imageSrc = URL.createObjectURL(imageData.body);
         setCommentProfilePicture(imageSrc);
       } catch (error) {
@@ -117,17 +111,19 @@ const CommentCard = ({
           setParentCommentUsername(parentComment.user.username);
         }
       } catch (error) {
-        console.error("Error fetching parent comment, parent comment might have been deleted: ", error);
+        console.error(
+          "Error fetching parent comment, parent comment might have been deleted: ",
+          error
+        );
       }
     };
-    if(userProfilePicture) {
+    if (userProfilePicture) {
       fetchProfilePicture();
     }
     if (parentCommentId) {
       fetchParentComment();
     }
   }, []);
-
 
   const handleConfirmDelete = async () => {
     onDelete(id);
@@ -173,24 +169,27 @@ const CommentCard = ({
     >
       <IconButton disabled>
         <Avatar
-            style={{
-              width: "50px",
-              height: "50px",
-            }}
-            src={commentProfilePicture}
-          >
-          </Avatar>
+          style={{
+            width: "50px",
+            height: "50px",
+          }}
+          src={commentProfilePicture}
+        ></Avatar>
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
-          <Typography variant="h7" noWrap>{username}</Typography>
-          <Typography variant="caption" >{formatDate(createdAt)}</Typography>
+          <Typography variant="h7" noWrap>
+            {username ? username : "Unavailable"}
+          </Typography>
+          <Typography variant="subtitle2" color="#979797">
+            Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"}
+          </Typography>
         </Box>
         <Box
           className="comment-content"
           style={{ color: `${theme.palette.custom.greyBkg.comment.content}` }}
         >
-          {(parentCommentContent && parentCommentUsername) && (
+          {parentCommentContent && parentCommentUsername && (
             <Typography color={`${theme.palette.primary.main}`} noWrap>
               {`@${parentCommentUsername} ${parentCommentContent}`}
             </Typography>
@@ -228,7 +227,8 @@ const CommentCard = ({
           )}
         </Box>
         <Box className="comment-actions">
-          {((userState === "Admin" || currentUser?.id === userId) && pathname !== "/viewReportings") ? (
+          {(userState === "Admin" || currentUser?.id === userId) &&
+          pathname !== "/viewReportings" ? (
             <>
               <Button
                 variant="text"
@@ -270,27 +270,36 @@ const CommentCard = ({
                 <Typography variant="h9">Delete</Typography>
               </Button>
             </>
-          ) : ((userState !== "Guest") && pathname !== "/viewReportings") && (
-            <>
-              <Button
-                variant="text"
-                sx={{ color: `${theme.palette.text.primary}` }}
-                onClick={() => setReply(id)}
-                size="small"
-              >
-                <ReplyIcon />
-                <Typography variant="h9">Reply</Typography>
-              </Button>
-              <Button
-                variant="text"
-                sx={{ color: `${theme.palette.text.primary}` }}
-                onClick={() => setIsReportModalOpen(true)}
-                size="small"
-              >
-                <FlagIcon />
-                <Typography variant="h9">Report</Typography>
-              </Button>
-            </>
+          ) : (
+            userState !== "Guest" &&
+            pathname !== "/viewReportings" && (
+              <>
+                <Button
+                  variant="text"
+                  sx={{ color: `${theme.palette.text.primary}` }}
+                  onClick={() => {
+                    if (username) {
+                      setReply(id);
+                    } else {
+                      handleToastOpen("error", "Can't reply to a deleted user");
+                    }
+                  }}
+                  size="small"
+                >
+                  <ReplyIcon />
+                  <Typography variant="h9">Reply</Typography>
+                </Button>
+                <Button
+                  variant="text"
+                  sx={{ color: `${theme.palette.text.primary}` }}
+                  onClick={() => setIsReportModalOpen(true)}
+                  size="small"
+                >
+                  <FlagIcon />
+                  <Typography variant="h9">Report</Typography>
+                </Button>
+              </>
+            )
           )}
         </Box>
       </Box>
