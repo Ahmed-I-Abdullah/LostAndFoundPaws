@@ -22,6 +22,7 @@ const VerifyAccount = () => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   // These are passed in from signup when navigating to VerifyAccount
   const { email } = location.state || {};
@@ -37,6 +38,7 @@ const VerifyAccount = () => {
   });
 
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     try {
       await confirmSignUp({
         username: values.email,
@@ -45,12 +47,14 @@ const VerifyAccount = () => {
       await updateUserContext();
       handleToastOpen("success", "Account verified.");
       setTimeout(() => {
+        setIsSubmitting(false);
         navigate("/Login");
       }, 2000);
     } catch (error) {
       console.error("Error verifying account: ", error);
       handleToastOpen("error", "Error verifying account.");
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
@@ -127,7 +131,7 @@ const VerifyAccount = () => {
                 />
               </div>
               <div className="account-form-component">
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                   Verify Account
                 </Button>
               </div>

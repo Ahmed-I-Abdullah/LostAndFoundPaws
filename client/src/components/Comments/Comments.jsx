@@ -32,6 +32,7 @@ const Comments = ({ postId }) => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleToastOpen = (severity, message) => {
     setToastSeverity(severity);
@@ -91,6 +92,7 @@ const Comments = ({ postId }) => {
   };
 
   const postComment = async () => {
+    setIsSubmitting(true);
     setLoading(true);
     try {
       const commentInput = {
@@ -107,16 +109,19 @@ const Comments = ({ postId }) => {
       const newCommentData = [newComment.data.createComment, ...commentData];
       setCommentData(newCommentData);
       handleToastOpen("success", "Comment successfully added.");
+      setIsSubmitting(false);
     } catch (error) {
       handleToastOpen(
         "error",
         "Unable to add comment for the post. Make sure you are logged in."
       );
       console.error("Error posting comment for the post: ", error);
+      setIsSubmitting(false);
     }
     setLoading(false);
   };
   const deleteComment = async (id) => {
+    setIsSubmitting(true);
     setLoading(true);
     const deleteCommentInput = {
       id: id,
@@ -129,9 +134,11 @@ const Comments = ({ postId }) => {
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
       handleToastOpen("success", "Successfully deleted comment.");
+      setIsSubmitting(false);
     } catch (error) {
       handleToastOpen("error", "Error deleting comment.");
       console.error("Error deleting comment: ", error);
+      setIsSubmitting(false);
     }
     setLoading(false);
   };
@@ -209,7 +216,7 @@ const Comments = ({ postId }) => {
                 </div>
                 <Button
                   variant="contained"
-                  disabled={postCommentText.length === 0 || loading}
+                  disabled={postCommentText.length === 0 || loading || isSubmitting}
                   sx={{
                     backgroundColor: `${theme.palette.primary.main}`,
                     borderRadius: "1rem",

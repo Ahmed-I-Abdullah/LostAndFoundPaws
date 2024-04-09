@@ -51,6 +51,8 @@ const MyAccount = () => {
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const initialValues = {
     username: currentUsername,
     email: currentEmail,
@@ -82,6 +84,7 @@ const MyAccount = () => {
 
   //For updating account
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     //Update database
     try {
       const user = await getCurrentUser();
@@ -101,6 +104,7 @@ const MyAccount = () => {
         //not updating email so don't need to do the verification toast
         handleToastOpen("success", `Updated account`);
         setTimeout(() => {
+          setIsSubmitting(false);
           setToastOpen(false);
         }, 2000);
       }
@@ -108,6 +112,9 @@ const MyAccount = () => {
       console.log("error updating database:", error);
       handleToastOpen("error", "Error updating database.");
       setTimeout(() => {
+        if (values.email == currentEmail) {
+          setIsSubmitting(false);
+        }
         setToastOpen(false);
       }, 2000);
     }
@@ -134,6 +141,7 @@ const MyAccount = () => {
             );
 
             setTimeout(() => {
+              setIsSubmitting(false);
               navigate("/VerifyUpdateEmail");
             }, 2000);
             break;
@@ -141,6 +149,7 @@ const MyAccount = () => {
             console.log(`attribute was successfully updated.`);
             handleToastOpen("success", "Successfully verified password.");
             setTimeout(() => {
+              setIsSubmitting(false);
               setToastOpen(false);
             }, 2000);
             break;
@@ -155,6 +164,7 @@ const MyAccount = () => {
           "Error updating email cognito, email in database and cognito may be out of sync now"
         );
         setTimeout(() => {
+          setIsSubmitting(false);
           setToastOpen(false);
         }, 2000);
       }
@@ -162,6 +172,7 @@ const MyAccount = () => {
   };
 
   const handleUpdatePassword = async () => {
+    setIsSubmitting(true);
     try {
       const output = await resetPassword({ username: currentEmail });
       const { nextStep } = output;
@@ -177,12 +188,14 @@ const MyAccount = () => {
           );
 
           setTimeout(() => {
+            setIsSubmitting(false);
             navigate("/VerifyUpdatePassword", {
               state: { email: currentEmail },
             });
           }, 2000);
           break;
         case "DONE":
+          setIsSubmitting(false);
           console.log("Successfully reset password.");
           break;
       }
@@ -190,12 +203,14 @@ const MyAccount = () => {
       console.log("Error updating password cognito", error);
       handleToastOpen("error", "Error updating password cognito.");
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
   };
 
   const handleDeleteConfirmed = async () => {
+    setIsSubmitting(true);
     setOpenConfirmDelete(false);
     try {
       const user = await getCurrentUser();
@@ -227,6 +242,7 @@ const MyAccount = () => {
       await deleteUser();
       console.log(`Deleted user`);
       handleToastOpen("success", `Deleted user`);
+      setIsSubmitting(false);
 
       setTimeout(() => {
         try {
@@ -250,6 +266,7 @@ const MyAccount = () => {
         "Error deleting cognito user, user in database and cognito may be out of sync now"
       );
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
@@ -441,7 +458,7 @@ const MyAccount = () => {
                 />
               </div>
               <div className="account-form-component">
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                   Update Account
                 </Button>
                 <span style={{ paddingTop: "2px" }}>
@@ -458,6 +475,7 @@ const MyAccount = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => handleUpdatePassword()}
+                  disabled={isSubmitting}
                 >
                   Update Password
                 </Button>
@@ -475,6 +493,7 @@ const MyAccount = () => {
                   variant="outlined"
                   color="secondary"
                   onClick={() => setOpenConfirmDelete(true)}
+                  disabled={isSubmitting}
                 >
                   Delete Account
                 </Button>

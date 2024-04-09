@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";
@@ -18,10 +18,12 @@ const CreateSighting = () => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (values) => {
     try {
       let imageKey = "";
+      setIsSubmitting(true);
       if (values.image) {
         imageKey = `images/${Date.now()}_${values.image.name}`;
         await uploadData({
@@ -65,6 +67,7 @@ const CreateSighting = () => {
 
       handleToastOpen("success", "Sighting post created successfully.");
       setTimeout(() => {
+        setIsSubmitting(false);
         navigate("/");
       }, 2000);
     } catch (error) {
@@ -73,6 +76,7 @@ const CreateSighting = () => {
         "error",
         "Error creating sighting post. Please try again later."
       );
+      setIsSubmitting(false);
     }
   };
 
@@ -92,7 +96,7 @@ const CreateSighting = () => {
 
   return (
     <div>
-      <CreateSightingForm isEdit={false} handleSubmit={handleSubmit} />
+      <CreateSightingForm isEdit={false} handleSubmit={handleSubmit} isSubmitting={isSubmitting} />
       <ToastNotification
         open={toastOpen}
         severity={toastSeverity}
