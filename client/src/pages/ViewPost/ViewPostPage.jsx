@@ -314,6 +314,10 @@ const ViewPostPage = () => {
                       anchorEl={anchorEl}
                       open={open}
                       handleClose={handleClose}
+                      handleEdit={() => navigate(`/posts/${petData.id}/edit`)}
+                      handleDelete={() => setOpenConfirmDelete(true)}
+                      handleResolved={() => setOpenConfirmResolve(true)}
+                      resolved={petData.resolved == 'true'}
                     />
                   </div>
                 ) : (
