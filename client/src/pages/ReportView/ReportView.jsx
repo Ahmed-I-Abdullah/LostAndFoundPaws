@@ -49,11 +49,12 @@ const ReportView = ({ selectedType }) => {
                             variables: { id: report.commentID },
                         });
                         const comment = commentData.data.getComment;
+                        if(comment == null) return { ...report, comment: null }
                         const detailedComment = {
                             ...comment,
-                            username: comment.user.username,
-                            avatar: comment.user.profilePicture,
-                            userId: comment.user.id,
+                            username: comment.user?.username || "Deleted",
+                            avatar: comment.user?.profilePicture || "",
+                            userId: comment.user?.id,
                             replyTo : comment.replyTo
                         };
                         return { ...report, comment: detailedComment };
