@@ -17,7 +17,7 @@ import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
 import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
 
-const MapView = ({ selectedType }) => {
+const MapView = ({ selectedType, filterPosts, filterSightings }) => {
   const [, setMarkers] = useState([]);
   const [markersData, setMarkersData] = useState([]);
   const [toastOpen, setToastOpen] = useState(false);
@@ -44,10 +44,13 @@ const MapView = ({ selectedType }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const listPostsResponse = await client.graphql({
-          query: queries.listPosts,
-        });
-        const posts = listPostsResponse.data.listPosts.items;
+        let posts = filterPosts || [];
+        if (filterPosts === null) {
+          const listPostsResponse = await client.graphql({
+            query: queries.listPosts,
+          });
+          posts = listPostsResponse.data.listPosts.items;
+        }
         const postsInfo = await Promise.all(
           posts.map(async (post) => {
             const imageData = await downloadData({ key: post.images[0] })
@@ -68,10 +71,13 @@ const MapView = ({ selectedType }) => {
           })
         );
 
-        const listSightingsResponse = await client.graphql({
-          query: queries.listSightings,
-        });
-        const sightings = listSightingsResponse.data.listSightings.items;
+        let sightings = filterSightings || [];
+        if (filterSightings === null) {
+          const listSightingsResponse = await client.graphql({
+            query: queries.listSightings,
+          });
+          sightings = listSightingsResponse.data.listSightings.items;
+        }
         const sightingsInfo = await Promise.all(
           sightings.map(async (sighting) => {
             const imageData = await downloadData({ key: sighting.image })
@@ -232,9 +238,7 @@ const MapView = ({ selectedType }) => {
                 }
               </div>
               <Typography style="margin: 0px; font-size: 14px; color: #979797;">
-                Posted: ${
-                  markerData.createdAt.split("T")[0]
-                }
+                Posted: ${markerData.createdAt.split("T")[0]}
               </Typography>
             </div>
           </div>

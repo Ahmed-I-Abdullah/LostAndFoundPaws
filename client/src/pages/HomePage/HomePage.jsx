@@ -1,4 +1,4 @@
-import React, { useState  } from "react";
+import React, { useState } from "react";
 import theme from "../../theme/theme";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Toggle from "../../components/Toggle/Toggle";
@@ -47,6 +47,27 @@ const viewOptions = [
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [filterPosts, setFilterPosts] = useState(null);
+  const [filterSightings, setFilterSightings] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tempSearchTerm, setTempSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("Newest");
+  const [species, setSpecies] = useState({
+    dog: false,
+    cat: false,
+    other: false,
+  });
+  const [gender, setGender] = useState({
+    male: false,
+    female: false,
+    other: false,
+  });
+  const [locationAway, setLocationAway] = useState(0);
+  const [disableLocationFilter, setDisableLocationFilter] = useState(true);
+  const [reportReason, setReportReason] = useState({
+    inappropriate: false,
+    spam: false,
+  });
 
   const [selectedView, setSelectedView] = useState("List View");
   const [selectedType, setSelectedType] = useState(
@@ -117,7 +138,26 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                setFilterPosts={setFilterPosts}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
               />
             ))}
           {isMobile && (
@@ -161,7 +201,26 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                setFilterPosts={setFilterPosts}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
               />
             ))}
         </Grid>
@@ -219,7 +278,26 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                setFilterPosts={setFilterPosts}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
               />
             ))}
           <Grid
@@ -276,7 +354,26 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                setFilterPosts={setFilterPosts}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
               />
             ))}
         </Grid>
@@ -285,13 +382,21 @@ const HomePageTemp = () => {
         <Box
           className="list-view"
           style={{
-            width: isSideBarOpen && !isMobile ? "calc(100vw - 400px)" : "auto",
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 420px)" : "auto",
           }}
         >
-          <ListView selectedType={selectedType} />
+          <ListView
+            selectedType={selectedType}
+            filterPosts={filterPosts}
+            filterSightings={filterSightings}
+          />
         </Box>
       ) : (
-        <MapView selectedType={selectedType} />
+        <MapView
+          selectedType={selectedType}
+          filterPosts={filterPosts}
+          filterSightings={filterSightings}
+        />
       )}
     </div>
   );

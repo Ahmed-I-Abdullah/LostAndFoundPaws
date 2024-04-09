@@ -11,8 +11,10 @@ import * as mutations from "../../graphql/mutations";
 import { useUser } from "../../context/UserContext";
 import { getSightingPhoneNumber, getSightingEmail } from "../../utils/utils";
 
-const ListView = ({ selectedType }) => {
-  const { userState, currentUser } = useUser();
+const ListView = ({ selectedType, filterPosts, filterSightings }) => {
+  // console.log("filterPosts", filterPosts);
+  // console.log("filterSightings", filterSightings);
+  const { userState } = useUser();
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
@@ -20,6 +22,7 @@ const ListView = ({ selectedType }) => {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
+  const [posts, setPosts] = useState([]);
   const [postsData, setPostsData] = useState([]);
   const [sightingsData, setSightingsData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,10 +30,16 @@ const ListView = ({ selectedType }) => {
   useEffect(() => {
     const fetchPostsData = async () => {
       try {
-        const listResponse = await client.graphql({
-          query: queries.listPosts,
-        });
-        const posts = listResponse.data.listPosts.items;
+        let posts = filterPosts || [];
+        // console.log("filterPosts", filterPosts);
+        if (filterPosts === null) {
+          const listResponse = await client.graphql({
+            query: queries.listPosts,
+          });
+          posts = listResponse.data.listPosts.items;
+        }
+        setPosts(posts);
+        // console.log("posts", posts);
         const postsWithImages = await Promise.all(
           posts.map(async (post) => {
             try {
@@ -57,10 +66,13 @@ const ListView = ({ selectedType }) => {
 
     const fetchSightingsData = async () => {
       try {
-        const listResponse = await client.graphql({
-          query: queries.listSightings,
-        });
-        const sightings = listResponse.data.listSightings.items;
+        let sightings = filterSightings || [];
+        if (sightings.length === null) {
+          const listResponse = await client.graphql({
+            query: queries.listSightings,
+          });
+          sightings = listResponse.data.listSightings.items;
+        }
         const sightingsWithImages = await Promise.all(
           sightings.map(async (sighting) => {
             try {
@@ -85,7 +97,7 @@ const ListView = ({ selectedType }) => {
 
     fetchPostsData();
     fetchSightingsData();
-  }, []);
+  }, [filterPosts, filterSightings]);
 
   const deletePost = async (id) => {
     setLoading(true);
