@@ -37,6 +37,9 @@ const EditPost = () => {
       setLoading(false);
       handleToastOpen("error", "Error fetching post.");
       console.error("Error fetching post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -139,6 +142,9 @@ const EditPost = () => {
     } catch (error) {
       console.error("Error updating post: ", error);
       handleToastOpen("error", "Error updating post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 

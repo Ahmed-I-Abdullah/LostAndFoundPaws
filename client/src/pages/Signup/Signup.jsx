@@ -140,6 +140,9 @@ const Signup = () => {
             "success",
             `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
           );
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
 
           setTimeout(() => {
             setIsSubmitting(false);
@@ -149,6 +152,9 @@ const Signup = () => {
         case "DONE":
           setIsSubmitting(false);
           handleToastOpen("success", "Successfully verified password.");
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
           break;
       }
     } catch (error) {

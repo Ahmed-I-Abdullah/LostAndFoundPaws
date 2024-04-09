@@ -60,6 +60,9 @@ const ForgotPassword = () => {
         break;
       case "DONE":
         handleToastOpen("success", "Successfully reset password.");
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
         break;
     }
   };

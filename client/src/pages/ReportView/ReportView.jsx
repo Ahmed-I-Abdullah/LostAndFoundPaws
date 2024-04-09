@@ -108,9 +108,15 @@ const ReportView = ({ selectedType }) => {
             const updatedReports = reports.filter((report) => report.id !== reportId);
             setReports(updatedReports);
             handleToastOpen("success", `Report and associated ${entityType} deleted successfully`);
+            setTimeout(() => {
+              setToastOpen(false);
+            }, 2000);
         } catch (error) {
             handleToastOpen("error", `Error deleting report and associated ${entityType}`);
             console.error(`Error deleting report and associated ${entityType}: `, error);
+            setTimeout(() => {
+              setToastOpen(false);
+            }, 2000);
         }
         setLoading(false);
     };
@@ -129,9 +135,15 @@ const ReportView = ({ selectedType }) => {
             const updatedReports = reports.filter((report) => report.id !== reportId);
             setReports(updatedReports);
             handleToastOpen("success", `Report ignored successfully`);
+            setTimeout(() => {
+              setToastOpen(false);
+            }, 2000);
         } catch (error) {
             handleToastOpen("error", `Error ignoring report`);
             console.error(`Error ignoring report: `, error);
+            setTimeout(() => {
+              setToastOpen(false);
+            }, 2000);
         }
         setLoading(false);
     };

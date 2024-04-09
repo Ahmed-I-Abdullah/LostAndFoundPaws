@@ -58,6 +58,9 @@ const Comments = ({ postId }) => {
         "Error fetching comments for the post. Make sure you are logged in"
       );
       console.error("Error fetching comments for the post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
@@ -117,6 +120,9 @@ const Comments = ({ postId }) => {
       );
       console.error("Error posting comment for the post: ", error);
       setIsSubmitting(false);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
@@ -139,6 +145,9 @@ const Comments = ({ postId }) => {
       handleToastOpen("error", "Error deleting comment.");
       console.error("Error deleting comment: ", error);
       setIsSubmitting(false);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };

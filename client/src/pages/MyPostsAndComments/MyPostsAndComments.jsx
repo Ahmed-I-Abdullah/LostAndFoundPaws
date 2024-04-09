@@ -114,6 +114,9 @@ const MyPostsAndComments = () => {
       } catch (error) {
         handleToastOpen("error", "Error fetching posts.");
         console.error("Error fetching posts: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
       }
     };
 
@@ -129,6 +132,9 @@ const MyPostsAndComments = () => {
       } catch (error) {
         handleToastOpen("error", "Error fetching comments for user.");
         console.error("Error fetching comments for user: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
       }
     };
     if(currentUser) {
@@ -150,9 +156,15 @@ const MyPostsAndComments = () => {
       const newPostData = postsData.filter((post) => post.id !== id);
       setPostsData(newPostData);
       handleToastOpen("success", "Successfully deleted post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
@@ -170,9 +182,15 @@ const MyPostsAndComments = () => {
       const newCommentData = commentData.filter((comment) => comment.id !== id);
       setCommentData(newCommentData);
       handleToastOpen("success", "Successfully deleted comment.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error deleting comment.");
       console.error("Error deleting comment: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
