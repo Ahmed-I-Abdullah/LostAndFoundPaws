@@ -8,7 +8,7 @@ import { InputAdornment } from "@mui/material";
 // This is from their tutorial, no security issue
 // TODO: move to environemnt variable
 const accessToken =
-  "pk.eyJ1IjoiYWhtZWRpMjAyNCIsImEiOiJjbHU2aWVuZG8yMGduMmptMjkxOWN1dXdmIn0.r-XM9IvEuxRJ2ugmdTzWKg";
+  process.env.REACT_APP_MAPBOX_API_KEY || "pk.eyJ1IjoiYWhtZWRpMjAyNCIsImEiOiJjbHU2aWVuZG8yMGduMmptMjkxOWN1dXdmIn0.r-XM9IvEuxRJ2ugmdTzWKg";
 
   const AddressAutocompleteField = ({ onChange, ...otherProps }) => {
     const [options, setOptions] = useState([]);
