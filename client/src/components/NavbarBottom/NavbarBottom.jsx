@@ -18,16 +18,16 @@ const NavbarBottom = () => {
     <div>
       {userState === "Admin" ? (
         <div className="navbarBottom">
-          <Button variant="contained" href="createSighting">View Reportings</Button> 
+          <Button variant="contained" onClick={() => navigate("/viewReportings")}>View Reportings</Button> 
         </div>
       ) : userState === "Guest" ? (
         <div className="navbarBottom">
-          <Button variant="outlined" href="createSighting">Report Sighting</Button>
+          <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
         </div>
       ) : (
         <div className="navbarBottom">
-          <Button variant="outlined" href="createSighting">Report Sighting</Button>
-          <Button variant="contained" href="createPost">Report Pet</Button>
+          <Button variant="outlined" onClick={() => navigate("/createSighting")}>Report Sighting</Button>
+          <Button variant="contained" onClick={() => navigate("/createPost")}>Report Pet</Button>
         </div>
       )}
     </div>
