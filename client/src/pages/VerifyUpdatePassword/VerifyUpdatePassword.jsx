@@ -23,6 +23,8 @@ const VerifyUpdatePassword = () => {
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
 
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
   const { email } = location.state || {};
 
   const initialValues = {
@@ -44,6 +46,7 @@ const VerifyUpdatePassword = () => {
   });
 
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     try {
       await confirmResetPassword({
         username: values.email,
@@ -52,12 +55,14 @@ const VerifyUpdatePassword = () => {
       });
       handleToastOpen("success", "Account information updated.");
       setTimeout(() => {
+        setIsSubmitting(false);
         navigate("/MyAccount");
       }, 2000);
     } catch (error) {
       console.error("Error updating account information: ", error);
       handleToastOpen("error", "Error verifying account.");
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
@@ -168,7 +173,7 @@ const VerifyUpdatePassword = () => {
                 />
               </div>
               <div className="account-form-component">
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                   Verify Account
                 </Button>
               </div>
