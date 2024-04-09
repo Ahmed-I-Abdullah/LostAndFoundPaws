@@ -175,7 +175,7 @@ const MapView = ({ selectedType }) => {
   };
 
   mapboxgl.accessToken =
-    "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
+  process.env.REACT_APP_MAPBOX_API_KEY  || "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
 
   // Initialize the map
   useEffect(() => {
