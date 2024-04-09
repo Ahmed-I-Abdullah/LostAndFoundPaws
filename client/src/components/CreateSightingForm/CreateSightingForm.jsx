@@ -174,6 +174,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
                         variant="outlined"
                         color="primary"
                         className="formButton"
+                        onClick={() => navigate(-1)}
                       >
                         Cancel
                       </Button>
