@@ -21,10 +21,10 @@ const ReportedCommentCard = ({ commentData, report, onDelete, onIgnore }) => {
   return (
     <Box sx={{ margin: '16px', border: '1px solid #ccc', borderRadius: '8px', padding: '10px', backgroundColor: '#f9f9f9' }}>
       <Box sx={{ marginBottom: '10px' }}>
-      <CommentCard
+        {commentData == null ? (<h3>Comment Deleted</h3>) : (<CommentCard
             {...commentData} 
             isReportView={true}
-        />
+        />)}
       </Box>
       <Box sx={{ borderTop: '1px solid #eee', padding: '16px' }}>
         <Typography variant="h2" fontWeight="bold" sx={{ marginBottom: '8px' }}>Report Description</Typography>
