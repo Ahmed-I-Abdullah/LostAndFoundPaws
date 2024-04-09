@@ -86,6 +86,9 @@ const CommentCard = ({
 
   const handleReportSubmitted = () => {
     handleToastOpen("success", "Report submitted successfully.");
+    setTimeout(() => {
+      setToastOpen(false);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -143,9 +146,15 @@ const CommentCard = ({
       handleToastOpen("success", "Successfully updated comment.");
       setCommentContent(updatedComment.data.updateComment.content);
       setEditedContent(updatedComment.data.updateComment.content);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error updating comment.");
       console.error("Error Updating comment: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setEditing(false);
     handleCloseSave();
@@ -282,6 +291,9 @@ const CommentCard = ({
                       setReply(id);
                     } else {
                       handleToastOpen("error", "Can't reply to a deleted user");
+                      setTimeout(() => {
+                        setToastOpen(false);
+                      }, 2000);
                     }
                   }}
                   size="small"

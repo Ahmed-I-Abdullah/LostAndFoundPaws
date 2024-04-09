@@ -100,6 +100,9 @@ const ViewPostPage = () => {
     } catch (error) {
       handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -117,9 +120,15 @@ const ViewPostPage = () => {
       handleToastOpen("success", "Successfully marked post as resolved.");
 
       setPetData({...petData, resolved: 'true'})
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error marking post as resolved.");
       console.error("Error marking post as resolved: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -157,6 +166,9 @@ const ViewPostPage = () => {
 
   const handleReportSubmitted = () => {
     handleToastOpen("success", "Report submitted successfully.");
+    setTimeout(() => {
+      setToastOpen(false);
+    }, 2000);
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -192,6 +204,9 @@ const ViewPostPage = () => {
       } catch (error) {
         handleToastOpen("error", "Error fetching post.");
         console.error("Error fetching post: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
         setLoading(false);
       }
     };

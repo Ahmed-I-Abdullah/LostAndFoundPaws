@@ -66,6 +66,9 @@ const CreatePost = () => {
       console.error("Error creating post: ", error);
       handleToastOpen("error", "Error creating post.");
       setIsSubmitting(false);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } 
   };
 

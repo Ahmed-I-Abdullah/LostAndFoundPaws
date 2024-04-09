@@ -120,9 +120,15 @@ const MapView = ({ selectedType }) => {
       );
       setSightingsData(newSightingsData);
       handleToastOpen("success", "Successfully deleted sighting post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error deleting sighting post.");
       console.error("Error deleting sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
