@@ -27,6 +27,28 @@ const ViewReportsPage = () => {
   const [selectedType, setSelectedType] = useState("Lost");
   const [selectedView, setSelectedView] = useState("List View");
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [filterPosts, setFilterPosts] = useState(null);
+  const [filterSightings, setFilterSightings] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tempSearchTerm, setTempSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("Newest");
+  const [species, setSpecies] = useState({
+    dog: false,
+    cat: false,
+    other: false,
+  });
+  const [gender, setGender] = useState({
+    male: false,
+    female: false,
+    other: false,
+  });
+  const [locationAway, setLocationAway] = useState(1);
+  const [disableLocationFilter, setDisableLocationFilter] = useState(true);
+  const [reportReason, setReportReason] = useState({
+    inappropriate: false,
+    spam: false,
+  });
+
   const [isReporting, setIsReporting] = useState(true);
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);
@@ -40,51 +62,90 @@ const ViewReportsPage = () => {
     <div>
       {isMobile && selectedView === "List View" ? (
         <Grid
-        container
-        item
-        xs={12}
-        flexDirection={{ xs: 'column', sm: 'row' }} 
-        justifyContent="space-between"
-        spacing={2} 
+          container
+          item
+          xs={12}
+          flexDirection={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          spacing={2}
         >
-        <Grid item xs={12} sm="auto" sx={{ order: { xs: 2, sm: 1 }, marginLeft: "30px", marginRight: "30px" }}>
-            <Toggle
-            options={postTypeOptions}
-            onToggleCallback={handlePostTypeToggle}
-            />
-        </Grid>
-        <Grid item xs={12} sm="auto" sx={{ order: { xs: 1, sm: 2 }, display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-            variant="contained"
+          <Grid
+            item
+            xs={12}
+            sm="auto"
             sx={{
+              order: { xs: 2, sm: 1 },
+              marginLeft: "30px",
+              marginRight: "30px",
+            }}
+          >
+            <Toggle
+              options={postTypeOptions}
+              onToggleCallback={handlePostTypeToggle}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm="auto"
+            sx={{
+              order: { xs: 1, sm: 2 },
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{
                 backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
                 color: `${theme.palette.text.primary}`,
                 "&:hover": {
-                backgroundColor: `${theme.palette.primary.main}`,
+                  backgroundColor: `${theme.palette.primary.main}`,
                 },
                 height: "30px",
                 marginRight: "30px",
-                marginTop: { xs: '1rem', sm: '0' }, 
-            }}
-            onClick={toggleSideBar}
+                marginTop: { xs: "1rem", sm: "0" },
+              }}
+              onClick={toggleSideBar}
             >
-            <TuneIcon />
-            <Typography>{isSideBarOpen ? "Close Filters" : "All Filters"}</Typography>
+              <TuneIcon />
+              <Typography>
+                {isSideBarOpen ? "Close Filters" : "All Filters"}
+              </Typography>
             </Button>
             {isSideBarOpen && (
-            <SideBar
+              <SideBar
                 selectedView={selectedView}
-                isReporting={isReporting}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
-            />
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
+                isReporting={isReporting}
+              />
             )}
-        </Grid>
+          </Grid>
         </Grid>
       ) : !isMobile && selectedView === "List View" ? (
         <Grid container item xs={12} justifyContent="space-between" margin={2}>
-
           <Grid item xs={5} md={4} marginRight={3} marginLeft={"16px"}>
-
             <Toggle
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
@@ -113,8 +174,29 @@ const ViewReportsPage = () => {
             {isSideBarOpen && (
               <SideBar
                 selectedView={selectedView}
-                isReporting={isReporting}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
+                isReporting={isReporting}
               />
             )}
           </Grid>
@@ -123,14 +205,19 @@ const ViewReportsPage = () => {
       {selectedView === "List View" ? (
         <Box
           className="list-view"
-          style={{ margin: "1rem", 
-            width: isSideBarOpen && !isMobile ? "calc(100vw - 430px)" : "auto",
+          style={{
+            margin: "1rem",
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 440px)" : "auto",
           }}
         >
-          <ReportView selectedType={selectedType} />
+          <ReportView selectedType={selectedType} reportReason={reportReason} />
         </Box>
       ) : (
-        <MapView selectedType={selectedType} />
+        <MapView
+          selectedType={selectedType}
+          filterPosts={filterPosts}
+          filterSightings={filterSightings}
+        />
       )}
     </div>
   );

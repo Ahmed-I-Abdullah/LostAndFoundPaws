@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Menu,
-  MenuItem,
   Box,
   Button,
   Typography,
@@ -9,18 +7,16 @@ import {
   FormControlLabel,
   Slider,
   Input,
-  Backdrop,
 } from "@mui/material";
-import { styled } from "@mui/system";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import SearchBar from "../SearchBar/SearchBar";
+// import SearchBar from "../SearchBar/SearchBar";
 import { useMobile } from "../../context/MobileContext";
 import CustomDropdown from "../DropDown/DropDown";
 import "./SideBar.css";
 import theme from "../../theme/theme";
-import AddressAutocompleteField from "../AddressAutocompleteField/AddressAutocompleteField";
-import * as mutations from "../../graphql/mutations";
+// import AddressAutocompleteField from "../AddressAutocompleteField/AddressAutocompleteField";
+// import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
 import { useUser } from "../../context/UserContext";
 import { generateClient } from "aws-amplify/api";
@@ -31,8 +27,10 @@ import { generateClient } from "aws-amplify/api";
 // TODO: must reload page to apply filters - MAP VIEW
 const SideBar = ({
   selectedView,
-  selectedType,
+  // selectedType,
+  filterPosts,
   setFilterPosts,
+  filterSightings,
   setFilterSightings,
   searchTerm,
   setSearchTerm,
@@ -60,34 +58,8 @@ const SideBar = ({
   }
   const [userLocation, setUserLocation] = useState(null);
   const [applyClicked, setApplyClicked] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [postsData, setPostsData] = useState([]);
   const [sightingsData, setSightingsData] = useState([]);
-
-  const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  }));
-
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const [tempSearchTerm, setTempSearchTerm] = useState("");
-  // const [sortBy, setSortBy] = useState("Newest");
-  // const [species, setSpecies] = useState({
-  //   dog: false,
-  //   cat: false,
-  //   other: false,
-  // });
-  // const [gender, setGender] = useState({
-  //   male: false,
-  //   female: false,
-  //   other: false,
-  // });
-  // const [locationAway, setLocationAway] = useState(0);
-  // const [disableLocationFilter, setDisableLocationFilter] = useState(true);
-  // const [reportReason, setReportReason] = useState({
-  //   inappropriate: false,
-  //   spam: false,
-  // });
   const { isMobile } = useMobile();
   const asideRef = useRef(null);
 
@@ -104,16 +76,33 @@ const SideBar = ({
     };
   }, []);
 
-  // useEffect(() => {
-  //   setAnchorEl(asideRef.current);
-  // }, []);
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSpecies("");
+    setGender("");
+    setLocationAway(1);
+    setDisableLocationFilter(true);
+    setSortBy("Newest");
+  };
+
+  const handleApplyClick = () => {
+    // setSearchTerm(tempSearchTerm);
+    // setSortBy(sortBy);
+    // setSpecies(species);
+    // setGender(gender);
+    // setLocationAway(locationAway);
+    setApplyClicked(true);
+  };
 
   useEffect(() => {
     if (applyClicked) {
       onClose();
+      setSearchTerm(tempSearchTerm);
+      setSortBy(sortBy);
+      setSpecies(species);
+      setGender(gender);
+      setLocationAway(locationAway);
       setApplyClicked(false);
-      console.log("searchTerm:", searchTerm);
-      console.log("tempSearchTerm:", tempSearchTerm);
     }
   }, [applyClicked, searchTerm, tempSearchTerm, onClose]);
 
@@ -133,7 +122,6 @@ const SideBar = ({
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-    console.log("userLocation:", userLocation);
   }, []);
 
   const calculateDistance = (location1, location2) => {
@@ -177,38 +165,38 @@ const SideBar = ({
         setSightingsData(listSightingsResponse.data.listSightings.items);
 
         // Filter based on search term
-        let filteredPostsData = postsData.filter((item) =>
+        filterPosts = postsData.filter((item) =>
           item.lastKnownLocation.address
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         );
 
-        let filteredSightingsData = sightingsData.filter((item) =>
+        filterSightings = sightingsData.filter((item) =>
           item.location.address.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
         // Filter based on species
         if (species.dog || species.cat || species.other) {
-          filteredPostsData = filteredPostsData.filter(
+          filterPosts = filterPosts.filter(
             (item) => species[item.species.toLowerCase()]
           );
         }
 
         // Filter based on gender
         if (gender.male || gender.female || gender.other) {
-          filteredPostsData = filteredPostsData.filter(
+          filterPosts = filterPosts.filter(
             (item) => gender[item.gender.toLowerCase()]
           );
         }
 
         // Filter based on location away
         if (!disableLocationFilter) {
-          filteredPostsData = filteredPostsData.filter(
+          filterPosts = filterPosts.filter(
             (item) =>
               calculateDistance(item.lastKnownLocation, userLocation) <=
               locationAway
           );
-          filteredSightingsData = filteredSightingsData.filter(
+          filterSightings = filterSightings.filter(
             (item) =>
               calculateDistance(item.location, userLocation) <= locationAway
           );
@@ -216,31 +204,31 @@ const SideBar = ({
 
         switch (sortBy) {
           case "Newest":
-            filteredPostsData.sort(
+            filterPosts.sort(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
-            filteredSightingsData.sort(
+            filterSightings.sort(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
             break;
           case "Oldest":
-            filteredPostsData.sort(
+            filterPosts.sort(
               (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
             );
-            filteredSightingsData.sort(
+            filterSightings.sort(
               (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
             );
             break;
           case "Name":
-            filteredPostsData.sort((a, b) => a.name.localeCompare(b.name));
+            filterPosts.sort((a, b) => a.name.localeCompare(b.name));
             break;
         }
 
-        setFilterPosts(filteredPostsData);
-        setFilterSightings(filteredSightingsData);
+        setFilterPosts(filterPosts);
+        setFilterSightings(filterSightings);
 
-        // console.log(filteredPostsData);
-        // console.log(filteredSightingsData);
+        // console.log(postsData);
+        // console.log(sightingsData);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -249,6 +237,8 @@ const SideBar = ({
     fetchData();
   }, [
     searchTerm,
+    filterPosts,
+    filterSightings,
     postsData,
     sightingsData,
     species,
@@ -262,21 +252,16 @@ const SideBar = ({
   return (
     <>
       <aside className="sidebar" ref={asideRef}>
-        {/* <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={true}
-        onClose={onClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      > */}
+        <Button
+          variant="contained"
+          onClick={() => clearFilters()}
+          style={{
+            backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+            color: "black",
+          }}
+        >
+          Clear Filters
+        </Button>
         <Box
           sx={{
             display: "flex",
@@ -293,7 +278,6 @@ const SideBar = ({
             <Input
               placeholder="Enter city, neighborhood, address"
               value={tempSearchTerm}
-              ellipsis
               style={{ width: "100%", padding: "10px" }}
               onChange={(e) => {
                 setTempSearchTerm(e.target.value);
@@ -313,6 +297,7 @@ const SideBar = ({
             <CustomDropdown
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
+              onMouseDown={(e) => e.stopPropagation()}
               options={[
                 { label: "Most Recently Posted", value: "Newest" },
                 { label: "Oldest Posted", value: "Oldest" },
@@ -484,10 +469,7 @@ const SideBar = ({
         >
           <Button
             variant="contained"
-            onClick={() => {
-              setSearchTerm(tempSearchTerm);
-              setApplyClicked(true);
-            }}
+            onClick={() => handleApplyClick()}
             style={{
               backgroundColor: "white",
               color: theme.palette.primary.main,
@@ -499,9 +481,7 @@ const SideBar = ({
             Apply
           </Button>
         </div>
-        {/* </Menu> */}
       </aside>
-      {/* <StyledBackdrop open={true} onClick={onClose} /> */}
     </>
   );
 };

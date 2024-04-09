@@ -62,7 +62,7 @@ const HomePageTemp = () => {
     female: false,
     other: false,
   });
-  const [locationAway, setLocationAway] = useState(0);
+  const [locationAway, setLocationAway] = useState(1);
   const [disableLocationFilter, setDisableLocationFilter] = useState(true);
   const [reportReason, setReportReason] = useState({
     inappropriate: false,
@@ -140,7 +140,9 @@ const HomePageTemp = () => {
                 selectedView={selectedView}
                 selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
                 setFilterSightings={setFilterSightings}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -203,7 +205,9 @@ const HomePageTemp = () => {
                 selectedView={selectedView}
                 selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
                 setFilterSightings={setFilterSightings}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -280,7 +284,9 @@ const HomePageTemp = () => {
                 selectedView={selectedView}
                 selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
                 setFilterSightings={setFilterSightings}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -356,7 +362,9 @@ const HomePageTemp = () => {
                 selectedView={selectedView}
                 selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
                 setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
                 setFilterSightings={setFilterSightings}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}

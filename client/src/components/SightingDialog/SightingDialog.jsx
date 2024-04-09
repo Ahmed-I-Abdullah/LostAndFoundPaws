@@ -198,8 +198,8 @@ const SightingDialog = ({
       </Dialog>
       {isReportModalOpen && userId !== currentUser?.id && (
         <ReportPost
-          contentType="post"
-          itemId={"post.id"}
+          contentType="sighting"
+          itemId={"sighting.id"}
           onClose={() => setIsReportModalOpen(false)}
           onReport={handleReport}
         />

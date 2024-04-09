@@ -31,7 +31,6 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
     const fetchPostsData = async () => {
       try {
         let posts = filterPosts || [];
-        // console.log("filterPosts", filterPosts);
         if (filterPosts === null) {
           const listResponse = await client.graphql({
             query: queries.listPosts,
@@ -39,6 +38,7 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
           posts = listResponse.data.listPosts.items;
         }
         setPosts(posts);
+        // console.log("filterPosts", filterPosts);
         // console.log("posts", posts);
         const postsWithImages = await Promise.all(
           posts.map(async (post) => {
