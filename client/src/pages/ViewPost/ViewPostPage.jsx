@@ -478,14 +478,14 @@ const ViewPostPage = () => {
               <SectionTitle title="Poster's Contact Info" />
               {petData && (
                 <>
-                  <Typography variant="body2">
-                    <span className="span-key">Email:</span>{" "}
-                    {petData.user && petData.user.email
-                      ? petData.user.email
-                      : petData.user && petData.user.email
-                      ? petData.user.email
-                      : "Unavailable"}
-                  </Typography>
+                <Typography variant="body2">
+                  <span className="span-key">Email:</span>{" "}
+                  {petData.user && petData.user.email ? (
+                    <a href={`mailto:${petData.user.email}`}>
+                      {petData.user.email}
+                    </a>
+                  ) : "Unavailable"}
+                </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Phone:</span>{" "}
                     {petData.user && petData.user.phone
