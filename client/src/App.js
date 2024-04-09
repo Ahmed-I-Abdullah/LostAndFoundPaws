@@ -24,6 +24,7 @@ import ViewPostPage from "./pages/ViewPost/ViewPostPage";
 import ViewReportsPage from "./pages/ViewReportings/ViewReportings";
 import EditPost from "./pages/EditPost/EditPost";
 import EditSighting from "./pages/EditSighting/EditSighting";
+import AuthGuard from "./AuthGuard";
 
 function App() {
   return (
@@ -36,31 +37,46 @@ function App() {
 //Need AppContent instead of putting everything in App because useLocation needs to be context from <Router>
 function AppContent() {
   const location = useLocation();
-  const noNavPages = ["/login", "/signup", "/forgotPassword", "/resetPassword", "/verifyAccount", "VerifyUpdateEmail"];
+  const noNavPages = [
+    "/login",
+    "/signup",
+    "/forgotPassword",
+    "/resetPassword",
+    "/verifyAccount",
+    "VerifyUpdateEmail",
+  ];
   const showNav = !noNavPages.includes(location.pathname);
 
   return (
     <div className="app">
       {showNav && <Navbar />}
       <div className="mainContent">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/verifyAccount" element={<VerifyAccount />} />
-          <Route path="/VerifyUpdateEmail" element={<VerifyUpdateEmail />} />
-          <Route path="/verifyUpdatePassword" element={<VerifyUpdatePassword />} />
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
-          <Route path="/myAccount" element={<MyAccount />} />
-          <Route path="/createPost" element={<CreatePost />} />
-          <Route path="/createSighting" element={<CreateSightingForm />} />
-          <Route path="/myPostsAndComments" element={<MyPostsAndComments />} />
-          <Route path="/viewReportings" element={<ViewReportsPage />} />
-          <Route path="/posts/:id/edit" element={<EditPost />} />
-          <Route path="/posts/:id" element={<ViewPostPage />} />
-          <Route path="/sightings/:id/edit" element={<EditSighting />} />
-        </Routes>
+        <AuthGuard>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/verifyAccount" element={<VerifyAccount />} />
+            <Route path="/VerifyUpdateEmail" element={<VerifyUpdateEmail />} />
+            <Route
+              path="/verifyUpdatePassword"
+              element={<VerifyUpdatePassword />}
+            />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route path="/resetPassword" element={<ResetPassword />} />
+            <Route path="/myAccount" element={<MyAccount />} />
+            <Route path="/createPost" element={<CreatePost />} />
+            <Route path="/createSighting" element={<CreateSightingForm />} />
+            <Route
+              path="/myPostsAndComments"
+              element={<MyPostsAndComments />}
+            />
+            <Route path="/viewReportings" element={<ViewReportsPage />} />
+            <Route path="/posts/:id/edit" element={<EditPost />} />
+            <Route path="/posts/:id" element={<ViewPostPage />} />
+            <Route path="/sightings/:id/edit" element={<EditSighting />} />
+          </Routes>
+        </AuthGuard>
       </div>
       {showNav && <NavbarBottom />}
     </div>
