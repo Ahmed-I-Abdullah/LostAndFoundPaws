@@ -203,7 +203,10 @@ const ListView = ({ selectedType }) => {
                     No {selectedType} posts found
                   </Typography>
                 ) : (
-                  filteredPosts.map((post, index) => (
+                  filteredPosts
+                  .slice()
+                  .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                  .map((post, index) => (
                     <PetCard
                       key={index}
                       id={post.id}
@@ -221,7 +224,10 @@ const ListView = ({ selectedType }) => {
                   ))
                 )
               ) : (
-                sightingsData.map((sighting, index) => (
+                sightingsData
+                .slice()
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((sighting, index) => (
                   <SigthingCard
                     key={index}
                     id={sighting.id}
