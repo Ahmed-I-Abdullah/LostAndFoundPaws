@@ -283,7 +283,7 @@ const CommentCard = ({
               )}
               <Button
                 variant="text"
-                sx={{ color: `${theme.palette.text.primary}` }}
+                sx={{ color: `${theme.palette.secondary.main}` }}
                 onClick={handleOpenDelete}
               >
                 <DeleteIcon />
