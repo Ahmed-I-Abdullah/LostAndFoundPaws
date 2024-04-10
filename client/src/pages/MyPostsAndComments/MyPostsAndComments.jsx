@@ -13,6 +13,7 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import * as mutations from "../../graphql/mutations";
 import SightingCard from "../../components/SightingCard/SightingCard";
 import { useUser } from "../../context/UserContext";
+import { getSightingPhoneNumber, getSightingEmail } from "../../utils/utils";
 
 let contentTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
@@ -24,43 +25,11 @@ let contentTypeOptions = [
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
 ];
 
-const sightingsData = [
-  {
-    id: "1",
-    images: [
-      "https://storage.googleapis.com/proudcity/santaanaca/uploads/2022/07/Stray-Kittens-scaled.jpg",
-    ],
-    location: {
-      latitude: -114.0201,
-      longitude: 51.0342,
-      address: "Inglewood",
-    },
-    userID: "user1",
-    email: "guest@email.com",
-    phoneNumber: "123-456-7890",
-    createdAt: "2024-03-25T10:00:00Z",
-  },
-  {
-    id: "2",
-    images: ["https://toegrips.com/wp-content/uploads/stray-puppy-jake-.jpg"],
-    location: {
-      latitude: -114.14,
-      longitude: 51.0703,
-      address: "University Heights",
-    },
-    userID: "user2",
-    email: "poster@email.com",
-    phoneNumber: "098-765-4321",
-    createdAt: "2024-03-22T10:00:00Z",
-  },
-];
-
 const MyPostsAndComments = () => {
   const { userState, currentUser, currentProfilePictureImageData } = useUser();
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
-
   }
 
   const { isMobile } = useMobile();
@@ -71,6 +40,7 @@ const MyPostsAndComments = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [commentData, setCommentData] = useState([]);
   const [postsData, setPostsData] = useState([]);
+  const [sightingsData, setSightingsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleToastOpen = (severity, message) => {
@@ -89,7 +59,12 @@ const MyPostsAndComments = () => {
 
   useEffect(() => {
     if (userState === "Admin") {
-      contentTypeOptions = [{ label: "Comments", color: theme.palette.custom.selectedCategory.view }];
+      contentTypeOptions = [
+        {
+          label: "Comments",
+          color: theme.palette.custom.selectedCategory.view,
+        },
+      ];
       setSelectedType("Comments");
     }
 
@@ -127,6 +102,39 @@ const MyPostsAndComments = () => {
       }
     };
 
+    const fetchSightingsData = async () => {
+      try {
+        const listResponse = await client.graphql({
+          query: queries.sightingsByUser,
+          variables: { userID: currentUser?.id },
+        });
+        const sightings = listResponse.data.sightingsByUser.items;
+        const sightingsWithImages = await Promise.all(
+          sightings.map(async (sighting) => {
+            try {
+              const firstImageData = await downloadData({ key: sighting.image })
+                .result;
+              const firstImageSrc = URL.createObjectURL(firstImageData.body);
+
+              sighting.firstImg = firstImageSrc;
+              return sighting;
+            } catch (error) {
+              console.error("Error fetching image for sighting post:", error);
+              return sighting;
+            }
+          })
+        );
+        setSightingsData(sightingsWithImages);
+        setLoading(false);
+      } catch (error) {
+        handleToastOpen("error", "Error fetching sighting posts.");
+        console.error("Error fetching sighting posts: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
+      }
+    };
+
     const fetchComments = async () => {
       try {
         const commentsResponse = await client.graphql({
@@ -144,8 +152,9 @@ const MyPostsAndComments = () => {
         }, 2000);
       }
     };
-    if(currentUser) {
+    if (currentUser) {
       fetchPostsData();
+      fetchSightingsData();
       fetchComments();
     }
   }, [currentUser]);
@@ -169,6 +178,34 @@ const MyPostsAndComments = () => {
     } catch (error) {
       handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
+  const deleteSighting = async (id) => {
+    setLoading(true);
+    const deleteSightingInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: deleteSightingInput },
+      });
+      const newSightingsData = sightingsData.filter(
+        (sighting) => sighting.id !== id
+      );
+      setSightingsData(newSightingsData);
+      handleToastOpen("success", "Successfully deleted sighting post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error deleting sighting post.");
+      console.error("Error deleting sighting post: ", error);
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -206,6 +243,7 @@ const MyPostsAndComments = () => {
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
 
+  console.log(sightingsData);
   return (
     <>
       {loading ? (
@@ -235,57 +273,57 @@ const MyPostsAndComments = () => {
             }
             sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
           >
-            {selectedType.toLowerCase() === "comments"
-                ? commentData.map((comment, index) => (
-                  <CommentCard
-                    key={index}
-                    userId={currentUser?.id}
-                    id={comment.id}
-                    userProfilePicture={currentProfilePictureImageData.key}
-                    content={comment.content}
-                    parentCommentId={comment.parentCommentID}
-                    username={currentUser?.username}
-                    createdAt={comment.createdAt}
-                    updatedAt={comment.updatedAt}
-                    onDelete={deleteComment}
-                  />
-                ))
-              : selectedType.toLowerCase() === "sighting"
-              ? sightingsData.map((sighting, index) => (
-                  <SightingCard
-                    key={index}
-                    owner={true}
-                    img={sighting.images[0]}
-                    location={sighting.location.address}
-                    email={sighting.email}
-                    phoneNumber={sighting.phoneNumber}
-                    createdAt={sighting.createdAt}
-                  />
-                ))
-              :       
-              filteredPosts.length === 0 ? (
-                <Typography variant="h1" margin={'1rem'} display={'flex'}>
-                  No {selectedType} posts found
-                </Typography>
-              ) : (
-                filteredPosts.map((post, index) => (
-                  <PetCard
-                    key={index}
-                    id={post.id}
-                    userId={post.userID}
-                    img={post.firstImg}
-                    name={post.name}
-                    status={post.status}
-                    petType={post.species}
-                    summary={post.summary}
-                    location={post.lastKnownLocation.address}
-                    createdAt={post.createdAt}
-                    updatedAt={post.updatedAt}
-                    onDelete={deletePost}
-                  />
-                ))
-              )
-            }
+            {selectedType.toLowerCase() === "comments" ? (
+              commentData.map((comment, index) => (
+                <CommentCard
+                  key={index}
+                  userId={currentUser?.id}
+                  id={comment.id}
+                  userProfilePicture={currentProfilePictureImageData.key}
+                  content={comment.content}
+                  parentCommentId={comment.parentCommentID}
+                  username={currentUser?.username}
+                  createdAt={comment.createdAt}
+                  updatedAt={comment.updatedAt}
+                  onDelete={deleteComment}
+                />
+              ))
+            ) : selectedType.toLowerCase() === "sighting" ? (
+              sightingsData.map((sighting, index) => (
+                <SightingCard
+                  key={index}
+                  id={sighting.id}
+                  userId={sighting.userID}
+                  img={sighting.firstImg}
+                  location={sighting.location.address}
+                  email={getSightingEmail(sighting)}
+                  phoneNumber={getSightingPhoneNumber(sighting)}
+                  createdAt={sighting.createdAt}
+                  onDelete={deleteSighting}
+                />
+              ))
+            ) : filteredPosts.length === 0 ? (
+              <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                No {selectedType} posts found
+              </Typography>
+            ) : (
+              filteredPosts.map((post, index) => (
+                <PetCard
+                  key={index}
+                  id={post.id}
+                  userId={post.userID}
+                  img={post.firstImg}
+                  name={post.name}
+                  status={post.status}
+                  petType={post.species}
+                  summary={post.summary}
+                  location={post.lastKnownLocation.address}
+                  createdAt={post.createdAt}
+                  updatedAt={post.updatedAt}
+                  onDelete={deletePost}
+                />
+              ))
+            )}
           </Box>
           <ToastNotification
             open={toastOpen}

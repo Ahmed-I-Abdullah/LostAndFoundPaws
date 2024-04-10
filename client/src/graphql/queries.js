@@ -922,6 +922,17 @@ export const sightingsByUser = /* GraphQL */ `
         image
         reporterType
         userID
+        location {
+          latitude
+          longitude
+          address
+          __typename
+        }
+        contactInfo {
+          email
+          phone
+          __typename
+        }
         createdAt
         updatedAt
         owner

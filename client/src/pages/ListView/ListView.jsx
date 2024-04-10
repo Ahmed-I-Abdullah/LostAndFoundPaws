@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import PetCard from "../../components/PetCard/PetCard";
-import SigthingCard from "../../components/SightingCard/SightingCard";
+import SightingCard from "../../components/SightingCard/SightingCard";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
@@ -242,7 +242,7 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
                 </Typography>
               ) : (
                 sightingsData.map((sighting, index) => (
-                  <SigthingCard
+                  <SightingCard
                     key={index}
                     id={sighting.id}
                     userId={sighting.userID}
