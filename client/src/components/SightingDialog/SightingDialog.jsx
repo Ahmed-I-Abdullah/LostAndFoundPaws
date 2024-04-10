@@ -20,6 +20,7 @@ import theme from "../../theme/theme";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
 import { useUser } from "../../context/UserContext";
+import ToastNotification from "../ToastNotification/ToastNotificaiton";
 
 const SightingDialog = ({
   id,
@@ -49,18 +50,31 @@ const SightingDialog = ({
     setOpenConfirmDelete(false);
   };
 
-  const handleReport = (reason, description) => {
-    console.log(
-      "Report submitted with reason: ",
-      reason,
-      " and description: ",
-      description
-    );
+  const [toastOpen, setToastOpen] = React.useState(false);
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const [toastMessage, setToastMessage] = React.useState("");
+
+  const handleToastOpen = (severity, message) => {
+    setToastSeverity(severity);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
+  const handleToastClose = (event, reason) => {
+    setToastOpen(false);
+  };
+
+  const handleReportSubmitted = () => {
+    handleToastOpen("success", "Report submitted successfully.");
   };
 
   return (
     <>
-      <Dialog open={isCardOpen} onClose={handleClose} PaperProps={{ sx: { minWidth: "300px" } }}>
+      <Dialog
+        open={isCardOpen}
+        onClose={handleClose}
+        PaperProps={{ sx: { minWidth: "300px", zIndex: "100" } }}
+      >
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -128,32 +142,35 @@ const SightingDialog = ({
                 >
                   <strong>Email: </strong>{" "}
                   {email ? (
-                    <a href={`mailto:${email}`}>
-                      {email}
-                    </a>
+                    <a href={`mailto:${email}`}>{email}</a>
                   ) : (
                     "Unavailable"
                   )}
                 </Typography>
-                <Typography
-                  sx={{
-                    marginTop: "10px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    variant="text"
-                    sx={{
-                      color: `${theme.palette.text.primary}`,
-                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                    }}
-                    size="small"
-                  >
-                    <FlagIcon />
-                    <Typography variant="h9">Report</Typography>
-                  </Button>
-                </Typography>
+                {userState !== "Guest" &&
+                  userState !== "Admin" &&
+                  userId !== currentUser?.id && (
+                    <Typography
+                      sx={{
+                        marginTop: "10px",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button
+                        variant="text"
+                        sx={{
+                          color: `${theme.palette.text.primary}`,
+                          backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                        }}
+                        onClick={() => setIsReportModalOpen(true)}
+                        size="small"
+                      >
+                        <FlagIcon />
+                        <Typography variant="h9">Report</Typography>
+                      </Button>
+                    </Typography>
+                  )}
               </Grid>
               {(userId === currentUser?.id || userState === "Admin") && (
                 <Grid
@@ -200,11 +217,18 @@ const SightingDialog = ({
       {isReportModalOpen && userId !== currentUser?.id && (
         <ReportPost
           contentType="sighting"
-          itemId={"sighting.id"}
+          itemId={id}
+          userId={currentUser?.id}
           onClose={() => setIsReportModalOpen(false)}
-          onReport={handleReport}
+          onReport={handleReportSubmitted}
         />
       )}
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={handleToastClose}
+      />
       <ConfirmDialog
         open={openConfirmDelete}
         onClose={(event) => {
