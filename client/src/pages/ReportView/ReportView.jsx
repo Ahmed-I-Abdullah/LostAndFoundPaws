@@ -37,21 +37,13 @@ const ReportView = ({ selectedType }) => {
 
                 const detailedReports = await Promise.all(fetchedReports.map(async (report) => {
                     if (report.entityType === 'post' && report.postID) {
-                        const postData = await client.graphql({
-                            query: queries.getPost,
-                            variables: { id: report.postID },
-                        });
-                        const post = postData.data.getPost;
+                        const post = report.post;
                         const firstImageUrl = post.images[0];
                         const firstImageData = await downloadData({ key: firstImageUrl }).result;
                         const firstImageSrc = URL.createObjectURL(firstImageData.body);
                         return { ...report, post: { ...post, firstImg: firstImageSrc } };
                     } else if (report.entityType === 'comment' && report.commentID) {
-                        const commentData = await client.graphql({
-                            query: queries.getComment,
-                            variables: { id: report.commentID },
-                        });
-                        const comment = commentData.data.getComment;
+                        const comment = report.comment;
                         if (comment == null) return { ...report, comment: null }
                         const detailedComment = {
                             ...comment,
@@ -62,12 +54,7 @@ const ReportView = ({ selectedType }) => {
                         };
                         return { ...report, comment: detailedComment };
                     } else if (report.entityType === 'sighting' && report.sightingID) {
-                        const sightingData = await client.graphql({
-                            query: queries.getSighting,
-                            variables: { id: report.sightingID },
-                        });
-                        const sighting = sightingData.data.getSighting;
-                        console.log(sighting.location);
+                        const sighting = report.sighting;
                         const imageUrl = sighting.image;
                         const imageData = await downloadData({ key: imageUrl }).result;
                         const imageSrc = URL.createObjectURL(imageData.body);
