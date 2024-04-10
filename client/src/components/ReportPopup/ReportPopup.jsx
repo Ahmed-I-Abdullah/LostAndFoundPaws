@@ -26,6 +26,9 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
     } else if (contentType === "post") {
       mutation = mutations.createPostReport;
       input.postID = itemId; 
+    } else if (contentType === "sighting") {
+      mutation = mutations.createSightingReport;
+      input.sightingID = itemId; 
     }
 
     try {

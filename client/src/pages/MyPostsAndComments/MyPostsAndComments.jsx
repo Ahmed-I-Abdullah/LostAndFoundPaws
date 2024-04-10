@@ -14,7 +14,7 @@ import * as mutations from "../../graphql/mutations";
 import SightingCard from "../../components/SightingCard/SightingCard";
 import { useUser } from "../../context/UserContext";
 
-const contentTypeOptions = [
+let contentTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
   {
@@ -60,7 +60,9 @@ const MyPostsAndComments = () => {
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
+
   }
+
   const { isMobile } = useMobile();
   const [selectedType, setSelectedType] = useState("Lost");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -86,6 +88,11 @@ const MyPostsAndComments = () => {
   };
 
   useEffect(() => {
+    if (userState === "Admin") {
+      contentTypeOptions = [{ label: "Comments", color: theme.palette.custom.selectedCategory.view }];
+      setSelectedType("Comments");
+    }
+
     const fetchPostsData = async () => {
       try {
         const listResponse = await client.graphql({

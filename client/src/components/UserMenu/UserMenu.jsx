@@ -14,7 +14,7 @@ import PostsIcon from "@mui/icons-material/Comment";
 import { useNavigate } from "react-router-dom";
 
 const UserMenu = ({ anchorEl, open, handleClose }) => {
-
+  const { userState, currentUser } = useUser();
   const { updateUserContext } = useUser();
 
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
         <ListItemIcon>
           <PostsIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary="My Posts/Comments" />
+        <ListItemText primary={userState === "Admin" ? "My Comments" : "My Posts/Comments"} />
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
