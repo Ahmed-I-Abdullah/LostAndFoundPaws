@@ -60,7 +60,7 @@ const CreatePost = () => {
       handleToastOpen("success", "Post created successfully.");
       setTimeout(() => {
         setIsSubmitting(false);
-        navigate("/");
+        navigate("/", { state: { selectedType: values.type } });
       }, 2000);
     } catch (error) {
       console.error("Error creating post: ", error);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import theme from "../../theme/theme";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Toggle from "../../components/Toggle/Toggle";
@@ -48,10 +49,17 @@ const HomePageTemp = () => {
   const { isMobile } = useMobile();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
+  const location = useLocation();
+  const initialSelectedType = location.state?.selectedType || "Lost";
+
   const [selectedView, setSelectedView] = useState("List View");
   const [selectedType, setSelectedType] = useState(
-    selectedView === "List View" ? "Lost" : "All"
+    selectedView === "List View" ? initialSelectedType : "All"
   );
+  const initialIndex =
+  initialSelectedType === "Found" ? 1 :
+  initialSelectedType === "Sighting" ? 2 :
+  0;
 
   const [postTypeOptions, setPostTypeOptions] = useState(
     selectedView === "List View" ? listPostTypeOptions : mapPostTypeOptions
@@ -138,6 +146,7 @@ const HomePageTemp = () => {
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
+              initialIndex = {initialIndex}
             />
           </Grid>
           {!isMobile &&

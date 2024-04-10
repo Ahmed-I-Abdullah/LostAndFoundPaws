@@ -68,7 +68,7 @@ const CreateSighting = () => {
       handleToastOpen("success", "Sighting post created successfully.");
       setTimeout(() => {
         setIsSubmitting(false);
-        navigate("/");
+        navigate("/", { state: { selectedType: "sighting" } });
       }, 2000);
     } catch (error) {
       console.error("Error creating sighting post: ", error);

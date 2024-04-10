@@ -136,14 +136,10 @@ const SightingDialog = ({
                   color="text.secondary"
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
-                  <strong>Email: </strong>{" "}
+                  <strong>Email:</strong>&nbsp;
                   {email ? (
-                    <a href={`mailto:${email}`}>
-                      {email}
-                    </a>
-                  ) : (
-                    "Unavailable"
-                  )}
+                    <a href={`mailto:${email}`}>{email}</a>
+                  ) : "Unavailable"}
                 </Typography>
                 {(userState !== "Guest" && userState !== "Admin" && userId !== currentUser?.id) && (
                 <Typography

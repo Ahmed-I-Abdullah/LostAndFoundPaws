@@ -113,6 +113,9 @@ const Comments = ({ postId }) => {
       setCommentData(newCommentData);
       handleToastOpen("success", "Comment successfully added.");
       setIsSubmitting(false);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen(
         "error",
