@@ -247,6 +247,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                             ...e.target.files,
                           ];
                           setFieldValue("images", newImages);
+                          isSingle = false;
                           e.target.value = null;
                         }}
                         handleRemoveImage={(index) => {

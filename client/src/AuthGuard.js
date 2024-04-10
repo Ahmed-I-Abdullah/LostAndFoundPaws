@@ -20,8 +20,6 @@ const AuthGuard = ({ children }) => {
 
   useEffect(() => {
     const fetchGuard = async () => {
-      console.log(userState);
-      console.log(location.pathname);
       setFinishedFetech(false);
       switch (userState) {
         case "Guest":

@@ -7,8 +7,15 @@ const ImageUpload = ({
   images,
   handleImageChange,
   handleRemoveImage,
+  isSingle,
   ...otherProps
 }) => {
+  console.log("AAAAAA")
+  console.log(images)
+  console.log(handleImageChange)
+  console.log(handleRemoveImage)
+  console.log(isSingle)
+  console.log(otherProps)
   return (
     <>
       <div className="images-container">
@@ -34,7 +41,7 @@ const ImageUpload = ({
           className="choose-files-button"
           style={images.length != 0 ? { marginLeft: "auto" } : {}}
         >
-          Select Photo(s)
+          {isSingle ? 'Select Photo' : 'Select Photo(s)'}
           <input
             id="file-upload"
             type="file"

@@ -142,6 +142,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
                         handleRemoveImage={() => {
                           setFieldValue("image", null);
                         }}
+                        isSingle = {true}
                         error={errors.image && touched.image}
                         helperText={touched.image ? errors.image : ""}
                       />
