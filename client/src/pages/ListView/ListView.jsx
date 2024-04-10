@@ -23,6 +23,7 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
   const [posts, setPosts] = useState([]);
+  const [sightings, setSightings] = useState([]);
   const [postsData, setPostsData] = useState([]);
   const [sightingsData, setSightingsData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,12 +71,15 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
     const fetchSightingsData = async () => {
       try {
         let sightings = filterSightings || [];
-        if (sightings.length === null) {
+        if (filterSightings === null) {
           const listResponse = await client.graphql({
             query: queries.listSightings,
           });
           sightings = listResponse.data.listSightings.items;
         }
+        setSightings(sightings);
+        // console.log("filterSightings", filterSightings);
+        // console.log("sightings", sightings);
         const sightingsWithImages = await Promise.all(
           sightings.map(async (sighting) => {
             try {
