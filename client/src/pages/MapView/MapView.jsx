@@ -187,7 +187,8 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
   };
 
   mapboxgl.accessToken =
-  process.env.REACT_APP_MAPBOX_API_KEY  || "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
+    process.env.REACT_APP_MAPBOX_API_KEY ||
+    "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
 
   // Initialize the map
   useEffect(() => {
@@ -212,7 +213,6 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
       // Add navigation controls
       map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
-      // TODO: Add clusters for same location markers
       // Add markers
       const newMarkers = [];
       for (const markerData of markersData) {
