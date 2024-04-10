@@ -26,6 +26,7 @@ import ToastNotification from "../ToastNotification/ToastNotificaiton";
 import { useUser } from "../../context/UserContext";
 import { downloadData } from "@aws-amplify/storage";
 import { useLocation } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const CommentCard = ({
   id,
@@ -177,13 +178,23 @@ const CommentCard = ({
       }}
     >
       <IconButton disabled>
-        <Avatar
-          style={{
+         {
+          commentProfilePicture !== "" ?
+            <Avatar
+            sx={{
+              width: "50px",
+              height: "50px",
+            }}
+            src={commentProfilePicture}
+          ></Avatar>
+          :
+          <AccountCircleIcon sx={{
             width: "50px",
             height: "50px",
+            color: "black"
           }}
-          src={commentProfilePicture}
-        ></Avatar>
+          />
+        }
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
