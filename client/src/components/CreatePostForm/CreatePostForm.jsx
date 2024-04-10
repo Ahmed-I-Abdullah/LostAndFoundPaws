@@ -47,7 +47,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
   const { userState, currentUser } = useUser();
   const [initialValues, setInitialValues] = useState({
     type: isEdit ? postData.status : "Lost",
-    name: isEdit ? postData.name : "",
+    name: isEdit ? postData.name : "Unknown",
     gender: isEdit ? postData.gender : "",
     summary: isEdit ? postData.summary : "",
     description: isEdit ? postData.description : "",
@@ -137,8 +137,14 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                       <FieldTitle title="Status" />
                       <Toggle
                         options={postTypeOptions}
-                        onToggleCallback={(index) =>
+                        onToggleCallback={(index) => {
                           setFieldValue("type", postTypeOptions[index].label)
+                          if(index == 0 && !values.name) {
+                            setFieldValue("name", "Unknown")
+                          } else if(index == 1 && values.name == "Unknown") {
+                            setFieldValue("name", "")
+                          }
+                        }
                         }
                         containerWidth={"100%"}
                       />
