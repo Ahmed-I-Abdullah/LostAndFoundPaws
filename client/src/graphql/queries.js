@@ -29,6 +29,12 @@ export const getPostReport = /* GraphQL */ `
         description
         resolved
         species
+        lastKnownLocation {
+          latitude
+          longitude
+          address
+          __typename
+        }
         images
         userID
         createdAt
@@ -68,6 +74,28 @@ export const listPostReports = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        post {
+          id
+          name
+          status
+          gender
+          summary
+          description
+          resolved
+          species
+          images
+          userID
+          createdAt
+          updatedAt
+          owner
+          lastKnownLocation {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          __typename
+        }
         __typename
       }
       nextToken
@@ -137,6 +165,17 @@ export const listCommentReports = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        comment {
+          id
+          content
+          postID
+          parentCommentID
+          userID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         __typename
       }
       nextToken
@@ -205,6 +244,22 @@ export const listSightingReports = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        sighting {
+          id
+          location {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          image
+          reporterType
+          userID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         __typename
       }
       nextToken
