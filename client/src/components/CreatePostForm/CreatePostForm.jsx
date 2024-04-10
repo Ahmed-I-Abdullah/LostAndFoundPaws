@@ -247,7 +247,6 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                             ...e.target.files,
                           ];
                           setFieldValue("images", newImages);
-                          isSingle = false;
                           e.target.value = null;
                         }}
                         handleRemoveImage={(index) => {
@@ -255,6 +254,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                           updatedImages.splice(index, 1);
                           setFieldValue("images", updatedImages);
                         }}
+                        isSingle = {false}
                         error={errors.images && touched.images}
                         helperText={touched.images ? errors.images : ""}
                       />

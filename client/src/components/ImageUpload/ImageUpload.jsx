@@ -7,15 +7,9 @@ const ImageUpload = ({
   images,
   handleImageChange,
   handleRemoveImage,
-  isSingle,
+  isSingle = false,
   ...otherProps
 }) => {
-  console.log("AAAAAA")
-  console.log(images)
-  console.log(handleImageChange)
-  console.log(handleRemoveImage)
-  console.log(isSingle)
-  console.log(otherProps)
   return (
     <>
       <div className="images-container">
