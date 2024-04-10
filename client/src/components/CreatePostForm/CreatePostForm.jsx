@@ -270,7 +270,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <FieldTitle title="Email (Optional)" />
+                      <FieldTitle title="Email" />
                       <CustomTextField
                         name="email"
                         variant="outlined"
