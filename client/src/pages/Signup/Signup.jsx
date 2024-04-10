@@ -68,6 +68,7 @@ const Signup = () => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const initialValues = {
     username: "",
@@ -92,6 +93,7 @@ const Signup = () => {
   });
 
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     const username = values.username;
     const password = values.password;
     const email = values.email;
@@ -138,19 +140,28 @@ const Signup = () => {
             "success",
             `Verification code was sent to ${codeDeliveryDetails.deliveryMedium}`
           );
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
 
           setTimeout(() => {
+            setIsSubmitting(false);
             navigate("/verifyAccount", { state: { email: email } });
           }, 2000);
           break;
         case "DONE":
+          setIsSubmitting(false);
           handleToastOpen("success", "Successfully verified password.");
+          setTimeout(() => {
+            setToastOpen(false);
+          }, 2000);
           break;
       }
     } catch (error) {
       console.log("error signing up:", error);
       handleToastOpen("error", "Error signing up.");
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
@@ -291,8 +302,8 @@ const Signup = () => {
                 </FormControl>
               </div>
               <div className="account-form-component">
-                <Button type="submit" variant="contained" color="primary">
-                  Sign Up
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+                    Sign up
                 </Button>
               </div>
             </Form>

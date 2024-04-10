@@ -22,6 +22,8 @@ const VerifyUpdateEmail = () => {
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
 
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
   const initialValues = {
     confirmationCode: "",
   };
@@ -31,6 +33,7 @@ const VerifyUpdateEmail = () => {
   });
 
   const handleSubmit = async (values) => {
+    setIsSubmitting(true);
     try {
       await confirmUserAttribute({
         //dont actually need to provide email here just saying updating email
@@ -39,12 +42,14 @@ const VerifyUpdateEmail = () => {
       });
       handleToastOpen("success", "Email verified.");
       setTimeout(() => {
+        setIsSubmitting(false);
         navigate("/MyAccount");
       }, 2000);
     } catch (error) {
       console.error("Error verifying email: ", error);
       handleToastOpen("error", "Error verifying email.");
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
@@ -107,7 +112,7 @@ const VerifyUpdateEmail = () => {
                 />
               </div>
               <div className="account-form-component">
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                   Update Email
                 </Button>
               </div>

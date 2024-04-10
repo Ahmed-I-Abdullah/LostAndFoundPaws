@@ -21,6 +21,7 @@ const Login = () => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const initialValues = {
     email: "",
@@ -36,6 +37,7 @@ const Login = () => {
 
   const handleSubmit = async (values) => {
     try {
+      setIsSubmitting(true);
       const username = values.email;
       const password = values.password;
       const signInResponse = await signIn({ username, password }); // AWS calls email username because its dumb
@@ -47,11 +49,13 @@ const Login = () => {
           handleToastOpen("error", `Verify account before logging in`);
 
           setTimeout(() => {
+            setIsSubmitting(false);
             setToastOpen(false);
           }, 2000);
           break;
         case "DONE":
           await updateUserContext();
+          setIsSubmitting(false);
           navigate("/");
           break;
       }
@@ -59,6 +63,7 @@ const Login = () => {
       console.error("Error logging in: ", error);
       handleToastOpen("error", "Error logging in.");
       setTimeout(() => {
+        setIsSubmitting(false);
         setToastOpen(false);
       }, 2000);
     }
@@ -134,8 +139,8 @@ const Login = () => {
                 </Link>
               </div>
               <div className="account-form-component">
-                <Button type="submit" variant="contained" color="primary">
-                  Log In
+                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+                  Log in
                 </Button>
               </div>
             </Form>

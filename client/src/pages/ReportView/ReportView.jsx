@@ -88,11 +88,12 @@ const ReportView = ({ selectedType, reportReason }) => {
                 variables: { id: report.commentID },
               });
               const comment = commentData.data.getComment;
+              if (comment == null) return { ...report, comment: null };
               const detailedComment = {
                 ...comment,
-                username: comment.user.username,
-                avatar: comment.user.profilePicture,
-                userId: comment.user.id,
+                username: comment.user?.username || "Deleted",
+                avatar: comment.user?.profilePicture || "",
+                userId: comment.user?.id,
                 replyTo: comment.replyTo,
               };
               return { ...report, comment: detailedComment };
@@ -179,6 +180,9 @@ const ReportView = ({ selectedType, reportReason }) => {
         "success",
         `Report and associated ${entityType} deleted successfully`
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen(
         "error",
@@ -188,6 +192,9 @@ const ReportView = ({ selectedType, reportReason }) => {
         `Error deleting report and associated ${entityType}: `,
         error
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
@@ -211,9 +218,15 @@ const ReportView = ({ selectedType, reportReason }) => {
       const updatedReports = reports.filter((report) => report.id !== reportId);
       setReports(updatedReports);
       handleToastOpen("success", "Report ignored successfully");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error ignoring report");
       console.error("Error ignoring report: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };

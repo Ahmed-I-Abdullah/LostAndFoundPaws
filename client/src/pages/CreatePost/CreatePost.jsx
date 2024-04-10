@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";
@@ -13,10 +13,12 @@ const CreatePost = () => {
   const [toastOpen, setToastOpen] = React.useState(false);
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const [toastMessage, setToastMessage] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (values) => {
     try {
       const user = await getCurrentUser();
+      setIsSubmitting(true);
 
       const uploadTasks = values.images.map(async (image) => {
         const imageKey = `images/${Date.now()}_${image.name}`;
@@ -57,12 +59,17 @@ const CreatePost = () => {
 
       handleToastOpen("success", "Post created successfully.");
       setTimeout(() => {
+        setIsSubmitting(false);
         navigate("/");
       }, 2000);
     } catch (error) {
       console.error("Error creating post: ", error);
       handleToastOpen("error", "Error creating post.");
-    }
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } 
   };
 
   const handleToastOpen = (severity, message) => {
@@ -77,7 +84,7 @@ const CreatePost = () => {
 
   return (
     <div>
-      <CreatePostForm isEdit={false} handleSubmit={handleSubmit} />
+      <CreatePostForm isEdit={false} handleSubmit={handleSubmit} isSubmitting={isSubmitting}/>
       <ToastNotification
         open={toastOpen}
         severity={toastSeverity}

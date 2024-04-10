@@ -60,7 +60,7 @@ const SightingDialog = ({
 
   return (
     <>
-      <Dialog open={isCardOpen} onClose={handleClose}>
+      <Dialog open={isCardOpen} onClose={handleClose} PaperProps={{ sx: { minWidth: "300px" } }}>
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -126,13 +126,14 @@ const SightingDialog = ({
                   color="text.secondary"
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: `<strong>Email:</strong> ${
-                        email ? email : "Unavailable"
-                      }`,
-                    }}
-                  />
+                  <strong>Email: </strong>{" "}
+                  {email ? (
+                    <a href={`mailto:${email}`}>
+                      {email}
+                    </a>
+                  ) : (
+                    "Unavailable"
+                  )}
                 </Typography>
                 <Typography
                   sx={{

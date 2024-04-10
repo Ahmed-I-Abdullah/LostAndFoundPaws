@@ -61,6 +61,9 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
       } catch (error) {
         handleToastOpen("error", "Error fetching posts.");
         console.error("Error fetching posts: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
       }
     };
 
@@ -92,6 +95,9 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
       } catch (error) {
         handleToastOpen("error", "Error fetching sighting posts.");
         console.error("Error fetching sighting posts: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
       }
     };
 
@@ -112,9 +118,15 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
       const newpostsData = postsData.filter((post) => post.id !== id);
       setPostsData(newpostsData);
       handleToastOpen("success", "Successfully deleted post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
@@ -134,9 +146,15 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
       );
       setSightingsData(newSightingsData);
       handleToastOpen("success", "Successfully deleted sighting post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error deleting sighting post.");
       console.error("Error deleting sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };

@@ -126,9 +126,15 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
       );
       setSightingsData(newSightingsData);
       handleToastOpen("success", "Successfully deleted sighting post.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error deleting sighting post.");
       console.error("Error deleting sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
     setLoading(false);
   };
@@ -181,7 +187,7 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
   };
 
   mapboxgl.accessToken =
-    "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
+  process.env.REACT_APP_MAPBOX_API_KEY  || "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
 
   // Initialize the map
   useEffect(() => {

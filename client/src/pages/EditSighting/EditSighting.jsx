@@ -53,6 +53,9 @@ const EditSighting = () => {
       setLoading(false);
       handleToastOpen("error", "Error fetching sighting data.");
       console.error("Error fetching sighting data: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -118,6 +121,9 @@ const EditSighting = () => {
         "error",
         "Error updating sighting post. Please try again later."
       );
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 

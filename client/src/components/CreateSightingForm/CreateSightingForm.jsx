@@ -22,7 +22,7 @@ const FieldTitle = ({ title }) => {
 };
 
 
-const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
+const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
@@ -174,6 +174,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
                         variant="outlined"
                         color="primary"
                         className="formButton"
+                        onClick={() => navigate(-1)}
                       >
                         Cancel
                       </Button>
@@ -184,6 +185,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit }) => {
                         variant="contained"
                         color="primary"
                         className="formButton"
+                        disabled={isSubmitting}
                       >
                         Submit
                       </Button>

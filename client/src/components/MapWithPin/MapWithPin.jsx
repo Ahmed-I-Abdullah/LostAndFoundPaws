@@ -4,6 +4,7 @@ import "./MapWithPin.css";
 
 // Public access token, don't woryy
 mapboxgl.accessToken =
+  process.env.REACT_APP_MAPBOX_API_KEY ||
   "pk.eyJ1IjoiYWhtZWRpMjAyNCIsImEiOiJjbHU2aWVuZG8yMGduMmptMjkxOWN1dXdmIn0.r-XM9IvEuxRJ2ugmdTzWKg";
 
 const MapWithPin = ({ longitude, latitude }) => {

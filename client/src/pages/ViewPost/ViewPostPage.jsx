@@ -100,6 +100,9 @@ const ViewPostPage = () => {
     } catch (error) {
       handleToastOpen("error", "Error deleting post.");
       console.error("Error deleting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -117,9 +120,15 @@ const ViewPostPage = () => {
       handleToastOpen("success", "Successfully marked post as resolved.");
 
       setPetData({...petData, resolved: 'true'})
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error marking post as resolved.");
       console.error("Error marking post as resolved: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
     }
   };
 
@@ -157,6 +166,9 @@ const ViewPostPage = () => {
 
   const handleReportSubmitted = () => {
     handleToastOpen("success", "Report submitted successfully.");
+    setTimeout(() => {
+      setToastOpen(false);
+    }, 2000);
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -192,6 +204,9 @@ const ViewPostPage = () => {
       } catch (error) {
         handleToastOpen("error", "Error fetching post.");
         console.error("Error fetching post: ", error);
+        setTimeout(() => {
+          setToastOpen(false);
+        }, 2000);
         setLoading(false);
       }
     };
@@ -314,6 +329,10 @@ const ViewPostPage = () => {
                       anchorEl={anchorEl}
                       open={open}
                       handleClose={handleClose}
+                      handleEdit={() => navigate(`/posts/${petData.id}/edit`)}
+                      handleDelete={() => setOpenConfirmDelete(true)}
+                      handleResolved={() => setOpenConfirmResolve(true)}
+                      resolved={petData.resolved == 'true'}
                     />
                   </div>
                 ) : (
@@ -474,14 +493,14 @@ const ViewPostPage = () => {
               <SectionTitle title="Poster's Contact Info" />
               {petData && (
                 <>
-                  <Typography variant="body2">
-                    <span className="span-key">Email:</span>{" "}
-                    {petData.user && petData.user.email
-                      ? petData.user.email
-                      : petData.user && petData.user.email
-                      ? petData.user.email
-                      : "Unavailable"}
-                  </Typography>
+                <Typography variant="body2">
+                  <span className="span-key">Email:</span>{" "}
+                  {petData.user && petData.user.email ? (
+                    <a href={`mailto:${petData.user.email}`}>
+                      {petData.user.email}
+                    </a>
+                  ) : "Unavailable"}
+                </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Phone:</span>{" "}
                     {petData.user && petData.user.phone

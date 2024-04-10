@@ -40,7 +40,7 @@ const FieldTitle = ({ title }) => {
   );
 };
 
-const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
+const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
@@ -289,6 +289,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
                         variant="outlined"
                         color="primary"
                         className="formButton"
+                        onClick={() => navigate(-1)}
                       >
                         Cancel
                       </Button>
@@ -299,8 +300,9 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit }) => {
                         variant="contained"
                         color="primary"
                         className="formButton"
+                        disabled={isSubmitting}
                       >
-                        Submit
+                         Submit
                       </Button>
                     </Grid>
                   </Grid>

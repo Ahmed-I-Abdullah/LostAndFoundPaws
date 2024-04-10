@@ -8,8 +8,10 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
   const [reason, setReason] = useState('');
   const [description, setDescription] = useState('');
   const client = generateClient({ authMode: "userPool" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
+    setIsSubmitting(true);
     e.preventDefault();
     let mutation;
     let input = {
@@ -33,9 +35,11 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
       });
       console.log(`${contentType} report created: `, data);
       onClose(); 
-      onReport(); 
+      onReport();
+      setIsSubmitting(false); 
     } catch (error) {
       console.error(`Error creating ${contentType} report:`, error);
+      setIsSubmitting(false);
     }
   };
   
@@ -63,8 +67,8 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
             placeholder="Description (optional)"
           ></textarea>
           <div className="report-post-actions">
-            <Button variant="outlined" onClick={onClose}>Cancel</Button>
-            <Button variant="contained" type="submit">Report</Button>
+            <Button variant="outlined" onClick={onClose} disabled={isSubmitting}>Cancel</Button>
+            <Button variant="contained" type="submit" disabled={isSubmitting}>Report</Button>
           </div>
         </form>
       </div>

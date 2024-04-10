@@ -17,7 +17,7 @@ import SideBar from "../../components/SideBar/SideBar";
 const postTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting },
+  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting.light },
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
 ];
 
