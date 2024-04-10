@@ -168,21 +168,24 @@ const Comments = ({ postId }) => {
         <Grid>
           <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
             {commentData.length > 0 ? (
-              commentData.map((comment, index) => (
-                <CommentCard
-                  key={index}
-                  userId={comment.userID}
-                  userProfilePicture={comment.user?.profilePicture}
-                  id={comment.id}
-                  content={comment.content}
-                  parentCommentId={comment.parentCommentID}
-                  username={comment.user?.username}
-                  createdAt={comment.createdAt}
-                  updatedAt={comment.updatedAt}
-                  setReply={setReply}
-                  onDelete={deleteComment}
-                />
-              ))
+              commentData
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((comment, index) => (
+                  <CommentCard
+                    key={index}
+                    userId={comment.userID}
+                    userProfilePicture={comment.user?.profilePicture}
+                    id={comment.id}
+                    content={comment.content}
+                    parentCommentId={comment.parentCommentID}
+                    username={comment.user?.username}
+                    createdAt={comment.createdAt}
+                    updatedAt={comment.updatedAt}
+                    setReply={setReply}
+                    onDelete={deleteComment}
+                  />
+                ))
             ) : (
               <p>No comments to show</p>
             )}
@@ -225,7 +228,9 @@ const Comments = ({ postId }) => {
                 </div>
                 <Button
                   variant="contained"
-                  disabled={postCommentText.length === 0 || loading || isSubmitting}
+                  disabled={
+                    postCommentText.length === 0 || loading || isSubmitting
+                  }
                   sx={{
                     backgroundColor: `${theme.palette.primary.main}`,
                     borderRadius: "1rem",
@@ -239,7 +244,9 @@ const Comments = ({ postId }) => {
               </div>
             ) : (
               <div className="post-comment-content">
-                <Typography variant="h6">Log in to be able to comment on post</Typography>
+                <Typography variant="h6">
+                  Log in to be able to comment on post
+                </Typography>
               </div>
             )}
           </div>

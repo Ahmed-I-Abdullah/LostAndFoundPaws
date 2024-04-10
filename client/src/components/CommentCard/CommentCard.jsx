@@ -34,6 +34,7 @@ const CommentCard = ({
   userProfilePicture,
   username,
   createdAt,
+  updatedAt,
   content,
   parentCommentId,
   setReply,
@@ -48,6 +49,7 @@ const CommentCard = ({
   const [commentProfilePicture, setCommentProfilePicture] = useState("");
 
   const [commentContent, setCommentContent] = useState(content);
+  const [updatedDateContent, setUpdatedDateContent] = useState(updatedAt);
   const [expandedComment, setExpandedComment] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
@@ -147,6 +149,8 @@ const CommentCard = ({
       handleToastOpen("success", "Successfully updated comment.");
       setCommentContent(updatedComment.data.updateComment.content);
       setEditedContent(updatedComment.data.updateComment.content);
+      const now = new Date();
+      setUpdatedDateContent(now.toISOString());
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -202,7 +206,11 @@ const CommentCard = ({
             {username ? username : "Unavailable"}
           </Typography>
           <Typography variant="subtitle2" color="#979797">
-            Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"}
+            Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"} -
+            Updated:{" "}
+            {updatedDateContent
+              ? updatedDateContent.split("T")[0]
+              : "Unavailable"}
           </Typography>
         </Box>
         <Box
