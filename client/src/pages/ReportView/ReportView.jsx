@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import ReportedPetCard from "../../components/ReportedPetCard/ReportedPetCard";
+import ReportedSightingCard from "../../components/ReportedSightingCard/ReportedSightingCard";
 import ReportedCommentCard from "../../components/ReportedCommentCard/ReportedCommentCard";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { generateClient } from "aws-amplify/api";

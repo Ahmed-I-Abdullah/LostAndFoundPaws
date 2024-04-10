@@ -3,10 +3,13 @@ import { Box, Typography, Button } from "@mui/material";
 import SightingCard from "../SightingCard/SightingCard";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
+import { useMobile } from "../../context/MobileContext";
 
 const ReportedSightingCard = ({ sightingData, report, onDelete, onIgnore }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openConfirmIgnore, setOpenConfirmIgnore] = useState(false);
+  const { isMobile } = useMobile();
 
   const handleDeleteConfirmed = () => {
     onDelete(sightingData.id);
@@ -26,6 +29,7 @@ const ReportedSightingCard = ({ sightingData, report, onDelete, onIgnore }) => {
         borderRadius: "8px",
         padding: "10px",
         backgroundColor: "#f9f9f9",
+        width: isMobile ? "auto" : "30vw",
       }}
     >
       <Box sx={{ marginBottom: "10px" }}>
@@ -33,8 +37,8 @@ const ReportedSightingCard = ({ sightingData, report, onDelete, onIgnore }) => {
           owner={false}
           img={sightingData.firstImg}
           location={sightingData.location.address}
-          email={sightingData.contactInfo.email}
-          phoneNumber={sightingData.contactInfo.phone}
+          email={getSightingEmail(sightingData)}
+          phoneNumber={getSightingPhoneNumber(sightingData)}
           createdAt={sightingData.createdAt}
         />
       </Box>
