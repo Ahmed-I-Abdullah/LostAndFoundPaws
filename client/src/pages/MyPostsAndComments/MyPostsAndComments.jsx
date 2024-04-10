@@ -258,38 +258,44 @@ const MyPostsAndComments = () => {
                   />
                 ))
             ) : selectedType.toLowerCase() === "sighting" ? (
-              sightingsData.map((sighting, index) => (
-                <SightingCard
-                  key={index}
-                  owner={true}
-                  img={sighting.images[0]}
-                  location={sighting.location.address}
-                  email={sighting.email}
-                  phoneNumber={sighting.phoneNumber}
-                  createdAt={sighting.createdAt}
-                />
-              ))
+              sightingsData
+                .slice()
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((sighting, index) => (
+                  <SightingCard
+                    key={index}
+                    owner={true}
+                    img={sighting.images[0]}
+                    location={sighting.location.address}
+                    email={sighting.email}
+                    phoneNumber={sighting.phoneNumber}
+                    createdAt={sighting.createdAt}
+                  />
+                ))
             ) : filteredPosts.length === 0 ? (
               <Typography variant="h1" margin={"1rem"} display={"flex"}>
                 No {selectedType} posts found
               </Typography>
             ) : (
-              filteredPosts.map((post, index) => (
-                <PetCard
-                  key={index}
-                  id={post.id}
-                  userId={post.userID}
-                  img={post.firstImg}
-                  name={post.name}
-                  status={post.status}
-                  petType={post.species}
-                  summary={post.summary}
-                  location={post.lastKnownLocation.address}
-                  createdAt={post.createdAt}
-                  updatedAt={post.updatedAt}
-                  onDelete={deletePost}
-                />
-              ))
+              filteredPosts
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((post, index) => (
+                  <PetCard
+                    key={index}
+                    id={post.id}
+                    userId={post.userID}
+                    img={post.firstImg}
+                    name={post.name}
+                    status={post.status}
+                    petType={post.species}
+                    summary={post.summary}
+                    location={post.lastKnownLocation.address}
+                    createdAt={post.createdAt}
+                    updatedAt={post.updatedAt}
+                    onDelete={deletePost}
+                  />
+                ))
             )}
           </Box>
           <ToastNotification
