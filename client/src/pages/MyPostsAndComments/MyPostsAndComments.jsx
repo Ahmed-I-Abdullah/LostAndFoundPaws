@@ -60,7 +60,6 @@ const MyPostsAndComments = () => {
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
-
   }
 
   const { isMobile } = useMobile();
@@ -89,7 +88,12 @@ const MyPostsAndComments = () => {
 
   useEffect(() => {
     if (userState === "Admin") {
-      contentTypeOptions = [{ label: "Comments", color: theme.palette.custom.selectedCategory.view }];
+      contentTypeOptions = [
+        {
+          label: "Comments",
+          color: theme.palette.custom.selectedCategory.view,
+        },
+      ];
       setSelectedType("Comments");
     }
 
@@ -144,7 +148,7 @@ const MyPostsAndComments = () => {
         }, 2000);
       }
     };
-    if(currentUser) {
+    if (currentUser) {
       fetchPostsData();
       fetchComments();
     }
@@ -235,8 +239,11 @@ const MyPostsAndComments = () => {
             }
             sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
           >
-            {selectedType.toLowerCase() === "comments"
-                ? commentData.map((comment, index) => (
+            {selectedType.toLowerCase() === "comments" ? (
+              commentData
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((comment, index) => (
                   <CommentCard
                     key={index}
                     userId={currentUser?.id}
@@ -250,8 +257,11 @@ const MyPostsAndComments = () => {
                     onDelete={deleteComment}
                   />
                 ))
-              : selectedType.toLowerCase() === "sighting"
-              ? sightingsData.map((sighting, index) => (
+            ) : selectedType.toLowerCase() === "sighting" ? (
+              sightingsData
+                .slice()
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((sighting, index) => (
                   <SightingCard
                     key={index}
                     owner={true}
@@ -262,13 +272,15 @@ const MyPostsAndComments = () => {
                     createdAt={sighting.createdAt}
                   />
                 ))
-              :       
-              filteredPosts.length === 0 ? (
-                <Typography variant="h1" margin={'1rem'} display={'flex'}>
-                  No {selectedType} posts found
-                </Typography>
-              ) : (
-                filteredPosts.map((post, index) => (
+            ) : filteredPosts.length === 0 ? (
+              <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                No {selectedType} posts found
+              </Typography>
+            ) : (
+              filteredPosts
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((post, index) => (
                   <PetCard
                     key={index}
                     id={post.id}
@@ -284,8 +296,7 @@ const MyPostsAndComments = () => {
                     onDelete={deletePost}
                   />
                 ))
-              )
-            }
+            )}
           </Box>
           <ToastNotification
             open={toastOpen}

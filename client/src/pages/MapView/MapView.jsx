@@ -5,7 +5,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "./MapView.css";
 
-import theme from "../../theme/theme";
 import SightingDialog from "../../components/SightingDialog/SightingDialog";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 
@@ -15,7 +14,7 @@ import * as mutations from "../../graphql/mutations";
 import { CircularProgress, Typography } from "@mui/material";
 import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
-import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
+import { getSightingEmail, getSightingPhoneNumber, getStatusColor } from "../../utils/utils";
 
 const MapView = ({ selectedType }) => {
   const [, setMarkers] = useState([]);
@@ -141,19 +140,6 @@ const MapView = ({ selectedType }) => {
 
   const handleToastClose = () => {
     setToastOpen(false);
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "LOST":
-        return theme.palette.custom.selectedCategory.lost.dark;
-      case "FOUND":
-        return theme.palette.custom.selectedCategory.found.dark;
-      case "SIGHTING":
-        return theme.palette.custom.selectedCategory.sighting.dark;
-      default:
-        return theme.palette.custom.greyBkg.tag;
-    }
   };
 
   const getStatusLabelHTML = (status) => {

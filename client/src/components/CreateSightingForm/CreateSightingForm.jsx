@@ -21,8 +21,12 @@ const FieldTitle = ({ title }) => {
   );
 };
 
-
-const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }) => {
+const CreateSightingForm = ({
+  isEdit,
+  sightingData,
+  handleSubmit,
+  isSubmitting,
+}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
@@ -48,7 +52,6 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
     }
   };
 
-
   const [initialValues, setInitialValues] = useState({
     location: isEdit ? sightingData.location : "",
     phoneNumber: getPhoneNumber(),
@@ -73,12 +76,13 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
 
   return (
     <Container
-      style={{ overflowY: isMobile ? "scroll" : "hidden", marginBottom: 50 }}
+      style={{ overflowY: "scroll", marginBottom: 50, height: '100vh' }}
     >
       <Grid
         container
         justifyContent="space-between"
         className="create-sighting-header"
+        style={{height: '100%'}}
       >
         <Grid item xs={12}>
           <div style={{ marginBottom: "10px" }}>
@@ -163,40 +167,40 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
                       />
                     </Grid>
                   </Grid>
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    spacing={theme.breakpoints.down("md") ? 2 : 10}
-                    marginTop={isMobile ? 0 : 47}
-                  >
-                    <Grid item xs={6} md={6}>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        className="formButton"
-                        onClick={() => navigate(-1)}
-                      >
-                        Cancel
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6} md={6}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className="formButton"
-                        disabled={isSubmitting}
-                      >
-                        Submit
-                      </Button>
-                    </Grid>
-                  </Grid>
                 </Grid>
               </Form>
             )}
           </Formik>
-        </Grid>
+          </Grid>
+          <Grid
+            item
+            container
+            xs={12}
+            spacing={theme.breakpoints.down("md") ? 2 : 10}
+            marginBottom={isMobile ? 0 :10}
+          >
+            <Grid item xs={6} md={6}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className="formButton"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={6} md={6}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className="formButton"
+                disabled={isSubmitting}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
       </Grid>
     </Container>
   );

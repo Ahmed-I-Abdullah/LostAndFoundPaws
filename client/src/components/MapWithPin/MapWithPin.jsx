@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import { getStatusColor } from "../../utils/utils";
 import "./MapWithPin.css";
 
 // Public access token, don't woryy
@@ -7,7 +8,7 @@ mapboxgl.accessToken =
   process.env.REACT_APP_MAPBOX_API_KEY ||
   "pk.eyJ1IjoiYWhtZWRpMjAyNCIsImEiOiJjbHU2aWVuZG8yMGduMmptMjkxOWN1dXdmIn0.r-XM9IvEuxRJ2ugmdTzWKg";
 
-const MapWithPin = ({ longitude, latitude }) => {
+const MapWithPin = ({ longitude, latitude, petStatus }) => {
   const mapContainer = useRef(null);
   const [lng, setLng] = useState(longitude);
   const [lat, setLat] = useState(latitude);
@@ -33,7 +34,9 @@ const MapWithPin = ({ longitude, latitude }) => {
 
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
-    new mapboxgl.Marker().setLngLat([longitude, latitude]).addTo(map);
+    new mapboxgl.Marker({
+      color: getStatusColor(petStatus),
+    }).setLngLat([longitude, latitude]).addTo(map);
 
     return () => map.remove();
   }, []);
