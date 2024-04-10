@@ -208,5 +208,5 @@ enum PetSpecies {
 enum PetGender {
   MALE
   FEMALE
-  OTHER
+  UNKNOWN
 }
