@@ -494,6 +494,7 @@ const ViewPostPage = () => {
               <MapWithPin
                 longitude={petData.lastKnownLocation.longitude}
                 latitude={petData.lastKnownLocation.latitude}
+                petStatus={petData.status}
               />
             </Grid>
 
