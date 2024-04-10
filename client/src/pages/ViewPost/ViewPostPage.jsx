@@ -8,6 +8,7 @@ import {
   useMediaQuery,
   IconButton,
   Divider,
+  Stack,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
@@ -106,7 +107,6 @@ const ViewPostPage = () => {
     }
   };
 
-
   const onResolve = async (id) => {
     const postInput = {
       id: id,
@@ -119,7 +119,7 @@ const ViewPostPage = () => {
       });
       handleToastOpen("success", "Successfully marked post as resolved.");
 
-      setPetData({...petData, resolved: 'true'})
+      setPetData({ ...petData, resolved: "true" });
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -332,7 +332,7 @@ const ViewPostPage = () => {
                       handleEdit={() => navigate(`/posts/${petData.id}/edit`)}
                       handleDelete={() => setOpenConfirmDelete(true)}
                       handleResolved={() => setOpenConfirmResolve(true)}
-                      resolved={petData.resolved == 'true'}
+                      resolved={petData.resolved == "true"}
                     />
                   </div>
                 ) : (
@@ -348,7 +348,7 @@ const ViewPostPage = () => {
                         marginRight: "8px",
                       }}
                       startIcon={<CheckIcon />}
-                      disabled={petData.resolved == 'true'}
+                      disabled={petData.resolved == "true"}
                     >
                       Mark as resolved
                     </Button>
@@ -386,14 +386,25 @@ const ViewPostPage = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <StatusLabel status={petData.status} />
+            <Stack
+              direction="row"
+              sx={{
+                overflow: "auto",
+                gap: 1,
+                display: "flex",
+                flexWrap: "wrap",
+              }}
+            >
+              <StatusLabel status={petData.status} />
+              <StatusLabel status={petData.species} />
+            </Stack>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="subtitle2" color="#979797">
-            {`Posted: ${petData.createdAt.split("T")[0]} - Updated: ${
-              petData.updatedAt.split("T")[0]
-            }`}
-          </Typography>
+              {`Posted: ${petData.createdAt.split("T")[0]} - Updated: ${
+                petData.updatedAt.split("T")[0]
+              }`}
+            </Typography>
           </Grid>
         </Grid>
         <Grid item container columnSpacing={15}>
@@ -474,9 +485,6 @@ const ViewPostPage = () => {
                 <span className="span-key">Gender:</span> {petData.gender}
               </Typography>
               <Typography variant="body2">
-                <span className="span-key">Species:</span> {petData.species}
-              </Typography>
-              <Typography variant="body2">
                 <span className="span-key">Description:</span>{" "}
                 {petData.description}
               </Typography>
@@ -493,14 +501,16 @@ const ViewPostPage = () => {
               <SectionTitle title="Poster's Contact Info" />
               {petData && (
                 <>
-                <Typography variant="body2">
-                  <span className="span-key">Email:</span>{" "}
-                  {petData.user && petData.user.email ? (
-                    <a href={`mailto:${petData.user.email}`}>
-                      {petData.user.email}
-                    </a>
-                  ) : "Unavailable"}
-                </Typography>
+                  <Typography variant="body2">
+                    <span className="span-key">Email:</span>{" "}
+                    {petData.user && petData.user.email ? (
+                      <a href={`mailto:${petData.user.email}`}>
+                        {petData.user.email}
+                      </a>
+                    ) : (
+                      "Unavailable"
+                    )}
+                  </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Phone:</span>{" "}
                     {petData.user && petData.user.phone
