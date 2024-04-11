@@ -338,7 +338,7 @@ const SideBar = ({
             style={{
               backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
               color: "black",
-              width: "70%",
+              width: "75%",
             }}
           >
             Clear Filters

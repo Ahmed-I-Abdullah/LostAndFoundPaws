@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import theme from "../../theme/theme";
 import { Box, Button, Grid, Typography } from "@mui/material";
@@ -9,9 +9,9 @@ import MapIcon from "@mui/icons-material/Map";
 import ListIcon from "@mui/icons-material/List";
 import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBar from "../../components/SideBar/SideBar";
 import "./HomePage.css";
+import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 
 const mapPostTypeOptions = [
   { label: "All", color: theme.palette.custom.selectedCategory.view },
@@ -177,11 +177,13 @@ const HomePageTemp = () => {
               />
             ))}
           {isMobile && (
-            <>
-              <Box width={"95%"} sx={{ margin: "1rem auto" }}>
-                <SearchBar placeholder={"Enter city, neighborhood, address"} />
-              </Box>
-            </>
+            <Grid width={"95%"} sx={{ margin: "1rem auto" }}>
+              <AddressAutocompleteField
+                placeholder={"Enter city, neighborhood, address"}
+                value={tempSearchTerm}
+                onChange={setTempSearchTerm}
+              />
+            </Grid>
           )}
           <Grid
             item
