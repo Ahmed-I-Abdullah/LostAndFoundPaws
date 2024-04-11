@@ -131,8 +131,6 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
           );
         }
 
-        console.log(filteredReports);
-
         // Sort based on sort by
         switch (sortBy) {
           case "Newest":

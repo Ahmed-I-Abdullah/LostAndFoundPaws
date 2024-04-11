@@ -21,10 +21,9 @@ import * as queries from "../../graphql/queries";
 import { useUser } from "../../context/UserContext";
 import { generateClient } from "aws-amplify/api";
 
-// TODO: DIFFERENT filter for sighTings
 const SideBar = ({
   selectedView,
-  // selectedType,
+  selectedType,
   filterPosts,
   setFilterPosts,
   filterSightings,
@@ -60,6 +59,14 @@ const SideBar = ({
   const asideRef = useRef(null);
 
   const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
+
+  const dropDownOptions = [
+    { label: "Most Recently Posted", value: "Newest" },
+    { label: "Oldest Posted", value: "Oldest" },
+  ];
+  if (selectedType !== "Sighting" && selectedType !== "Comments") {
+    dropDownOptions.push({ label: "Name", value: "Name" });
+  }
 
   const handleClickOutside = (event) => {
     if (asideRef.current && !asideRef.current.contains(event.target)) {
@@ -239,9 +246,6 @@ const SideBar = ({
 
         setFilterPosts(filterPosts);
         setFilterSightings(filterSightings);
-
-        console.log(filterPosts);
-        console.log(filterSightings);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -284,7 +288,13 @@ const SideBar = ({
   return (
     <>
       <aside className="sidebar" ref={asideRef}>
-        <Grid style={{ display: "flex", justifyContent: "space-between" }}>
+        <Grid
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingBottom: "20px",
+          }}
+        >
           <Button
             variant="contained"
             onClick={() => clearFilters()}
@@ -346,98 +356,98 @@ const SideBar = ({
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               onMouseDown={(e) => e.stopPropagation()}
-              options={[
-                { label: "Most Recently Posted", value: "Newest" },
-                { label: "Oldest Posted", value: "Oldest" },
-                { label: "Name", value: "Name" },
-              ]}
+              options={dropDownOptions}
             />
           </div>
         )}
 
-        {!isReporting && selectedView === "List View" && (
-          <div className="divider" />
-        )}
-        {!isReporting && selectedView === "List View" && (
-          <div>
-            <Typography variant="h6">Species</Typography>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={species.dog}
-                  onChange={(e) =>
-                    setSpecies({ ...species, dog: e.target.checked })
-                  }
-                />
-              }
-              label="Dog"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={species.cat}
-                  onChange={(e) =>
-                    setSpecies({ ...species, cat: e.target.checked })
-                  }
-                />
-              }
-              label="Cat"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={species.other}
-                  onChange={(e) =>
-                    setSpecies({ ...species, other: e.target.checked })
-                  }
-                />
-              }
-              label="Other"
-            />
-          </div>
-        )}
+        {!isReporting &&
+          selectedView === "List View" &&
+          selectedType !== "Sighting" && <div className="divider" />}
+        {!isReporting &&
+          selectedView === "List View" &&
+          selectedType !== "Sighting" && (
+            <div>
+              <Typography variant="h6">Species</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={species.dog}
+                    onChange={(e) =>
+                      setSpecies({ ...species, dog: e.target.checked })
+                    }
+                  />
+                }
+                label="Dog"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={species.cat}
+                    onChange={(e) =>
+                      setSpecies({ ...species, cat: e.target.checked })
+                    }
+                  />
+                }
+                label="Cat"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={species.other}
+                    onChange={(e) =>
+                      setSpecies({ ...species, other: e.target.checked })
+                    }
+                  />
+                }
+                label="Other"
+              />
+            </div>
+          )}
 
-        {!isReporting && selectedView === "List View" && (
-          <div className="divider" />
-        )}
-        {!isReporting && selectedView === "List View" && (
-          <div>
-            <Typography variant="h6">Gender</Typography>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={gender.male}
-                  onChange={(e) =>
-                    setGender({ ...gender, male: e.target.checked })
-                  }
-                />
-              }
-              label="Male"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={gender.female}
-                  onChange={(e) =>
-                    setGender({ ...gender, female: e.target.checked })
-                  }
-                />
-              }
-              label="Female"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={gender.unknown}
-                  onChange={(e) =>
-                    setGender({ ...gender, unknown: e.target.checked })
-                  }
-                />
-              }
-              label="Unknown"
-            />
-          </div>
-        )}
+        {!isReporting &&
+          selectedView === "List View" &&
+          selectedType !== "Sighting" && <div className="divider" />}
+        {!isReporting &&
+          selectedView === "List View" &&
+          selectedType !== "Sighting" && (
+            <div>
+              <Typography variant="h6">Gender</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={gender.male}
+                    onChange={(e) =>
+                      setGender({ ...gender, male: e.target.checked })
+                    }
+                  />
+                }
+                label="Male"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={gender.female}
+                    onChange={(e) =>
+                      setGender({ ...gender, female: e.target.checked })
+                    }
+                  />
+                }
+                label="Female"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={gender.unknown}
+                    onChange={(e) =>
+                      setGender({ ...gender, unknown: e.target.checked })
+                    }
+                  />
+                }
+                label="Unknown"
+              />
+            </div>
+          )}
 
         {isReporting && <div className="divider" />}
         {isReporting && (

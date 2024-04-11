@@ -1,4 +1,3 @@
-import CoolImage from "../../sharedStyles/CoolImage.png";
 import React, { useState } from "react";
 import ReportPopup from "../../components/ReportPopup/ReportPopup";
 {
@@ -11,7 +10,6 @@ import MapView from "../MapView/MapView";
 import ReportView from "../ReportView/ReportView";
 import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBar from "../../components/SideBar/SideBar";
 
 const postTypeOptions = [
@@ -26,7 +24,6 @@ const postTypeOptions = [
 
 const ViewReportsPage = () => {
   const { isMobile } = useMobile();
-
   const [selectedType, setSelectedType] = useState("Lost");
   const [selectedView, setSelectedView] = useState("List View");
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -53,8 +50,8 @@ const ViewReportsPage = () => {
     other: false,
   });
   const [applyClicked, setApplyClicked] = useState(false);
-
   const [isReporting, setIsReporting] = useState(true);
+
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);
   };

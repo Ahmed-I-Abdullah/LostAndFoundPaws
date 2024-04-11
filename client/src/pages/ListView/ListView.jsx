@@ -17,8 +17,6 @@ const ListView = ({
   filterSightings,
   applyClicked,
 }) => {
-  // console.log("filterPosts", filterPosts);
-  // console.log("filterSightings", filterSightings);
   const { userState } = useUser();
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
@@ -49,8 +47,6 @@ const ListView = ({
           posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         }
         setPosts(posts);
-        console.log("filterPosts", filterPosts);
-        // console.log("posts", posts);
         const postsWithImages = await Promise.all(
           posts.map(async (post) => {
             try {
@@ -88,8 +84,6 @@ const ListView = ({
           sightings = listResponse.data.listSightings.items;
         }
         setSightings(sightings);
-        // console.log("filterSightings", filterSightings);
-        // console.log("sightings", sightings);
         const sightingsWithImages = await Promise.all(
           sightings.map(async (sighting) => {
             try {

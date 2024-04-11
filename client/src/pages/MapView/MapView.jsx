@@ -12,12 +12,17 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
 import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
 
-const MapView = ({ selectedType, filterPosts, filterSightings, applyClicked }) => {
+const MapView = ({
+  selectedType,
+  filterPosts,
+  filterSightings,
+  applyClicked,
+}) => {
   const [, setMarkers] = useState([]);
   const [markersData, setMarkersData] = useState([]);
   const [toastOpen, setToastOpen] = useState(false);
@@ -55,8 +60,6 @@ const MapView = ({ selectedType, filterPosts, filterSightings, applyClicked }) =
           });
           posts = listPostsResponse.data.listPosts.items;
         }
-        // console.log("posts", posts);
-        // console.log("filterPosts", filterPosts);
         const postsInfo = await Promise.all(
           posts.map(async (post) => {
             const imageData = await downloadData({ key: post.images[0] })
