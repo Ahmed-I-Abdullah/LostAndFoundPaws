@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import PetCard from "../../components/PetCard/PetCard";
-import SigthingCard from "../../components/SightingCard/SightingCard";
+import SightingCard from "../../components/SightingCard/SightingCard";
 import ToastNotification from "../../components/ToastNotification/ToastNotificaiton";
 import { useMobile } from "../../context/MobileContext";
 import { generateClient } from "aws-amplify/api";
@@ -11,8 +11,13 @@ import * as mutations from "../../graphql/mutations";
 import { useUser } from "../../context/UserContext";
 import { getSightingPhoneNumber, getSightingEmail } from "../../utils/utils";
 
-const ListView = ({ selectedType }) => {
-  const { userState, currentUser } = useUser();
+const ListView = ({
+  selectedType,
+  filterPosts,
+  filterSightings,
+  applyClicked,
+}) => {
+  const { userState } = useUser();
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
@@ -20,17 +25,28 @@ const ListView = ({ selectedType }) => {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastSeverity, setToastSeverity] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [sightings, setSightings] = useState([]);
   const [postsData, setPostsData] = useState([]);
   const [sightingsData, setSightingsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let didCancel = false;
     const fetchPostsData = async () => {
+      if (didCancel) {
+        return;
+      }
       try {
-        const listResponse = await client.graphql({
-          query: queries.listPosts,
-        });
-        const posts = listResponse.data.listPosts.items;
+        let posts = filterPosts || [];
+        if (filterPosts === null) {
+          const listResponse = await client.graphql({
+            query: queries.listPosts,
+          });
+          posts = listResponse.data.listPosts.items;
+          posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
+        setPosts(posts);
         const postsWithImages = await Promise.all(
           posts.map(async (post) => {
             try {
@@ -60,10 +76,17 @@ const ListView = ({ selectedType }) => {
 
     const fetchSightingsData = async () => {
       try {
-        const listResponse = await client.graphql({
-          query: queries.listSightings,
-        });
-        const sightings = listResponse.data.listSightings.items;
+        let sightings = filterSightings || [];
+        if (filterSightings === null) {
+          const listResponse = await client.graphql({
+            query: queries.listSightings,
+          });
+          sightings = listResponse.data.listSightings.items;
+          sightings.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+        }
+        setSightings(sightings);
         const sightingsWithImages = await Promise.all(
           sightings.map(async (sighting) => {
             try {
@@ -91,7 +114,10 @@ const ListView = ({ selectedType }) => {
 
     fetchPostsData();
     fetchSightingsData();
-  }, []);
+    return () => {
+      didCancel = true;
+    };
+  }, [applyClicked, filterPosts, filterSightings]);
 
   const deletePost = async (id) => {
     setLoading(true);
@@ -200,50 +226,42 @@ const ListView = ({ selectedType }) => {
               {selectedType !== "Sighting" ? (
                 filteredPosts.length === 0 ? (
                   <Typography variant="h1" margin={"1rem"} display={"flex"}>
-                    No {selectedType} posts found
+                    No {selectedType} posts found.
                   </Typography>
                 ) : (
-                  filteredPosts
-                    .slice()
-                    .sort(
-                      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-                    )
-                    .map((post, index) => (
-                      <PetCard
-                        key={index}
-                        id={post.id}
-                        userId={post.userID}
-                        img={post.firstImg}
-                        name={post.name}
-                        status={post.status}
-                        petType={post.species}
-                        summary={post.summary}
-                        location={post.lastKnownLocation.address}
-                        createdAt={post.createdAt}
-                        updatedAt={post.updatedAt}
-                        resolved={post.resolved}
-                        onDelete={deletePost}
-                      />
-                    ))
-                )
-              ) : (
-                sightingsData
-                  .slice()
-                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                  .map((sighting, index) => (
-                    <SigthingCard
+                  filteredPosts.map((post, index) => (
+                    <PetCard
                       key={index}
-                      id={sighting.id}
-                      userId={sighting.userID}
-                      img={sighting.firstImg}
-                      location={sighting.location.address}
-                      email={getSightingEmail(sighting)}
-                      phoneNumber={getSightingPhoneNumber(sighting)}
-                      createdAt={sighting.createdAt}
-                      resolved={sighting.resolved}
-                      onDelete={deleteSighting}
+                      id={post.id}
+                      userId={post.userID}
+                      img={post.firstImg}
+                      name={post.name}
+                      status={post.status}
+                      petType={post.species}
+                      summary={post.summary}
+                      location={post.lastKnownLocation.address}
+                      createdAt={post.createdAt}
+                      updatedAt={post.updatedAt}
+                      resolved={post.resolved}
+                      onDelete={deletePost}
                     />
                   ))
+                )
+              ) : (
+                sightingsData.map((sighting, index) => (
+                  <SightingCard
+                    key={index}
+                    id={sighting.id}
+                    userId={sighting.userID}
+                    img={sighting.firstImg}
+                    location={sighting.location.address}
+                    email={getSightingEmail(sighting)}
+                    phoneNumber={getSightingPhoneNumber(sighting)}
+                    createdAt={sighting.createdAt}
+                    resolved={sighting.resolved}
+                    onDelete={deleteSighting}
+                  />
+                ))
               )}
             </>
           )}

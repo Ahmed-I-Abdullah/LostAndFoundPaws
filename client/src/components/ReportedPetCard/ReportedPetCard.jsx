@@ -28,6 +28,7 @@ const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
         borderRadius: "8px",
         padding: "10px",
         backgroundColor: "#f9f9f9",
+        width: "100%",
       }}
     >
       <Box sx={{ marginBottom: "10px" }}>
