@@ -17,7 +17,7 @@ import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
 import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
 
-const MapView = ({ selectedType, filterPosts, filterSightings }) => {
+const MapView = ({ selectedType, filterPosts, filterSightings, applyClicked }) => {
   const [, setMarkers] = useState([]);
   const [markersData, setMarkersData] = useState([]);
   const [toastOpen, setToastOpen] = useState(false);
@@ -42,7 +42,11 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
   };
 
   useEffect(() => {
+    let didCancel = false;
     const fetchData = async () => {
+      if (didCancel) {
+        return;
+      }
       try {
         let posts = filterPosts || [];
         if (filterPosts === null) {
@@ -51,6 +55,8 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
           });
           posts = listPostsResponse.data.listPosts.items;
         }
+        // console.log("posts", posts);
+        // console.log("filterPosts", filterPosts);
         const postsInfo = await Promise.all(
           posts.map(async (post) => {
             const imageData = await downloadData({ key: post.images[0] })
@@ -109,7 +115,15 @@ const MapView = ({ selectedType, filterPosts, filterSightings }) => {
     };
 
     fetchData();
-  }, [selectedType]);
+    return () => {
+      didCancel = true;
+    };
+  }, [
+    selectedType,
+    JSON.stringify(filterPosts),
+    JSON.stringify(filterSightings),
+    applyClicked,
+  ]);
 
   const deleteSighting = async (id) => {
     setLoading(true);

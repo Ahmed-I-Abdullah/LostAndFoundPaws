@@ -60,14 +60,16 @@ const HomePageTemp = () => {
   const [gender, setGender] = useState({
     male: false,
     female: false,
-    other: false,
+    unknown: false,
   });
   const [locationAway, setLocationAway] = useState(1);
   const [disableLocationFilter, setDisableLocationFilter] = useState(true);
   const [reportReason, setReportReason] = useState({
     inappropriate: false,
     spam: false,
+    other: false,
   });
+  const [applyClicked, setApplyClicked] = useState(false);
 
   const [selectedView, setSelectedView] = useState("List View");
   const [selectedType, setSelectedType] = useState(
@@ -160,6 +162,8 @@ const HomePageTemp = () => {
                 setDisableLocationFilter={setDisableLocationFilter}
                 reportReason={reportReason}
                 setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
           {isMobile && (
@@ -225,6 +229,8 @@ const HomePageTemp = () => {
                 setDisableLocationFilter={setDisableLocationFilter}
                 reportReason={reportReason}
                 setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
         </Grid>
@@ -304,6 +310,8 @@ const HomePageTemp = () => {
                 setDisableLocationFilter={setDisableLocationFilter}
                 reportReason={reportReason}
                 setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
           <Grid
@@ -382,6 +390,8 @@ const HomePageTemp = () => {
                 setDisableLocationFilter={setDisableLocationFilter}
                 reportReason={reportReason}
                 setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
         </Grid>
@@ -397,6 +407,7 @@ const HomePageTemp = () => {
             selectedType={selectedType}
             filterPosts={filterPosts}
             filterSightings={filterSightings}
+            applyClicked={applyClicked}
           />
         </Box>
       ) : (
@@ -404,6 +415,7 @@ const HomePageTemp = () => {
           selectedType={selectedType}
           filterPosts={filterPosts}
           filterSightings={filterSightings}
+          applyClicked={applyClicked}
         />
       )}
     </div>

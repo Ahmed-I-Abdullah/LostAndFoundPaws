@@ -11,7 +11,12 @@ import * as mutations from "../../graphql/mutations";
 import { useUser } from "../../context/UserContext";
 import { getSightingPhoneNumber, getSightingEmail } from "../../utils/utils";
 
-const ListView = ({ selectedType, filterPosts, filterSightings }) => {
+const ListView = ({
+  selectedType,
+  filterPosts,
+  filterSightings,
+  applyClicked,
+}) => {
   // console.log("filterPosts", filterPosts);
   // console.log("filterSightings", filterSightings);
   const { userState } = useUser();
@@ -29,7 +34,11 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let didCancel = false;
     const fetchPostsData = async () => {
+      if (didCancel) {
+        return;
+      }
       try {
         let posts = filterPosts || [];
         if (filterPosts === null) {
@@ -37,9 +46,10 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
             query: queries.listPosts,
           });
           posts = listResponse.data.listPosts.items;
+          posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         }
         setPosts(posts);
-        // console.log("filterPosts", filterPosts);
+        console.log("filterPosts", filterPosts);
         // console.log("posts", posts);
         const postsWithImages = await Promise.all(
           posts.map(async (post) => {
@@ -107,7 +117,10 @@ const ListView = ({ selectedType, filterPosts, filterSightings }) => {
 
     fetchPostsData();
     fetchSightingsData();
-  }, [filterPosts, filterSightings]);
+    return () => {
+      didCancel = true;
+    };
+  }, [applyClicked, filterPosts, filterSightings]);
 
   const deletePost = async (id) => {
     setLoading(true);

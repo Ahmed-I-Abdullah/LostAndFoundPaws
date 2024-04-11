@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
+  Grid,
   Box,
   Button,
   Typography,
@@ -7,24 +8,20 @@ import {
   FormControlLabel,
   Slider,
   Input,
+  InputAdornment,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-// import SearchBar from "../SearchBar/SearchBar";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useMobile } from "../../context/MobileContext";
 import CustomDropdown from "../DropDown/DropDown";
 import "./SideBar.css";
 import theme from "../../theme/theme";
-// import AddressAutocompleteField from "../AddressAutocompleteField/AddressAutocompleteField";
-// import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
 import { useUser } from "../../context/UserContext";
 import { generateClient } from "aws-amplify/api";
 
-// TODO: posts flicker when opening the sidebar - LIST VIEW
-// TODO: when term does not match posts, it doesnt automatically reload the posts
-// TODO: implement the filters with the apply button
-// TODO: must reload page to apply filters - MAP VIEW
+// TODO: DIFFERENT filter for sighTings
 const SideBar = ({
   selectedView,
   // selectedType,
@@ -50,6 +47,8 @@ const SideBar = ({
   setReportReason,
   isReporting,
   onClose,
+  applyClicked,
+  setApplyClicked,
 }) => {
   const { userState } = useUser();
   let client = generateClient({ authMode: "apiKey" });
@@ -57,11 +56,10 @@ const SideBar = ({
     client = generateClient({ authMode: "userPool" });
   }
   const [userLocation, setUserLocation] = useState(null);
-  const [applyClicked, setApplyClicked] = useState(false);
-  const [postsData, setPostsData] = useState([]);
-  const [sightingsData, setSightingsData] = useState([]);
   const { isMobile } = useMobile();
   const asideRef = useRef(null);
+
+  const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
 
   const handleClickOutside = (event) => {
     if (asideRef.current && !asideRef.current.contains(event.target)) {
@@ -70,41 +68,46 @@ const SideBar = ({
   };
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (asideRef.current && !asideRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [onClose]);
 
   const clearFilters = () => {
     setSearchTerm("");
-    setSpecies("");
-    setGender("");
+    setTempSearchTerm("");
+    setSpecies({
+      dog: false,
+      cat: false,
+      other: false,
+    });
+    setGender({
+      male: false,
+      female: false,
+      unknown: false,
+    });
     setLocationAway(1);
     setDisableLocationFilter(true);
     setSortBy("Newest");
+    setReportReason({
+      inappropriate: false,
+      spam: false,
+      other: false,
+    });
   };
 
   const handleApplyClick = () => {
-    // setSearchTerm(tempSearchTerm);
-    // setSortBy(sortBy);
-    // setSpecies(species);
-    // setGender(gender);
-    // setLocationAway(locationAway);
+    setSearchTerm(tempSearchTerm);
+    setHasFiltersChanged(true);
     setApplyClicked(true);
   };
-
-  useEffect(() => {
-    if (applyClicked) {
-      onClose();
-      setSearchTerm(tempSearchTerm);
-      setSortBy(sortBy);
-      setSpecies(species);
-      setGender(gender);
-      setLocationAway(locationAway);
-      setApplyClicked(false);
-    }
-  }, [applyClicked, searchTerm, tempSearchTerm, onClose]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -152,38 +155,47 @@ const SideBar = ({
   };
 
   useEffect(() => {
+    let didCancel = false;
+    if (!hasFiltersChanged) {
+      return;
+    }
     const fetchData = async () => {
+      if (didCancel) {
+        return;
+      }
       try {
         const listPostsResponse = await client.graphql({
           query: queries.listPosts,
         });
-        setPostsData(listPostsResponse.data.listPosts.items);
+        const postsData = listPostsResponse.data.listPosts.items;
+        console.log(postsData);
 
         const listSightingsResponse = await client.graphql({
           query: queries.listSightings,
         });
-        setSightingsData(listSightingsResponse.data.listSightings.items);
+        const sightingsData = listSightingsResponse.data.listSightings.items;
 
-        // Filter based on search term
+        // Filter based on search term for posts
         filterPosts = postsData.filter((item) =>
           item.lastKnownLocation.address
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         );
 
+        // Filter based on search term for sightings
         filterSightings = sightingsData.filter((item) =>
           item.location.address.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
         // Filter based on species
-        if (species.dog || species.cat || species.other) {
+        if (species.dog || species.cat || species.unknown) {
           filterPosts = filterPosts.filter(
             (item) => species[item.species.toLowerCase()]
           );
         }
 
         // Filter based on gender
-        if (gender.male || gender.female || gender.other) {
+        if (gender.male || gender.female || gender.unknown) {
           filterPosts = filterPosts.filter(
             (item) => gender[item.gender.toLowerCase()]
           );
@@ -202,6 +214,7 @@ const SideBar = ({
           );
         }
 
+        // Sort based on sort by
         switch (sortBy) {
           case "Newest":
             filterPosts.sort(
@@ -227,20 +240,39 @@ const SideBar = ({
         setFilterPosts(filterPosts);
         setFilterSightings(filterSightings);
 
-        // console.log(postsData);
-        // console.log(sightingsData);
+        console.log(filterPosts);
+        console.log(filterSightings);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
 
-    fetchData();
+    if (applyClicked) {
+      onClose();
+      setSearchTerm(tempSearchTerm);
+      setSortBy(sortBy);
+      setSpecies(species);
+      setGender(gender);
+      setLocationAway(locationAway);
+      setApplyClicked(false);
+
+      fetchData();
+      setHasFiltersChanged(false);
+
+      console.log(tempSearchTerm);
+      console.log(searchTerm);
+    }
+
+    return () => {
+      didCancel = true;
+    };
   }, [
     searchTerm,
-    filterPosts,
-    filterSightings,
-    postsData,
-    sightingsData,
+    tempSearchTerm,
+    applyClicked,
+    onClose,
+    JSON.stringify(filterPosts),
+    JSON.stringify(filterSightings),
     species,
     gender,
     locationAway,
@@ -252,26 +284,30 @@ const SideBar = ({
   return (
     <>
       <aside className="sidebar" ref={asideRef}>
-        <Button
-          variant="contained"
-          onClick={() => clearFilters()}
-          style={{
-            backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-            color: "black",
-          }}
-        >
-          Clear Filters
-        </Button>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <IconButton color="black" onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
+        <Grid style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button
+            variant="contained"
+            onClick={() => clearFilters()}
+            style={{
+              backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+              color: "black",
+              width: "70%",
+            }}
+          >
+            Clear Filters
+          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
+          >
+            <IconButton color="black" onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </Grid>
 
         {!isMobile && !isReporting && (
           <Box width={"100%"} sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
@@ -282,6 +318,18 @@ const SideBar = ({
               onChange={(e) => {
                 setTempSearchTerm(e.target.value);
               }}
+              endAdornment={
+                tempSearchTerm && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      edge="end"
+                      onClick={() => setTempSearchTerm("")}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }
             />
           </Box>
         )}
@@ -380,13 +428,13 @@ const SideBar = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={gender.other}
+                  checked={gender.unknown}
                   onChange={(e) =>
-                    setGender({ ...gender, other: e.target.checked })
+                    setGender({ ...gender, unknown: e.target.checked })
                   }
                 />
               }
-              label="Other"
+              label="Unknown"
             />
           </div>
         )}
@@ -423,6 +471,20 @@ const SideBar = ({
               }
               label="Spam"
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={reportReason.other}
+                  onChange={(e) =>
+                    setReportReason({
+                      ...reportReason,
+                      other: e.target.checked,
+                    })
+                  }
+                />
+              }
+              label="Other"
+            />
           </div>
         )}
 
@@ -450,6 +512,7 @@ const SideBar = ({
                 { value: 1, label: "1 km" },
                 { value: 30, label: "30 km" },
               ]}
+              valueLabelDisplay="auto"
               sx={{
                 display: "flex",
                 justifyContent: "center",

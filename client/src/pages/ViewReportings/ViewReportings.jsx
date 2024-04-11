@@ -17,7 +17,10 @@ import SideBar from "../../components/SideBar/SideBar";
 const postTypeOptions = [
   { label: "Lost", color: theme.palette.custom.selectedCategory.lost.light },
   { label: "Found", color: theme.palette.custom.selectedCategory.found.light },
-  { label: "Sighting", color: theme.palette.custom.selectedCategory.sighting.light },
+  {
+    label: "Sighting",
+    color: theme.palette.custom.selectedCategory.sighting.light,
+  },
   { label: "Comments", color: theme.palette.custom.selectedCategory.view },
 ];
 
@@ -40,14 +43,16 @@ const ViewReportsPage = () => {
   const [gender, setGender] = useState({
     male: false,
     female: false,
-    other: false,
+    unknown: false,
   });
   const [locationAway, setLocationAway] = useState(1);
   const [disableLocationFilter, setDisableLocationFilter] = useState(true);
   const [reportReason, setReportReason] = useState({
     inappropriate: false,
     spam: false,
+    other: false,
   });
+  const [applyClicked, setApplyClicked] = useState(false);
 
   const [isReporting, setIsReporting] = useState(true);
   const toggleSideBar = () => {
@@ -139,6 +144,8 @@ const ViewReportsPage = () => {
                 reportReason={reportReason}
                 setReportReason={setReportReason}
                 isReporting={isReporting}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             )}
           </Grid>
@@ -197,6 +204,8 @@ const ViewReportsPage = () => {
                 reportReason={reportReason}
                 setReportReason={setReportReason}
                 isReporting={isReporting}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             )}
           </Grid>
@@ -210,13 +219,19 @@ const ViewReportsPage = () => {
             width: isSideBarOpen && !isMobile ? "calc(100vw - 440px)" : "auto",
           }}
         >
-          <ReportView selectedType={selectedType} reportReason={reportReason} />
+          <ReportView
+            selectedType={selectedType}
+            reportReason={reportReason}
+            sortBy={sortBy}
+            applyClicked={applyClicked}
+          />
         </Box>
       ) : (
         <MapView
           selectedType={selectedType}
           filterPosts={filterPosts}
           filterSightings={filterSightings}
+          applyClicked={applyClicked}
         />
       )}
     </div>

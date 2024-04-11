@@ -8,6 +8,7 @@
   right: 0px;
   border-radius: 10px;
   border-left: 10px solid #c0e7fd;
+  z-index: 1001;
 }
 
 @media screen and (max-width: 768px) {

@@ -8,8 +8,10 @@ import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import { downloadData } from "@aws-amplify/storage";
+import { useMobile } from "../../context/MobileContext";
 
-const ReportView = ({ selectedType, reportReason }) => {
+const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
+  const { isMobile } = useMobile();
   const client = useMemo(() => generateClient({ authMode: "userPool" }), []);
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
@@ -115,16 +117,43 @@ const ReportView = ({ selectedType, reportReason }) => {
               );
 
         // Filter out the reports that don't match the reportReason
-        if (reportReason.inappropriate || reportReason.spam) {
+        if (
+          reportReason.inappropriate ||
+          reportReason.spam ||
+          reportReason.other
+        ) {
           filteredReports = filteredReports.filter(
             (report) =>
               (reportReason.inappropriate &&
                 report.reason.toLowerCase() === "inappropriate") ||
-              (reportReason.spam && report.reason.toLowerCase() === "spam")
+              (reportReason.spam && report.reason.toLowerCase() === "spam") ||
+              (reportReason.other && report.reason.toLowerCase() === "other")
           );
         }
-        // console.log(reportReason);
-        // console.log("filteredReports", filteredReports);
+
+        console.log(filteredReports);
+
+        // Sort based on sort by
+        switch (sortBy) {
+          case "Newest":
+            filteredReports.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+            break;
+          case "Oldest":
+            filteredReports.sort(
+              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            );
+            break;
+          case "Name":
+            filteredReports.sort((a, b) => {
+              if (a.post && b.post && a.post.name && b.post.name) {
+                return a.post.name.localeCompare(b.post.name);
+              }
+              return 0;
+            });
+            break;
+        }
 
         setReports(filteredReports);
       } catch (error) {
@@ -138,7 +167,7 @@ const ReportView = ({ selectedType, reportReason }) => {
     };
 
     fetchReports();
-  }, [selectedType, client]);
+  }, [selectedType, client, applyClicked]);
 
   const handleDelete = async (reportId, entityId, entityType) => {
     setLoading(true);
@@ -257,7 +286,15 @@ const ReportView = ({ selectedType, reportReason }) => {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: isMobile ? "center" : "flex-start",
+        width: "auto",
+      }}
+    >
       {reports.length > 0 ? (
         reports.map((report) => {
           if (report.postID) {
