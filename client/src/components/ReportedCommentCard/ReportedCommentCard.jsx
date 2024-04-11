@@ -26,7 +26,7 @@ const ReportedCommentCard = ({ commentData, report, onDelete, onIgnore }) => {
         borderRadius: "8px",
         padding: "10px",
         backgroundColor: "#f9f9f9",
-        width: "100%",
+        width: "95%",
       }}
     >
       <Box sx={{ marginBottom: "10px" }}>
