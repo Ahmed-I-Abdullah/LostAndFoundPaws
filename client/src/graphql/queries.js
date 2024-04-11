@@ -205,7 +205,9 @@ export const getSightingReport = /* GraphQL */ `
       sighting {
         id
         image
+        resolved
         reporterType
+        resolved
         userID
         createdAt
         updatedAt
@@ -252,6 +254,7 @@ export const listSightingReports = /* GraphQL */ `
             address
             __typename
           }
+          resolved
           image
           reporterType
           userID
@@ -983,6 +986,7 @@ export const sightingsByUser = /* GraphQL */ `
           address
           __typename
         }
+        resolved
         contactInfo {
           email
           phone

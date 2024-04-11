@@ -19,6 +19,264 @@ export const onCreatePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -31,9 +289,216 @@ export const onCreatePostReport = /* GraphQL */ `
         summary
         description
         resolved
+        lastKnownLocation {
+          latitude
+          longitude
+          address
+          __typename
+        }
         species
         images
+        contactInfo {
+          email
+          phone
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -65,6 +530,264 @@ export const onUpdatePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -77,9 +800,216 @@ export const onUpdatePostReport = /* GraphQL */ `
         summary
         description
         resolved
+        lastKnownLocation {
+          latitude
+          longitude
+          address
+          __typename
+        }
         species
         images
+        contactInfo {
+          email
+          phone
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -111,6 +1041,264 @@ export const onDeletePostReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -123,9 +1311,216 @@ export const onDeletePostReport = /* GraphQL */ `
         summary
         description
         resolved
+        lastKnownLocation {
+          latitude
+          longitude
+          address
+          __typename
+        }
         species
         images
+        contactInfo {
+          email
+          phone
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -157,6 +1552,264 @@ export const onCreateCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -166,7 +1819,317 @@ export const onCreateCommentReport = /* GraphQL */ `
         content
         postID
         parentCommentID
+        parentComment {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
+        replies {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -198,6 +2161,264 @@ export const onUpdateCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -207,7 +2428,317 @@ export const onUpdateCommentReport = /* GraphQL */ `
         content
         postID
         parentCommentID
+        parentComment {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
+        replies {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -239,6 +2770,264 @@ export const onDeleteCommentReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -248,7 +3037,317 @@ export const onDeleteCommentReport = /* GraphQL */ `
         content
         postID
         parentCommentID
+        parentComment {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
+        replies {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -280,6 +3379,264 @@ export const onCreateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -287,8 +3644,165 @@ export const onCreateSightingReport = /* GraphQL */ `
       sighting {
         id
         image
+        location {
+          latitude
+          longitude
+          address
+          __typename
+        }
+        resolved
         reporterType
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        contactInfo {
+          email
+          phone
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -320,6 +3834,264 @@ export const onUpdateSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -327,8 +4099,165 @@ export const onUpdateSightingReport = /* GraphQL */ `
       sighting {
         id
         image
+        location {
+          latitude
+          longitude
+          address
+          __typename
+        }
+        resolved
         reporterType
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        contactInfo {
+          email
+          phone
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -360,6 +4289,264 @@ export const onDeleteSightingReport = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -367,8 +4554,165 @@ export const onDeleteSightingReport = /* GraphQL */ `
       sighting {
         id
         image
+        location {
+          latitude
+          longitude
+          address
+          __typename
+        }
+        resolved
         reporterType
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        contactInfo {
+          email
+          phone
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
@@ -397,26 +4741,579 @@ export const onCreateUser = /* GraphQL */ `
       createdAt
       updatedAt
       posts {
+        items {
+          id
+          name
+          status
+          gender
+          summary
+          description
+          resolved
+          lastKnownLocation {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          species
+          images
+          contactInfo {
+            email
+            phone
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       postReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          post {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          postID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       sightings {
+        items {
+          id
+          image
+          location {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          resolved
+          reporterType
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          contactInfo {
+            email
+            phone
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       sightingReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          sighting {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          sightingID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       comments {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       commentReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          commentID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -440,26 +5337,579 @@ export const onUpdateUser = /* GraphQL */ `
       createdAt
       updatedAt
       posts {
+        items {
+          id
+          name
+          status
+          gender
+          summary
+          description
+          resolved
+          lastKnownLocation {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          species
+          images
+          contactInfo {
+            email
+            phone
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       postReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          post {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          postID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       sightings {
+        items {
+          id
+          image
+          location {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          resolved
+          reporterType
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          contactInfo {
+            email
+            phone
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       sightingReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          sighting {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          sightingID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       comments {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       commentReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          commentID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -483,26 +5933,579 @@ export const onDeleteUser = /* GraphQL */ `
       createdAt
       updatedAt
       posts {
+        items {
+          id
+          name
+          status
+          gender
+          summary
+          description
+          resolved
+          lastKnownLocation {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          species
+          images
+          contactInfo {
+            email
+            phone
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       postReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          post {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          postID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       sightings {
+        items {
+          id
+          image
+          location {
+            latitude
+            longitude
+            address
+            __typename
+          }
+          resolved
+          reporterType
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          contactInfo {
+            email
+            phone
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       sightingReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          sighting {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          sightingID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       comments {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       commentReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          commentID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -546,15 +6549,486 @@ export const onCreatePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
       userID
       comments {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       postReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          post {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          postID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -600,15 +7074,486 @@ export const onUpdatePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
       userID
       comments {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       postReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          post {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          postID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -654,15 +7599,486 @@ export const onDeletePost = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
       userID
       comments {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
       postReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          post {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          postID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -688,13 +8104,442 @@ export const onCreateComment = /* GraphQL */ `
         content
         postID
         parentCommentID
+        parentComment {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
+        replies {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
         __typename
       }
       replies {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -707,11 +8552,358 @@ export const onCreateComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
       userID
       commentReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          commentID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -737,13 +8929,442 @@ export const onUpdateComment = /* GraphQL */ `
         content
         postID
         parentCommentID
+        parentComment {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
+        replies {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
         __typename
       }
       replies {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -756,11 +9377,358 @@ export const onUpdateComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
       userID
       commentReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          commentID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -786,13 +9754,442 @@ export const onDeleteComment = /* GraphQL */ `
         content
         postID
         parentCommentID
+        parentComment {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
+        replies {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        user {
+          id
+          username
+          role
+          profilePicture
+          email
+          phone
+          createdAt
+          updatedAt
+          posts {
+            items {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          postReports {
+            items {
+              id
+              reason
+              description
+              userID
+              postID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightings {
+            items {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          sightingReports {
+            items {
+              id
+              reason
+              description
+              userID
+              sightingID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          comments {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          owner
+          __typename
+        }
         userID
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         owner
         __typename
       }
       replies {
+        items {
+          id
+          content
+          postID
+          parentCommentID
+          parentComment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          replies {
+            items {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          commentReports {
+            items {
+              id
+              reason
+              description
+              userID
+              commentID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -805,11 +10202,358 @@ export const onDeleteComment = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
       userID
       commentReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          comment {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          commentID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -834,6 +10578,7 @@ export const onCreateSighting = /* GraphQL */ `
         address
         __typename
       }
+      resolved
       reporterType
       user {
         id
@@ -844,6 +10589,264 @@ export const onCreateSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -854,6 +10857,91 @@ export const onCreateSighting = /* GraphQL */ `
         __typename
       }
       sightingReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          sighting {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          sightingID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -878,6 +10966,7 @@ export const onUpdateSighting = /* GraphQL */ `
         address
         __typename
       }
+      resolved
       reporterType
       user {
         id
@@ -888,6 +10977,264 @@ export const onUpdateSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -898,6 +11245,91 @@ export const onUpdateSighting = /* GraphQL */ `
         __typename
       }
       sightingReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          sighting {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          sightingID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }
@@ -922,6 +11354,7 @@ export const onDeleteSighting = /* GraphQL */ `
         address
         __typename
       }
+      resolved
       reporterType
       user {
         id
@@ -932,6 +11365,264 @@ export const onDeleteSighting = /* GraphQL */ `
         phone
         createdAt
         updatedAt
+        posts {
+          items {
+            id
+            name
+            status
+            gender
+            summary
+            description
+            resolved
+            lastKnownLocation {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            species
+            images
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comments {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        postReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            post {
+              id
+              name
+              status
+              gender
+              summary
+              description
+              resolved
+              species
+              images
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            postID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightings {
+          items {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        sightingReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            sighting {
+              id
+              image
+              resolved
+              reporterType
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            sightingID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        comments {
+          items {
+            id
+            content
+            postID
+            parentCommentID
+            parentComment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            replies {
+              nextToken
+              __typename
+            }
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            commentReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        commentReports {
+          items {
+            id
+            reason
+            description
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            comment {
+              id
+              content
+              postID
+              parentCommentID
+              userID
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            commentID
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          nextToken
+          __typename
+        }
         owner
         __typename
       }
@@ -942,6 +11633,91 @@ export const onDeleteSighting = /* GraphQL */ `
         __typename
       }
       sightingReports {
+        items {
+          id
+          reason
+          description
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            posts {
+              nextToken
+              __typename
+            }
+            postReports {
+              nextToken
+              __typename
+            }
+            sightings {
+              nextToken
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            comments {
+              nextToken
+              __typename
+            }
+            commentReports {
+              nextToken
+              __typename
+            }
+            owner
+            __typename
+          }
+          userID
+          sighting {
+            id
+            image
+            location {
+              latitude
+              longitude
+              address
+              __typename
+            }
+            resolved
+            reporterType
+            user {
+              id
+              username
+              role
+              profilePicture
+              email
+              phone
+              createdAt
+              updatedAt
+              owner
+              __typename
+            }
+            userID
+            contactInfo {
+              email
+              phone
+              __typename
+            }
+            sightingReports {
+              nextToken
+              __typename
+            }
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
+          sightingID
+          createdAt
+          updatedAt
+          owner
+          __typename
+        }
         nextToken
         __typename
       }

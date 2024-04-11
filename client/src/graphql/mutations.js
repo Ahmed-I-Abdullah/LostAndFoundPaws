@@ -399,6 +399,7 @@ export const updateSighting = /* GraphQL */ `
         __typename
       }
       reporterType
+      resolved
       user {
         id
         username
@@ -759,6 +760,7 @@ export const createSightingReport = /* GraphQL */ `
         id
         image
         reporterType
+        resolved
         userID
         createdAt
         updatedAt
@@ -798,6 +800,7 @@ export const updateSightingReport = /* GraphQL */ `
       sighting {
         id
         image
+        resolved
         reporterType
         userID
         createdAt
@@ -840,6 +843,7 @@ export const deleteSightingReport = /* GraphQL */ `
         image
         reporterType
         userID
+        resolved
         createdAt
         updatedAt
         owner
@@ -910,6 +914,7 @@ export const createSighting = /* GraphQL */ `
         address
         __typename
       }
+      resolved
       reporterType
       user {
         id

@@ -1405,6 +1405,14 @@
         }
       }
     },
+    "transformerrootstackPostMutationcreatePostinit1FunctionMutationcreatePostinit1FunctionAppSyncFunction1B3128B2FunctionId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "MutationcreatePostinit1FunctionMutationcreatePostinit1FunctionAppSyncFunctionE07A5C84",
+          "FunctionId"
+        ]
+      }
+    },
     "transformerrootstackPostPostDataSource6998E105Name": {
       "Value": {
         "Fn::GetAtt": [

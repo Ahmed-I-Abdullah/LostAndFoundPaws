@@ -9,5 +9,5 @@
         ]
     },
     "S3DeploymentBucket": "amplify-lostandfoundpets-staging-234006-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/a1c4cfc11277ada8fc22131b85591c89ef646613"
+    "S3DeploymentRootKey": "amplify-appsync-files/cf5268069673eb7d0afd6ace1e51f84b943fd5f3"
 }
