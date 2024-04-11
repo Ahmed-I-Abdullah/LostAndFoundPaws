@@ -27,7 +27,7 @@ const ViewReportsPage = () => {
   const [filterSightings, setFilterSightings] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [tempSearchTerm, setTempSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("Newest");
+  const [sortBy, setSortBy] = useState("Newest Updated");
   const [species, setSpecies] = useState({
     dog: false,
     cat: false,

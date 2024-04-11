@@ -50,9 +50,9 @@ const HomePageTemp = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [filterPosts, setFilterPosts] = useState(null);
   const [filterSightings, setFilterSightings] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [tempSearchTerm, setTempSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("Newest");
+  const [searchTerm, setSearchTerm] = useState({});
+  const [tempSearchTerm, setTempSearchTerm] = useState({});
+  const [sortBy, setSortBy] = useState("Newest Updated");
   const [species, setSpecies] = useState({
     dog: false,
     cat: false,

@@ -18,7 +18,7 @@
     border-radius: 0px;
     border-left: 0px;
     width: 70%;
-    height: auto;
+    overflow-y: auto;
     box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1);
   }
 }

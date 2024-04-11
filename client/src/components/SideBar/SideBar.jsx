@@ -7,14 +7,12 @@ import {
   Checkbox,
   FormControlLabel,
   Slider,
-  Input,
-  InputAdornment,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import ClearIcon from "@mui/icons-material/Clear";
 import { useMobile } from "../../context/MobileContext";
 import CustomDropdown from "../DropDown/DropDown";
+import AddressAutocompleteField from "../AddressAutocompleteField/AddressAutocompleteField";
 import "./SideBar.css";
 import theme from "../../theme/theme";
 import * as queries from "../../graphql/queries";
@@ -61,8 +59,10 @@ const SideBar = ({
   const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
 
   const dropDownOptions = [
-    { label: "Most Recently Posted", value: "Newest" },
-    { label: "Oldest Posted", value: "Oldest" },
+    { label: "Most Recently Updated", value: "Newest Updated" },
+    { label: "Oldest Updated", value: "Oldest Updated" },
+    { label: "Most Recently Posted", value: "Newest Posted" },
+    { label: "Oldest Posted", value: "Oldest Posted" },
   ];
   if (selectedType !== "Sighting" && selectedType !== "Comments") {
     dropDownOptions.push({ label: "Name", value: "Name" });
@@ -75,21 +75,23 @@ const SideBar = ({
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (asideRef.current && !asideRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
+    if (isMobile) {
+      const handleClickOutside = (event) => {
+        if (asideRef.current && !asideRef.current.contains(event.target)) {
+          onClose();
+        }
+      };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
   }, [onClose]);
 
   const clearFilters = () => {
-    setSearchTerm("");
-    setTempSearchTerm("");
+    setSearchTerm({});
+    setTempSearchTerm({});
     setSpecies({
       dog: false,
       cat: false,
@@ -102,7 +104,7 @@ const SideBar = ({
     });
     setLocationAway(1);
     setDisableLocationFilter(true);
-    setSortBy("Newest");
+    setSortBy("Newest Updated");
     setReportReason({
       inappropriate: false,
       spam: false,
@@ -175,26 +177,35 @@ const SideBar = ({
           query: queries.listPosts,
         });
         const postsData = listPostsResponse.data.listPosts.items;
+        filterPosts = postsData;
 
         const listSightingsResponse = await client.graphql({
           query: queries.listSightings,
         });
         const sightingsData = listSightingsResponse.data.listSightings.items;
+        filterSightings = sightingsData;
 
         // Filter based on search term for posts
-        filterPosts = postsData.filter((item) =>
-          item.lastKnownLocation.address
+        if (searchTerm.address) {
+          const searchParts = searchTerm.address
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-        );
+            .split(",")
+            .map((part) => part.trim());
 
-        // Filter based on search term for sightings
-        filterSightings = sightingsData.filter((item) =>
-          item.location.address.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+          filterPosts = postsData.filter((item) => {
+            const itemAddress = item.lastKnownLocation.address.toLowerCase();
+            return searchParts.every((part) => itemAddress.includes(part));
+          });
+
+          // Filter based on search term for sightings
+          filterSightings = sightingsData.filter((item) => {
+            const itemAddress = item.location.address.toLowerCase();
+            return searchParts.every((part) => itemAddress.includes(part));
+          });
+        }
 
         // Filter based on species
-        if (species.dog || species.cat || species.unknown) {
+        if (species.dog || species.cat || species.other) {
           filterPosts = filterPosts.filter(
             (item) => species[item.species.toLowerCase()]
           );
@@ -222,7 +233,23 @@ const SideBar = ({
 
         // Sort based on sort by
         switch (sortBy) {
-          case "Newest":
+          case "Newest Updated":
+            filterPosts.sort(
+              (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+            );
+            filterSightings.sort(
+              (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+            );
+            break;
+          case "Oldest Updated":
+            filterPosts.sort(
+              (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)
+            );
+            filterSightings.sort(
+              (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)
+            );
+            break;
+          case "Newest Posted":
             filterPosts.sort(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
@@ -230,7 +257,7 @@ const SideBar = ({
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
             break;
-          case "Oldest":
+          case "Oldest Posted":
             filterPosts.sort(
               (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
             );
@@ -317,25 +344,10 @@ const SideBar = ({
 
         {!isMobile && !isReporting && (
           <Box width={"100%"} sx={{ marginTop: "1rem", marginBottom: "1rem" }}>
-            <Input
+            <AddressAutocompleteField
               placeholder="Enter city, neighborhood, address"
               value={tempSearchTerm}
-              style={{ width: "100%", padding: "10px" }}
-              onChange={(e) => {
-                setTempSearchTerm(e.target.value);
-              }}
-              endAdornment={
-                tempSearchTerm && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      edge="end"
-                      onClick={() => setTempSearchTerm("")}
-                    >
-                      <ClearIcon />
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
+              onChange={setTempSearchTerm}
             />
           </Box>
         )}

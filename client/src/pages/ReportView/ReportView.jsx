@@ -121,12 +121,22 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
 
         // Sort based on sort by
         switch (sortBy) {
-          case "Newest":
+          case "Newest Updated":
+            filteredReports.sort(
+              (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+            );
+            break;
+          case "Oldest Updated":
+            filteredReports.sort(
+              (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt)
+            );
+            break;
+          case "Newest Posted":
             filteredReports.sort(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
             break;
-          case "Oldest":
+          case "Oldest Posted":
             filteredReports.sort(
               (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
             );
