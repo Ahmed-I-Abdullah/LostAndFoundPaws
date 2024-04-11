@@ -31,6 +31,7 @@ const PetCard = ({
   updatedAt,
   resolved,
   onDelete,
+  onResolve,
 }) => {
   const { isMobile } = useMobile();
   const { userState, currentUser } = useUser();

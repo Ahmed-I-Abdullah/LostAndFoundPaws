@@ -3,12 +3,11 @@
   width: 365px;
   background-color: white;
   padding: 20px;
-  z-index: 1000;
+  z-index: 1001;
   position: fixed;
   right: 0px;
   border-radius: 10px;
   border-left: 10px solid #c0e7fd;
-  z-index: 1001;
   overflow-y: auto;
 }
 

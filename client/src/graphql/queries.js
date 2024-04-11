@@ -933,6 +933,7 @@ export const listSightings = /* GraphQL */ `
           address
           __typename
         }
+        resolved
         contactInfo {
           email
           phone

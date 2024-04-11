@@ -173,13 +173,37 @@ const ListView = ({
     setLoading(false);
   };
 
+  const resolvePost = async (id) => {
+    setLoading(true);
+    const updatePostInput = {
+      id: id,
+      resolved: "true",
+    };
+    try {
+      await client.graphql({
+        query: mutations.updatePost,
+        variables: { input: updatePostInput },
+      });
+      handleToastOpen("success", "Successfully marked post as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error marking post as resolved.");
+      console.error("Error marking post as resolved: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
   const resolveSighting = async (id) => {
     setLoading(true);
     const updateSightingInput = {
       id: id,
-      resolved: "true"
+      resolved: "true",
     };
-
     try {
       await client.graphql({
         query: mutations.updateSighting,
@@ -197,8 +221,7 @@ const ListView = ({
       }, 2000);
     }
     setLoading(false);
-
-  }
+  };
 
   const handleToastOpen = (severity, message) => {
     setToastSeverity(severity);
@@ -214,6 +237,8 @@ const ListView = ({
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
+
+  // console.log(sightingsData);
 
   return (
     <>
@@ -271,6 +296,7 @@ const ListView = ({
                       updatedAt={post.updatedAt}
                       resolved={post.resolved}
                       onDelete={deletePost}
+                      onResolve={resolvePost}
                     />
                   ))
                 )

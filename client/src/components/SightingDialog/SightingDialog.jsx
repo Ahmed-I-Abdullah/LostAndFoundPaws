@@ -192,7 +192,7 @@ const SightingDialog = ({
                   }}
                 >
                   <Button
-                    size={"small"}
+                    size={small ? "small" : "medium"}
                     variant="contained"
                     sx={{
                       backgroundColor: theme.palette.custom.greyBkg.tag,
@@ -221,9 +221,11 @@ const SightingDialog = ({
                     startIcon={<CheckIcon />}
                     disabled={resolved == "true"}
                   >
+                    {/* {console.log(id, resolved)} */}
                     Mark as resolved
                   </Button>
                   <Button
+                    size={small ? "small" : "medium"}
                     variant="contained"
                     color="error"
                     onClick={(event) => {

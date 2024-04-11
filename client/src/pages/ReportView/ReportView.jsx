@@ -229,7 +229,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
     setLoading(true);
     const updateSightingInput = {
       id: id,
-      resolved: "true"
+      resolved: "true",
     };
 
     try {
@@ -249,8 +249,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
       }, 2000);
     }
     setLoading(false);
-
-  }
+  };
 
   const handleIgnore = async (reportId, entityType) => {
     setLoading(true);
