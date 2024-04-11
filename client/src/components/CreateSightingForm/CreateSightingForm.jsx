@@ -144,6 +144,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
                         }}
                         error={errors.image && touched.image}
                         helperText={touched.image ? errors.image : ""}
+                        isSingle={true}
                       />
                     </Grid>
                     <Grid item xs={12}>
