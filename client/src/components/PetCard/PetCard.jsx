@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import StatusLabel from "../StatusLabel/StatusLabel";
 import { useUser } from "../../context/UserContext";
+import "./PetCard.css";
 
 const PetCard = ({
   id,
@@ -116,7 +117,7 @@ const PetCard = ({
                     startIcon={<CheckIcon />}
                     disabled={resolved === "true"}
                   >
-                    Mark as resolved
+                    {isMobile ? "" : "Mark as resolved"}
                   </Button>
                   <Button
                     size={small ? "small" : "medium"}
@@ -131,7 +132,7 @@ const PetCard = ({
                     }}
                     startIcon={<DeleteIcon />}
                   >
-                    Delete
+                    {isMobile ? "" : "Delete"}
                   </Button>
                 </Grid>
               )}

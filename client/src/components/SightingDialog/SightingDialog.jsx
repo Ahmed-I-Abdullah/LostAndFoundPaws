@@ -19,9 +19,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import theme from "../../theme/theme";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import { useMobile } from "../../context/MobileContext";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
 import { useUser } from "../../context/UserContext";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
+import "../PetCard/PetCard.css";
 
 const SightingDialog = ({
   id,
@@ -39,6 +41,7 @@ const SightingDialog = ({
 }) => {
   const navigate = useNavigate();
   const { userState, currentUser } = useUser();
+  const { isMobile } = useMobile();
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -151,11 +154,13 @@ const SightingDialog = ({
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
                   <strong>Email:</strong>&nbsp;
-                  {email ? (
-                    <a href={`mailto:${email}`}>{email}</a>
-                  ) : (
-                    "Unavailable"
-                  )}
+                  <Grid sx={{ wordWrap: "break-word", wordBreak: "break-all" }}>
+                    {email ? (
+                      <a href={`mailto:${email}`}>{email}</a>
+                    ) : (
+                      "Unavailable"
+                    )}
+                  </Grid>
                 </Typography>
                 {userState !== "Guest" &&
                   userState !== "Admin" &&
@@ -203,7 +208,7 @@ const SightingDialog = ({
                     startIcon={<EditIcon />}
                     onClick={() => navigate(`/sightings/${id}/edit`)}
                   >
-                    Edit
+                    {isMobile ? "" : "Edit"}
                   </Button>
                   <Button
                     size={small ? "small" : "medium"}
@@ -222,7 +227,7 @@ const SightingDialog = ({
                     disabled={resolved == "true"}
                   >
                     {/* {console.log(id, resolved)} */}
-                    Mark as resolved
+                    {isMobile ? "" : "Mark as resolved"}
                   </Button>
                   <Button
                     size={small ? "small" : "medium"}
@@ -237,7 +242,7 @@ const SightingDialog = ({
                     }}
                     startIcon={<DeleteIcon />}
                   >
-                    Delete
+                    {isMobile ? "" : "Delete"}
                   </Button>
                 </Grid>
               )}
