@@ -204,43 +204,46 @@ const ListView = ({ selectedType }) => {
                   </Typography>
                 ) : (
                   filteredPosts
-                  .slice()
-                  .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-                  .map((post, index) => (
-                    <PetCard
-                      key={index}
-                      id={post.id}
-                      userId={post.userID}
-                      img={post.firstImg}
-                      name={post.name}
-                      status={post.status}
-                      petType={post.species}
-                      summary={post.summary}
-                      location={post.lastKnownLocation.address}
-                      createdAt={post.createdAt}
-                      updatedAt={post.updatedAt}
-                      resolved={post.resolved}
-                      onDelete={deletePost}
-                    />
-                  ))
+                    .slice()
+                    .sort(
+                      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+                    )
+                    .map((post, index) => (
+                      <PetCard
+                        key={index}
+                        id={post.id}
+                        userId={post.userID}
+                        img={post.firstImg}
+                        name={post.name}
+                        status={post.status}
+                        petType={post.species}
+                        summary={post.summary}
+                        location={post.lastKnownLocation.address}
+                        createdAt={post.createdAt}
+                        updatedAt={post.updatedAt}
+                        resolved={post.resolved}
+                        onDelete={deletePost}
+                      />
+                    ))
                 )
               ) : (
                 sightingsData
-                .slice()
-                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                .map((sighting, index) => (
-                  <SigthingCard
-                    key={index}
-                    id={sighting.id}
-                    userId={sighting.userID}
-                    img={sighting.firstImg}
-                    location={sighting.location.address}
-                    email={getSightingEmail(sighting)}
-                    phoneNumber={getSightingPhoneNumber(sighting)}
-                    createdAt={sighting.createdAt}
-                    onDelete={deleteSighting}
-                  />
-                ))
+                  .slice()
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .map((sighting, index) => (
+                    <SigthingCard
+                      key={index}
+                      id={sighting.id}
+                      userId={sighting.userID}
+                      img={sighting.firstImg}
+                      location={sighting.location.address}
+                      email={getSightingEmail(sighting)}
+                      phoneNumber={getSightingPhoneNumber(sighting)}
+                      createdAt={sighting.createdAt}
+                      resolved={sighting.resolved}
+                      onDelete={deleteSighting}
+                    />
+                  ))
               )}
             </>
           )}

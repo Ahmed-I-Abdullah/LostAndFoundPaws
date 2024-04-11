@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Typography,
-  Chip,
   Stack,
   Grid,
   Card,
@@ -114,7 +113,7 @@ const PetCard = ({
                       marginRight: "8px",
                     }}
                     startIcon={<CheckIcon />}
-                    disabled={resolved == "true"}
+                    disabled={resolved === "true"}
                   >
                     Mark as resolved
                   </Button>

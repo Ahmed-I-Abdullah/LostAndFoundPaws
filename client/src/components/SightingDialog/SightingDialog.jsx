@@ -16,6 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
 import theme from "../../theme/theme";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
@@ -30,6 +31,7 @@ const SightingDialog = ({
   email,
   phoneNumber,
   createdAt,
+  resolved,
   onDelete,
   isCardOpen,
   setIsCardOpen,
@@ -37,6 +39,7 @@ const SightingDialog = ({
   const navigate = useNavigate();
   const { userState, currentUser } = useUser();
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const small = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -48,6 +51,12 @@ const SightingDialog = ({
     event.stopPropagation();
     onDelete(id);
     setOpenConfirmDelete(false);
+  };
+
+  const handleResolveConfirmed = (event, id) => {
+    event.stopPropagation();
+    onResolve(id);
+    setOpenConfirmResolve(false);
   };
 
   const [toastOpen, setToastOpen] = React.useState(false);
@@ -70,7 +79,11 @@ const SightingDialog = ({
 
   return (
     <>
-      <Dialog open={isCardOpen} onClose={handleClose} PaperProps={{ sx: { minWidth: "300px", zIndex:"100" } }}>
+      <Dialog
+        open={isCardOpen}
+        onClose={handleClose}
+        PaperProps={{ sx: { minWidth: "300px", zIndex: "100" } }}
+      >
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -139,31 +152,35 @@ const SightingDialog = ({
                   <strong>Email:</strong>&nbsp;
                   {email ? (
                     <a href={`mailto:${email}`}>{email}</a>
-                  ) : "Unavailable"}
+                  ) : (
+                    "Unavailable"
+                  )}
                 </Typography>
-                {(userState !== "Guest" && userState !== "Admin" && userId !== currentUser?.id) && (
-                <Grid
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: "10px",
-                  }}
-                  >
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: "8px",
-                    }}
-                    onClick={() => setIsReportModalOpen(true)}
-                    startIcon={<FlagIcon />}
-                  >
-                    <Typography variant="h9">Report</Typography>
-                  </Button>
-                </Grid>
-                )}
+                {userState !== "Guest" &&
+                  userState !== "Admin" &&
+                  userId !== currentUser?.id && (
+                    <Grid
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                          borderRadius: 2,
+                          color: "#000",
+                          marginRight: "8px",
+                        }}
+                        onClick={() => setIsReportModalOpen(true)}
+                        startIcon={<FlagIcon />}
+                      >
+                        <Typography variant="h9">Report</Typography>
+                      </Button>
+                    </Grid>
+                  )}
               </Grid>
               {(userId === currentUser?.id || userState === "Admin") && (
                 <Grid
@@ -186,6 +203,24 @@ const SightingDialog = ({
                     onClick={() => navigate(`/sightings/${id}/edit`)}
                   >
                     Edit
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setOpenConfirmResolve(true);
+                    }}
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: "8px",
+                    }}
+                    startIcon={<CheckIcon />}
+                    disabled={resolved === "true"}
+                  >
+                    Mark as resolved
                   </Button>
                   <Button
                     variant="contained"
@@ -231,6 +266,17 @@ const SightingDialog = ({
         onConfirm={(event) => handleDeleteConfirmed(event, id)}
         title="Are you sure you want to delete this sighting post?"
         isDelete={true}
+      />
+
+      <ConfirmDialog
+        open={openConfirmResolve}
+        onClose={(event) => {
+          event.stopPropagation();
+          setOpenConfirmResolve(false);
+        }}
+        onConfirm={(event) => handleResolveConfirmed(event, id)}
+        title="Are you sure you want to mark this post as resolved?"
+        isDelete={false}
       />
     </>
   );
