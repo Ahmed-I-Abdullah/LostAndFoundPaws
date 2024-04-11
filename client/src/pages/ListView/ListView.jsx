@@ -185,6 +185,10 @@ const ListView = ({
         variables: { input: updatePostInput },
       });
       handleToastOpen("success", "Successfully marked post as resolved.");
+      const updatedPostsData = postsData.map((post) =>
+        post.id === id ? { ...post, resolved: "true" } : post
+      );
+      setPostsData(updatedPostsData);
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -210,12 +214,16 @@ const ListView = ({
         variables: { input: updateSightingInput },
       });
       handleToastOpen("success", "Successfully marked sighting as resolved.");
+      const updatedSightingsData = sightingsData.map((sighting) =>
+        sighting.id === id ? { ...sighting, resolved: "true" } : sighting
+      );
+      setSightingsData(updatedSightingsData);
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
     } catch (error) {
-      handleToastOpen("error", "Error resolving sighting post.");
-      console.error("Error resolving sighting post: ", error);
+      handleToastOpen("error", "Error marking sighting as resolved..");
+      console.error("Error marking sighting as resolved.: ", error);
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -237,8 +245,6 @@ const ListView = ({
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
-
-  // console.log(sightingsData);
 
   return (
     <>

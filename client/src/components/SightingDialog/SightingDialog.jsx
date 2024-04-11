@@ -226,7 +226,6 @@ const SightingDialog = ({
                     startIcon={<CheckIcon />}
                     disabled={resolved == "true"}
                   >
-                    {/* {console.log(id, resolved)} */}
                     {isMobile ? "" : "Mark as resolved"}
                   </Button>
                   <Button
