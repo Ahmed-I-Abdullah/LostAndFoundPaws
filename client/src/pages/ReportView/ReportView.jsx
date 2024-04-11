@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import ReportedPetCard from "../../components/ReportedPetCard/ReportedPetCard";
 import ReportedSightingCard from "../../components/ReportedSightingCard/ReportedSightingCard";
 import ReportedCommentCard from "../../components/ReportedCommentCard/ReportedCommentCard";
@@ -270,78 +270,89 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
 
   if (loading) {
     return (
-      <Box>
-        {reports.length > 0 ? (
-          <>
-            {/* Cards for Posts */}
-            {reports
-              .filter((report) => report.postID)
-              .map((report) => (
-                <ReportedPetCard
-                  key={report.id}
-                  report={report}
-                  petData={report.post}
-                  onDelete={() =>
-                    handleDelete(report.id, report.postID, "post")
-                  }
-                  onIgnore={() => handleIgnore(report.id, "post")}
-                />
-              ))}
-
-            {/* Cards for Comments */}
-            {reports
-              .filter((report) => report.commentID)
-              .map((report) => (
-                <ReportedCommentCard
-                  key={report.id}
-                  report={report}
-                  commentData={report.comment}
-                  onDelete={() =>
-                    handleDelete(report.id, report.commentID, "comment")
-                  }
-                  onIgnore={() => handleIgnore(report.id, "comment")}
-                />
-              ))}
-
-            {/* Grid for Sightings */}
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 2,
-                justifyContent: "flex-start",
-                paddingX: 5,
-              }}
-            >
-              {reports
-                .filter((report) => report.sightingID)
-                .map((report) => (
-                  <ReportedSightingCard
-                    key={report.id}
-                    report={report}
-                    sightingData={report.sighting}
-                    onDelete={() =>
-                      handleDelete(report.id, report.sightingID, "sighting")
-                    }
-                    onIgnore={() => handleIgnore(report.id, "sighting")}
-                  />
-                ))}
-            </Box>
-          </>
-        ) : (
-          <Box sx={{ textAlign: "center" }}>
-            No reports found for this category.
-          </Box>
-        )}
-        <ToastNotification
-          open={toastOpen}
-          severity={toastSeverity}
-          message={toastMessage}
-          handleClose={() => setToastOpen(false)}
-        />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
       </Box>
     );
   }
+
+  return (
+    <Box>
+      {reports.length > 0 ? (
+        <>
+          {/* Cards for Posts */}
+          {reports
+            .filter((report) => report.postID)
+            .map((report) => (
+              <ReportedPetCard
+                key={report.id}
+                report={report}
+                petData={report.post}
+                onDelete={() => handleDelete(report.id, report.postID, "post")}
+                onIgnore={() => handleIgnore(report.id, "post")}
+              />
+            ))}
+
+          {/* Cards for Comments */}
+          {reports
+            .filter((report) => report.commentID)
+            .map((report) => (
+              <ReportedCommentCard
+                key={report.id}
+                report={report}
+                commentData={report.comment}
+                onDelete={() =>
+                  handleDelete(report.id, report.commentID, "comment")
+                }
+                onIgnore={() => handleIgnore(report.id, "comment")}
+              />
+            ))}
+
+          {/* Grid for Sightings */}
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+              justifyContent: "flex-start",
+              paddingX: 5,
+            }}
+          >
+            {reports
+              .filter((report) => report.sightingID)
+              .map((report) => (
+                <ReportedSightingCard
+                  key={report.id}
+                  report={report}
+                  sightingData={report.sighting}
+                  onDelete={() =>
+                    handleDelete(report.id, report.sightingID, "sighting")
+                  }
+                  onIgnore={() => handleIgnore(report.id, "sighting")}
+                />
+              ))}
+          </Box>
+        </>
+      ) : (
+        <Typography variant="h1" margin={"1rem"} display={"flex"}>
+          No reports found for this category.
+        </Typography>
+      )}
+      <ToastNotification
+        open={toastOpen}
+        severity={toastSeverity}
+        message={toastMessage}
+        handleClose={() => setToastOpen(false)}
+      />
+    </Box>
+  );
 };
 
 export default ReportView;
