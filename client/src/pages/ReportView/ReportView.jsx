@@ -8,10 +8,8 @@ import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import { downloadData } from "@aws-amplify/storage";
-import { useMobile } from "../../context/MobileContext";
 
 const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
-  const { isMobile } = useMobile();
   const client = useMemo(() => generateClient({ authMode: "userPool" }), []);
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
@@ -348,7 +346,6 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               flexWrap: "wrap",
               gap: 2,
               justifyContent: "flex-start",
-              paddingX: 5,
             }}
           >
             {reports
