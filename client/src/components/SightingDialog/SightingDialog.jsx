@@ -33,6 +33,7 @@ const SightingDialog = ({
   createdAt,
   resolved,
   onDelete,
+  onResolve,
   isCardOpen,
   setIsCardOpen,
 }) => {
@@ -218,7 +219,7 @@ const SightingDialog = ({
                       marginRight: "8px",
                     }}
                     startIcon={<CheckIcon />}
-                    disabled={resolved === "true"}
+                    disabled={resolved == "true"}
                   >
                     Mark as resolved
                   </Button>

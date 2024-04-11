@@ -239,6 +239,33 @@ const MyPostsAndComments = () => {
     setLoading(false);
   };
 
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id,
+      resolved: "true"
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.updateSighting,
+        variables: { input: updateSightingInput },
+      });
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving sighting post.");
+      console.error("Error resolving sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+
+  }
+
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
@@ -302,10 +329,12 @@ const MyPostsAndComments = () => {
                     userId={sighting.userID}
                     img={sighting.firstImg}
                     location={sighting.location.address}
+                    resolved={sighting.resolved}
                     email={getSightingEmail(sighting)}
                     phoneNumber={getSightingPhoneNumber(sighting)}
                     createdAt={sighting.createdAt}
                     onDelete={deleteSighting}
+                    onResolve={resolveSighting}
                   />
                 ))
             ) : filteredPosts.length === 0 ? (

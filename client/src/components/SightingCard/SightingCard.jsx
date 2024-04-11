@@ -21,6 +21,7 @@ const SightingCard = ({
   createdAt,
   resolved,
   onDelete,
+  onResolve
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
@@ -73,10 +74,12 @@ const SightingCard = ({
         userId={userId}
         img={img}
         location={location}
+        resolved={resolved}
         email={email}
         phoneNumber={phoneNumber}
         createdAt={createdAt}
         onDelete={onDelete}
+        onResolve={onResolve}
         isCardOpen={isCardOpen}
         setIsCardOpen={setIsCardOpen}
       />

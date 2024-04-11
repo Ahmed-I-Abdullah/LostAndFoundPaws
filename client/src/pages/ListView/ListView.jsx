@@ -173,6 +173,33 @@ const ListView = ({
     setLoading(false);
   };
 
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id,
+      resolved: "true"
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.updateSighting,
+        variables: { input: updateSightingInput },
+      });
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving sighting post.");
+      console.error("Error resolving sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+
+  }
+
   const handleToastOpen = (severity, message) => {
     setToastSeverity(severity);
     setToastMessage(message);
@@ -260,6 +287,7 @@ const ListView = ({
                     createdAt={sighting.createdAt}
                     resolved={sighting.resolved}
                     onDelete={deleteSighting}
+                    onResolve={resolveSighting}
                   />
                 ))
               )}

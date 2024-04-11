@@ -225,6 +225,33 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
     setLoading(false);
   };
 
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id,
+      resolved: "true"
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.updateSighting,
+        variables: { input: updateSightingInput },
+      });
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving sighting post.");
+      console.error("Error resolving sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+
+  }
+
   const handleIgnore = async (reportId, entityType) => {
     setLoading(true);
     try {
@@ -336,6 +363,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
                     handleDelete(report.id, report.sightingID, "sighting")
                   }
                   onIgnore={() => handleIgnore(report.id, "sighting")}
+                  onResolve={resolveSighting}
                 />
               ))}
           </Box>
