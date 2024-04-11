@@ -55,7 +55,6 @@ const SideBar = ({
   const [userLocation, setUserLocation] = useState(null);
   const { isMobile } = useMobile();
   const asideRef = useRef(null);
-
   const [hasFiltersChanged, setHasFiltersChanged] = useState(false);
 
   const dropDownOptions = [
@@ -68,9 +67,14 @@ const SideBar = ({
     dropDownOptions.push({ label: "Name", value: "Name" });
   }
 
+  const handleClosing = () => {
+    onClose();
+    document.body.classList.remove("no-scroll");
+  };
+
   const handleClickOutside = (event) => {
     if (asideRef.current && !asideRef.current.contains(event.target)) {
-      onClose();
+      handleClosing();
     }
   };
 
@@ -78,7 +82,7 @@ const SideBar = ({
     if (isMobile) {
       const handleClickOutside = (event) => {
         if (asideRef.current && !asideRef.current.contains(event.target)) {
-          onClose();
+          handleClosing();
         }
       };
 
@@ -87,7 +91,7 @@ const SideBar = ({
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }
-  }, [onClose]);
+  }, []);
 
   const clearFilters = () => {
     setSearchTerm({});
@@ -278,7 +282,7 @@ const SideBar = ({
     };
 
     if (applyClicked) {
-      onClose();
+      handleClosing();
       setSearchTerm(tempSearchTerm);
       setSortBy(sortBy);
       setSpecies(species);
@@ -297,7 +301,6 @@ const SideBar = ({
     searchTerm,
     tempSearchTerm,
     applyClicked,
-    onClose,
     JSON.stringify(filterPosts),
     JSON.stringify(filterSightings),
     species,
@@ -310,6 +313,7 @@ const SideBar = ({
 
   return (
     <>
+      {document.body.classList.add("no-scroll")}
       {isMobile && (
         <div
           style={{
@@ -321,7 +325,7 @@ const SideBar = ({
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 1000,
           }}
-          onClick={onClose}
+          onClick={handleClosing}
         />
       )}
       <aside className="sidebar" ref={asideRef}>
@@ -350,7 +354,7 @@ const SideBar = ({
               width: "100%",
             }}
           >
-            <IconButton color="black" onClick={onClose}>
+            <IconButton color="black" onClick={handleClosing}>
               <CloseIcon />
             </IconButton>
           </Box>
