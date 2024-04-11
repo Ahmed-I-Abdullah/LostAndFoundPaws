@@ -11,12 +11,17 @@ import ToastNotification from "../../components/ToastNotification/ToastNotificai
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
 import { getSightingEmail, getSightingPhoneNumber, getStatusColor } from "../../utils/utils";
 
-const MapView = ({ selectedType }) => {
+const MapView = ({
+  selectedType,
+  filterPosts,
+  filterSightings,
+  applyClicked,
+}) => {
   const [, setMarkers] = useState([]);
   const [markersData, setMarkersData] = useState([]);
   const [toastOpen, setToastOpen] = useState(false);
@@ -41,12 +46,19 @@ const MapView = ({ selectedType }) => {
   };
 
   useEffect(() => {
+    let didCancel = false;
     const fetchData = async () => {
+      if (didCancel) {
+        return;
+      }
       try {
-        const listPostsResponse = await client.graphql({
-          query: queries.listPosts,
-        });
-        const posts = listPostsResponse.data.listPosts.items;
+        let posts = filterPosts || [];
+        if (filterPosts === null) {
+          const listPostsResponse = await client.graphql({
+            query: queries.listPosts,
+          });
+          posts = listPostsResponse.data.listPosts.items;
+        }
         const postsInfo = await Promise.all(
           posts.map(async (post) => {
             const imageData = await downloadData({ key: post.images[0] })
@@ -67,10 +79,13 @@ const MapView = ({ selectedType }) => {
           })
         );
 
-        const listSightingsResponse = await client.graphql({
-          query: queries.listSightings,
-        });
-        const sightings = listSightingsResponse.data.listSightings.items;
+        let sightings = filterSightings || [];
+        if (filterSightings === null) {
+          const listSightingsResponse = await client.graphql({
+            query: queries.listSightings,
+          });
+          sightings = listSightingsResponse.data.listSightings.items;
+        }
         const sightingsInfo = await Promise.all(
           sightings.map(async (sighting) => {
             const imageData = await downloadData({ key: sighting.image })
@@ -102,7 +117,15 @@ const MapView = ({ selectedType }) => {
     };
 
     fetchData();
-  }, [selectedType]);
+    return () => {
+      didCancel = true;
+    };
+  }, [
+    selectedType,
+    JSON.stringify(filterPosts),
+    JSON.stringify(filterSightings),
+    applyClicked,
+  ]);
 
   const deleteSighting = async (id) => {
     setLoading(true);
@@ -167,7 +190,8 @@ const MapView = ({ selectedType }) => {
   };
 
   mapboxgl.accessToken =
-  process.env.REACT_APP_MAPBOX_API_KEY  || "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
+    process.env.REACT_APP_MAPBOX_API_KEY ||
+    "pk.eyJ1IjoibGF1cnkyMDAxIiwiYSI6ImNsdTVzaWh3djBrOG8ya3FybnJpZmNlY2QifQ.56T13WpUblGuqpzfD6n_SA";
 
   // Initialize the map
   useEffect(() => {
@@ -192,7 +216,6 @@ const MapView = ({ selectedType }) => {
       // Add navigation controls
       map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
-      // TODO: Add clusters for same location markers
       // Add markers
       const newMarkers = [];
       for (const markerData of markersData) {
@@ -224,9 +247,7 @@ const MapView = ({ selectedType }) => {
                 }
               </div>
               <Typography style="margin: 0px; font-size: 14px; color: #979797;">
-                Posted: ${
-                  markerData.createdAt.split("T")[0]
-                }
+                Posted: ${markerData.createdAt.split("T")[0]}
               </Typography>
             </div>
           </div>

@@ -70,7 +70,11 @@ const SightingDialog = ({
 
   return (
     <>
-      <Dialog open={isCardOpen} onClose={handleClose} PaperProps={{ sx: { minWidth: "300px", zIndex:"100" } }}>
+      <Dialog
+        open={isCardOpen}
+        onClose={handleClose}
+        PaperProps={{ sx: { minWidth: "300px", zIndex: "100" } }}
+      >
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -139,31 +143,35 @@ const SightingDialog = ({
                   <strong>Email:</strong>&nbsp;
                   {email ? (
                     <a href={`mailto:${email}`}>{email}</a>
-                  ) : "Unavailable"}
+                  ) : (
+                    "Unavailable"
+                  )}
                 </Typography>
-                {(userState !== "Guest" && userState !== "Admin" && userId !== currentUser?.id) && (
-                <Grid
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: "10px",
-                  }}
-                  >
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
-                      borderRadius: 2,
-                      color: "#000",
-                      marginRight: "8px",
-                    }}
-                    onClick={() => setIsReportModalOpen(true)}
-                    startIcon={<FlagIcon />}
-                  >
-                    <Typography variant="h9">Report</Typography>
-                  </Button>
-                </Grid>
-                )}
+                {userState !== "Guest" &&
+                  userState !== "Admin" &&
+                  userId !== currentUser?.id && (
+                    <Grid
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                          borderRadius: 2,
+                          color: "#000",
+                          marginRight: "8px",
+                        }}
+                        onClick={() => setIsReportModalOpen(true)}
+                        startIcon={<FlagIcon />}
+                      >
+                        <Typography variant="h9">Report</Typography>
+                      </Button>
+                    </Grid>
+                  )}
               </Grid>
               {(userId === currentUser?.id || userState === "Admin") && (
                 <Grid

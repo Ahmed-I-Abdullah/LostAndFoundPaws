@@ -28,6 +28,7 @@ const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
         borderRadius: "8px",
         padding: "10px",
         backgroundColor: "#f9f9f9",
+        width: "95%",
       }}
     >
       <Box sx={{ marginBottom: "10px" }}>
@@ -70,9 +71,9 @@ const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
           <Button
             variant="contained"
             sx={{
-                backgroundColor: theme.palette.custom.greyBkg.tag,
-                color: "#000",
-                marginRight: "8px",
+              backgroundColor: theme.palette.custom.greyBkg.tag,
+              color: "#000",
+              marginRight: "8px",
             }}
             startIcon={<CheckIcon />}
             onClick={() => setOpenConfirmIgnore(true)}

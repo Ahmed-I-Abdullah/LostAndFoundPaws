@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import theme from "../../theme/theme";
 import { Box, Button, Grid, Typography } from "@mui/material";
@@ -9,9 +9,9 @@ import MapIcon from "@mui/icons-material/Map";
 import ListIcon from "@mui/icons-material/List";
 import { useMobile } from "../../context/MobileContext";
 import TuneIcon from "@mui/icons-material/Tune";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBar from "../../components/SideBar/SideBar";
 import "./HomePage.css";
+import AddressAutocompleteField from "../../components/AddressAutocompleteField/AddressAutocompleteField";
 
 const mapPostTypeOptions = [
   { label: "All", color: theme.palette.custom.selectedCategory.view },
@@ -48,6 +48,29 @@ const viewOptions = [
 const HomePageTemp = () => {
   const { isMobile } = useMobile();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [filterPosts, setFilterPosts] = useState(null);
+  const [filterSightings, setFilterSightings] = useState(null);
+  const [searchTerm, setSearchTerm] = useState({});
+  const [tempSearchTerm, setTempSearchTerm] = useState({});
+  const [sortBy, setSortBy] = useState("Newest Updated");
+  const [species, setSpecies] = useState({
+    dog: false,
+    cat: false,
+    other: false,
+  });
+  const [gender, setGender] = useState({
+    male: false,
+    female: false,
+    unknown: false,
+  });
+  const [locationAway, setLocationAway] = useState(1);
+  const [disableLocationFilter, setDisableLocationFilter] = useState(true);
+  const [reportReason, setReportReason] = useState({
+    inappropriate: false,
+    spam: false,
+    other: false,
+  });
+  const [applyClicked, setApplyClicked] = useState(false);
 
   const location = useLocation();
   const initialSelectedType = location.state?.selectedType || "Lost";
@@ -57,9 +80,11 @@ const HomePageTemp = () => {
     selectedView === "List View" ? initialSelectedType : "All"
   );
   const initialIndex =
-  initialSelectedType === "Found" ? 1 :
-  initialSelectedType === "Sighting" ? 2 :
-  0;
+    initialSelectedType === "Found"
+      ? 1
+      : initialSelectedType === "Sighting"
+      ? 2
+      : 0;
 
   const [postTypeOptions, setPostTypeOptions] = useState(
     selectedView === "List View" ? listPostTypeOptions : mapPostTypeOptions
@@ -125,15 +150,40 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
           {isMobile && (
-            <>
-              <Box width={"95%"} sx={{ margin: "1rem auto" }}>
-                <SearchBar placeholder={"Enter city, neighborhood, address"} />
-              </Box>
-            </>
+            <Grid width={"95%"} sx={{ margin: "1rem auto" }}>
+              <AddressAutocompleteField
+                placeholder={"Enter city, neighborhood, address"}
+                value={tempSearchTerm}
+                onChange={setTempSearchTerm}
+              />
+            </Grid>
           )}
           <Grid
             item
@@ -146,7 +196,7 @@ const HomePageTemp = () => {
               options={postTypeOptions}
               onToggleCallback={handlePostTypeToggle}
               containerWidth={"100%"}
-              initialIndex = {initialIndex}
+              initialIndex={initialIndex}
             />
           </Grid>
           {!isMobile &&
@@ -170,7 +220,30 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
         </Grid>
@@ -228,7 +301,30 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
           <Grid
@@ -285,7 +381,30 @@ const HomePageTemp = () => {
             ) : (
               <SideBar
                 selectedView={selectedView}
+                selectedType={selectedType}
                 onClose={() => setIsSideBarOpen(false)}
+                filterPosts={filterPosts}
+                setFilterPosts={setFilterPosts}
+                filterSightings={filterSightings}
+                setFilterSightings={setFilterSightings}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                tempSearchTerm={tempSearchTerm}
+                setTempSearchTerm={setTempSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                species={species}
+                setSpecies={setSpecies}
+                gender={gender}
+                setGender={setGender}
+                locationAway={locationAway}
+                setLocationAway={setLocationAway}
+                disableLocationFilter={disableLocationFilter}
+                setDisableLocationFilter={setDisableLocationFilter}
+                reportReason={reportReason}
+                setReportReason={setReportReason}
+                applyClicked={applyClicked}
+                setApplyClicked={setApplyClicked}
               />
             ))}
         </Grid>
@@ -294,13 +413,23 @@ const HomePageTemp = () => {
         <Box
           className="list-view"
           style={{
-            width: isSideBarOpen && !isMobile ? "calc(100vw - 390px)" : "auto",
+            width: isSideBarOpen && !isMobile ? "calc(100vw - 420px)" : "auto",
           }}
         >
-          <ListView selectedType={selectedType} />
+          <ListView
+            selectedType={selectedType}
+            filterPosts={filterPosts}
+            filterSightings={filterSightings}
+            applyClicked={applyClicked}
+          />
         </Box>
       ) : (
-        <MapView selectedType={selectedType} />
+        <MapView
+          selectedType={selectedType}
+          filterPosts={filterPosts}
+          filterSightings={filterSightings}
+          applyClicked={applyClicked}
+        />
       )}
     </div>
   );
