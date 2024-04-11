@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ReportPopup.css';
-import Button from '@mui/material/Button';
-import { generateClient } from "aws-amplify/api"; // Assuming this is how you've been doing it
+import { Dialog, DialogContent, DialogActions, Button, Select, MenuItem, TextField, DialogTitle } from '@mui/material';
+import { generateClient } from "aws-amplify/api"; 
 import * as mutations from '../../graphql/mutations';
 
 function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
@@ -45,38 +45,81 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
       setIsSubmitting(false);
     }
   };
-  
+
 
   return (
-    <div className="report-post-overlay">
-      <div className="report-post-modal">
-        <form onSubmit={handleSubmit} className="report-post-form">
-          <div className="report-post-header">
-            <h3>Please select a reason for reporting this {contentType}</h3>
-          </div>
-          <select
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            required
-          >
-            <option value="">Select a reason...</option>
-            <option value="SPAM">Spam</option>
-            <option value="INAPPROPRIATE">Inappropriate</option>
-            <option value="OTHER">Other</option>
-          </select>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description (optional)"
-          ></textarea>
-          <div className="report-post-actions">
-            <Button variant="outlined" onClick={onClose} disabled={isSubmitting}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={isSubmitting}>Report</Button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Dialog
+        open={open}
+        onClose={onClose}
+        PaperProps={{
+            sx: {
+            backgroundColor: '#fff',
+            m: 'auto', // shorthand for margin with 'auto' will center the dialog
+            width: '530px', // fixed width
+            maxWidth: '90%', // makes sure it doesn't exceed the screen width
+            borderRadius: '5px'
+            }
+        }}
+        >
+      <DialogTitle sx={{ textAlign: 'center', paddingY: 3 }} variant="h3">Please select a reason for reporting this {contentType}</DialogTitle>
+      <DialogContent>
+        <Select
+          displayEmpty
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          fullWidth
+          required
+        >
+          <MenuItem value="" disabled>
+            Select a reason...
+          </MenuItem>
+          <MenuItem value="SPAM">Spam</MenuItem>
+          <MenuItem value="INAPPROPRIATE">Inappropriate</MenuItem>
+          <MenuItem value="OTHER">Other</MenuItem>
+        </Select>
+        <TextField
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description (optional)"
+          multiline
+          rows={6}
+          fullWidth
+          margin="normal"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+            variant="outlined"
+            onClick={onClose}
+            disabled={isSubmitting}
+            sx={{ 
+            marginLeft: '10px', 
+            padding: '10px 20px', 
+            borderRadius: '4px',
+            ':first-of-type': {
+                marginLeft: 0,
+            }
+            }}
+        >
+            Cancel
+        </Button>
+        <Button
+            variant="contained"
+            onClick={handleSubmit}
+            color="primary"
+            disabled={isSubmitting}
+            sx={{ 
+            marginLeft: '10px', 
+            padding: '10px 20px', 
+            borderRadius: '4px',
+            }}
+        >
+            Report
+        </Button>
+        </DialogActions>
+    </Dialog>
   );
+
 }
 
 export default ReportEntity;
