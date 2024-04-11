@@ -59,11 +59,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
         const detailedReports = await Promise.all(
           fetchedReports.map(async (report) => {
             if (report.entityType === "post" && report.postID) {
-              const postData = await client.graphql({
-                query: queries.getPost,
-                variables: { id: report.postID },
-              });
-              const post = postData.data.getPost;
+              const post = report.post;
               const firstImageUrl = post.images[0];
               const firstImageData = await downloadData({ key: firstImageUrl })
                 .result;
@@ -71,25 +67,17 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               return { ...report, post: { ...post, firstImg: firstImageSrc } };
             }
             if (report.entityType === "sighting" && report.sightingID) {
-              const sightingData = await client.graphql({
-                query: queries.getSighting,
-                variables: { id: report.sightingID },
-              });
-              const sighting = sightingData.data.getSighting;
-              const firstImageData = await downloadData({ key: sighting.image })
-                .result;
-              const firstImageSrc = URL.createObjectURL(firstImageData.body);
+              const sighting = report.sighting;
+              const imageUrl = sighting.image;
+              const imageData = await downloadData({ key: imageUrl }).result;
+              const imageSrc = URL.createObjectURL(imageData.body);
               return {
                 ...report,
-                sighting: { ...sighting, firstImg: firstImageSrc },
+                sighting: { ...sighting, img: imageSrc },
               };
             }
             if (report.entityType === "comment" && report.commentID) {
-              const commentData = await client.graphql({
-                query: queries.getComment,
-                variables: { id: report.commentID },
-              });
-              const comment = commentData.data.getComment;
+              const comment = report.comment;
               if (comment == null) return { ...report, comment: null };
               const detailedComment = {
                 ...comment,
@@ -195,6 +183,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
           : entityType === "sighting"
           ? mutations.deleteSightingReport
           : mutations.deleteCommentReport;
+
       await client.graphql({
         query: deleteReportMutation,
         variables: { input: { id: reportId } },
@@ -236,6 +225,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
           : entityType === "sighting"
           ? mutations.deleteSightingReport
           : mutations.deleteCommentReport;
+
       await client.graphql({
         query: deleteReportMutation,
         variables: { input: { id: reportId } },
@@ -270,82 +260,78 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
+      <Box>
+        {reports.length > 0 ? (
+          <>
+            {/* Cards for Posts */}
+            {reports
+              .filter((report) => report.postID)
+              .map((report) => (
+                <ReportedPetCard
+                  key={report.id}
+                  report={report}
+                  petData={report.post}
+                  onDelete={() =>
+                    handleDelete(report.id, report.postID, "post")
+                  }
+                  onIgnore={() => handleIgnore(report.id, "post")}
+                />
+              ))}
+
+            {/* Cards for Comments */}
+            {reports
+              .filter((report) => report.commentID)
+              .map((report) => (
+                <ReportedCommentCard
+                  key={report.id}
+                  report={report}
+                  commentData={report.comment}
+                  onDelete={() =>
+                    handleDelete(report.id, report.commentID, "comment")
+                  }
+                  onIgnore={() => handleIgnore(report.id, "comment")}
+                />
+              ))}
+
+            {/* Grid for Sightings */}
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 2,
+                justifyContent: "flex-start",
+                paddingX: 5,
+              }}
+            >
+              {reports
+                .filter((report) => report.sightingID)
+                .map((report) => (
+                  <ReportedSightingCard
+                    key={report.id}
+                    report={report}
+                    sightingData={report.sighting}
+                    onDelete={() =>
+                      handleDelete(report.id, report.sightingID, "sighting")
+                    }
+                    onIgnore={() => handleIgnore(report.id, "sighting")}
+                  />
+                ))}
+            </Box>
+          </>
+        ) : (
+          <Box sx={{ textAlign: "center" }}>
+            No reports found for this category.
+          </Box>
+        )}
+        <ToastNotification
+          open={toastOpen}
+          severity={toastSeverity}
+          message={toastMessage}
+          handleClose={() => setToastOpen(false)}
+        />
       </Box>
     );
   }
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: isMobile ? "center" : "flex-start",
-        width: "auto",
-      }}
-    >
-      {reports.length > 0 ? (
-        reports.map((report) => {
-          if (report.postID) {
-            return (
-              <ReportedPetCard
-                key={report.id}
-                report={report}
-                petData={report.post}
-                onDelete={() => handleDelete(report.id, report.postID, "post")}
-                onIgnore={() => handleIgnore(report.id, "post")}
-              />
-            );
-          }
-          if (report.sightingID) {
-            return (
-              <ReportedSightingCard
-                key={report.id}
-                report={report}
-                sightingData={report.sighting}
-                onDelete={() =>
-                  handleDelete(report.id, report.sightingID, "sighting")
-                }
-                onIgnore={() => handleIgnore(report.id, "sighting")}
-              />
-            );
-          }
-          if (report.commentID) {
-            return (
-              <ReportedCommentCard
-                key={report.id}
-                report={report}
-                commentData={report.comment}
-                onDelete={() =>
-                  handleDelete(report.id, report.commentID, "comment")
-                }
-                onIgnore={() => handleIgnore(report.id, "comment")}
-              />
-            );
-          }
-        })
-      ) : (
-        <Box sx={{ textAlign: "center" }}>
-          No reports found for this category.
-        </Box>
-      )}
-      <ToastNotification
-        open={toastOpen}
-        severity={toastSeverity}
-        message={toastMessage}
-        handleClose={() => setToastOpen(false)}
-      />
-    </Box>
-  );
 };
 
 export default ReportView;

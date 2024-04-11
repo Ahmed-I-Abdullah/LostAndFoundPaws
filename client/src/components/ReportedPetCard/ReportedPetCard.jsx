@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, useTheme } from "@mui/material";
 import PetCard from "../PetCard/PetCard";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
 
 const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openConfirmIgnore, setOpenConfirmIgnore] = useState(false);
+  const theme = useTheme();
 
   const handleDeleteConfirmed = () => {
     onDelete(petData.id);
@@ -68,6 +70,12 @@ const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
           </Button>
           <Button
             variant="contained"
+            sx={{
+                backgroundColor: theme.palette.custom.greyBkg.tag,
+                color: "#000",
+                marginRight: "8px",
+            }}
+            startIcon={<CheckIcon />}
             onClick={() => setOpenConfirmIgnore(true)}
           >
             Ignore

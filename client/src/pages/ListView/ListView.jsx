@@ -82,6 +82,9 @@ const ListView = ({
             query: queries.listSightings,
           });
           sightings = listResponse.data.listSightings.items;
+          sightings.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
         }
         setSightings(sightings);
         const sightingsWithImages = await Promise.all(
@@ -226,22 +229,27 @@ const ListView = ({
                     No {selectedType} posts found.
                   </Typography>
                 ) : (
-                  filteredPosts.map((post, index) => (
-                    <PetCard
-                      key={index}
-                      id={post.id}
-                      userId={post.userID}
-                      img={post.firstImg}
-                      name={post.name}
-                      status={post.status}
-                      petType={post.species}
-                      summary={post.summary}
-                      location={post.lastKnownLocation.address}
-                      createdAt={post.createdAt}
-                      updatedAt={post.updatedAt}
-                      onDelete={deletePost}
-                    />
-                  ))
+                  filteredPosts
+                    .slice()
+                    .sort(
+                      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+                    )
+                    .map((post, index) => (
+                      <PetCard
+                        key={index}
+                        id={post.id}
+                        userId={post.userID}
+                        img={post.firstImg}
+                        name={post.name}
+                        status={post.status}
+                        petType={post.species}
+                        summary={post.summary}
+                        location={post.lastKnownLocation.address}
+                        createdAt={post.createdAt}
+                        updatedAt={post.updatedAt}
+                        onDelete={deletePost}
+                      />
+                    ))
                 )
               ) : sightingsData.length === 0 ? (
                 <Typography variant="h1" margin={"1rem"} display={"flex"}>

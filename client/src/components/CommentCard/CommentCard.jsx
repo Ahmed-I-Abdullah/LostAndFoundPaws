@@ -26,6 +26,7 @@ import ToastNotification from "../ToastNotification/ToastNotificaiton";
 import { useUser } from "../../context/UserContext";
 import { downloadData } from "@aws-amplify/storage";
 import { useLocation } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const CommentCard = ({
   id,
@@ -33,6 +34,7 @@ const CommentCard = ({
   userProfilePicture,
   username,
   createdAt,
+  updatedAt,
   content,
   parentCommentId,
   setReply,
@@ -47,6 +49,7 @@ const CommentCard = ({
   const [commentProfilePicture, setCommentProfilePicture] = useState("");
 
   const [commentContent, setCommentContent] = useState(content);
+  const [updatedDateContent, setUpdatedDateContent] = useState(updatedAt);
   const [expandedComment, setExpandedComment] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
@@ -146,6 +149,8 @@ const CommentCard = ({
       handleToastOpen("success", "Successfully updated comment.");
       setCommentContent(updatedComment.data.updateComment.content);
       setEditedContent(updatedComment.data.updateComment.content);
+      const now = new Date();
+      setUpdatedDateContent(now.toISOString());
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -177,13 +182,23 @@ const CommentCard = ({
       }}
     >
       <IconButton disabled>
-        <Avatar
-          style={{
-            width: "50px",
-            height: "50px",
-          }}
-          src={commentProfilePicture}
-        ></Avatar>
+        {commentProfilePicture !== "" ? (
+          <Avatar
+            sx={{
+              width: "50px",
+              height: "50px",
+            }}
+            src={commentProfilePicture}
+          ></Avatar>
+        ) : (
+          <AccountCircleIcon
+            sx={{
+              width: "50px",
+              height: "50px",
+              color: "black",
+            }}
+          />
+        )}
       </IconButton>
       <Box className="comment-info">
         <Box className="comment-topbar">
@@ -191,7 +206,11 @@ const CommentCard = ({
             {username ? username : "Unavailable"}
           </Typography>
           <Typography variant="subtitle2" color="#979797">
-            Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"}
+            Posted: {createdAt ? createdAt.split("T")[0] : "Unavailable"} -
+            Updated:{" "}
+            {updatedDateContent
+              ? updatedDateContent.split("T")[0]
+              : "Unavailable"}
           </Typography>
         </Box>
         <Box
@@ -272,7 +291,7 @@ const CommentCard = ({
               )}
               <Button
                 variant="text"
-                sx={{ color: `${theme.palette.text.primary}` }}
+                sx={{ color: `${theme.palette.secondary.main}` }}
                 onClick={handleOpenDelete}
               >
                 <DeleteIcon />

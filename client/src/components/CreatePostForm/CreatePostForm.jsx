@@ -47,7 +47,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
   const { userState, currentUser } = useUser();
   const [initialValues, setInitialValues] = useState({
     type: isEdit ? postData.status : "Lost",
-    name: isEdit ? postData.name : "Unknown",
+    name: isEdit ? postData.name : "",
     gender: isEdit ? postData.gender : "",
     summary: isEdit ? postData.summary : "",
     description: isEdit ? postData.description : "",
@@ -139,10 +139,10 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                         options={postTypeOptions}
                         onToggleCallback={(index) => {
                           setFieldValue("type", postTypeOptions[index].label)
-                          if(index == 0 && !values.name) {
-                            setFieldValue("name", "Unknown")
-                          } else if(index == 1 && values.name == "Unknown") {
+                          if(index == 0 && values.name == "" || values.name == "Unknown") {
                             setFieldValue("name", "")
+                          } else if(index == 1 && values.name == "" || values.name == "Unknown") {
+                            setFieldValue("name", "Unknown")
                           }
                         }
                         }
@@ -254,6 +254,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                           updatedImages.splice(index, 1);
                           setFieldValue("images", updatedImages);
                         }}
+                        isSingle = {false}
                         error={errors.images && touched.images}
                         helperText={touched.images ? errors.images : ""}
                       />
@@ -269,7 +270,7 @@ const CreatePostForm = ({ isEdit, postData, handleSubmit, isSubmitting  }) => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <FieldTitle title="Email (Optional)" />
+                      <FieldTitle title="Email" />
                       <CustomTextField
                         name="email"
                         variant="outlined"

@@ -140,7 +140,7 @@ const SightingDialog = ({
                   color="text.secondary"
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
-                  <strong>Email: </strong>{" "}
+                  <strong>Email:</strong>&nbsp;
                   {email ? (
                     <a href={`mailto:${email}`}>{email}</a>
                   ) : (
@@ -150,26 +150,27 @@ const SightingDialog = ({
                 {userState !== "Guest" &&
                   userState !== "Admin" &&
                   userId !== currentUser?.id && (
-                    <Typography
+                    <Grid
                       sx={{
-                        marginTop: "10px",
                         display: "flex",
-                        justifyContent: "center",
+                        justifyContent: "flex-end",
+                        marginTop: "10px",
                       }}
                     >
                       <Button
-                        variant="text"
+                        variant="contained"
                         sx={{
-                          color: `${theme.palette.text.primary}`,
                           backgroundColor: `${theme.palette.custom.greyBkg.tag}`,
+                          borderRadius: 2,
+                          color: "#000",
+                          marginRight: "8px",
                         }}
                         onClick={() => setIsReportModalOpen(true)}
-                        size="small"
+                        startIcon={<FlagIcon />}
                       >
-                        <FlagIcon />
                         <Typography variant="h9">Report</Typography>
                       </Button>
-                    </Typography>
+                    </Grid>
                   )}
               </Grid>
               {(userId === currentUser?.id || userState === "Admin") && (

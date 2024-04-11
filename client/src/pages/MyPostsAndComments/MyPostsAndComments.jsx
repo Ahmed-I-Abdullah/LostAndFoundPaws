@@ -274,55 +274,64 @@ const MyPostsAndComments = () => {
             sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
           >
             {selectedType.toLowerCase() === "comments" ? (
-              commentData.map((comment, index) => (
-                <CommentCard
-                  key={index}
-                  userId={currentUser?.id}
-                  id={comment.id}
-                  userProfilePicture={currentProfilePictureImageData.key}
-                  content={comment.content}
-                  parentCommentId={comment.parentCommentID}
-                  username={currentUser?.username}
-                  createdAt={comment.createdAt}
-                  updatedAt={comment.updatedAt}
-                  onDelete={deleteComment}
-                />
-              ))
+              commentData
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((comment, index) => (
+                  <CommentCard
+                    key={index}
+                    userId={currentUser?.id}
+                    id={comment.id}
+                    userProfilePicture={currentProfilePictureImageData.key}
+                    content={comment.content}
+                    parentCommentId={comment.parentCommentID}
+                    username={currentUser?.username}
+                    createdAt={comment.createdAt}
+                    updatedAt={comment.updatedAt}
+                    onDelete={deleteComment}
+                  />
+                ))
             ) : selectedType.toLowerCase() === "sighting" ? (
-              sightingsData.map((sighting, index) => (
-                <SightingCard
-                  key={index}
-                  id={sighting.id}
-                  userId={sighting.userID}
-                  img={sighting.firstImg}
-                  location={sighting.location.address}
-                  email={getSightingEmail(sighting)}
-                  phoneNumber={getSightingPhoneNumber(sighting)}
-                  createdAt={sighting.createdAt}
-                  onDelete={deleteSighting}
-                />
-              ))
+              sightingsData
+                .slice()
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((sighting, index) => (
+                  <SightingCard
+                    key={index}
+                    id={sighting.id}
+                    userId={sighting.userID}
+                    img={sighting.firstImg}
+                    location={sighting.location.address}
+                    email={getSightingEmail(sighting)}
+                    phoneNumber={getSightingPhoneNumber(sighting)}
+                    createdAt={sighting.createdAt}
+                    onDelete={deleteSighting}
+                  />
+                ))
             ) : filteredPosts.length === 0 ? (
               <Typography variant="h1" margin={"1rem"} display={"flex"}>
                 No {selectedType} posts found
               </Typography>
             ) : (
-              filteredPosts.map((post, index) => (
-                <PetCard
-                  key={index}
-                  id={post.id}
-                  userId={post.userID}
-                  img={post.firstImg}
-                  name={post.name}
-                  status={post.status}
-                  petType={post.species}
-                  summary={post.summary}
-                  location={post.lastKnownLocation.address}
-                  createdAt={post.createdAt}
-                  updatedAt={post.updatedAt}
-                  onDelete={deletePost}
-                />
-              ))
+              filteredPosts
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((post, index) => (
+                  <PetCard
+                    key={index}
+                    id={post.id}
+                    userId={post.userID}
+                    img={post.firstImg}
+                    name={post.name}
+                    status={post.status}
+                    petType={post.species}
+                    summary={post.summary}
+                    location={post.lastKnownLocation.address}
+                    createdAt={post.createdAt}
+                    updatedAt={post.updatedAt}
+                    onDelete={deletePost}
+                  />
+                ))
             )}
           </Box>
           <ToastNotification

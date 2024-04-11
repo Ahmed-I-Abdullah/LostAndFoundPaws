@@ -167,7 +167,7 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
                     container
                     xs={12}
                     spacing={theme.breakpoints.down("md") ? 2 : 10}
-                    marginTop={isMobile ? 0 : 47}
+                    marginTop={isMobile ? 0 : 3}
                   >
                     <Grid item xs={6} md={6}>
                       <Button

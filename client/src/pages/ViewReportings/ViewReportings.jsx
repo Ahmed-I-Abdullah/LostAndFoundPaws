@@ -1,8 +1,4 @@
 import React, { useState } from "react";
-import ReportPopup from "../../components/ReportPopup/ReportPopup";
-{
-  /* REMOVE THIS REPORT BUTTON, JUST FOR DEMO */
-}
 import theme from "../../theme/theme";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Toggle from "../../components/Toggle/Toggle";
