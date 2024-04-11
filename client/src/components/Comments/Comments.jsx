@@ -171,24 +171,21 @@ const Comments = ({ postId }) => {
         <Grid>
           <div style={{ maxHeight: "270px", overflowY: "scroll" }}>
             {commentData.length > 0 ? (
-              commentData
-                .slice()
-                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-                .map((comment, index) => (
-                  <CommentCard
-                    key={index}
-                    userId={comment.userID}
-                    userProfilePicture={comment.user?.profilePicture}
-                    id={comment.id}
-                    content={comment.content}
-                    parentCommentId={comment.parentCommentID}
-                    username={comment.user?.username}
-                    createdAt={comment.createdAt}
-                    updatedAt={comment.updatedAt}
-                    setReply={setReply}
-                    onDelete={deleteComment}
-                  />
-                ))
+              commentData.map((comment, index) => (
+                <CommentCard
+                  key={index}
+                  userId={comment.userID}
+                  userProfilePicture={comment.user?.profilePicture}
+                  id={comment.id}
+                  content={comment.content}
+                  parentCommentId={comment.parentCommentID}
+                  username={comment.user?.username}
+                  createdAt={comment.createdAt}
+                  updatedAt={comment.updatedAt}
+                  setReply={setReply}
+                  onDelete={deleteComment}
+                />
+              ))
             ) : (
               <p>No comments to show</p>
             )}

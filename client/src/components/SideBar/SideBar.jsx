@@ -175,7 +175,6 @@ const SideBar = ({
           query: queries.listPosts,
         });
         const postsData = listPostsResponse.data.listPosts.items;
-        console.log(postsData);
 
         const listSightingsResponse = await client.graphql({
           query: queries.listSightings,
@@ -262,9 +261,6 @@ const SideBar = ({
 
       fetchData();
       setHasFiltersChanged(false);
-
-      console.log(tempSearchTerm);
-      console.log(searchTerm);
     }
 
     return () => {

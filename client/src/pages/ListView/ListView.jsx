@@ -229,27 +229,22 @@ const ListView = ({
                     No {selectedType} posts found.
                   </Typography>
                 ) : (
-                  filteredPosts
-                    .slice()
-                    .sort(
-                      (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-                    )
-                    .map((post, index) => (
-                      <PetCard
-                        key={index}
-                        id={post.id}
-                        userId={post.userID}
-                        img={post.firstImg}
-                        name={post.name}
-                        status={post.status}
-                        petType={post.species}
-                        summary={post.summary}
-                        location={post.lastKnownLocation.address}
-                        createdAt={post.createdAt}
-                        updatedAt={post.updatedAt}
-                        onDelete={deletePost}
-                      />
-                    ))
+                  filteredPosts.map((post, index) => (
+                    <PetCard
+                      key={index}
+                      id={post.id}
+                      userId={post.userID}
+                      img={post.firstImg}
+                      name={post.name}
+                      status={post.status}
+                      petType={post.species}
+                      summary={post.summary}
+                      location={post.lastKnownLocation.address}
+                      createdAt={post.createdAt}
+                      updatedAt={post.updatedAt}
+                      onDelete={deletePost}
+                    />
+                  ))
                 )
               ) : sightingsData.length === 0 ? (
                 <Typography variant="h1" margin={"1rem"} display={"flex"}>
