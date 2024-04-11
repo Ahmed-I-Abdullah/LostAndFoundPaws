@@ -56,6 +56,7 @@ type Sighting @aws_api_key @aws_cognito_user_pools {
   id: ID!
   image: String!
   location: Location!
+  resolved: String
   reporterType: ReporterType!
   user: User
   userID: ID

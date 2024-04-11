@@ -13,6 +13,7 @@ import {
 import theme from "../../theme/theme";
 import { useMobile } from "../../context/MobileContext";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import StatusLabel from "../StatusLabel/StatusLabel";
@@ -29,6 +30,7 @@ const PetCard = ({
   location,
   createdAt,
   updatedAt,
+  resolved,
   onDelete,
 }) => {
   const { isMobile } = useMobile();
@@ -36,6 +38,7 @@ const PetCard = ({
   const navigate = useNavigate();
   const small = useMediaQuery(theme.breakpoints.down("sm"));
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
   const { pathname } = useLocation();
 
   const handleClickOpen = () => {
@@ -46,6 +49,12 @@ const PetCard = ({
     event.stopPropagation();
     onDelete(id);
     setOpenConfirmDelete(false);
+  };
+
+  const handleResolveConfirmed = (event, id) => {
+    event.stopPropagation();
+    onResolve(id);
+    setOpenConfirmResolve(false);
   };
 
   return (
@@ -90,21 +99,41 @@ const PetCard = ({
             </Typography>
             {(userId === currentUser?.id || userState === "Admin") &&
               pathname !== "/viewReportings" && (
-                <Button
-                  size={small ? "small" : "medium"}
-                  variant="contained"
-                  color="error"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setOpenConfirmDelete(true);
-                  }}
-                  sx={{
-                    borderRadius: 2,
-                  }}
-                  startIcon={<DeleteIcon />}
-                >
-                  Delete
-                </Button>
+                <Grid>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setOpenConfirmResolve(true);
+                    }}
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: "8px",
+                    }}
+                    startIcon={<CheckIcon />}
+                    disabled={resolved == "true"}
+                  >
+                    Mark as resolved
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    color="error"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setOpenConfirmDelete(true);
+                    }}
+                    sx={{
+                      borderRadius: 2,
+                    }}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete
+                  </Button>
+                </Grid>
               )}
           </Box>
           <Stack
@@ -146,6 +175,7 @@ const PetCard = ({
           </Typography>
         </Grid>
       </Grid>
+      {/* Use the ConfirmDialog for delete confirmation */}
       <ConfirmDialog
         open={openConfirmDelete}
         onClose={(event) => {
@@ -155,6 +185,18 @@ const PetCard = ({
         onConfirm={(event) => handleDeleteConfirmed(event, id)}
         title="Are you sure you want to delete this post?"
         isDelete={true}
+      />
+
+      {/* Use the ConfirmDialog for ignore confirmation */}
+      <ConfirmDialog
+        open={openConfirmResolve}
+        onClose={(event) => {
+          event.stopPropagation();
+          setOpenConfirmResolve(false);
+        }}
+        onConfirm={(event) => handleResolveConfirmed(event, id)}
+        title="Are you sure you want to mark this post as resolved?"
+        isDelete={false}
       />
     </Card>
   );

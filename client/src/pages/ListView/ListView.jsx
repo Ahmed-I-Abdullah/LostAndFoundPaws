@@ -219,6 +219,7 @@ const ListView = ({ selectedType }) => {
                       location={post.lastKnownLocation.address}
                       createdAt={post.createdAt}
                       updatedAt={post.updatedAt}
+                      resolved={post.resolved}
                       onDelete={deletePost}
                     />
                   ))

@@ -340,6 +340,20 @@ const ViewPostPage = () => {
                     <Button
                       size={medium ? "small" : "medium"}
                       variant="contained"
+                      sx={{
+                        backgroundColor: theme.palette.custom.greyBkg.tag,
+                        borderRadius: 2,
+                        color: "#000",
+                        marginRight: "8px",
+                      }}
+                      startIcon={<EditIcon />}
+                      onClick={() => navigate(`/posts/${petData.id}/edit`)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size={medium ? "small" : "medium"}
+                      variant="contained"
                       onClick={() => setOpenConfirmResolve(true)}
                       sx={{
                         backgroundColor: theme.palette.custom.greyBkg.tag,
@@ -351,20 +365,6 @@ const ViewPostPage = () => {
                       disabled={petData.resolved == "true"}
                     >
                       Mark as resolved
-                    </Button>
-                    <Button
-                      size={medium ? "small" : "medium"}
-                      variant="contained"
-                      sx={{
-                        backgroundColor: theme.palette.custom.greyBkg.tag,
-                        borderRadius: 2,
-                        color: "#000",
-                        marginRight: "8px",
-                      }}
-                      startIcon={<EditIcon />}
-                      onClick={() => navigate(`/posts/${petData.id}/edit`)}
-                    >
-                      Edit
                     </Button>
                     <Button
                       size={medium ? "small" : "medium"}
@@ -504,7 +504,7 @@ const ViewPostPage = () => {
                 <>
                   <Typography variant="body2">
                     <span className="span-key">Email:</span>{" "}
-                    {petData.user && petData.user.email ? (
+                    {petData.user?.email ? (
                       <a href={`mailto:${petData.user.email}`}>
                         {petData.user.email}
                       </a>
@@ -514,13 +514,11 @@ const ViewPostPage = () => {
                   </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Phone:</span>{" "}
-                    {petData.user && petData.user.phone
-                      ? petData.user.phone
-                      : "Unavailable"}
+                    {petData.user?.phone ? petData.user.phone : "Unavailable"}
                   </Typography>
                   <Typography variant="body2">
                     <span className="span-key">Username:</span>{" "}
-                    {petData.user && petData.user.username
+                    {petData.user?.username
                       ? petData.user.username
                       : "Unavailable"}
                   </Typography>
