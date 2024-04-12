@@ -56,7 +56,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
         // Fetch additional details for posts, sightings, or comments as needed
         const detailedReports = await Promise.all(
           fetchedReports.map(async (report) => {
-            if (report.entityType === "post" && report.postID) {
+            if (report.entityType === "post" && report.postID && report.post) {
               const post = report.post;
               const firstImageUrl = post.images[0];
               const firstImageData = await downloadData({ key: firstImageUrl })
@@ -64,7 +64,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               const firstImageSrc = URL.createObjectURL(firstImageData.body);
               return { ...report, post: { ...post, firstImg: firstImageSrc } };
             }
-            if (report.entityType === "sighting" && report.sightingID) {
+            if (report.entityType === "sighting" && report.sightingID && report.sighting) {
               const sighting = report.sighting;
               const imageUrl = sighting.image;
               const imageData = await downloadData({ key: imageUrl }).result;
