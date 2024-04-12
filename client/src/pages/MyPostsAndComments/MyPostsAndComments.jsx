@@ -270,7 +270,6 @@ const MyPostsAndComments = () => {
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
 
-  console.log(sightingsData);
   return (
     <>
       {loading ? (
@@ -357,6 +356,7 @@ const MyPostsAndComments = () => {
                     summary={post.summary}
                     location={post.lastKnownLocation.address}
                     createdAt={post.createdAt}
+                    resolved={post.resolved}
                     updatedAt={post.updatedAt}
                     onDelete={deletePost}
                   />
