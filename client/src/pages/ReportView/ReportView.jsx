@@ -8,10 +8,8 @@ import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import { downloadData } from "@aws-amplify/storage";
-import { useMobile } from "../../context/MobileContext";
 
 const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
-  const { isMobile } = useMobile();
   const client = useMemo(() => generateClient({ authMode: "userPool" }), []);
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
@@ -58,7 +56,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
         // Fetch additional details for posts, sightings, or comments as needed
         const detailedReports = await Promise.all(
           fetchedReports.map(async (report) => {
-            if (report.entityType === "post" && report.postID) {
+            if (report.entityType === "post" && report.postID && report.post) {
               const post = report.post;
               const firstImageUrl = post.images[0];
               const firstImageData = await downloadData({ key: firstImageUrl })
@@ -66,7 +64,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               const firstImageSrc = URL.createObjectURL(firstImageData.body);
               return { ...report, post: { ...post, firstImg: firstImageSrc } };
             }
-            if (report.entityType === "sighting" && report.sightingID) {
+            if (report.entityType === "sighting" && report.sightingID && report.sighting) {
               const sighting = report.sighting;
               const imageUrl = sighting.image;
               const imageData = await downloadData({ key: imageUrl }).result;
@@ -225,6 +223,57 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
     setLoading(false);
   };
 
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: updateSightingInput },
+      });
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving sighting post.");
+      console.error("Error resolving sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
+
+  const resolvePost = async (id) => {
+    setLoading(true);
+    const updatePostInput = {
+      id: id
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: updatePostInput },
+      });
+      handleToastOpen("success", "Successfully marked post as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving post.");
+      console.error("Error resolving post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
   const handleIgnore = async (reportId, entityType) => {
     setLoading(true);
     try {
@@ -297,6 +346,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
                 petData={report.post}
                 onDelete={() => handleDelete(report.id, report.postID, "post")}
                 onIgnore={() => handleIgnore(report.id, "post")}
+                onResolve={resolvePost}
               />
             ))}
 
@@ -322,7 +372,6 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               flexWrap: "wrap",
               gap: 2,
               justifyContent: "flex-start",
-              paddingX: 5,
             }}
           >
             {reports
@@ -336,6 +385,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
                     handleDelete(report.id, report.sightingID, "sighting")
                   }
                   onIgnore={() => handleIgnore(report.id, "sighting")}
+                  onResolve={resolveSighting}
                 />
               ))}
           </Box>

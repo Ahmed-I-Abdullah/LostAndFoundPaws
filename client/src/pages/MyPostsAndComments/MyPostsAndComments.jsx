@@ -239,11 +239,65 @@ const MyPostsAndComments = () => {
     setLoading(false);
   };
 
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id,
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: updateSightingInput },
+      });
+      const newSightingsData = sightingsData.filter(
+        (sighting) => sighting.id !== id
+      );
+      setSightingsData(newSightingsData);
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving sighting post.");
+      console.error("Error resolving sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
+  const resolvePost = async (id) => {
+    setLoading(true);
+    const deletePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: deletePostInput },
+      });
+      const newPostData = postsData.filter((post) => post.id !== id);
+      setPostsData(newPostData);
+      handleToastOpen("success", "Successfully marked post as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving post.");
+      console.error("Error resolving post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
   );
 
-  console.log(sightingsData);
   return (
     <>
       {loading ? (
@@ -274,40 +328,54 @@ const MyPostsAndComments = () => {
             sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
           >
             {selectedType.toLowerCase() === "comments" ? (
-              commentData
-                .slice()
-                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-                .map((comment, index) => (
-                  <CommentCard
-                    key={index}
-                    userId={currentUser?.id}
-                    id={comment.id}
-                    userProfilePicture={currentProfilePictureImageData.key}
-                    content={comment.content}
-                    parentCommentId={comment.parentCommentID}
-                    username={currentUser?.username}
-                    createdAt={comment.createdAt}
-                    updatedAt={comment.updatedAt}
-                    onDelete={deleteComment}
-                  />
-                ))
+              commentData.length === 0 ? (
+                <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                  No comments found
+                </Typography>
+              ) : (
+                commentData
+                  .slice()
+                  .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                  .map((comment, index) => (
+                    <CommentCard
+                      key={index}
+                      userId={currentUser?.id}
+                      id={comment.id}
+                      userProfilePicture={currentProfilePictureImageData.key}
+                      content={comment.content}
+                      parentCommentId={comment.parentCommentID}
+                      username={currentUser?.username}
+                      createdAt={comment.createdAt}
+                      updatedAt={comment.updatedAt}
+                      onDelete={deleteComment}
+                    />
+                  ))
+              )
             ) : selectedType.toLowerCase() === "sighting" ? (
-              sightingsData
-                .slice()
-                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                .map((sighting, index) => (
-                  <SightingCard
-                    key={index}
-                    id={sighting.id}
-                    userId={sighting.userID}
-                    img={sighting.firstImg}
-                    location={sighting.location.address}
-                    email={getSightingEmail(sighting)}
-                    phoneNumber={getSightingPhoneNumber(sighting)}
-                    createdAt={sighting.createdAt}
-                    onDelete={deleteSighting}
-                  />
-                ))
+              sightingsData.length === 0 ? (
+                <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                  No sightings found
+                </Typography>
+              ) : (
+                sightingsData
+                  .slice()
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .map((sighting, index) => (
+                    <SightingCard
+                      key={index}
+                      id={sighting.id}
+                      userId={sighting.userID}
+                      img={sighting.firstImg}
+                      location={sighting.location.address}
+                      resolved={sighting.resolved}
+                      email={getSightingEmail(sighting)}
+                      phoneNumber={getSightingPhoneNumber(sighting)}
+                      createdAt={sighting.createdAt}
+                      onDelete={deleteSighting}
+                      onResolve={resolveSighting}
+                    />
+                  ))
+              )
             ) : filteredPosts.length === 0 ? (
               <Typography variant="h1" margin={"1rem"} display={"flex"}>
                 No {selectedType} posts found
@@ -328,8 +396,10 @@ const MyPostsAndComments = () => {
                     summary={post.summary}
                     location={post.lastKnownLocation.address}
                     createdAt={post.createdAt}
+                    resolved={post.resolved}
                     updatedAt={post.updatedAt}
                     onDelete={deletePost}
+                    onResolve={resolvePost}
                   />
                 ))
             )}

@@ -16,11 +16,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlagIcon from "@mui/icons-material/Flag";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
 import theme from "../../theme/theme";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
+import { useMobile } from "../../context/MobileContext";
 import ReportPost from "../../components/ReportPopup/ReportPopup";
 import { useUser } from "../../context/UserContext";
 import ToastNotification from "../ToastNotification/ToastNotificaiton";
+import "../PetCard/PetCard.css";
 
 const SightingDialog = ({
   id,
@@ -30,13 +33,17 @@ const SightingDialog = ({
   email,
   phoneNumber,
   createdAt,
+  resolved,
   onDelete,
+  onResolve,
   isCardOpen,
   setIsCardOpen,
 }) => {
   const navigate = useNavigate();
   const { userState, currentUser } = useUser();
+  const { isMobile } = useMobile();
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmResolve, setOpenConfirmResolve] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const small = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -48,6 +55,12 @@ const SightingDialog = ({
     event.stopPropagation();
     onDelete(id);
     setOpenConfirmDelete(false);
+  };
+
+  const handleResolveConfirmed = (event, id) => {
+    event.stopPropagation();
+    onResolve(id);
+    setOpenConfirmResolve(false);
   };
 
   const [toastOpen, setToastOpen] = React.useState(false);
@@ -141,11 +154,13 @@ const SightingDialog = ({
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
                   <strong>Email:</strong>&nbsp;
-                  {email ? (
-                    <a href={`mailto:${email}`}>{email}</a>
-                  ) : (
-                    "Unavailable"
-                  )}
+                  <Grid sx={{ wordWrap: "break-word", wordBreak: "break-all" }}>
+                    {email ? (
+                      <a href={`mailto:${email}`}>{email}</a>
+                    ) : (
+                      "Unavailable"
+                    )}
+                  </Grid>
                 </Typography>
                 {userState !== "Guest" &&
                   userState !== "Admin" &&
@@ -182,7 +197,7 @@ const SightingDialog = ({
                   }}
                 >
                   <Button
-                    size={"small"}
+                    size={small ? "small" : "medium"}
                     variant="contained"
                     sx={{
                       backgroundColor: theme.palette.custom.greyBkg.tag,
@@ -193,9 +208,28 @@ const SightingDialog = ({
                     startIcon={<EditIcon />}
                     onClick={() => navigate(`/sightings/${id}/edit`)}
                   >
-                    Edit
+                    {isMobile ? "" : "Edit"}
                   </Button>
                   <Button
+                    size={small ? "small" : "medium"}
+                    variant="contained"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setOpenConfirmResolve(true);
+                    }}
+                    sx={{
+                      backgroundColor: theme.palette.custom.greyBkg.tag,
+                      borderRadius: 2,
+                      color: "#000",
+                      marginRight: "8px",
+                    }}
+                    startIcon={<CheckIcon />}
+                    disabled={resolved == "true"}
+                  >
+                    {isMobile ? "" : "Mark as resolved"}
+                  </Button>
+                  <Button
+                    size={small ? "small" : "medium"}
                     variant="contained"
                     color="error"
                     onClick={(event) => {
@@ -207,7 +241,7 @@ const SightingDialog = ({
                     }}
                     startIcon={<DeleteIcon />}
                   >
-                    Delete
+                    {isMobile ? "" : "Delete"}
                   </Button>
                 </Grid>
               )}
@@ -239,6 +273,17 @@ const SightingDialog = ({
         onConfirm={(event) => handleDeleteConfirmed(event, id)}
         title="Are you sure you want to delete this sighting post?"
         isDelete={true}
+      />
+
+      <ConfirmDialog
+        open={openConfirmResolve}
+        onClose={(event) => {
+          event.stopPropagation();
+          setOpenConfirmResolve(false);
+        }}
+        onConfirm={(event) => handleResolveConfirmed(event, id)}
+        title="Are you sure you want to mark this post as resolved?"
+        isDelete={false}
       />
     </>
   );

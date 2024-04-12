@@ -67,14 +67,9 @@ const SideBar = ({
     dropDownOptions.push({ label: "Name", value: "Name" });
   }
 
-  const handleClosing = () => {
-    onClose();
-    document.body.classList.remove("no-scroll");
-  };
-
   const handleClickOutside = (event) => {
     if (asideRef.current && !asideRef.current.contains(event.target)) {
-      handleClosing();
+      onClose();
     }
   };
 
@@ -82,7 +77,7 @@ const SideBar = ({
     if (isMobile) {
       const handleClickOutside = (event) => {
         if (asideRef.current && !asideRef.current.contains(event.target)) {
-          handleClosing();
+          onClose();
         }
       };
 
@@ -91,7 +86,7 @@ const SideBar = ({
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }
-  }, []);
+  }, [onClose]);
 
   const clearFilters = () => {
     setSearchTerm({});
@@ -282,7 +277,7 @@ const SideBar = ({
     };
 
     if (applyClicked) {
-      handleClosing();
+      onClose();
       setSearchTerm(tempSearchTerm);
       setSortBy(sortBy);
       setSpecies(species);
@@ -298,6 +293,7 @@ const SideBar = ({
       didCancel = true;
     };
   }, [
+    onClose,
     searchTerm,
     tempSearchTerm,
     applyClicked,
@@ -313,7 +309,6 @@ const SideBar = ({
 
   return (
     <>
-      {document.body.classList.add("no-scroll")}
       {isMobile && (
         <div
           style={{
@@ -325,7 +320,7 @@ const SideBar = ({
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 1000,
           }}
-          onClick={handleClosing}
+          onClick={onClose}
         />
       )}
       <aside className="sidebar" ref={asideRef}>
@@ -354,7 +349,7 @@ const SideBar = ({
               width: "100%",
             }}
           >
-            <IconButton color="black" onClick={handleClosing}>
+            <IconButton color="black" onClick={onClose}>
               <CloseIcon />
             </IconButton>
           </Box>

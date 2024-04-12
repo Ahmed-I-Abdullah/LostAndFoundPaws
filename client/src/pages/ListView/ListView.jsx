@@ -173,6 +173,60 @@ const ListView = ({
     setLoading(false);
   };
 
+  const resolvePost = async (id) => {
+    setLoading(true);
+    const updatePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: updatePostInput },
+      });
+      const newpostsData = postsData.filter((post) => post.id !== id);
+      setPostsData(newpostsData);
+      handleToastOpen("success", "Successfully marked post as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error marking post as resolved.");
+      console.error("Error marking post as resolved: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: updateSightingInput },
+      });
+      const newSightingsData = sightingsData.filter(
+        (sighting) => sighting.id !== id
+      );
+      setSightingsData(newSightingsData);
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error marking sighting as resolved..");
+      console.error("Error marking sighting as resolved.: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
   const handleToastOpen = (severity, message) => {
     setToastSeverity(severity);
     setToastMessage(message);
@@ -242,13 +296,15 @@ const ListView = ({
                       location={post.lastKnownLocation.address}
                       createdAt={post.createdAt}
                       updatedAt={post.updatedAt}
+                      resolved={post.resolved}
                       onDelete={deletePost}
+                      onResolve={resolvePost}
                     />
                   ))
                 )
               ) : sightingsData.length === 0 ? (
                 <Typography variant="h1" margin={"1rem"} display={"flex"}>
-                  No Sighting posts found.
+                  No {selectedType} posts found.
                 </Typography>
               ) : (
                 sightingsData.map((sighting, index) => (
@@ -261,7 +317,9 @@ const ListView = ({
                     email={getSightingEmail(sighting)}
                     phoneNumber={getSightingPhoneNumber(sighting)}
                     createdAt={sighting.createdAt}
+                    resolved={sighting.resolved}
                     onDelete={deleteSighting}
+                    onResolve={resolveSighting}
                   />
                 ))
               )}

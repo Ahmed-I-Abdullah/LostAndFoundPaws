@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Typography, Card, CardMedia, Box, ButtonBase, useMediaQuery } from "@mui/material";
+import {
+  Typography,
+  Card,
+  CardMedia,
+  Box,
+  ButtonBase,
+  useMediaQuery,
+} from "@mui/material";
 import { useMobile } from "../../context/MobileContext";
 import SightingDialog from "../SightingDialog/SightingDialog";
 import theme from "../../theme/theme";
@@ -12,7 +19,9 @@ const SightingCard = ({
   email,
   phoneNumber,
   createdAt,
+  resolved,
   onDelete,
+  onResolve
 }) => {
   const { isMobile } = useMobile();
   const [isCardOpen, setIsCardOpen] = useState(false);
@@ -65,10 +74,12 @@ const SightingCard = ({
         userId={userId}
         img={img}
         location={location}
+        resolved={resolved}
         email={email}
         phoneNumber={phoneNumber}
         createdAt={createdAt}
         onDelete={onDelete}
+        onResolve={onResolve}
         isCardOpen={isCardOpen}
         setIsCardOpen={setIsCardOpen}
       />
