@@ -48,7 +48,6 @@ const CreateSightingForm = ({ isEdit, sightingData, handleSubmit, isSubmitting }
     }
   };
 
-
   const [initialValues, setInitialValues] = useState({
     location: isEdit ? sightingData.location : "",
     phoneNumber: getPhoneNumber(),
