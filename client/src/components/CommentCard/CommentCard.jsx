@@ -342,6 +342,9 @@ const CommentCard = ({
                   <ReplyIcon />
                   <Typography variant="h9">Reply</Typography>
                 </Button>
+              </>
+            )
+          )}
                 <Button
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
@@ -351,9 +354,6 @@ const CommentCard = ({
                   <FlagIcon />
                   <Typography variant="h9">Report</Typography>
                 </Button>
-              </>
-            )
-          )}
         </Box>
       </Box>
       <ConfirmDialog

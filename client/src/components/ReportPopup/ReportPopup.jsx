@@ -7,8 +7,9 @@ import * as mutations from '../../graphql/mutations';
 function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
   const [reason, setReason] = useState('');
   const [description, setDescription] = useState('');
-  const client = generateClient({ authMode: "userPool" });
+  const client = generateClient({ authMode: userId ? "userPool" : "apiKey" }); 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleSubmit = async (e) => {
     setIsSubmitting(true);
@@ -17,7 +18,7 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
     let input = {
       reason: reason,
       description: description,
-      userID: userId, 
+      userID: userId || "GUEST_USER_ID",
     };
 
     if (contentType === "comment") {
@@ -50,13 +51,15 @@ function ReportEntity({ onClose, contentType, itemId, userId, onReport }) {
   return (
     <Dialog
         open={open}
-        onClose={onClose}
+        onClose={() => {
+            onClose();
+          }}
         PaperProps={{
             sx: {
             backgroundColor: '#fff',
-            m: 'auto', // shorthand for margin with 'auto' will center the dialog
-            width: '530px', // fixed width
-            maxWidth: '90%', // makes sure it doesn't exceed the screen width
+            m: 'auto', 
+            width: '530px', 
+            maxWidth: '90%',
             borderRadius: '5px'
             }
         }}
