@@ -162,8 +162,7 @@ const SightingDialog = ({
                     )}
                   </Grid>
                 </Typography>
-                {userState !== "Guest" &&
-                  userState !== "Admin" &&
+                {userState !== "Admin" &&
                   userId !== currentUser?.id && (
                     <Grid
                       sx={{
