@@ -67,6 +67,9 @@
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId": {
       "Type": "String"
     },
+    "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostMutationcreatePostinit1FunctionMutationcreatePostinit1FunctionAppSyncFunction1B3128B2FunctionId": {
+      "Type": "String"
+    },
     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserpreAuth0FunctionMutationcreateUserpreAuth0FunctionAppSyncFunction28412FD4FunctionId": {
       "Type": "String"
     },
@@ -521,7 +524,7 @@
               {
                 "Ref": "SightingTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -619,7 +622,7 @@
               {
                 "Ref": "SightingTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -722,6 +725,9 @@
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId"
             },
             {
+              "Ref": "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostMutationcreatePostinit1FunctionMutationcreatePostinit1FunctionAppSyncFunction1B3128B2FunctionId"
+            },
+            {
               "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserpreAuth0FunctionMutationcreateUserpreAuth0FunctionAppSyncFunction28412FD4FunctionId"
             },
             {
@@ -753,7 +759,7 @@
               {
                 "Ref": "SightingTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -908,7 +914,7 @@
               {
                 "Ref": "SightingTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1060,7 +1066,7 @@
               {
                 "Ref": "SightingTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1097,7 +1103,7 @@
               {
                 "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1134,7 +1140,7 @@
               {
                 "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1171,7 +1177,7 @@
               {
                 "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1266,7 +1272,7 @@
               {
                 "Ref": "SightingTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1297,7 +1303,7 @@
               {
                 "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:191c58a2-fe49-4439-a97f-d4b655327f1f\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n\n$util.qr($ctx.stash.put(\"identityPoolId\", \"ca-central-1:9eddfa86-4c5d-4746-8e4e-9e54747e6848\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"ca-central-1_mehdknbux_Full-access/CognitoIdentityCredentials\",\"ca-central-1_mehdknbux_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },

@@ -94,11 +94,18 @@ type Sighting
   id: ID! @primaryKey
   image: String!
   location: Location!
+  resolved: String @default(value: "false")
   reporterType: ReporterType! # distinguish between sightings by posters and guests
   user: User @belongsTo(fields: ["userID"]) # Optional if reported by a registered user
   userID: ID @index(name: "byUser", queryField: "sightingsByUser") # This needs to be provided is user is authenitcated
   contactInfo: ContactInfo
   sightingReports: [SightingReport] @hasMany(indexName: "bySighting", fields: ["id"])
+  @auth(
+    rules: [
+      { allow: owner },
+      { allow: groups, groups: ["Poster", "Admin"] }
+    ]
+  )
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
