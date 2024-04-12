@@ -39,6 +39,7 @@ const MapView = ({
   const [selectedSighting, setSelectedSighting] = useState(null);
   const calgaryCoords = [-114.0719, 51.0447];
   const { userState, currentUser } = useUser();
+  const [currentLocation, setCurrentLocation] = useState(null);
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
@@ -130,6 +131,19 @@ const MapView = ({
     JSON.stringify(filterSightings),
     applyClicked,
   ]);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCurrentLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   const deleteSighting = async (id) => {
     setLoading(true);
@@ -243,6 +257,15 @@ const MapView = ({
 
       // Add navigation controls
       map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+
+      // Add current location marker
+      if (currentLocation) {
+        new mapboxgl.Marker({
+          color: "gray",
+        })
+          .setLngLat([currentLocation.lng, currentLocation.lat])
+          .addTo(map);
+      }
 
       // Add markers
       const newMarkers = [];
