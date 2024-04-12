@@ -174,6 +174,18 @@ export const listCommentReports = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+          user {
+            id
+            username
+            role
+            profilePicture
+            email
+            phone
+            createdAt
+            updatedAt
+            owner
+            __typename
+          }
           __typename
         }
         __typename

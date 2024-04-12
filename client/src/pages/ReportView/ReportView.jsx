@@ -79,8 +79,8 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               if (comment == null) return { ...report, comment: null };
               const detailedComment = {
                 ...comment,
-                username: comment.user?.username || "Deleted",
-                avatar: comment.user?.profilePicture || "",
+                username: comment.user?.username,
+                avatar: comment.user?.profilePicture,
                 userId: comment.user?.id,
                 replyTo: comment.replyTo,
               };
