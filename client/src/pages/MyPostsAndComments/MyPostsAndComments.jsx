@@ -243,12 +243,11 @@ const MyPostsAndComments = () => {
     setLoading(true);
     const updateSightingInput = {
       id: id,
-      resolved: "true",
     };
 
     try {
       await client.graphql({
-        query: mutations.updateSighting,
+        query: mutations.deleteSighting,
         variables: { input: updateSightingInput },
       });
       handleToastOpen("success", "Successfully marked sighting as resolved.");

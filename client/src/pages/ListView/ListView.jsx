@@ -177,11 +177,10 @@ const ListView = ({
     setLoading(true);
     const updatePostInput = {
       id: id,
-      resolved: "true",
     };
     try {
       await client.graphql({
-        query: mutations.updatePost,
+        query: mutations.deletePost,
         variables: { input: updatePostInput },
       });
       handleToastOpen("success", "Successfully marked post as resolved.");
@@ -206,11 +205,10 @@ const ListView = ({
     setLoading(true);
     const updateSightingInput = {
       id: id,
-      resolved: "true",
     };
     try {
       await client.graphql({
-        query: mutations.updateSighting,
+        query: mutations.deleteSighting,
         variables: { input: updateSightingInput },
       });
       handleToastOpen("success", "Successfully marked sighting as resolved.");

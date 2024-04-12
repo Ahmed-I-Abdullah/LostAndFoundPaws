@@ -110,11 +110,10 @@ const ViewPostPage = () => {
   const onResolve = async (id) => {
     const postInput = {
       id: id,
-      resolved: true,
     };
     try {
       await client.graphql({
-        query: mutations.updatePost,
+        query: mutations.deletePost,
         variables: { input: postInput },
       });
       handleToastOpen("success", "Successfully marked post as resolved.");
