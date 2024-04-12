@@ -322,7 +322,6 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
               flexWrap: "wrap",
               gap: 2,
               justifyContent: "flex-start",
-              paddingX: 5,
             }}
           >
             {reports

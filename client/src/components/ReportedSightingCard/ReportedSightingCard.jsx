@@ -27,9 +27,8 @@ const ReportedSightingCard = ({ sightingData, report, onDelete, onIgnore }) => {
         margin: "16px",
         border: "1px solid #ccc",
         borderRadius: "8px",
-        padding: "10px",
         backgroundColor: "#f9f9f9",
-        width: isMobile ? "auto" : "30vw",
+        width: "auto",
       }}
     >
       <Box sx={{ marginBottom: "10px" }}>
@@ -40,7 +39,7 @@ const ReportedSightingCard = ({ sightingData, report, onDelete, onIgnore }) => {
             owner={false}
             id={sightingData.id}
             userId={sightingData.userId}
-            img={sightingData.firstImg}
+            img={sightingData.img}
             location={sightingData.location.address}
             email={getSightingEmail(sightingData)}
             phoneNumber={getSightingPhoneNumber(sightingData)}
