@@ -250,6 +250,10 @@ const MyPostsAndComments = () => {
         query: mutations.deleteSighting,
         variables: { input: updateSightingInput },
       });
+      const newSightingsData = sightingsData.filter(
+        (sighting) => sighting.id !== id
+      );
+      setSightingsData(newSightingsData);
       handleToastOpen("success", "Successfully marked sighting as resolved.");
       setTimeout(() => {
         setToastOpen(false);
@@ -257,6 +261,32 @@ const MyPostsAndComments = () => {
     } catch (error) {
       handleToastOpen("error", "Error resolving sighting post.");
       console.error("Error resolving sighting post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
+  const resolvePost = async (id) => {
+    setLoading(true);
+    const deletePostInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: deletePostInput },
+      });
+      const newPostData = postsData.filter((post) => post.id !== id);
+      setPostsData(newPostData);
+      handleToastOpen("success", "Successfully marked post as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving post.");
+      console.error("Error resolving post: ", error);
       setTimeout(() => {
         setToastOpen(false);
       }, 2000);
@@ -369,6 +399,7 @@ const MyPostsAndComments = () => {
                     resolved={post.resolved}
                     updatedAt={post.updatedAt}
                     onDelete={deletePost}
+                    onResolve={resolvePost}
                   />
                 ))
             )}

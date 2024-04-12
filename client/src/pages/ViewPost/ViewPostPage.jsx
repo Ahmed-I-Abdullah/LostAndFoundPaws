@@ -118,9 +118,9 @@ const ViewPostPage = () => {
       });
       handleToastOpen("success", "Successfully marked post as resolved.");
 
-      setPetData({ ...petData, resolved: "true" });
       setTimeout(() => {
         setToastOpen(false);
+        navigate(-1);
       }, 2000);
     } catch (error) {
       handleToastOpen("error", "Error marking post as resolved.");

@@ -248,6 +248,32 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
     setLoading(false);
   };
 
+
+  const resolvePost = async (id) => {
+    setLoading(true);
+    const updatePostInput = {
+      id: id
+    };
+
+    try {
+      await client.graphql({
+        query: mutations.deletePost,
+        variables: { input: updatePostInput },
+      });
+      handleToastOpen("success", "Successfully marked post as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error resolving post.");
+      console.error("Error resolving post: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+  };
+
   const handleIgnore = async (reportId, entityType) => {
     setLoading(true);
     try {
@@ -320,6 +346,7 @@ const ReportView = ({ selectedType, reportReason, sortBy, applyClicked }) => {
                 petData={report.post}
                 onDelete={() => handleDelete(report.id, report.postID, "post")}
                 onIgnore={() => handleIgnore(report.id, "post")}
+                onResolve={resolvePost}
               />
             ))}
 
