@@ -125,7 +125,7 @@ type PostReport
   reason: ReportReason!
   description: String
   user: User @belongsTo(fields: ["userID"])
-  userID: ID! @index(name: "byUser", queryField: "postReportsByUser")
+  userID: ID @index(name: "byUser", queryField: "postReportsByUser")
   post: Post @belongsTo(fields: ["postID"])
   postID: ID! @index(name: "byPost", queryField: "reportsByPost")
   createdAt: AWSDateTime!
@@ -147,7 +147,7 @@ type CommentReport
   reason: ReportReason!
   description: String
   user: User @belongsTo(fields: ["userID"])
-  userID: ID! @index(name: "byUser", queryField: "commentReportsByUser")
+  userID: ID @index(name: "byUser", queryField: "commentReportsByUser")
   comment: Comment @belongsTo(fields: ["commentID"])
   commentID: ID! @index(name: "byComment", queryField: "reportsByComment")
   createdAt: AWSDateTime!
@@ -169,7 +169,7 @@ type SightingReport
   reason: ReportReason!
   description: String
   user: User @belongsTo(fields: ["userID"])
-  userID: ID! @index(name: "byUser", queryField: "sightingReportsByUser")
+  userID: ID @index(name: "byUser", queryField: "sightingReportsByUser")
   sighting: Sighting @belongsTo(fields: ["sightingID"])
   sightingID: ID! @index(name: "bySighting", queryField: "reportsBySighting")
   createdAt: AWSDateTime!
