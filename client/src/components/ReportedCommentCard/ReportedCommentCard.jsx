@@ -3,6 +3,7 @@ import { Box, Typography, Button } from "@mui/material";
 import CommentCard from "../CommentCard/CommentCard";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 
 const ReportedCommentCard = ({ commentData, report, onDelete, onIgnore }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -58,6 +59,7 @@ const ReportedCommentCard = ({ commentData, report, onDelete, onIgnore }) => {
           </Button>
           <Button
             variant="contained"
+            startIcon={<NotInterestedIcon />}
             onClick={() => setOpenConfirmIgnore(true)}
           >
             Ignore

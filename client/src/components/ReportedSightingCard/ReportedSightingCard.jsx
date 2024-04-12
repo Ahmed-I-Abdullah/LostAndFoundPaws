@@ -3,6 +3,7 @@ import { Box, Typography, Button } from "@mui/material";
 import SightingCard from "../SightingCard/SightingCard";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import { getSightingEmail, getSightingPhoneNumber } from "../../utils/utils";
 import { useMobile } from "../../context/MobileContext";
 
@@ -80,6 +81,7 @@ const ReportedSightingCard = ({
           </Button>
           <Button
             variant="contained"
+            startIcon={<NotInterestedIcon />}
             onClick={() => setOpenConfirmIgnore(true)}
           >
             Ignore

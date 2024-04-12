@@ -527,7 +527,10 @@ const SideBar = ({
               control={
                 <Checkbox
                   checked={disableLocationFilter}
-                  onChange={(e) => setDisableLocationFilter(e.target.checked)}
+                  onChange={(e) => {
+                    setDisableLocationFilter(e.target.checked);
+                    setLocationAway(1);
+                  }}
                 />
               }
               label="Disable Location Filter"

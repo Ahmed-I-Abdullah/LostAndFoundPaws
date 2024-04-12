@@ -359,6 +359,7 @@ const HomePageTemp = () => {
                   position: "fixed",
                   right: 0,
                   marginTop: 40,
+                  width: "auto",
                 }}
               >
                 <Button

@@ -330,7 +330,7 @@ const MyPostsAndComments = () => {
             {selectedType.toLowerCase() === "comments" ? (
               commentData.length === 0 ? (
                 <Typography variant="h1" margin={"1rem"} display={"flex"}>
-                  No comments found
+                  No {selectedType} posts found
                 </Typography>
               ) : (
                 commentData
@@ -354,7 +354,7 @@ const MyPostsAndComments = () => {
             ) : selectedType.toLowerCase() === "sighting" ? (
               sightingsData.length === 0 ? (
                 <Typography variant="h1" margin={"1rem"} display={"flex"}>
-                  No sightings found
+                  No {selectedType} posts found
                 </Typography>
               ) : (
                 sightingsData

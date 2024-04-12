@@ -3,7 +3,7 @@ import { Box, Typography, Button, useTheme } from "@mui/material";
 import PetCard from "../PetCard/PetCard";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CheckIcon from "@mui/icons-material/Check";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
 
 const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -70,12 +70,7 @@ const ReportedPetCard = ({ petData, report, onDelete, onIgnore }) => {
           </Button>
           <Button
             variant="contained"
-            sx={{
-              backgroundColor: theme.palette.custom.greyBkg.tag,
-              color: "#000",
-              marginRight: "8px",
-            }}
-            startIcon={<CheckIcon />}
+            startIcon={<NotInterestedIcon />}
             onClick={() => setOpenConfirmIgnore(true)}
           >
             Ignore

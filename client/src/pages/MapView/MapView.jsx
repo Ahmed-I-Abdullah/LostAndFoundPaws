@@ -14,7 +14,11 @@ import * as mutations from "../../graphql/mutations";
 import { CircularProgress } from "@mui/material";
 import { downloadData } from "@aws-amplify/storage";
 import { useUser } from "../../context/UserContext";
-import { getSightingEmail, getSightingPhoneNumber, getStatusColor } from "../../utils/utils";
+import {
+  getSightingEmail,
+  getSightingPhoneNumber,
+  getStatusColor,
+} from "../../utils/utils";
 
 const MapView = ({
   selectedType,
@@ -35,6 +39,7 @@ const MapView = ({
   const [selectedSighting, setSelectedSighting] = useState(null);
   const calgaryCoords = [-114.0719, 51.0447];
   const { userState, currentUser } = useUser();
+  const [currentLocation, setCurrentLocation] = useState(null);
   let client = generateClient({ authMode: "apiKey" });
   if (userState !== "Guest") {
     client = generateClient({ authMode: "userPool" });
@@ -45,77 +50,77 @@ const MapView = ({
     setSelectedId(id);
   };
 
+  let didCancel = false;
+  const fetchData = async () => {
+    if (didCancel) {
+      return;
+    }
+    try {
+      let posts = filterPosts || [];
+      if (filterPosts === null) {
+        const listPostsResponse = await client.graphql({
+          query: queries.listPosts,
+        });
+        posts = listPostsResponse.data.listPosts.items;
+      }
+      const postsInfo = await Promise.all(
+        posts.map(async (post) => {
+          const imageData = await downloadData({ key: post.images[0] }).result;
+          const imageSrc = URL.createObjectURL(imageData.body);
+          return {
+            id: post.id,
+            userId: post.userID,
+            name: post.name,
+            species: post.species,
+            image: imageSrc,
+            status: post.status,
+            lastKnownLocation: post.lastKnownLocation,
+            resolved: post.resolved,
+            email: "",
+            phoneNumber: "",
+            createdAt: post.createdAt,
+          };
+        })
+      );
+
+      let sightings = filterSightings || [];
+      if (filterSightings === null) {
+        const listSightingsResponse = await client.graphql({
+          query: queries.listSightings,
+        });
+        sightings = listSightingsResponse.data.listSightings.items;
+      }
+      const sightingsInfo = await Promise.all(
+        sightings.map(async (sighting) => {
+          const imageData = await downloadData({ key: sighting.image }).result;
+          const imageSrc = URL.createObjectURL(imageData.body);
+          return {
+            id: sighting.id,
+            userId: sighting.userID || "",
+            name: "",
+            species: "",
+            image: imageSrc,
+            status: "SIGHTING",
+            lastKnownLocation: sighting.location,
+            resolved: sighting.resolved,
+            email: getSightingEmail(sighting),
+            phoneNumber: getSightingPhoneNumber(sighting),
+            createdAt: sighting.createdAt,
+          };
+        })
+      );
+
+      const newMarkersData = [...postsInfo, ...sightingsInfo];
+      setMarkersData(newMarkersData);
+      setPostsData(posts);
+      setSightingsData(sightings);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
   useEffect(() => {
-    let didCancel = false;
-    const fetchData = async () => {
-      if (didCancel) {
-        return;
-      }
-      try {
-        let posts = filterPosts || [];
-        if (filterPosts === null) {
-          const listPostsResponse = await client.graphql({
-            query: queries.listPosts,
-          });
-          posts = listPostsResponse.data.listPosts.items;
-        }
-        const postsInfo = await Promise.all(
-          posts.map(async (post) => {
-            const imageData = await downloadData({ key: post.images[0] })
-              .result;
-            const imageSrc = URL.createObjectURL(imageData.body);
-            return {
-              id: post.id,
-              userId: post.userID,
-              name: post.name,
-              species: post.species,
-              image: imageSrc,
-              status: post.status,
-              lastKnownLocation: post.lastKnownLocation,
-              email: "",
-              phoneNumber: "",
-              createdAt: post.createdAt,
-            };
-          })
-        );
-
-        let sightings = filterSightings || [];
-        if (filterSightings === null) {
-          const listSightingsResponse = await client.graphql({
-            query: queries.listSightings,
-          });
-          sightings = listSightingsResponse.data.listSightings.items;
-        }
-        const sightingsInfo = await Promise.all(
-          sightings.map(async (sighting) => {
-            const imageData = await downloadData({ key: sighting.image })
-              .result;
-            const imageSrc = URL.createObjectURL(imageData.body);
-            return {
-              id: sighting.id,
-              userId: sighting.userID || "",
-              name: "",
-              species: "",
-              image: imageSrc,
-              status: "SIGHTING",
-              lastKnownLocation: sighting.location,
-              email: getSightingEmail(sighting),
-              phoneNumber: getSightingPhoneNumber(sighting),
-              createdAt: sighting.createdAt,
-            };
-          })
-        );
-
-        const newMarkersData = [...postsInfo, ...sightingsInfo];
-        setMarkersData(newMarkersData);
-        setPostsData(posts);
-        setSightingsData(sightings);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
     fetchData();
     return () => {
       didCancel = true;
@@ -127,6 +132,19 @@ const MapView = ({
     applyClicked,
   ]);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCurrentLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
   const deleteSighting = async (id) => {
     setLoading(true);
     const deleteInput = {
@@ -137,10 +155,7 @@ const MapView = ({
         query: mutations.deleteSighting,
         variables: { input: deleteInput },
       });
-      const newSightingsData = sightingsData.filter(
-        (sighting) => sighting.id !== id
-      );
-      setSightingsData(newSightingsData);
+      fetchData();
       handleToastOpen("success", "Successfully deleted sighting post.");
       setTimeout(() => {
         setToastOpen(false);
@@ -153,6 +168,33 @@ const MapView = ({
       }, 2000);
     }
     setLoading(false);
+    setOpen(false);
+  };
+
+  const resolveSighting = async (id) => {
+    setLoading(true);
+    const updateSightingInput = {
+      id: id,
+    };
+    try {
+      await client.graphql({
+        query: mutations.deleteSighting,
+        variables: { input: updateSightingInput },
+      });
+      fetchData();
+      handleToastOpen("success", "Successfully marked sighting as resolved.");
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    } catch (error) {
+      handleToastOpen("error", "Error marking sighting as resolved.");
+      console.error("Error marking sighting as resolved.: ", error);
+      setTimeout(() => {
+        setToastOpen(false);
+      }, 2000);
+    }
+    setLoading(false);
+    setOpen(false);
   };
 
   const handleToastOpen = (severity, message) => {
@@ -199,7 +241,7 @@ const MapView = ({
       container: "map",
       style: "mapbox://styles/mapbox/light-v10",
       center: calgaryCoords,
-      zoom: 11,
+      zoom: 10.5,
     });
 
     map.on("load", () => {
@@ -215,6 +257,15 @@ const MapView = ({
 
       // Add navigation controls
       map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+
+      // Add current location marker
+      if (currentLocation) {
+        new mapboxgl.Marker({
+          color: "gray",
+        })
+          .setLngLat([currentLocation.lng, currentLocation.lat])
+          .addTo(map);
+      }
 
       // Add markers
       const newMarkers = [];
@@ -305,6 +356,7 @@ const MapView = ({
       {!loading && (
         <>
           <SightingDialog
+            key={selectedSighting?.id}
             id={selectedSighting?.id}
             userId={selectedSighting?.userId}
             img={selectedSighting?.image}
@@ -312,7 +364,9 @@ const MapView = ({
             email={selectedSighting?.email}
             phoneNumber={selectedSighting?.phoneNumber}
             createdAt={selectedSighting?.createdAt}
+            resolved={selectedSighting?.resolved}
             onDelete={deleteSighting}
+            onResolve={resolveSighting}
             isCardOpen={open}
             setIsCardOpen={setOpen}
           />
