@@ -72,7 +72,7 @@ type PostReport @aws_api_key @aws_cognito_user_pools {
   reason: ReportReason!
   description: String
   user: User
-  userID: ID!
+  userID: ID
   post: Post
   postID: ID!
   createdAt: AWSDateTime!
@@ -85,7 +85,7 @@ type CommentReport @aws_api_key @aws_cognito_user_pools {
   reason: ReportReason!
   description: String
   user: User
-  userID: ID!
+  userID: ID
   comment: Comment
   commentID: ID!
   createdAt: AWSDateTime!
@@ -98,7 +98,7 @@ type SightingReport @aws_api_key @aws_cognito_user_pools {
   reason: ReportReason!
   description: String
   user: User
-  userID: ID!
+  userID: ID
   sighting: Sighting
   sightingID: ID!
   createdAt: AWSDateTime!
@@ -767,7 +767,7 @@ input CreatePostReportInput {
   id: ID
   reason: ReportReason!
   description: String
-  userID: ID!
+  userID: ID
   postID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -836,7 +836,7 @@ input CreateCommentReportInput {
   id: ID
   reason: ReportReason!
   description: String
-  userID: ID!
+  userID: ID
   commentID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -905,7 +905,7 @@ input CreateSightingReportInput {
   id: ID
   reason: ReportReason!
   description: String
-  userID: ID!
+  userID: ID
   sightingID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
