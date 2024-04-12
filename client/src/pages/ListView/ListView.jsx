@@ -306,6 +306,10 @@ const ListView = ({
                     />
                   ))
                 )
+              ) : sightingsData.length === 0 ? (
+                <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                  No {selectedType} posts found.
+                </Typography>
               ) : (
                 sightingsData.map((sighting, index) => (
                   <SightingCard
