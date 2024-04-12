@@ -144,7 +144,7 @@ const ViewReportsPage = () => {
           </Grid>
         </Grid>
       ) : !isMobile && selectedView === "List View" ? (
-        <Grid container item xs={12} justifyContent="space-between" margin={2}>
+        <Grid container item xs={12} justifyContent="space-between" marginTop={2}>
           <Grid item xs={5} md={4} marginRight={3} marginLeft={"16px"}>
             <Toggle
               options={postTypeOptions}
