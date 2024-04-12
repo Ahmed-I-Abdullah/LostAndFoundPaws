@@ -243,7 +243,7 @@ const MyPostsAndComments = () => {
     setLoading(true);
     const updateSightingInput = {
       id: id,
-      resolved: "true"
+      resolved: "true",
     };
 
     try {
@@ -263,8 +263,7 @@ const MyPostsAndComments = () => {
       }, 2000);
     }
     setLoading(false);
-
-  }
+  };
 
   const filteredPosts = postsData.filter(
     (post) => post.status.toLowerCase() === selectedType.toLowerCase()
@@ -300,42 +299,54 @@ const MyPostsAndComments = () => {
             sx={{ justifyContent: isMobile ? "center" : "flex-start" }}
           >
             {selectedType.toLowerCase() === "comments" ? (
-              commentData
-                .slice()
-                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-                .map((comment, index) => (
-                  <CommentCard
-                    key={index}
-                    userId={currentUser?.id}
-                    id={comment.id}
-                    userProfilePicture={currentProfilePictureImageData.key}
-                    content={comment.content}
-                    parentCommentId={comment.parentCommentID}
-                    username={currentUser?.username}
-                    createdAt={comment.createdAt}
-                    updatedAt={comment.updatedAt}
-                    onDelete={deleteComment}
-                  />
-                ))
+              commentData.length === 0 ? (
+                <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                  No comments found
+                </Typography>
+              ) : (
+                commentData
+                  .slice()
+                  .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                  .map((comment, index) => (
+                    <CommentCard
+                      key={index}
+                      userId={currentUser?.id}
+                      id={comment.id}
+                      userProfilePicture={currentProfilePictureImageData.key}
+                      content={comment.content}
+                      parentCommentId={comment.parentCommentID}
+                      username={currentUser?.username}
+                      createdAt={comment.createdAt}
+                      updatedAt={comment.updatedAt}
+                      onDelete={deleteComment}
+                    />
+                  ))
+              )
             ) : selectedType.toLowerCase() === "sighting" ? (
-              sightingsData
-                .slice()
-                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                .map((sighting, index) => (
-                  <SightingCard
-                    key={index}
-                    id={sighting.id}
-                    userId={sighting.userID}
-                    img={sighting.firstImg}
-                    location={sighting.location.address}
-                    resolved={sighting.resolved}
-                    email={getSightingEmail(sighting)}
-                    phoneNumber={getSightingPhoneNumber(sighting)}
-                    createdAt={sighting.createdAt}
-                    onDelete={deleteSighting}
-                    onResolve={resolveSighting}
-                  />
-                ))
+              sightingsData.length === 0 ? (
+                <Typography variant="h1" margin={"1rem"} display={"flex"}>
+                  No sightings found
+                </Typography>
+              ) : (
+                sightingsData
+                  .slice()
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .map((sighting, index) => (
+                    <SightingCard
+                      key={index}
+                      id={sighting.id}
+                      userId={sighting.userID}
+                      img={sighting.firstImg}
+                      location={sighting.location.address}
+                      resolved={sighting.resolved}
+                      email={getSightingEmail(sighting)}
+                      phoneNumber={getSightingPhoneNumber(sighting)}
+                      createdAt={sighting.createdAt}
+                      onDelete={deleteSighting}
+                      onResolve={resolveSighting}
+                    />
+                  ))
+              )
             ) : filteredPosts.length === 0 ? (
               <Typography variant="h1" margin={"1rem"} display={"flex"}>
                 No {selectedType} posts found
