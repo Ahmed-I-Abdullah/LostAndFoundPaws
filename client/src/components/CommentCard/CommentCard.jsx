@@ -297,28 +297,30 @@ const CommentCard = ({
                 <DeleteIcon />
                 <Typography variant="h9">Delete</Typography>
               </Button>
-              <Button
-                variant="text"
-                sx={{
-                  color: `${theme.palette.text.primary}`,
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={() => {
-                  if (username) {
-                    setReply(id);
-                  } else {
-                    handleToastOpen("error", "Can't reply to a deleted user");
-                    setTimeout(() => {
-                      setToastOpen(false);
-                    }, 2000);
-                  }
-                }}
-                size="small"
-              >
-                <ReplyIcon />
-                <Typography variant="h9">Reply</Typography>
-              </Button>
+              {pathname !== "/myPostsAndComments" && (
+                <Button
+                  variant="text"
+                  sx={{
+                    color: `${theme.palette.text.primary}`,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={() => {
+                    if (username) {
+                      setReply(id);
+                    } else {
+                      handleToastOpen("error", "Can't reply to a deleted user");
+                      setTimeout(() => {
+                        setToastOpen(false);
+                      }, 2000);
+                    }
+                  }}
+                  size="small"
+                >
+                  <ReplyIcon />
+                  <Typography variant="h9">Reply</Typography>
+                </Button>
+              )}
             </>
           ) : (
             userState !== "Guest" &&
