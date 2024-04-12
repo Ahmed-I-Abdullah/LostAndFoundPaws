@@ -128,7 +128,7 @@
                         "ApiId"
                     ]
                 },
-                "Expires": 1713313123
+                "Expires": 1713510891
             }
         },
         "GraphQLAPINONEDS95A13CF0": {
@@ -579,6 +579,12 @@
                         "Fn::GetAtt": [
                             "User",
                             "Outputs.transformerrootstackUserMutationcreateUserinit0FunctionMutationcreateUserinit0FunctionAppSyncFunction5CF77F6AFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPostNestedStackPostNestedStackResource45FCAC5EOutputstransformerrootstackPostMutationcreatePostinit1FunctionMutationcreatePostinit1FunctionAppSyncFunction1B3128B2FunctionId": {
+                        "Fn::GetAtt": [
+                            "Post",
+                            "Outputs.transformerrootstackPostMutationcreatePostinit1FunctionMutationcreatePostinit1FunctionAppSyncFunction1B3128B2FunctionId"
                         ]
                     },
                     "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserMutationcreateUserpreAuth0FunctionMutationcreateUserpreAuth0FunctionAppSyncFunction28412FD4FunctionId": {

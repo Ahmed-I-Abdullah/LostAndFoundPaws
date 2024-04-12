@@ -155,9 +155,9 @@
     "AuthTriggerCustomLambdaStack": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-dev-4415e-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
         "Parameters": {
-          "env": "staging",
+          "env": "dev",
           "userpoolId": {
             "Fn::GetAtt": [
               "authlostandfoundpetsfd158904",
@@ -198,7 +198,7 @@
     "apilostandfoundpets": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-dev-4415e-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "Parameters": {
           "AppSyncApiName": "lostandfoundpets",
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
@@ -209,16 +209,16 @@
               "Outputs.UserPoolId"
             ]
           },
-          "S3DeploymentBucket": "amplify-lostandfoundpets-staging-234006-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/a1c4cfc11277ada8fc22131b85591c89ef646613",
-          "env": "staging"
+          "S3DeploymentBucket": "amplify-lostandfoundpets-dev-4415e-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/cf5268069673eb7d0afd6ace1e51f84b943fd5f3",
+          "env": "dev"
         }
       }
     },
     "authlostandfoundpetsfd158904": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/auth/lostandfoundpetsfd158904-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-dev-4415e-deployment/amplify-cfn-templates/auth/lostandfoundpetsfd158904-cloudformation-template.json",
         "Parameters": {
           "identityPoolName": "lostandfoundpetsfd158904_identitypool_fd158904",
           "allowUnauthenticatedIdentities": true,
@@ -275,14 +275,14 @@
           "permissions": "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}",
           "authTriggerConnections": "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"lostandfoundpetsfd158904PostConfirmation\"}",
           "authProviders": "",
-          "env": "staging"
+          "env": "dev"
         }
       }
     },
     "authuserPoolGroups": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-dev-4415e-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "Parameters": {
           "AuthRoleArn": {
             "Fn::GetAtt": [
@@ -320,28 +320,28 @@
               "Outputs.IdentityPoolId"
             ]
           },
-          "env": "staging"
+          "env": "dev"
         }
       }
     },
     "functionlostandfoundpetsfd158904PostConfirmation": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/function/lostandfoundpetsfd158904PostConfirmation-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-dev-4415e-deployment/amplify-cfn-templates/function/lostandfoundpetsfd158904PostConfirmation-cloudformation-template.json",
         "Parameters": {
           "modules": "add-to-group",
           "resourceName": "lostandfoundpetsfd158904PostConfirmation",
           "GROUP": "Admin",
-          "deploymentBucketName": "amplify-lostandfoundpets-staging-234006-deployment",
+          "deploymentBucketName": "amplify-lostandfoundpets-dev-4415e-deployment",
           "s3Key": "amplify-builds/lostandfoundpetsfd158904PostConfirmation-3942736944487839336d-build.zip",
-          "env": "staging"
+          "env": "dev"
         }
       }
     },
     "storages34719207c": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-staging-234006-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-lostandfoundpets-dev-4415e-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "Parameters": {
           "bucketName": "lostandfoundpets2034dde64d2f4c49a7f206992e53fd9",
           "selectedGuestPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket",
@@ -385,7 +385,7 @@
               "Outputs.PosterGroupRole"
             ]
           },
-          "env": "staging"
+          "env": "dev"
         }
       }
     },

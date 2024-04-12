@@ -56,6 +56,7 @@ type Sighting @aws_api_key @aws_cognito_user_pools {
   id: ID!
   image: String!
   location: Location!
+  resolved: String
   reporterType: ReporterType!
   user: User
   userID: ID
@@ -660,6 +661,7 @@ input ModelReporterTypeInput {
 input ModelSightingFilterInput {
   id: ModelIDInput
   image: ModelStringInput
+  resolved: ModelStringInput
   reporterType: ModelReporterTypeInput
   userID: ModelIDInput
   createdAt: ModelStringInput
@@ -672,6 +674,7 @@ input ModelSightingFilterInput {
 
 input ModelSightingConditionInput {
   image: ModelStringInput
+  resolved: ModelStringInput
   reporterType: ModelReporterTypeInput
   userID: ModelIDInput
   createdAt: ModelStringInput
@@ -686,6 +689,7 @@ input CreateSightingInput {
   id: ID
   image: String!
   location: LocationInput!
+  resolved: String
   reporterType: ReporterType!
   userID: ID
   contactInfo: ContactInfoInput
@@ -697,6 +701,7 @@ input UpdateSightingInput {
   id: ID!
   image: String
   location: LocationInput
+  resolved: String
   reporterType: ReporterType
   userID: ID
   contactInfo: ContactInfoInput
@@ -711,6 +716,7 @@ input DeleteSightingInput {
 input ModelSubscriptionSightingFilterInput {
   id: ModelSubscriptionIDInput
   image: ModelSubscriptionStringInput
+  resolved: ModelSubscriptionStringInput
   reporterType: ModelSubscriptionStringInput
   userID: ModelSubscriptionIDInput
   createdAt: ModelSubscriptionStringInput
