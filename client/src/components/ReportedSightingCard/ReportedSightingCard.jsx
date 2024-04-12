@@ -33,7 +33,6 @@ const ReportedSightingCard = ({
         margin: "16px",
         border: "1px solid #ccc",
         borderRadius: "8px",
-        padding: "10px",
         backgroundColor: "#f9f9f9",
         width: "auto",
       }}
