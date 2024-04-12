@@ -95,7 +95,7 @@ const VerifyUpdatePassword = () => {
             <img src={PawLogo} alt="Logo" />
             <span>LostAndFoundPaws</span>
           </div>
-          <h1>Verify Account</h1>
+          <h1>Update Password</h1>
           <div className="divider"></div>
         </div>
         <Formik
@@ -174,7 +174,7 @@ const VerifyUpdatePassword = () => {
               </div>
               <div className="account-form-component">
                 <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
-                  Verify Account
+                  Update Password
                 </Button>
               </div>
             </Form>
