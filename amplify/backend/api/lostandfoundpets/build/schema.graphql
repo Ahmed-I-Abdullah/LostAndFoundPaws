@@ -67,12 +67,12 @@ type Sighting @aws_api_key @aws_cognito_user_pools {
   owner: String
 }
 
-type PostReport {
+type PostReport @aws_api_key @aws_cognito_user_pools {
   id: ID!
   reason: ReportReason!
   description: String
   user: User
-  userID: ID!
+  userID: ID
   post: Post
   postID: ID!
   createdAt: AWSDateTime!
@@ -80,12 +80,12 @@ type PostReport {
   owner: String
 }
 
-type CommentReport {
+type CommentReport @aws_api_key @aws_cognito_user_pools {
   id: ID!
   reason: ReportReason!
   description: String
   user: User
-  userID: ID!
+  userID: ID
   comment: Comment
   commentID: ID!
   createdAt: AWSDateTime!
@@ -93,12 +93,12 @@ type CommentReport {
   owner: String
 }
 
-type SightingReport {
+type SightingReport @aws_api_key @aws_cognito_user_pools {
   id: ID!
   reason: ReportReason!
   description: String
   user: User
-  userID: ID!
+  userID: ID
   sighting: Sighting
   sightingID: ID!
   createdAt: AWSDateTime!
@@ -404,17 +404,17 @@ type Mutation {
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
   updateSighting(input: UpdateSightingInput!, condition: ModelSightingConditionInput): Sighting
   deleteSighting(input: DeleteSightingInput!, condition: ModelSightingConditionInput): Sighting
-  createPostReport(input: CreatePostReportInput!, condition: ModelPostReportConditionInput): PostReport
   updatePostReport(input: UpdatePostReportInput!, condition: ModelPostReportConditionInput): PostReport
   deletePostReport(input: DeletePostReportInput!, condition: ModelPostReportConditionInput): PostReport
-  createCommentReport(input: CreateCommentReportInput!, condition: ModelCommentReportConditionInput): CommentReport
   updateCommentReport(input: UpdateCommentReportInput!, condition: ModelCommentReportConditionInput): CommentReport
   deleteCommentReport(input: DeleteCommentReportInput!, condition: ModelCommentReportConditionInput): CommentReport
-  createSightingReport(input: CreateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   updateSightingReport(input: UpdateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   deleteSightingReport(input: DeleteSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport
   createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_cognito_user_pools
   createSighting(input: CreateSightingInput!, condition: ModelSightingConditionInput): Sighting @aws_api_key @aws_cognito_user_pools
+  createPostReport(input: CreatePostReportInput!, condition: ModelPostReportConditionInput): PostReport @aws_api_key @aws_cognito_user_pools
+  createCommentReport(input: CreateCommentReportInput!, condition: ModelCommentReportConditionInput): CommentReport @aws_api_key @aws_cognito_user_pools
+  createSightingReport(input: CreateSightingReportInput!, condition: ModelSightingReportConditionInput): SightingReport @aws_api_key @aws_cognito_user_pools
 }
 
 input ModelSubscriptionUserFilterInput {
@@ -767,7 +767,7 @@ input CreatePostReportInput {
   id: ID
   reason: ReportReason!
   description: String
-  userID: ID!
+  userID: ID
   postID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -836,7 +836,7 @@ input CreateCommentReportInput {
   id: ID
   reason: ReportReason!
   description: String
-  userID: ID!
+  userID: ID
   commentID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
@@ -905,7 +905,7 @@ input CreateSightingReportInput {
   id: ID
   reason: ReportReason!
   description: String
-  userID: ID!
+  userID: ID
   sightingID: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
