@@ -347,6 +347,7 @@ const CommentCard = ({
               </>
             )
           )}
+              {(userState !== "Admin" && currentUser?.id !== userId) &&
                 <Button
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
@@ -356,6 +357,7 @@ const CommentCard = ({
                   <FlagIcon />
                   <Typography variant="h9">Report</Typography>
                 </Button>
+              }
         </Box>
       </Box>
       <ConfirmDialog
