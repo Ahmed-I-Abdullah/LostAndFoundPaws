@@ -347,7 +347,7 @@ const CommentCard = ({
               </>
             )
           )}
-              {(currentUser?.id !== userId) &&
+              {(userState !== "Admin" || currentUser?.id !== userId) &&
                 <Button
                   variant="text"
                   sx={{ color: `${theme.palette.text.primary}` }}
